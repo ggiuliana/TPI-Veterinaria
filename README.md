@@ -3,7 +3,7 @@
 ## Integrantes:
 * 54280 - Squarzon, Nicolás José
 * 54448 - Grieco, Giuliana
-* 55160 - Corbella, Leonardo 
+* 55160 - Corbella, Leonardo Gabriel
 
 ## Descripción General del Sistema
 ### Sistema de Gestión Veterinaria
