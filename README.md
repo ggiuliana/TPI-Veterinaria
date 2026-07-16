@@ -25,7 +25,7 @@ Teniendo en cuenta este modelo las funcionalidades a implementar son las siguien
 ## Alcance Funcional y Requerimientos
 
 ### Requerimientos Funcionales Implementados
-1.  Alta, Baja, Modificaciones y Consulta de Usuarios y Roles
+1.  Alta, Baja, Modificaciones y Consulta de Usuarios
 2. Alta, Baja, Modificaciones y Consulta de Veterinarios 
 3. Alta, Baja, Modificaciones y Consulta de Dueños
 4. Alta, Baja, Modificaciones y Consulta de Turnos
@@ -33,8 +33,10 @@ Teniendo en cuenta este modelo las funcionalidades a implementar son las siguien
 1. Alta, Baja, Modificaciones y Consulta de Estudios
 1. Alta, Baja, Modificaciones y Consulta de Vacunas
 6. Registro de Consultas y Medicamentos utilizados
-7. Reporte de Historias Clínicas
+7. Reporte de Consultas y Vacunas
 8. Reporte de Turnos	
 9. Reporte de stock de Medicamentos
 
-##Modelo del Dominio
+## Modelo del Dominio
+
+![ModeloVeterinaria](./docs/ModeloVeterinaria.png)
