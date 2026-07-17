@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ModeloDominio;
 
 namespace Data
 {
-    internal class IDueñoRepository
+    public interface IDueñoRepository
     {
+        Task AddAsync(Dueño dueño);
+        Task<bool> DeleteAsync(int id);
+        Task<Dueño?> GetAsync(int id);
+        Task<IEnumerable<Dueño>> GetAllAsync();
+        Task<bool> UpdateAsync(Dueño dueño);
+        Task<bool> MailExistsAsync(string mail, int? excludeId = null);
     }
 }
