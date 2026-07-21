@@ -15,28 +15,10 @@ namespace ModeloDominio
         public bool Castrado { get; set; }
         public char Sexo { get; set; }
         public DateTime FechaNac { get; set; }
-        private int _idDueño { get; set; }
-        private Dueño? _dueño { get; set; }
-        public int IdDueño
-        {
-            get => _dueño?.IdPersona ?? _idDueño;
-            private set => _idDueño = value;
-        }
+        public Dueño? _dueño { get; set; }
 
-        public Dueño? Dueño
-        {
-            get => _dueño;
-            private set
-            {
-                _dueño = value;
-                if (value != null && _idDueño != value.IdPersona)
-                {
-                    _idDueño = value.IdPersona;
-                }
-            }
-        }
         public Mascota() { }
-        public Mascota(int idMascota, string nombreMascota, string especie, string raza, bool castrado, char sexo, DateTime fechaNac, int idDueño)
+        public Mascota(int idMascota, string nombreMascota, string especie, string raza, bool castrado, char sexo, DateTime fechaNac, Dueño dueño)
         {
             SetIdMascota(idMascota);
             SetNombreMascota(nombreMascota);
@@ -45,7 +27,7 @@ namespace ModeloDominio
             Castrado = castrado;
             SetSexo(sexo);
             SetFechaNac(fechaNac);
-            SetIdDueño(idDueño);
+            SetDueño(dueño);
         }
         public void SetIdMascota(int idMascota)
         {
@@ -87,15 +69,12 @@ namespace ModeloDominio
                 throw new ArgumentException("La fecha de nacimiento no puede estar en el futuro.", nameof(fechaNac));
             FechaNac = fechaNac;
         }
-        public void SetIdDueño(int idDueño)
+
+        public void SetDueño(Dueño dueño)
         {
-            if (idDueño <= 0)
-                throw new ArgumentException("El Id del dueño asociado debe ser mayor a 0.", nameof(idDueño));
-            IdDueño = idDueño;
-            if (_dueño != null && _dueño.IdPersona != idDueño)
-            {
-                _dueño = null;
-            }
+            if (dueño == null)
+                throw new ArgumentNullException(nameof(dueño), "El dueño no puede ser nulo.");
+            _dueño = dueño;
         }
     }
 }

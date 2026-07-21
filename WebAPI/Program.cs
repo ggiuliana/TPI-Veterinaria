@@ -1,11 +1,18 @@
+using WebAPI;
+using ServiciosApp;
+using Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Add Dependency Injection
+builder.Services.AddScoped<IDueñoRepository, DueñoRepository>();
+builder.Services.AddScoped<IDueñoService, DueñoService>();
+builder.Services.AddScoped<IMascotaRepository, MascotaRepository>();
+builder.Services.AddScoped<IMascotaService, MascotaService>();
 
 var app = builder.Build();
 
@@ -16,10 +23,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
-app.UseAuthorization();
-
-app.MapControllers();
+// Map endpoints
+app.MapDueñoEndpoints();
+app.MapMascotaEndpoints();
 
 app.Run();
