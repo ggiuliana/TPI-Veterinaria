@@ -1,23 +1,31 @@
-# Trabajo Pr·ctico Integrador
+# Trabajo Pr√°ctico Integrador
 
 ## Integrantes:
-* 54280 - Squarzon, Nicol·s JosÈ
+* 54280 - Squarzon, Nicol√°s Jos√©
 * 54448 - Grieco, Giuliana
 * 55160 - Corbella, Leonardo Gabriel
 
-## DescripciÛn General del Sistema
-### Sistema de GestiÛn Veterinaria
-El **Sistema de GestiÛn Veterinaria (SGV)** registra y administra las actividades clÌnicas y operativas de la clÌnica en torno a las entidades principales de DueÒos, Mascotas, Veterinarios, Turnos y Medicamentos.
+## Descripci√≥n General del Sistema
+### Sistema de Gesti√≥n Veterinaria
+El **Sistema de Gesti√≥n Veterinaria (SGV)** registra y administra las actividades cl√≠nicas y operativas de la cl√≠nica en torno a las entidades principales de **Due√±os, Mascotas, Veterinarios, Turnos y Medicamentos**.
 
-Tanto los **DueÒos** como los **Veterinarios** tienen datos en com˙n, tales como DNI, Nombre, Apellido, DirecciÛn, TelÈfono y Email, entre otros. 
+Tanto los **Due√±os** como los **Veterinarios** tienen datos en com√∫n, tales como **DNI, Nombre, Apellido, Direcci√≥n, Tel√©fono y Email**, entre otros.
 
-Las **Mascotas** pertenecen a un ˙nico DueÒo y tienen caracterÌsticas propias como Especie, Raza y Fecha de Nacimiento. Su historial clÌnico se conforma mediante la aplicaciÛn de Vacunas y la realizaciÛn de Estudios.
+Las **Mascotas** pertenecen a un √∫nico **Due√±o** y tienen caracter√≠sticas propias como **Especie, Raza y Fecha de Nacimiento**. Su historial cl√≠nico se conforma mediante la aplicaci√≥n de **Vacunas** (ingresadas por el Due√±o al momento de registro de la Mascota) y la realizaci√≥n de **Estudios y Consultas**.
 
-El acceso a las distintas funcionalidades est· restringido mediante **Roles** (por ejemplo, Administrador/Recepcionista y Veterinario).
+El acceso a las distintas funcionalidades est√° restringido mediante **Roles** (por ejemplo, **Administrador, Recepcionista y Veterinario**).
 
-Para la atenciÛn, la clÌnica gestiona **Turnos**, donde se asocia una **Mascota** con un **Veterinario** en una fecha y hora especÌficas.
+Cada **Usuario** tiene acceso a diferentes funcionalidades del sistema mediante el **M√≥dulo de Acceso** que le corresponda (dependiendo si es **Administrador/Recepcionista, Due√±o o Veterinario**), el cual le da permisos para realizar diferentes acciones en el programa.
 
-Al concretarse la atenciÛn clÌnica, el **Veterinario** debe registrar la **Consulta** en el sistema. En este acto, el **Veterinario** detalla el diagnÛstico, el tratamiento, el peso registrado y los **Medicamentos** utilizados o recetados. 
+Para la atenci√≥n, la cl√≠nica gestiona **Turnos**, donde se asocia una **Mascota** con un turno, cargado por un **Veterinario** y asociado con √©l en una fecha y hora espec√≠ficas. El **Due√±o** de la Mascota selecciona un turno de los turnos disponibles previamente cargados por el Veterinario y se le asigna a su Mascota.
+
+Al momento de que el **Veterinario** crea sus turnos, los mismos tienen el estado **"Disponible"**. Cuando un turno es asignado a una Mascota su estado se convierte en **"Otorgado"**. Llegado el d√≠a y la hora del turno su estado pasa a ser **"Resuelto"** y se crea la **Consulta** si la Mascota asisti√≥. Previo a la fecha del turno el Due√±o puede cancelarlo, volviendo al estado **"Disponible"**.
+
+Al concretarse la atenci√≥n cl√≠nica, el **Veterinario** debe registrar la **Consulta** en el sistema. En este acto, el Veterinario detalla el **diagn√≥stico, el tratamiento, el peso registrado y los medicamentos utilizados o recetados**.
+
+En caso de utilizar **Medicamentos**, se actualiza su stock. Para que en una consulta se utilicen cierta cantidad de medicamentos, debe haber stock suficiente.
+
+El d√≠a de la consulta el **Veterinario** puede decidir si es necesario realizar un **Estudio**, asign√°ndolo a la misma. Los estudios son realizados por un Veterinario.
 
 Teniendo en cuenta este modelo las funcionalidades a implementar son las siguientes:
 
@@ -25,17 +33,21 @@ Teniendo en cuenta este modelo las funcionalidades a implementar son las siguien
 ## Alcance Funcional y Requerimientos
 
 ### Requerimientos Funcionales Implementados
-1.  Alta, Baja, Modificaciones y Consulta de Usuarios
-2. Alta, Baja, Modificaciones y Consulta de Veterinarios 
-3. Alta, Baja, Modificaciones y Consulta de DueÒos
+Teniendo en cuenta este modelo las funcionalidades a implementar son las siguientes:
+
+1. Alta, Baja, Modificaciones y Consulta de Usuarios
+2. Alta, Baja, Modificaciones y Consulta de Veterinarios
+3. Alta, Baja, Modificaciones y Consulta de Due√±os
 4. Alta, Baja, Modificaciones y Consulta de Turnos
 5. Alta, Baja, Modificaciones y Consulta de Mascotas
-1. Alta, Baja, Modificaciones y Consulta de Estudios
-1. Alta, Baja, Modificaciones y Consulta de Vacunas
-6. Registro de Consultas y Medicamentos utilizados
-7. Reporte de Consultas y Vacunas
-8. Reporte de Turnos	
-9. Reporte de stock de Medicamentos
+6. Alta, Baja, Modificaciones y Consulta de Estudios
+7. Alta, Baja, Modificaciones y Consulta de Vacunas
+8. Asignaci√≥n de turno
+9. Registro de Consultas, Estudios y Medicamentos utilizados
+10. Reporte de Historial cl√≠nico (Estudios, vacunas y consultas)
+11. Reporte de Turnos
+12. Reporte de stock de Medicamentos
+
 
 ## Modelo del Dominio
 
