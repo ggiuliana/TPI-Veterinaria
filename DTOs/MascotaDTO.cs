@@ -16,6 +16,6 @@ namespace DTOs
         public bool Castrado { get; set; }
         public char Sexo { get; set; }
         public DateTime FechaNac { get; set; }
-        public int IdDueño { get; set; }
+        public int IdDuenio { get; set; }
     }
 }

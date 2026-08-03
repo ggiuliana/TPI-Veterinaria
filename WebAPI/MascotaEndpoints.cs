@@ -34,7 +34,7 @@ namespace WebAPI
 
             app.MapGet("/mascotas/dueno/{id}", async (int id, IMascotaService mascotaService) =>
             {
-                var dtos = await mascotaService.GetAllByDueñoAsync(id);
+                var dtos = await mascotaService.GetAllByDuenioAsync(id);
 
                 return Results.Ok(dtos);
             })

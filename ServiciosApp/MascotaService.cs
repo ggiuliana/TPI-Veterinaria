@@ -12,18 +12,18 @@ namespace ServiciosApp
     public class MascotaService : IMascotaService
     {
         private readonly IMascotaRepository repo;
-        private readonly IDueñoRepository repoDueño;
+        private readonly IDuenioRepository repoDuenio;
 
-        public MascotaService(IMascotaRepository repo, IDueñoRepository repoDueño)
+        public MascotaService(IMascotaRepository repo, IDuenioRepository repoDuenio)
         {
             this.repo = repo;
-            this.repoDueño = repoDueño;
+            this.repoDuenio = repoDuenio;
         }
 
         public async Task<MascotaDTO> AddAsync(MascotaDTO dto)
         {
-            var dueño = await repoDueño.GetAsync(dto.IdDueño);
-            if (dueño == null)
+            var duenio = await repoDuenio.GetAsync(dto.IdDuenio);
+            if (duenio == null)
             {
                 throw new Exception("Dueño no encontrado");
             }
@@ -35,8 +35,8 @@ namespace ServiciosApp
                 dto.Castrado,
                 dto.Sexo,
                 dto.FechaNac,
-                dueño);
-            await repo.AddAsync(mascota, dueño);
+                duenio);
+            await repo.AddAsync(mascota, duenio);
             dto.IdMascota = mascota.IdMascota;
             return dto;
         }
@@ -62,7 +62,7 @@ namespace ServiciosApp
                 Castrado = mascota.Castrado,
                 Sexo = mascota.Sexo,
                 FechaNac = mascota.FechaNac,
-                IdDueño = mascota._dueño.IdPersona
+                IdDuenio = mascota._duenio.IdPersona
             };
         }
 
@@ -78,18 +78,18 @@ namespace ServiciosApp
                 Castrado = mascota.Castrado,
                 Sexo = mascota.Sexo,
                 FechaNac = mascota.FechaNac,
-                IdDueño = mascota._dueño.IdPersona
+                IdDuenio = mascota._duenio.IdPersona
             }).ToList();
         }
 
-        public async Task<IEnumerable<MascotaDTO>> GetAllByDueñoAsync(int idDueño)
+        public async Task<IEnumerable<MascotaDTO>> GetAllByDuenioAsync(int idDuenio)
         {
-            var dueño = await repoDueño.GetAsync(idDueño);
-            if (dueño == null)
+            var duenio = await repoDuenio.GetAsync(idDuenio);
+            if (duenio == null)
             {
                 throw new Exception("Dueño no encontrado");
             }
-            IEnumerable<Mascota> mascotas = await repo.GetAllByDueñoAsync(dueño);
+            IEnumerable<Mascota> mascotas = await repo.GetAllByDuenioAsync(duenio);
             return mascotas.Select(mascota => new MascotaDTO
             {
                 IdMascota = mascota.IdMascota,
@@ -99,17 +99,17 @@ namespace ServiciosApp
                 Castrado = mascota.Castrado,
                 Sexo = mascota.Sexo,
                 FechaNac = mascota.FechaNac,
-                IdDueño = mascota._dueño.IdPersona
+                IdDuenio = mascota._duenio.IdPersona
             }).ToList();
         }
 
         public async Task<bool> UpdateAsync(MascotaDTO dto)
         {
 
-            Console.WriteLine(dto.IdDueño);
-            var dueño = await repoDueño.GetAsync(dto.IdDueño);
+            Console.WriteLine(dto.IdDuenio);
+            var duenio = await repoDuenio.GetAsync(dto.IdDuenio);
 
-            if (dueño == null)
+            if (duenio == null)
             {
                 throw new Exception("Dueño no encontrado");
             }
@@ -121,8 +121,8 @@ namespace ServiciosApp
                 dto.Castrado,
                 dto.Sexo,
                 dto.FechaNac,
-                dueño);
-            return await repo.UpdateAsync(mascota, dueño);
+                duenio);
+            return await repo.UpdateAsync(mascota, duenio);
         }
     }
 }

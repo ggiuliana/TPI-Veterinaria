@@ -11,13 +11,13 @@ namespace Data
     {
         public static readonly List<Mascota> mascotas = new();
         private static int nextId = 1;
-        private readonly DueñoRepository _dueñoRepository = new DueñoRepository();
+        private readonly DuenioRepository _duenioRepository = new DuenioRepository();
 
-        public async Task AddAsync(Mascota mascota, Dueño dueño)
+        public async Task AddAsync(Mascota mascota, Duenio duenio)
         {
             mascota.IdMascota = nextId;
             nextId++;
-            mascota.SetDueño(dueño);
+            mascota.SetDuenio(duenio);
             mascotas.Add(mascota);
             return;
         }
@@ -43,13 +43,13 @@ namespace Data
             return Task.FromResult<IEnumerable<Mascota>>(mascotas.ToList());
         }
 
-        public Task<IEnumerable<Mascota>> GetAllByDueñoAsync(Dueño dueño)
+        public Task<IEnumerable<Mascota>> GetAllByDuenioAsync(Duenio duenio)
         {
-            var mascotasDelDueño = mascotas.Where(m => m._dueño == dueño).ToList();
-            return Task.FromResult<IEnumerable<Mascota>>(mascotasDelDueño);
+            var mascotasDelDuenio = mascotas.Where(m => m._duenio == duenio).ToList();
+            return Task.FromResult<IEnumerable<Mascota>>(mascotasDelDuenio);
         }
 
-        public Task<bool> UpdateAsync(Mascota mascota, Dueño dueño)
+        public Task<bool> UpdateAsync(Mascota mascota, Duenio duenio)
         {
             var existing = mascotas.FirstOrDefault(m => m.IdMascota == mascota.IdMascota);
             if (existing != null)
@@ -60,7 +60,7 @@ namespace Data
                 existing.Castrado = mascota.Castrado;
                 existing.SetSexo(mascota.Sexo);
                 existing.SetFechaNac(mascota.FechaNac);
-                existing.SetDueño(dueño);
+                existing.SetDuenio(duenio);
                 return Task.FromResult(true);
             }
             return Task.FromResult(false);

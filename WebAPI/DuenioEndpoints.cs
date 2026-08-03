@@ -3,13 +3,13 @@ using DTOs;
 
 namespace WebAPI
 {
-    public static class DueñoEndpoints
+    public static class DuenioEndpoints
     {
-        public static void MapDueñoEndpoints(this WebApplication app)
+        public static void MapDuenioEndpoints(this WebApplication app)
         {
-            app.MapGet("/duenos/{id}", async (int id, IDueñoService dueñoService) =>
+            app.MapGet("/duenos/{id}", async (int id, IDuenioService duenioService) =>
             {
-                DueñoDTO? dto = await dueñoService.GetAsync(id);
+                DuenioDTO? dto = await duenioService.GetAsync(id);
 
                 if (dto == null)
                 {
@@ -18,43 +18,43 @@ namespace WebAPI
 
                 return Results.Ok(dto);
             })
-            .WithName("GetDueno")
-            .Produces<DueñoDTO>(StatusCodes.Status200OK)
+            .WithName("GetDuenio")
+            .Produces<DuenioDTO>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
             .WithOpenApi();
 
-            app.MapGet("/duenos", async (IDueñoService dueñoService) =>
+            app.MapGet("/duenios", async (IDuenioService duenioService) =>
             {
-                var dtos = await dueñoService.GetAllAsync();
+                var dtos = await duenioService.GetAllAsync();
 
                 return Results.Ok(dtos);
             })
-            .WithName("GetAllDuenos")
-            .Produces<List<DueñoDTO>>(StatusCodes.Status200OK)
+            .WithName("GetAllDuenios")
+            .Produces<List<DuenioDTO>>(StatusCodes.Status200OK)
             .WithOpenApi();
 
-            app.MapPost("/duenos", async (DueñoDTO dto, IDueñoService dueñoService) =>
+            app.MapPost("/duenios", async (DuenioDTO dto, IDuenioService duenioService) =>
             {
                 try
                 {
-                    DueñoDTO dueñodto = await dueñoService.AddAsync(dto);
-                    return Results.Created($"/duenos/{dueñodto.IdDueño}", dueñodto);
+                    DuenioDTO dueniodto = await duenioService.AddAsync(dto);
+                    return Results.Created($"/duenos/{dueniodto.IdDuenio}", dueniodto);
                 }
                 catch (ArgumentException ex)
                 {
                     return Results.BadRequest(new { error = ex.Message });
                 }
             })
-            .WithName("AddDueno")
-            .Produces<DueñoDTO>(StatusCodes.Status201Created)
+            .WithName("AddDuenio")
+            .Produces<DuenioDTO>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
             .WithOpenApi();
 
-            app.MapPut("/duenos", async (DueñoDTO dto, IDueñoService dueñoService) =>
+            app.MapPut("/duenios", async (DuenioDTO dto, IDuenioService duenioService) =>
             {
                 try
                 {
-                    var found = await dueñoService.UpdateAsync(dto);
+                    var found = await duenioService.UpdateAsync(dto);
 
                     if (!found)
                     {
@@ -68,14 +68,14 @@ namespace WebAPI
                     return Results.BadRequest(new { error = ex.Message });
                 }
             })
-            .WithName("UpdateCliente")
+            .WithName("UpdateDuenios")
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status400BadRequest)
             .WithOpenApi();
 
-            app.MapDelete("/duenos/{id}", async (int id, IDueñoService dueñoService) =>
+            app.MapDelete("/duenios/{id}", async (int id, IDuenioService duenioService) =>
             {
-                var deleted = await dueñoService.DeleteAsync(id);
+                var deleted = await duenioService.DeleteAsync(id);
 
                 if (!deleted)
                 {
@@ -84,7 +84,7 @@ namespace WebAPI
 
                 return Results.NoContent();
             })
-            .WithName("DeleteCliente")
+            .WithName("DeleteDuenios")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
             .WithOpenApi();

@@ -9,8 +9,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Add Dependency Injection
-builder.Services.AddScoped<IDueñoRepository, DueñoRepository>();
-builder.Services.AddScoped<IDueñoService, DueñoService>();
+builder.Services.AddScoped<IDuenioRepository, DuenioRepository>();
+builder.Services.AddScoped<IDuenioService, DuenioService>();
 builder.Services.AddScoped<IMascotaRepository, MascotaRepository>();
 builder.Services.AddScoped<IMascotaService, MascotaService>();
 
@@ -29,7 +29,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 // Map endpoints
-app.MapDueñoEndpoints();
+app.MapDuenioEndpoints();
 app.MapMascotaEndpoints();
 
 app.Run();

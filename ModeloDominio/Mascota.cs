@@ -15,10 +15,10 @@ namespace ModeloDominio
         public bool Castrado { get; set; }
         public char Sexo { get; set; }
         public DateTime FechaNac { get; set; }
-        public Dueño? _dueño { get; set; }
+        public Duenio? _duenio { get; set; }
 
         public Mascota() { }
-        public Mascota(int idMascota, string nombreMascota, string especie, string raza, bool castrado, char sexo, DateTime fechaNac, Dueño dueño)
+        public Mascota(int idMascota, string nombreMascota, string especie, string raza, bool castrado, char sexo, DateTime fechaNac, Duenio duenio)
         {
             SetIdMascota(idMascota);
             SetNombreMascota(nombreMascota);
@@ -27,7 +27,7 @@ namespace ModeloDominio
             Castrado = castrado;
             SetSexo(sexo);
             SetFechaNac(fechaNac);
-            SetDueño(dueño);
+            SetDuenio(duenio);
         }
         public void SetIdMascota(int idMascota)
         {
@@ -70,11 +70,11 @@ namespace ModeloDominio
             FechaNac = fechaNac;
         }
 
-        public void SetDueño(Dueño dueño)
+        public void SetDuenio(Duenio duenio)
         {
-            if (dueño == null)
-                throw new ArgumentNullException(nameof(dueño), "El dueño no puede ser nulo.");
-            _dueño = dueño;
+            if (duenio == null)
+                throw new ArgumentNullException(nameof(duenio), "El dueño no puede ser nulo.");
+            _duenio = duenio;
         }
     }
 }
