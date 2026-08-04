@@ -8,14 +8,14 @@ namespace ModeloDominio
 {
     public class Mascota
     {
-        public int IdMascota { get; set; }
-        public string NombreMascota { get; set; }
-        public string Especie { get; set; }
-        public string Raza { get; set; }
-        public bool Castrado { get; set; }
-        public char Sexo { get; set; }
-        public DateTime FechaNac { get; set; }
-        public Duenio? _duenio { get; set; }
+        public int IdMascota { get; private set; }
+        public string NombreMascota { get; private set; } = string.Empty;
+        public string Especie { get; private set; } = string.Empty;
+        public string Raza { get; private set; } = string.Empty;
+        public bool Castrado { get; private set; } 
+        public char Sexo { get; private set; }
+        public DateTime FechaNac { get; private set; }
+        public Duenio? Duenio { get; private set; }
 
         public Mascota() { }
         public Mascota(int idMascota, string nombreMascota, string especie, string raza, bool castrado, char sexo, DateTime fechaNac, Duenio duenio)
@@ -24,7 +24,7 @@ namespace ModeloDominio
             SetNombreMascota(nombreMascota);
             SetEspecie(especie);
             SetRaza(raza);
-            Castrado = castrado;
+            SetCastrado(castrado);
             SetSexo(sexo);
             SetFechaNac(fechaNac);
             SetDuenio(duenio);
@@ -56,6 +56,10 @@ namespace ModeloDominio
                 throw new ArgumentException("La raza no puede ser nula o vacía.", nameof(raza));
             Raza = raza;
         }
+        public void SetCastrado(bool castrado)
+        {
+            Castrado = castrado;
+        }
         public void SetSexo(char sexo)
         {
             if (char.ToUpper(sexo) != 'M' && char.ToUpper(sexo) != 'H')
@@ -74,7 +78,7 @@ namespace ModeloDominio
         {
             if (duenio == null)
                 throw new ArgumentNullException(nameof(duenio), "El dueño no puede ser nulo.");
-            _duenio = duenio;
+            Duenio = duenio;
         }
     }
 }

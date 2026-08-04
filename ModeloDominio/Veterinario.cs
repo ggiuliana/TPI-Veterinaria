@@ -2,8 +2,8 @@
 {
     public class Veterinario : Persona
     {
-        public string Matricula { get; set; }
-        public string Especialidad { get; set; }
+        public string Matricula { get; private set; } = string.Empty;
+        public string Especialidad { get; private set; } = string.Empty;
         protected Veterinario() : base() { }
         public Veterinario(int idPersona, string nombrePersona, string apellido, string telefono, string mail, string dni, string direccion, string matricula, string especialidad)
             : base(idPersona, nombrePersona, apellido, telefono, mail, dni, direccion)

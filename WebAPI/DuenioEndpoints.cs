@@ -7,7 +7,7 @@ namespace WebAPI
     {
         public static void MapDuenioEndpoints(this WebApplication app)
         {
-            app.MapGet("/duenos/{id}", async (int id, IDuenioService duenioService) =>
+            app.MapGet("/duenios/{id}", async (int id, IDuenioService duenioService) =>
             {
                 DuenioDTO? dto = await duenioService.GetAsync(id);
 
@@ -38,7 +38,7 @@ namespace WebAPI
                 try
                 {
                     DuenioDTO dueniodto = await duenioService.AddAsync(dto);
-                    return Results.Created($"/duenos/{dueniodto.IdDuenio}", dueniodto);
+                    return Results.Created($"/duenios/{dueniodto.IdDuenio}", dueniodto);
                 }
                 catch (ArgumentException ex)
                 {

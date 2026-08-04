@@ -11,15 +11,14 @@ namespace Data
     {
         public static readonly List<Mascota> mascotas = new();
         private static int nextId = 1;
-        private readonly DuenioRepository _duenioRepository = new DuenioRepository();
 
         public async Task AddAsync(Mascota mascota, Duenio duenio)
         {
-            mascota.IdMascota = nextId;
+            mascota.SetIdMascota(nextId);
             nextId++;
             mascota.SetDuenio(duenio);
             mascotas.Add(mascota);
-            return;
+            await Task.CompletedTask;
         }
 
         public Task<bool> DeleteAsync(int id)
@@ -45,7 +44,7 @@ namespace Data
 
         public Task<IEnumerable<Mascota>> GetAllByDuenioAsync(Duenio duenio)
         {
-            var mascotasDelDuenio = mascotas.Where(m => m._duenio == duenio).ToList();
+            var mascotasDelDuenio = mascotas.Where(m => m.Duenio?.IdPersona == duenio.IdPersona).ToList();
             return Task.FromResult<IEnumerable<Mascota>>(mascotasDelDuenio);
         }
 
@@ -57,7 +56,7 @@ namespace Data
                 existing.SetNombreMascota(mascota.NombreMascota);
                 existing.SetEspecie(mascota.Especie);
                 existing.SetRaza(mascota.Raza);
-                existing.Castrado = mascota.Castrado;
+                existing.SetCastrado(mascota.Castrado);
                 existing.SetSexo(mascota.Sexo);
                 existing.SetFechaNac(mascota.FechaNac);
                 existing.SetDuenio(duenio);

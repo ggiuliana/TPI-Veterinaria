@@ -7,7 +7,7 @@ namespace Data
         private static int nextId = 1;
         public Task AddAsync(Duenio duenio)
         {
-            duenio.IdPersona = nextId;
+            duenio.SetIdPersona(nextId);
             nextId++;
             duenios.Add(duenio);
             return Task.CompletedTask;

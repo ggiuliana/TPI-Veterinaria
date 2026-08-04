@@ -10,9 +10,9 @@ namespace DTOs
     public class MascotaDTO
     {
         public int IdMascota { get; set; }
-        public string NombreMascota { get; set; }
-        public string Especie { get; set; }
-        public string Raza { get; set; }
+        public string NombreMascota { get; set; } = string.Empty;
+        public string Especie { get; set; } = string.Empty;
+        public string Raza { get; set; } = string.Empty;
         public bool Castrado { get; set; }
         public char Sexo { get; set; }
         public DateTime FechaNac { get; set; }

@@ -4,13 +4,13 @@ namespace ModeloDominio
 {
     public abstract class Persona
     {
-        public int IdPersona { get; set; }
-        public string NombrePersona { get; set; }
-        public string Apellido { get; set; }
-        public string Telefono { get; set; }
-        public string Mail { get; set; }
-        public string Dni { get; set; }
-        public string Direccion { get; set; }
+        public int IdPersona { get; private set; }
+        public string NombrePersona { get; private set; } = string.Empty;
+        public string Apellido { get; private set; } = string.Empty;
+        public string Telefono { get; private set; } = string.Empty;
+        public string Mail { get; private set; } = string.Empty;
+        public string Dni { get; private set; } = string.Empty;
+        public string Direccion { get; private set; } = string.Empty;
 
         public Persona() { }
         public Persona(int idPersona, string nombrePersona, string apellido, string telefono, string mail, string dni, string direccion)

@@ -17,12 +17,12 @@ namespace WebAPI
 
                 return Results.Ok(dto);
             })
-            .WithName("GetMascota")
+            .WithName("GetMascotas")
             .Produces<MascotaDTO>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
             .WithOpenApi();
 
-            app.MapGet("/mascota", async (IMascotaService mascotaService) =>
+            app.MapGet("/mascotas", async (IMascotaService mascotaService) =>
             {
                 var dtos = await mascotaService.GetAllAsync();
 
@@ -32,13 +32,13 @@ namespace WebAPI
             .Produces<List<MascotaDTO>>(StatusCodes.Status200OK)
             .WithOpenApi();
 
-            app.MapGet("/mascotas/dueno/{id}", async (int id, IMascotaService mascotaService) =>
+            app.MapGet("/mascotas/duenio/{id}", async (int id, IMascotaService mascotaService) =>
             {
                 var dtos = await mascotaService.GetAllByDuenioAsync(id);
 
                 return Results.Ok(dtos);
             })
-            .WithName("GetMascotasByDueno")
+            .WithName("GetMascotasByDuenio")
             .Produces<List<MascotaDTO>>(StatusCodes.Status200OK)
             .WithOpenApi();
 

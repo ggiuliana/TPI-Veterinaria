@@ -25,7 +25,7 @@ namespace ServiciosApp
             var duenio = await repoDuenio.GetAsync(dto.IdDuenio);
             if (duenio == null)
             {
-                throw new Exception("Dueño no encontrado");
+                throw new ArgumentException("Dueño no encontrado");
             }
             Mascota mascota = new Mascota(
                 0,
@@ -62,7 +62,7 @@ namespace ServiciosApp
                 Castrado = mascota.Castrado,
                 Sexo = mascota.Sexo,
                 FechaNac = mascota.FechaNac,
-                IdDuenio = mascota._duenio.IdPersona
+                IdDuenio = mascota.Duenio?.IdPersona ?? 0
             };
         }
 
@@ -78,7 +78,7 @@ namespace ServiciosApp
                 Castrado = mascota.Castrado,
                 Sexo = mascota.Sexo,
                 FechaNac = mascota.FechaNac,
-                IdDuenio = mascota._duenio.IdPersona
+                IdDuenio = mascota.Duenio?.IdPersona ?? 0
             }).ToList();
         }
 
@@ -87,7 +87,7 @@ namespace ServiciosApp
             var duenio = await repoDuenio.GetAsync(idDuenio);
             if (duenio == null)
             {
-                throw new Exception("Dueño no encontrado");
+                throw new ArgumentException("Dueño no encontrado");
             }
             IEnumerable<Mascota> mascotas = await repo.GetAllByDuenioAsync(duenio);
             return mascotas.Select(mascota => new MascotaDTO
@@ -99,19 +99,18 @@ namespace ServiciosApp
                 Castrado = mascota.Castrado,
                 Sexo = mascota.Sexo,
                 FechaNac = mascota.FechaNac,
-                IdDuenio = mascota._duenio.IdPersona
+                IdDuenio = mascota.Duenio?.IdPersona ?? 0   
             }).ToList();
         }
 
         public async Task<bool> UpdateAsync(MascotaDTO dto)
         {
 
-            Console.WriteLine(dto.IdDuenio);
             var duenio = await repoDuenio.GetAsync(dto.IdDuenio);
 
             if (duenio == null)
             {
-                throw new Exception("Dueño no encontrado");
+                throw new ArgumentException("Dueño no encontrado");
             }
             Mascota mascota = new Mascota(
                 dto.IdMascota,

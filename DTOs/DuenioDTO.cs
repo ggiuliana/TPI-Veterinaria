@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DTOs
+﻿namespace DTOs
 {
     public class DuenioDTO
     {
         public int IdDuenio { get; set; }
-        public string NombreDuenio { get; set; }
-        public string Apellido { get; set; }
-        public string Telefono { get; set; }
-        public string Mail { get; set; }
-        public string Dni { get; set; }
-        public string Direccion { get; set; }
+        public string NombreDuenio { get; set; } = string.Empty;
+        public string Apellido { get; set; } = string.Empty;
+        public string Telefono { get; set; } = string.Empty;
+        public string Mail { get; set; } = string.Empty;
+        public string Dni { get; set; } = string.Empty;
+        public string Direccion { get; set; } = string.Empty;
     }
 }
