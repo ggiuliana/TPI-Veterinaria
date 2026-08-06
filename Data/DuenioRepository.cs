@@ -1,4 +1,5 @@
 ﻿using ModeloDominio;
+
 namespace Data
 {
     public class DuenioRepository : IDuenioRepository

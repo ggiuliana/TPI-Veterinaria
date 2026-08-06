@@ -13,6 +13,8 @@ builder.Services.AddScoped<IDuenioRepository, DuenioRepository>();
 builder.Services.AddScoped<IDuenioService, DuenioService>();
 builder.Services.AddScoped<IMascotaRepository, MascotaRepository>();
 builder.Services.AddScoped<IMascotaService, MascotaService>();
+builder.Services.AddScoped<IVeterinarioRepository, VeterinarioRepository>();
+builder.Services.AddScoped<IVeterinarioService, VeterinarioService>();
 
 var app = builder.Build();
 
@@ -31,5 +33,6 @@ if (!app.Environment.IsDevelopment())
 // Map endpoints
 app.MapDuenioEndpoints();
 app.MapMascotaEndpoints();
+app.MapVeterinarioEndpoints();
 
 app.Run();
