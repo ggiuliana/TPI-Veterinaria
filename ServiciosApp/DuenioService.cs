@@ -63,7 +63,7 @@ namespace ServiciosApp
         }
         public async Task<bool> UpdateAsync(DuenioDTO dto)
         {
-            if (await repo.MailExistsAsync(dto.Mail))
+            if (await repo.MailExistsAsync(dto.Mail, dto.IdDuenio))
             {
                 throw new ArgumentException($"Ya existe un dueño con el Email '{dto.Mail}'.");
             }

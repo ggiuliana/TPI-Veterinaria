@@ -64,7 +64,7 @@ namespace ServiciosApp
         }
         public async Task<bool> UpdateAsync(VeterinarioDTO dto)
         {
-            if (await repo.MailExistsAsync(dto.Mail))
+            if (await repo.MailExistsAsync(dto.Mail, dto.IdVeterinario))
             {
                 throw new ArgumentException($"Ya existe un veterinario con el Email '{dto.Mail}'.");
             }
