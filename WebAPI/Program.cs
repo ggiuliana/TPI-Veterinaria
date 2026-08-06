@@ -10,11 +10,14 @@ builder.Services.AddSwaggerGen();
 
 // Add Dependency Injection
 builder.Services.AddScoped<IDuenioRepository, DuenioRepository>();
-builder.Services.AddScoped<IDuenioService, DuenioService>();
 builder.Services.AddScoped<IMascotaRepository, MascotaRepository>();
-builder.Services.AddScoped<IMascotaService, MascotaService>();
 builder.Services.AddScoped<IVeterinarioRepository, VeterinarioRepository>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+
+builder.Services.AddScoped<IDuenioService, DuenioService>();
+builder.Services.AddScoped<IMascotaService, MascotaService>();
 builder.Services.AddScoped<IVeterinarioService, VeterinarioService>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
 var app = builder.Build();
 
@@ -34,5 +37,6 @@ if (!app.Environment.IsDevelopment())
 app.MapDuenioEndpoints();
 app.MapMascotaEndpoints();
 app.MapVeterinarioEndpoints();
+app.MapUsuarioEndpoints();
 
 app.Run();
