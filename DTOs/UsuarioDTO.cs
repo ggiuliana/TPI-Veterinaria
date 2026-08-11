@@ -10,5 +10,6 @@ namespace DTOs
         public string EstadoUsuario { get; set; } = string.Empty;
         public DateTime FechaAlta { get; set; }
         public int IdPersona { get; set; }
+        public int IdRol { get; set; }
     }
 }

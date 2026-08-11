@@ -11,6 +11,7 @@ namespace ModeloDominio
         public string Mail { get; private set; } = string.Empty;
         public string Dni { get; private set; } = string.Empty;
         public string Direccion { get; private set; } = string.Empty;
+        public Usuario? Usuario { get; set; }
 
         public Persona() { }
         public Persona(int idPersona, string nombrePersona, string apellido, string telefono, string mail, string dni, string direccion)

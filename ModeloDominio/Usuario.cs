@@ -1,4 +1,4 @@
-﻿namespace ModeloDominio
+﻿   namespace ModeloDominio
 {
     public class Usuario
     {
@@ -8,8 +8,9 @@
         public string EstadoUsuario { get; private set; } = string.Empty;
         public DateTime FechaAlta { get; private set; }
         public Persona? Persona { get; private set; }
+        public Rol? Rol { get; private set; }
         public Usuario() { }
-        public Usuario(int idUsuario, string nombreUsuario, string contrasenia, string estadoUsuario, DateTime fechaAlta, Persona? persona)
+        public Usuario(int idUsuario, string nombreUsuario, string contrasenia, string estadoUsuario, DateTime fechaAlta, Persona? persona, Rol? rol)
         {
             SetIdUsuario(idUsuario);
             SetNombreUsuario(nombreUsuario);
@@ -17,6 +18,7 @@
             SetEstadoUsuario(estadoUsuario);
             SetFechaAlta(fechaAlta);
             SetPersona(persona);
+            SetRol(rol);
         }
         public void SetIdUsuario(int idUsuario)
         {
@@ -61,6 +63,13 @@
                 throw new ArgumentNullException(nameof(persona), "La persona no puede ser nula.");
             Persona = persona;
 
+        }
+
+        public void SetRol(Rol? rol)
+        { 
+            if(rol == null)
+                throw new ArgumentNullException(nameof(rol), "El rol no puede ser nulo.");
+            Rol = rol;
         }
     }
 }

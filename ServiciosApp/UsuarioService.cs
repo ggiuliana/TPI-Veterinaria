@@ -7,14 +7,16 @@ namespace ServiciosApp
     public class UsuarioService : IUsuarioService
     {
         private readonly IUsuarioRepository repo;
+        private readonly RolRepository repoRol;
         private readonly IDuenioRepository repoDuenio;
         private readonly IVeterinarioRepository repoVeterinario;
 
-        public UsuarioService(IUsuarioRepository repo, IDuenioRepository repoDuenio, IVeterinarioRepository repoVeterinario)
+        public UsuarioService(IUsuarioRepository repo, IDuenioRepository repoDuenio, IVeterinarioRepository repoVeterinario, RolRepository repoRol)
         {
             this.repo = repo;
             this.repoDuenio = repoDuenio;
             this.repoVeterinario = repoVeterinario;
+            this.repoRol = repoRol;
         }
         private async Task<Persona> BuscarPersonaPorIdAsync(int idPersona)
         {
@@ -38,8 +40,13 @@ namespace ServiciosApp
             if (await repo.PersonaHasUsuarioAsync(dto.IdPersona))
                 throw new ArgumentException($"La persona ya tiene una cuenta de usuario asignada.");
 
+            Rol rol = await repoRol.GetAsync(dto.IdPersona);
+
+            if (rol == null)
+                throw new ArgumentException($"No existe el rol asignado.");
+
             DateTime fechaAltaReal = DateTime.Now;
-            Usuario usuario = new Usuario(0, dto.NombreUsuario, dto.Contrasenia, dto.EstadoUsuario, fechaAltaReal, persona);
+            Usuario usuario = new Usuario(0, dto.NombreUsuario, dto.Contrasenia, dto.EstadoUsuario, fechaAltaReal, persona, rol);
             await repo.AddAsync(usuario);
 
             dto.IdUsuario = usuario.IdUsuario;
