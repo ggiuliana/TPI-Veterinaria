@@ -15,12 +15,10 @@ namespace Data
         public VeterinariaContext(DbContextOptions<VeterinariaContext> options) : base(options)
         {
             this.Database.EnsureCreated();
-            SeedInitialData();
         }
         internal VeterinariaContext()
         {
             this.Database.EnsureCreated();
-            SeedInitialData();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -70,6 +68,9 @@ namespace Data
                 entity
                 .HasIndex(p => p.Mail)
                 .IsUnique();
+
+                entity.HasOne(p => p.Usuario)
+               .WithOne(u => u.Persona);
             });
             modelBuilder.Entity<Veterinario>(entity =>
             {
@@ -82,6 +83,42 @@ namespace Data
 
                 entity.HasIndex(v => v.Matricula)
                 .IsUnique();
+
+                entity.HasData(
+                    new { IdPersona = 1, NombrePersona = "Gerardo", Apellido = "Díaz", Telefono = "341252554", Mail = "vet1@veterinaria.com", Dni = "5125124", Direccion = "Calle falsa 123", Matricula = "AF1124", Especialidad = "Cardiología" }
+                    );
+
+            });
+
+            modelBuilder.Entity<Rol>(entity =>
+            {
+                entity.HasKey(r => r.IdRol);
+
+                entity.Property(r => r.IdRol)
+                .ValueGeneratedOnAdd()
+                .IsRequired();
+
+                entity.Property(r => r.NombreRol)
+                .IsRequired()
+                .HasMaxLength(15);
+
+                entity.HasData(
+                    new
+                    {
+                        IdRol = 1,
+                        NombreRol = "Administrador"
+                    },
+                    new
+                    {
+                        IdRol = 2,
+                        NombreRol = "Veterinario"
+                    },
+                    new
+                    {
+                        IdRol = 3,
+                        NombreRol = "Duenio"
+                    }
+                    );
             });
 
             modelBuilder.Entity<Mascota>(entity =>
@@ -101,7 +138,20 @@ namespace Data
 
                 entity.Property(m => m.Raza)
                 .HasMaxLength(50);
+
+                entity.Property(m => m.Castrado)
+                .IsRequired();
+
+                entity.Property(m => m.Sexo)
+                .IsRequired();
+
+                entity.Property(m => m.FechaNac)
+                .IsRequired();
+
+                entity.HasOne(m => m.Duenio)
+                .WithMany();
             });
+
             modelBuilder.Entity<Usuario>(entity =>
             {
                 entity.HasKey(u => u.IdUsuario);
@@ -119,8 +169,40 @@ namespace Data
                 entity.Property(u => u.Contrasenia)
                 .IsRequired()
                 .HasMaxLength(50);
+
+                entity.Property(u => u.EstadoUsuario)
+                .IsRequired();
+
+                entity.Property(u => u.FechaAlta)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.HasOne(u => u.Persona)
+                .WithOne(p => p.Usuario);
+
+                entity.HasOne(u => u.Rol)
+                .WithMany()
+                .IsRequired();
+
+                entity.HasData(
+                    new
+                    {
+                        IdUsuario = 1,
+                        NombreUsuario = "admin",
+                        Contrasenia = "admin123",
+                        EstadoUsuario = "Activo",
+                        Rol = 1
+                    },
+                    new
+                    {
+                        IdUsuario = 2,
+                        NombreUsuario = "vet1",
+                        Contrasenia = "vet123",
+                        EstadoUsuario = "Activo",
+                        Persona = 1,
+                        Rol = 2
+                    }
+                );
             });
         }
-        private void SeedInitialData() { }
     }
 }
