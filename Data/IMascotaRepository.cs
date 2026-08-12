@@ -14,6 +14,6 @@ namespace Data
         Task<Mascota?> GetAsync(int id);
         Task<IEnumerable<Mascota>> GetAllAsync();
         Task<IEnumerable<Mascota>> GetAllByDuenioAsync(Duenio duenio);
-        Task<bool> UpdateAsync(Mascota mascota, Duenio duenio);
+        Task<bool> UpdateAsync(Mascota mascota);
     }
 }

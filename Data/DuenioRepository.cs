@@ -1,59 +1,63 @@
-﻿using ModeloDominio;
+﻿using Microsoft.EntityFrameworkCore;
+using ModeloDominio;
 
 namespace Data
 {
     public class DuenioRepository : IDuenioRepository
     {
-        public static readonly List<Duenio> duenios = new();
-        private static int nextId = 1;
-        public Task AddAsync(Duenio duenio)
+        private readonly VeterinariaContext context;
+
+        public DuenioRepository(VeterinariaContext context) {
+            this.context = context;
+        } 
+        public async Task AddAsync(Duenio duenio)
         {
-            duenio.SetIdPersona(nextId);
-            nextId++;
-            duenios.Add(duenio);
-            return Task.CompletedTask;
+            context.Duenios.Add(duenio);
+            await context.SaveChangesAsync();
         }
-        public Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            var duenio = duenios.FirstOrDefault(d => d.IdPersona == id);
-            if (duenio != null)
-            {
-                duenios.Remove(duenio);
-                return Task.FromResult(true);
+            var duenio = await context.Duenios.FindAsync(id);
+            if (duenio != null) {
+                context.Duenios.Remove(duenio);
+                await context.SaveChangesAsync();
+                return true;
             }
-            return Task.FromResult(false);
+            return false;
         }
-        public Task<Duenio?> GetAsync(int id)
+        public async Task<Duenio?> GetAsync(int id)
         {
-            return Task.FromResult(duenios.FirstOrDefault(d => d.IdPersona == id));
+            return await context.Duenios.FirstOrDefaultAsync(c => c.IdPersona == id); ;
         }
-        public Task<IEnumerable<Duenio>> GetAllAsync()
+        public async Task<IEnumerable<Duenio>> GetAllAsync()
         {
-            return Task.FromResult<IEnumerable<Duenio>>(duenios.ToList());
+            return await context.Duenios.ToListAsync();
         }
-        public Task<bool> UpdateAsync(Duenio duenio)
+        public async Task<bool> UpdateAsync(Duenio duenio)
         {
-            var existing = duenios.FirstOrDefault(d => d.IdPersona == duenio.IdPersona);
-            if (existing != null)
+            var existingDuenio = await context.Duenios.FindAsync(duenio);
+            if (existingDuenio != null)
             {
-                existing.SetNombrePersona(duenio.NombrePersona);
-                existing.SetApellido(duenio.Apellido);
-                existing.SetMail(duenio.Mail);
-                existing.SetDireccion(duenio.Direccion);
-                existing.SetDni(duenio.Dni);
-                existing.SetDireccion(duenio.Direccion);
-                return Task.FromResult(true);
+                existingDuenio.SetNombrePersona(duenio.NombrePersona);
+                existingDuenio.SetApellido(duenio.Apellido);
+                existingDuenio.SetMail(duenio.Mail);
+                existingDuenio.SetTelefono(duenio.Telefono);
+                existingDuenio.SetDni(duenio.Dni);
+                existingDuenio.SetDireccion(duenio.Direccion);
+
+                await context.SaveChangesAsync();
+                return true;
             }
-            return Task.FromResult(false);
+            return false;
         }
-        public Task<bool> MailExistsAsync(string mail, int? excludeId = null)
+        public async Task<bool> MailExistsAsync(string mail, int? excludeId = null)
         {
-            var query = duenios.Where(d => d.Mail.ToLower() == mail.ToLower());
+            var query = context.Duenios.Where(d => d.Mail.ToLower() == mail.ToLower());
             if (excludeId.HasValue)
             {
-                query = query.Where(d => d.IdPersona != excludeId.Value);
+                query = query.Where(c => c.IdPersona != excludeId.Value);
             }
-            return Task.FromResult(query.Any());
+            return await query.AnyAsync();
         }
     }
 }

@@ -10,8 +10,10 @@ namespace Data
     {
         public DbSet<Persona> Personas { get; set; } = null!;
         public DbSet<Duenio> Duenios { get; set; } = null!;
+        public DbSet<Veterinario> Veterinarios { get; set; } = null!;
         public DbSet<Mascota> Mascotas { get; set; } = null!;
         public DbSet<Usuario> Usuarios { get; set; } = null!;
+        public DbSet<Rol> Roles { get; set; } = null!;
         public VeterinariaContext(DbContextOptions<VeterinariaContext> options) : base(options)
         {
             this.Database.EnsureCreated();

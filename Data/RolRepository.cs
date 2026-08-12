@@ -1,4 +1,5 @@
 ﻿using ModeloDominio;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,17 @@ namespace Data
 {
     public class RolRepository
     {
-        public static readonly List<Rol> roles = new();
-        private static int nextId = 1;
 
-        public Task<Rol?> GetAsync(int id)
+        private readonly VeterinariaContext context;
+
+        public RolRepository(VeterinariaContext context)
         {
-            return Task.FromResult(roles.FirstOrDefault(d => d.IdRol == id));
+            this.context = context;
+        }
+
+        public async Task<Rol?> GetAsync(int id)
+        {
+            return await context.Roles.FirstOrDefaultAsync(r => r.IdRol == id);
         }
     }
 }

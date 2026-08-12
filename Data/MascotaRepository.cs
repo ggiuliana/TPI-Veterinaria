@@ -1,4 +1,5 @@
 ﻿using ModeloDominio;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,60 +10,61 @@ namespace Data
 {
     public class MascotaRepository : IMascotaRepository
     {
-        public static readonly List<Mascota> mascotas = new();
-        private static int nextId = 1;
+        private readonly VeterinariaContext context;
+
+        public MascotaRepository(VeterinariaContext context) {
+            this.context = context;
+        }
 
         public async Task AddAsync(Mascota mascota, Duenio duenio)
         {
-            mascota.SetIdMascota(nextId);
-            nextId++;
             mascota.SetDuenio(duenio);
-            mascotas.Add(mascota);
-            await Task.CompletedTask;
+            context.Mascotas.Add(mascota);
+            await context.SaveChangesAsync();
         }
 
-        public Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            var mascota = mascotas.FirstOrDefault(m => m.IdMascota == id);
-            if (mascota != null)
+            var Mascota = await context.Mascotas.FindAsync(id);
+            if (Mascota != null)
             {
-                mascotas.Remove(mascota);
-                return Task.FromResult(true);
+                context.Mascotas.Remove(Mascota);
+                await context.SaveChangesAsync();
+                return true;
             }
-            return Task.FromResult(false);
+            return false;
         }
 
-        public Task<Mascota?> GetAsync(int id)
+        public async Task<Mascota?> GetAsync(int id)
         {
-            return Task.FromResult(mascotas.FirstOrDefault(m => m.IdMascota == id));
+            return await context.Mascotas.FirstOrDefaultAsync(m => m.IdMascota == id);
         }
 
-        public Task<IEnumerable<Mascota>> GetAllAsync()
+        public async Task<IEnumerable<Mascota>> GetAllAsync()
         {
-            return Task.FromResult<IEnumerable<Mascota>>(mascotas.ToList());
+            return await context.Mascotas.ToListAsync();
         }
 
-        public Task<IEnumerable<Mascota>> GetAllByDuenioAsync(Duenio duenio)
+        public async Task<IEnumerable<Mascota>> GetAllByDuenioAsync(Duenio duenio)
         {
-            var mascotasDelDuenio = mascotas.Where(m => m.Duenio?.IdPersona == duenio.IdPersona).ToList();
-            return Task.FromResult<IEnumerable<Mascota>>(mascotasDelDuenio);
+            return await context.Mascotas.Where(m => m.Duenio == duenio).ToListAsync();
         }
 
-        public Task<bool> UpdateAsync(Mascota mascota, Duenio duenio)
+        public async Task<bool> UpdateAsync(Mascota mascota)
         {
-            var existing = mascotas.FirstOrDefault(m => m.IdMascota == mascota.IdMascota);
-            if (existing != null)
+            var existingMascota = await context.Mascotas.FindAsync(mascota); ;
+            if (existingMascota != null)
             {
-                existing.SetNombreMascota(mascota.NombreMascota);
-                existing.SetEspecie(mascota.Especie);
-                existing.SetRaza(mascota.Raza);
-                existing.SetCastrado(mascota.Castrado);
-                existing.SetSexo(mascota.Sexo);
-                existing.SetFechaNac(mascota.FechaNac);
-                existing.SetDuenio(duenio);
-                return Task.FromResult(true);
+                existingMascota.SetNombreMascota(mascota.NombreMascota);
+                existingMascota.SetEspecie(mascota.Especie);
+                existingMascota.SetRaza(mascota.Raza);
+                existingMascota.SetCastrado(mascota.Castrado);
+                existingMascota.SetSexo(mascota.Sexo);
+                existingMascota.SetFechaNac(mascota.FechaNac);
+                await context.SaveChangesAsync();
+                return true;
             }
-            return Task.FromResult(false);
+            return false;
         }
     }
 }
