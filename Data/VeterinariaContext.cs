@@ -14,6 +14,7 @@ namespace Data
         public DbSet<Mascota> Mascotas { get; set; } = null!;
         public DbSet<Usuario> Usuarios { get; set; } = null!;
         public DbSet<Rol> Roles { get; set; } = null!;
+        public DbSet<Estudio> Estudios { get; set; } = null!;
         public VeterinariaContext(DbContextOptions<VeterinariaContext> options) : base(options)
         {
             this.Database.EnsureCreated();
@@ -206,6 +207,31 @@ namespace Data
                         IdRol = 2
                     }
                 );
+            });
+
+            modelBuilder.Entity<Estudio>(entity =>
+            {
+                entity.HasKey(e => e.IdEstudio);
+
+                entity.Property(e => e.IdEstudio)
+                .ValueGeneratedOnAdd()
+                .IsRequired();
+
+                entity.Property(e => e.NombreEstudio)
+                .IsRequired()
+                .HasMaxLength(60);
+
+                entity.Property(e => e.DescripcionEstudio)
+                .IsRequired()
+                .HasMaxLength(200);
+
+                entity.HasData(
+                    new
+                    {
+                        IdEstudio = 1,
+                        NombreEstudio = "Resonancia Magnética",
+                        DescripcionEstudio = "Se introduce el animal en un cilindro para visualizar su interior."
+                    });
             });
         }
     }
