@@ -18,7 +18,17 @@ namespace ServiciosApp
             {
                 throw new ArgumentException($"Ya existe un veterinario con el Email '{dto.Mail}'.");
             }
-            Veterinario veterinario = new Veterinario(0, dto.NombreVeterinario, dto.Apellido, dto.Telefono, dto.Mail, dto.Dni, dto.Direccion, dto.Matricula, dto.Especialidad);
+            Veterinario veterinario = new Veterinario(
+                0, 
+                dto.NombreVeterinario, 
+                dto.Apellido, 
+                dto.Telefono, 
+                dto.Mail, 
+                dto.Dni, 
+                dto.Direccion, 
+                dto.Matricula, 
+                dto.Especialidad
+                );
             await repo.AddAsync(veterinario);
             dto.IdVeterinario= veterinario.IdPersona;
             return dto;

@@ -121,7 +121,7 @@ namespace ServiciosApp
                 dto.Sexo,
                 dto.FechaNac,
                 duenio);
-            return await repo.UpdateAsync(mascota, duenio);
+            return await repo.UpdateAsync(mascota);
         }
     }
 }

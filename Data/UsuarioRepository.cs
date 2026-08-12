@@ -13,10 +13,8 @@ namespace ServiciosApp
             this.context = context;
         }
 
-        public async Task AddAsync(Usuario usuario, Persona persona, Rol rol)
+        public async Task AddAsync(Usuario usuario)
         {
-            usuario.SetPersona(persona);
-            usuario.SetRol(rol);
             context.Usuarios.Add(usuario);
             await context.SaveChangesAsync();
         }

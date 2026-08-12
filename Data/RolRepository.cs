@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    public class RolRepository
+    public class RolRepository : IRolRepository
     {
 
         private readonly VeterinariaContext context;

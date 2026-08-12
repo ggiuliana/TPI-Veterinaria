@@ -7,11 +7,11 @@ namespace ServiciosApp
     public class UsuarioService : IUsuarioService
     {
         private readonly IUsuarioRepository repo;
-        private readonly RolRepository repoRol;
+        private readonly IRolRepository repoRol;
         private readonly IDuenioRepository repoDuenio;
         private readonly IVeterinarioRepository repoVeterinario;
 
-        public UsuarioService(IUsuarioRepository repo, IDuenioRepository repoDuenio, IVeterinarioRepository repoVeterinario, RolRepository repoRol)
+        public UsuarioService(IUsuarioRepository repo, IDuenioRepository repoDuenio, IVeterinarioRepository repoVeterinario, IRolRepository repoRol)
         {
             this.repo = repo;
             this.repoDuenio = repoDuenio;
@@ -40,17 +40,16 @@ namespace ServiciosApp
             if (await repo.PersonaHasUsuarioAsync(dto.IdPersona))
                 throw new ArgumentException($"La persona ya tiene una cuenta de usuario asignada.");
 
-            Rol rol = await repoRol.GetAsync(dto.IdPersona);
+            Rol rol = await repoRol.GetAsync(dto.IdRol);
 
             if (rol == null)
                 throw new ArgumentException($"No existe el rol asignado.");
 
-            DateTime fechaAltaReal = DateTime.Now;
-            Usuario usuario = new Usuario(0, dto.NombreUsuario, dto.Contrasenia, dto.EstadoUsuario, fechaAltaReal, persona, rol);
+            Usuario usuario = new Usuario(0, dto.NombreUsuario, dto.Contrasenia, dto.EstadoUsuario, persona, rol);
             await repo.AddAsync(usuario);
 
             dto.IdUsuario = usuario.IdUsuario;
-            dto.FechaAlta = fechaAltaReal;
+            dto.FechaAlta = usuario.FechaAlta;
 
             return dto;
         }
@@ -93,12 +92,7 @@ namespace ServiciosApp
             if (await repo.NombreUsuarioExistsAsync(dto.NombreUsuario))
                 throw new ArgumentException($"Ya existe un usuario con el nombre de usuario '{dto.NombreUsuario}'.");
             
-            Persona persona = await BuscarPersonaPorIdAsync(dto.IdPersona);
-            
-            if (await repo.PersonaHasUsuarioAsync(dto.IdPersona))
-                throw new ArgumentException($"La persona ya tiene una cuenta de usuario asignada.");
-            
-            Usuario usuario = new Usuario(dto.IdUsuario, dto.NombreUsuario, dto.Contrasenia, dto.EstadoUsuario, dto.FechaAlta, persona);
+            Usuario usuario = new Usuario(dto.IdUsuario, dto.NombreUsuario, dto.Contrasenia, dto.EstadoUsuario);
             return await repo.UpdateAsync(usuario);
         }
     }

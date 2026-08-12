@@ -7,16 +7,23 @@
         public string Contrasenia { get; private set; } = string.Empty;
         public string EstadoUsuario { get; private set; } = string.Empty;
         public DateTime FechaAlta { get; private set; }
+        public int? IdPersona { get; private set; }
         public Persona? Persona { get; private set; }
-        public Rol? Rol { get; private set; }
-        public Usuario() { }
-        public Usuario(int idUsuario, string nombreUsuario, string contrasenia, string estadoUsuario, DateTime fechaAlta, Persona? persona, Rol? rol)
+        public int IdRol { get; private set; }
+        public Rol Rol { get; private set; }
+
+        public Usuario(int idUsuario, string nombreUsuario, string contrasenia, string estadoUsuario) {
+            SetIdUsuario(idUsuario);
+            SetNombreUsuario(nombreUsuario);
+            SetContrasenia(contrasenia);
+            SetEstadoUsuario(estadoUsuario);
+        }
+        public Usuario(int idUsuario, string nombreUsuario, string contrasenia, string estadoUsuario, Persona? persona, Rol? rol)
         {
             SetIdUsuario(idUsuario);
             SetNombreUsuario(nombreUsuario);
             SetContrasenia(contrasenia);
             SetEstadoUsuario(estadoUsuario);
-            SetFechaAlta(fechaAlta);
             SetPersona(persona);
             SetRol(rol);
         }
@@ -50,12 +57,6 @@
             if (estadoLimpio != "activo" && estadoLimpio != "inactivo")
                 throw new ArgumentException("El estado del usuario debe ser estrictamente 'Activo' o 'Inactivo'.");
             EstadoUsuario = estadoLimpio == "activo" ? "Activo" : "Inactivo";
-        }
-        public void SetFechaAlta(DateTime fechaAlta)
-        {
-            if (fechaAlta > DateTime.Now)
-                throw new ArgumentException("La fecha de alta no puede estar en el futuro.", nameof(fechaAlta));
-            FechaAlta = fechaAlta;
         }
         public void SetPersona(Persona? persona)
         {

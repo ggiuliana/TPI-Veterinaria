@@ -179,10 +179,12 @@ namespace Data
                 .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.HasOne(u => u.Persona)
-                .WithOne(p => p.Usuario);
+                .WithOne(p => p.Usuario)
+                .HasForeignKey<Usuario>(u => u.IdPersona);
 
                 entity.HasOne(u => u.Rol)
                 .WithMany()
+                .HasForeignKey(u => u.IdRol)
                 .IsRequired();
 
                 entity.HasData(
@@ -192,7 +194,7 @@ namespace Data
                         NombreUsuario = "admin",
                         Contrasenia = "admin123",
                         EstadoUsuario = "Activo",
-                        Rol = 1
+                        IdRol = 1
                     },
                     new
                     {
@@ -200,8 +202,8 @@ namespace Data
                         NombreUsuario = "vet1",
                         Contrasenia = "vet123",
                         EstadoUsuario = "Activo",
-                        Persona = 1,
-                        Rol = 2
+                        IdPersona = 1,
+                        IdRol = 2
                     }
                 );
             });
