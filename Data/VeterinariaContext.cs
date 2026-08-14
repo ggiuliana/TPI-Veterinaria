@@ -16,6 +16,7 @@ namespace Data
         public DbSet<Rol> Roles { get; set; } = null!;
         public DbSet<Estudio> Estudios { get; set; } = null!;
         public DbSet<TipoVacuna> TipoVacunas { get; set; } = null!;
+        public DbSet<Medicamento> Medicamentos { get; set; } = null!;
         public VeterinariaContext(DbContextOptions<VeterinariaContext> options) : base(options)
         {
             this.Database.EnsureCreated();
@@ -93,7 +94,6 @@ namespace Data
                     );
 
             });
-
             modelBuilder.Entity<Rol>(entity =>
             {
                 entity.HasKey(r => r.IdRol);
@@ -124,7 +124,6 @@ namespace Data
                     }
                     );
             });
-
             modelBuilder.Entity<Mascota>(entity =>
             {
                 entity.HasKey(m => m.IdMascota);
@@ -155,7 +154,6 @@ namespace Data
                 entity.HasOne(m => m.Duenio)
                 .WithMany();
             });
-
             modelBuilder.Entity<Usuario>(entity =>
             {
                 entity.HasKey(u => u.IdUsuario);
@@ -209,7 +207,6 @@ namespace Data
                     }
                 );
             });
-
             modelBuilder.Entity<Estudio>(entity =>
             {
                 entity.HasKey(e => e.IdEstudio);
@@ -265,6 +262,29 @@ namespace Data
                         }
                     );
 
+            });
+            modelBuilder.Entity<Medicamento>(entity =>
+            {
+                entity.HasKey(m => m.IdMedicamento);
+
+                entity.Property(m => m.IdMedicamento)
+                .ValueGeneratedOnAdd()
+                .IsRequired();
+
+                entity.Property(m => m.NombreMedicamento)
+                .IsRequired()
+                .HasMaxLength(50);
+
+                entity.Property(m => m.CantidadRestante)
+                .IsRequired();
+
+                entity.HasData(
+                    new
+                    {
+                        IdMedicamento = 1,
+                        NombreMedicamento = "Rivotril",
+                        CantidadRestante = 4
+                    });
             });
         }
     }

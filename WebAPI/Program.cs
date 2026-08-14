@@ -22,6 +22,7 @@ builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IRolRepository, RolRepository>();
 builder.Services.AddScoped<IEstudioRepository, EstudioRepository>();
 builder.Services.AddScoped<ITipoVacunaRepository, TipoVacunaRepository>();
+builder.Services.AddScoped<IMedicamentoRepository, MedicamentoRepository>();
 
 builder.Services.AddScoped<IDuenioService, DuenioService>();
 builder.Services.AddScoped<IMascotaService, MascotaService>();
@@ -29,6 +30,7 @@ builder.Services.AddScoped<IVeterinarioService, VeterinarioService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IEstudioService, EstudioService>();
 builder.Services.AddScoped<ITipoVacunaService, TipoVacunaService>();
+builder.Services.AddScoped<IMedicamentoService, MedicamentoService>();
 
 var app = builder.Build();
 
@@ -51,5 +53,6 @@ app.MapVeterinarioEndpoints();
 app.MapUsuarioEndpoints();
 app.MapEstudioEndpoints();
 app.MapTipoVacunaEndpoints();
+app.MapMedicamentoEndpoints();
 
 app.Run();
