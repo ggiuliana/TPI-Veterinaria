@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.37502.11 d17.14
+VisualStudioVersion = 17.14.37502.11
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModeloDominio", "ModeloDominio\ModeloDominio.csproj", "{0502718E-E50B-4BFE-9A2B-6C3BD3D38B32}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiciosApp", "ServiciosApp\ServiciosApp.csproj", "{0F42FBCD-9A57-45A0-8A00-2B0995847241}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI\WebAPI.csproj", "{022E422D-A0DA-4A29-8F53-4DC1C29F212B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsApp1", "WinFormsApp1\WinFormsApp1.csproj", "{2A90F751-EE65-4BB5-90E9-6FABC12213AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{022E422D-A0DA-4A29-8F53-4DC1C29F212B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{022E422D-A0DA-4A29-8F53-4DC1C29F212B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{022E422D-A0DA-4A29-8F53-4DC1C29F212B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A90F751-EE65-4BB5-90E9-6FABC12213AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A90F751-EE65-4BB5-90E9-6FABC12213AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A90F751-EE65-4BB5-90E9-6FABC12213AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A90F751-EE65-4BB5-90E9-6FABC12213AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
