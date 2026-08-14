@@ -15,6 +15,7 @@ namespace Data
         public DbSet<Usuario> Usuarios { get; set; } = null!;
         public DbSet<Rol> Roles { get; set; } = null!;
         public DbSet<Estudio> Estudios { get; set; } = null!;
+        public DbSet<TipoVacuna> TipoVacunas { get; set; } = null!;
         public VeterinariaContext(DbContextOptions<VeterinariaContext> options) : base(options)
         {
             this.Database.EnsureCreated();
@@ -232,6 +233,38 @@ namespace Data
                         NombreEstudio = "Resonancia Magnética",
                         DescripcionEstudio = "Se introduce el animal en un cilindro para visualizar su interior."
                     });
+            });
+            modelBuilder.Entity<TipoVacuna>(entity =>
+            {
+                entity.HasKey(t => t.IdTipoVacuna);
+
+                entity.Property(t => t.IdTipoVacuna)
+                .ValueGeneratedOnAdd()
+                .IsRequired();
+
+                entity.Property(t => t.NombreTipoVacuna)
+                .IsRequired()
+                .HasMaxLength(50);
+
+                entity.Property(t => t.DescripcionTipoVacuna)
+                .IsRequired()
+                .HasMaxLength(100);
+
+                entity.HasData(
+                        new
+                        {
+                            IdTipoVacuna = 1,
+                            NombreTipoVacuna = "Antitetanica",
+                            DescripcionTipoVacuna = "Vacuna contra la bacteria del tetanos."
+                        },
+                        new
+                        {
+                            IdTipoVacuna = 2,
+                            NombreTipoVacuna = "Antiviral",
+                            DescripcionTipoVacuna = "Vacuna contra multiples viruses."
+                        }
+                    );
+
             });
         }
     }
