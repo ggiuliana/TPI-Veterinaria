@@ -45,13 +45,13 @@ namespace VeterinariaWinForms
                     services.AddScoped<IMedicamentoService, MedicamentoService>();
 
                     // Forms
-                    services.AddTransient<Form1>();
+                    services.AddTransient<Login>();
                 })
                 .Build();
 
             using (host)
             {
-                var login = host.Services.GetRequiredService<Form1>();
+                var login = host.Services.GetRequiredService<Login>();
 
                 Application.Run(login);
             }

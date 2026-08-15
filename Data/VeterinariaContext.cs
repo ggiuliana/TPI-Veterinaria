@@ -90,7 +90,30 @@ namespace Data
                 .IsUnique();
 
                 entity.HasData(
-                    new { IdPersona = 1, NombrePersona = "Gerardo", Apellido = "Díaz", Telefono = "341252554", Mail = "vet1@veterinaria.com", Dni = "5125124", Direccion = "Calle falsa 123", Matricula = "AF1124", Especialidad = "Cardiología" }
+                    new
+                    { 
+                        IdPersona = 1, 
+                        NombrePersona = "Gerardo", 
+                        Apellido = "Díaz", 
+                        Telefono = "341252554", 
+                        Mail = "vet1@veterinaria.com", 
+                        Dni = "5125124", 
+                        Direccion = "Calle falsa 123", 
+                        Matricula = "AF1124", 
+                        Especialidad = "Cardiología" 
+                    },
+                    new
+                    {
+                        IdPersona = 2,
+                        NombrePersona = "Mariana",
+                        Apellido = "Locre",
+                        Telefono = "341251142",
+                        Mail = "vet2@veterinaria.com",
+                        Dni = "55123142",
+                        Direccion = "Calle falsa 1234",
+                        Matricula = "51w124",
+                        Especialidad = "Oncología"
+                    }
                     );
 
             });

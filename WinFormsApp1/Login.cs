@@ -1,14 +1,16 @@
 using ServiciosApp;
 namespace WinFormsApp1
 {
-    public partial class Form1 : Form
+    public partial class Login : Form
     {
 
         private readonly IUsuarioService service;
-        public Form1(IUsuarioService service)
+        private readonly IVeterinarioService servicevet;
+        public Login(IUsuarioService service, IVeterinarioService servicevet)
         {
             InitializeComponent();
             this.service = service;
+            this.servicevet = servicevet;
         }
         private async void IngresoClick(object sender, EventArgs e) 
         {
@@ -30,10 +32,9 @@ namespace WinFormsApp1
                 if (usuarioEncontrado != null)
                 {
                     MessageBox.Show("Inicio de sesión correcto.");
-                    // SE ABRE OTRO FORMULARIO DEPENDIENDO NIVEL DE LOGIN
-                    // Form2 form2 = new Form2();
-                    // form2.Show();
-                    // this.Hide();
+                    AdminHome adminhome = new AdminHome(servicevet, service);
+                    adminhome.Show();
+                    this.Hide();
                 }
                 else
                 {
