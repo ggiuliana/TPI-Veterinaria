@@ -52,7 +52,7 @@ namespace Data
 
         public async Task<bool> UpdateAsync(Mascota mascota)
         {
-            var existingMascota = await context.Mascotas.FindAsync(mascota); ;
+            var existingMascota = await context.Mascotas.FindAsync(mascota.IdMascota); ;
             if (existingMascota != null)
             {
                 existingMascota.SetNombreMascota(mascota.NombreMascota);

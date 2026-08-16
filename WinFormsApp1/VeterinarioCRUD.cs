@@ -62,14 +62,22 @@ namespace WinFormsApp1
             
         }
 
-        private void Delete_Click(object sender, EventArgs e)
+        private async void Delete_Click(object sender, EventArgs e)
         {
-
+            using var form = new DeleteVeterinario(veterinarioService, usuarioService);
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                await CargarVeterinariosAsync();
+            }
         }
 
-        private void Update_Click(object sender, EventArgs e)
+        private async void Update_Click(object sender, EventArgs e)
         {
-
+            using var form = new UpdateVeterinario(veterinarioService);
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                await CargarVeterinariosAsync();
+            }
         }
 
         private async void Create_Click(object sender, EventArgs e)

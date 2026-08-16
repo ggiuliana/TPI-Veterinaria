@@ -52,7 +52,9 @@ namespace ServiciosApp
                 Telefono = veterinario.Telefono,
                 Mail = veterinario.Mail,
                 Dni = veterinario.Dni,
-                Direccion = veterinario.Direccion
+                Direccion = veterinario.Direccion,
+                Matricula = veterinario.Matricula,
+                Especialidad = veterinario.Especialidad
             };
 
         }

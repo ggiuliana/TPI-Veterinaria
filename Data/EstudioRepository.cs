@@ -39,7 +39,7 @@ namespace Data
             return await context.Estudios.ToListAsync();
         }
         public async Task<bool> UpdateAsync(Estudio estudio) {
-            var existingEstudio = await context.Estudios.FindAsync(estudio);
+            var existingEstudio = await context.Estudios.FindAsync(estudio.IdEstudio);
             if (existingEstudio != null) {
                 existingEstudio.SetNombre(estudio.NombreEstudio);
                 existingEstudio.SetDescripcion(estudio.DescripcionEstudio);

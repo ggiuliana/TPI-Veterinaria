@@ -37,7 +37,7 @@ namespace Data
         }
         public async Task<bool> UpdateAsync(Veterinario Veterinario)
         {
-            var existingVeterinario = await context.Veterinarios.FindAsync(Veterinario);
+            var existingVeterinario = await context.Veterinarios.FindAsync(Veterinario.IdPersona);
             if (existingVeterinario != null)
             {
                 existingVeterinario.SetNombrePersona(Veterinario.NombrePersona);

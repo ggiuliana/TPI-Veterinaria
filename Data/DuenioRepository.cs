@@ -35,7 +35,7 @@ namespace Data
         }
         public async Task<bool> UpdateAsync(Duenio duenio)
         {
-            var existingDuenio = await context.Duenios.FindAsync(duenio);
+            var existingDuenio = await context.Duenios.FindAsync(duenio.IdPersona);
             if (existingDuenio != null)
             {
                 existingDuenio.SetNombrePersona(duenio.NombrePersona);
