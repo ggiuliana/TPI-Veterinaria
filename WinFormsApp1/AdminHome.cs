@@ -1,5 +1,5 @@
-﻿using ServiciosApp;
-using System;
+﻿using System;
+using API.Clients;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,21 +13,16 @@ namespace WinFormsApp1
 {
     public partial class AdminHome : Form
     {
-        private readonly IVeterinarioService veterinarioService;
-        private readonly IUsuarioService usuarioService;
 
-        public AdminHome(IVeterinarioService veterinarioService, IUsuarioService usuarioService)
+        public AdminHome()
         {
             InitializeComponent();
 
-            this.veterinarioService = veterinarioService;
-
-            this.usuarioService = usuarioService;
         }
 
         private void VeterinariosCRUD_Click(object sender, EventArgs e)
         {
-            MostrarCRUD(new VeterinarioCRUD(veterinarioService, usuarioService));
+            MostrarCRUD(new VeterinarioCRUD());
         }
 
         private void MostrarCRUD(UserControl crud)

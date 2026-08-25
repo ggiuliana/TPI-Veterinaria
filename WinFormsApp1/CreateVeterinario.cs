@@ -1,63 +1,63 @@
-﻿using ModeloDominio;
-using ServiciosApp;
+﻿using API.Clients;
 using DTOs;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WinFormsApp1
 {
     public partial class CreateVeterinario : Form
     {
-        private readonly IVeterinarioService veterinarioService;
-        private readonly IUsuarioService usuarioService;
-
-        public CreateVeterinario(IVeterinarioService veterinarioService, IUsuarioService usuarioService)
+        public CreateVeterinario()
         {
             InitializeComponent();
-
-            this.veterinarioService = veterinarioService;
-
-            this.usuarioService = usuarioService;
         }
 
         private async void Guardar_Click(object sender, EventArgs e)
         {
-            var veterinario = new VeterinarioDTO
+            try
             {
-                IdVeterinario = 0,
-                NombreVeterinario = nombreVeterinario.Text,
-                Apellido = apellidoVeterinario.Text,
-                Telefono = telefonoVeterinario.Text,
-                Mail = mailVeterinario.Text,
-                Dni = dniVeterinario.Text,
-                Direccion = direccionVeterinario.Text,
-                Matricula = matriculaVeterinario.Text,
-                Especialidad = especialidadVeterinario.Text
-            };
+                var veterinario = new VeterinarioDTO
+                {
+                    IdVeterinario = 0,
+                    NombreVeterinario = nombreVeterinario.Text,
+                    Apellido = apellidoVeterinario.Text,
+                    Telefono = telefonoVeterinario.Text,
+                    Mail = mailVeterinario.Text,
+                    Dni = dniVeterinario.Text,
+                    Direccion = direccionVeterinario.Text,
+                    Matricula = matriculaVeterinario.Text,
+                    Especialidad = especialidadVeterinario.Text
+                };
 
-            var vet = await veterinarioService.AddAsync(veterinario);
 
-            var usuario = new UsuarioDTO
+                var vet = await VeterinarioClient.AddAsync(veterinario);
+
+                if (vet == null)
+                {
+                    MessageBox.Show("No se pudo obtener el ID del veterinario creado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                var usuario = new UsuarioDTO
+                {
+                    IdUsuario = 0,
+                    NombreUsuario = nombreUsuario.Text,
+                    Contrasenia = contraseniaUsuario.Text,
+                    EstadoUsuario = "Activo",
+                    IdPersona = vet.IdVeterinario,
+                    IdRol = 2
+                };
+
+                await UsuarioClient.AddAsync(usuario);
+
+                MessageBox.Show("Veterinario creado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+            catch (Exception ex)
             {
-                IdUsuario = 0,
-                NombreUsuario = nombreUsuario.Text,
-                Contrasenia = contraseniaUsuario.Text,
-                EstadoUsuario = "Activo",
-                IdPersona = vet.IdVeterinario,
-                IdRol = 2
-            };
-
-            var usu = await usuarioService.AddAsync(usuario);
-            MessageBox.Show("Veterinario creado correctamente.");
-            DialogResult = DialogResult.OK;
-            Close();
+                MessageBox.Show($"Ocurrió un error al guardar: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void Cancelar_Click(object sender, EventArgs e)

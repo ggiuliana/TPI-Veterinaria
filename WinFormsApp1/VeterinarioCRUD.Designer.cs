@@ -52,10 +52,6 @@
             dataGridView1.Size = new Size(433, 204);
             dataGridView1.TabIndex = 0;
             // 
-            // veterinarioServiceBindingSource
-            // 
-            veterinarioServiceBindingSource.DataSource = typeof(ServiciosApp.VeterinarioService);
-            // 
             // label1
             // 
             label1.AutoSize = true;

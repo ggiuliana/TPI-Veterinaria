@@ -13,7 +13,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Add Dependency Injection
-builder.Services.AddDbContext<VeterinariaContext>();
 
 builder.Services.AddScoped<IDuenioRepository, DuenioRepository>();
 builder.Services.AddScoped<IMascotaRepository, MascotaRepository>();

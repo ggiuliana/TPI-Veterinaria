@@ -1,12 +1,8 @@
-﻿using DTOs;
-using ServiciosApp;
+﻿using API.Clients;
+using DTOs;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -14,59 +10,85 @@ namespace WinFormsApp1
 {
     public partial class UpdateVeterinario : Form
     {
-        private readonly IVeterinarioService veterinarioService;
-
-        public UpdateVeterinario(IVeterinarioService veterinarioService)
+        public UpdateVeterinario()
         {
             InitializeComponent();
-
-            this.veterinarioService = veterinarioService;
+            Load += UpdateVeterinario_Load;
         }
 
         private async void UpdateVeterinario_Load(object sender, EventArgs e)
         {
-            await CargarVeterinarios();
+            await CargarVeterinariosSeguroAsync();
         }
 
-        private async Task CargarVeterinarios() 
+        private async Task CargarVeterinariosSeguroAsync()
         {
-            var veterinarios = await veterinarioService.GetAllAsync();
-            var lista = veterinarios.Select(v => new
+            try
             {
-                Id = v.IdVeterinario,
-                Texto = $"{v.NombreVeterinario} {v.Apellido}"
-            }).ToList();
+                var veterinarios = await VeterinarioClient.GetAllAsync();
 
-            SeleccionVet.ValueMember = "Id";
-            SeleccionVet.DisplayMember = "Texto";
-            SeleccionVet.DataSource = lista;
+                SeleccionVet.SelectedIndexChanged -= SeleccionVet_SelectedIndexChanged;
+
+                var lista = veterinarios.Select(v => new
+                {
+                    Id = v.IdVeterinario,
+                    Texto = $"{v.NombreVeterinario} {v.Apellido}"
+                }).ToList();
+
+                SeleccionVet.ValueMember = "Id";
+                SeleccionVet.DisplayMember = "Texto";
+                SeleccionVet.DataSource = lista;
+
+                SeleccionVet.SelectedIndex = -1;
+
+                SeleccionVet.SelectedIndexChanged += SeleccionVet_SelectedIndexChanged;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar la lista de veterinarios: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
         private async void SeleccionVet_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (SeleccionVet.SelectedValue == null)
                 return;
+
             if (SeleccionVet.SelectedValue is not int)
                 return;
+
             int idVeterinario = (int)SeleccionVet.SelectedValue;
-            var veterinario = await veterinarioService.GetAsync(idVeterinario);
-            if (veterinario == null)
-                return;
-            nombreVeterinario.Text = veterinario.NombreVeterinario;
-            apellidoVeterinario.Text = veterinario.Apellido;
-            dniVeterinario.Text = veterinario.Dni;
-            telefonoVeterinario.Text = veterinario.Telefono;
-            mailVeterinario.Text = veterinario.Mail;
-            direccionVeterinario.Text = veterinario.Direccion;
-            matriculaVeterinario.Text = veterinario.Matricula;
-            especialidadVeterinario.Text = veterinario.Especialidad;
+
+            try
+            {
+                var veterinario = await VeterinarioClient.GetAsync(idVeterinario);
+
+                if (veterinario == null)
+                    return;
+
+                nombreVeterinario.Text = veterinario.NombreVeterinario;
+                apellidoVeterinario.Text = veterinario.Apellido;
+                dniVeterinario.Text = veterinario.Dni;
+                telefonoVeterinario.Text = veterinario.Telefono;
+                mailVeterinario.Text = veterinario.Mail;
+                direccionVeterinario.Text = veterinario.Direccion;
+                matriculaVeterinario.Text = veterinario.Matricula;
+                especialidadVeterinario.Text = veterinario.Especialidad;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al obtener los datos del veterinario: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
-        private async void Guardar_Click(object sender, EventArgs e) {
-            if (SeleccionVet.SelectedValue == null) 
+        private async void Guardar_Click(object sender, EventArgs e)
+        {
+            if (SeleccionVet.SelectedValue == null)
             {
-                MessageBox.Show("Selecciona un veterinario.");
+                MessageBox.Show("Selecciona un veterinario.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
             var dto = new VeterinarioDTO
             {
                 IdVeterinario = (int)SeleccionVet.SelectedValue,
@@ -79,10 +101,19 @@ namespace WinFormsApp1
                 Matricula = matriculaVeterinario.Text,
                 Especialidad = especialidadVeterinario.Text
             };
-            await veterinarioService.UpdateAsync(dto);
-            MessageBox.Show("Veterinario modificado.");
-            DialogResult = DialogResult.OK;
-            Close();
+
+            try
+            {
+                await VeterinarioClient.UpdateAsync(dto);
+
+                MessageBox.Show("Veterinario modificado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ocurrió un error al actualizar: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void Cancelar_Click(object sender, EventArgs e)

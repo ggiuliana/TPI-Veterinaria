@@ -203,7 +203,8 @@ namespace Data
 
                 entity.HasOne(u => u.Persona)
                 .WithOne(p => p.Usuario)
-                .HasForeignKey<Usuario>(u => u.IdPersona);
+                .HasForeignKey<Usuario>(u => u.IdPersona)
+                .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(u => u.Rol)
                 .WithMany()

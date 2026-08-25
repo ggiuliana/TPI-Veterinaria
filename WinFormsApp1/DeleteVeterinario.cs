@@ -1,12 +1,7 @@
-﻿using DTOs;
-using ServiciosApp;
+﻿using API.Clients;
+using DTOs;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -14,48 +9,50 @@ namespace WinFormsApp1
 {
     public partial class DeleteVeterinario : Form
     {
-        private readonly IVeterinarioService veterinarioService;
-        private readonly IUsuarioService usuarioService;
-
-        public DeleteVeterinario(IVeterinarioService veterinarioService, IUsuarioService usuarioService)
+        public DeleteVeterinario()
         {
             InitializeComponent();
-
-            this.veterinarioService = veterinarioService;
-
-            this.usuarioService = usuarioService;
+            Load += DeleteVeterinario_Load; 
         }
+
         private async void DeleteVeterinario_Load(object sender, EventArgs e)
         {
-            await CargarVeterinarios();
+            await CargarVeterinariosSeguroAsync();
         }
 
-        private async Task CargarVeterinarios()
+        private async Task CargarVeterinariosSeguroAsync()
         {
-            var veterinarios = await veterinarioService.GetAllAsync();
-            var lista = veterinarios.Select(v => new
+            try
             {
-                Id = v.IdVeterinario,
-                Texto = $"{v.NombreVeterinario} {v.Apellido}"
-            }).ToList();
+                var veterinarios = await VeterinarioClient.GetAllAsync();
+                var lista = veterinarios.Select(v => new
+                {
+                    Id = v.IdVeterinario,
+                    Texto = $"{v.NombreVeterinario} {v.Apellido}"
+                }).ToList();
 
-            SeleccionVet.ValueMember = "Id";
-            SeleccionVet.DisplayMember = "Texto";
-            SeleccionVet.DataSource = lista;
+                SeleccionVet.ValueMember = "Id";
+                SeleccionVet.DisplayMember = "Texto";
+                SeleccionVet.DataSource = lista;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar la lista de veterinarios: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private async void Aceptar_Click(object sender, EventArgs e)
         {
             if (SeleccionVet.SelectedValue == null)
             {
-                MessageBox.Show("Selecciona un veterinario.");
+                MessageBox.Show("Selecciona un veterinario.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             int idVeterinario = (int)SeleccionVet.SelectedValue;
 
             var confirmacion = MessageBox.Show(
-                "¿Está seguro de eliminar este veterinario?",
+                "¿Está seguro de eliminar este veterinario y su usuario asociado?",
                 "Confirmar eliminación",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Warning
@@ -63,15 +60,26 @@ namespace WinFormsApp1
 
             if (confirmacion == DialogResult.Yes)
             {
-                await veterinarioService.DeleteAsync(idVeterinario);
-                var usuarios = await usuarioService.GetAllAsync();
-                var usuario = usuarios.FirstOrDefault(u => u.IdPersona == idVeterinario);
-                if (usuario != null) {
-                    await usuarioService.DeleteAsync(usuario.IdUsuario);
+                try
+                {
+                    var usuarios = await UsuarioClient.GetAllAsync();
+                    var usuario = usuarios.FirstOrDefault(u => u.IdPersona == idVeterinario);
+
+                    if (usuario != null)
+                    {
+                        await UsuarioClient.DeleteAsync(usuario.IdUsuario);
+                    }
+
+                    await VeterinarioClient.DeleteAsync(idVeterinario);
+
+                    MessageBox.Show("Veterinario eliminado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    DialogResult = DialogResult.OK;
+                    Close();
                 }
-                MessageBox.Show("Veterinario eliminado correctamente.");
-                DialogResult = DialogResult.OK;
-                Close();
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ocurrió un error al eliminar: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
