@@ -22,9 +22,11 @@ namespace WinFormsApp1
 
         private async Task CargarVeterinariosSeguroAsync()
         {
+
             try
             {
                 var veterinarios = await VeterinarioClient.GetAllAsync();
+                dataGridView1.AutoGenerateColumns = true;
                 dataGridView1.DataSource = veterinarios;
             }
             catch (Exception ex)
@@ -90,6 +92,11 @@ namespace WinFormsApp1
             {
                 await CargarVeterinariosSeguroAsync();
             }
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

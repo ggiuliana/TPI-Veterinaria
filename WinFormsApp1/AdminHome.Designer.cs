@@ -28,26 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
             Veterinarios = new Button();
             Medicamentos = new Button();
             Estudios = new Button();
             panelContenido = new Panel();
+            panel1 = new Panel();
+            label1 = new Label();
+            panel1.SuspendLayout();
             SuspendLayout();
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 24F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(565, 9);
-            label1.Name = "label1";
-            label1.Size = new Size(223, 45);
-            label1.TabIndex = 0;
-            label1.Text = "Administrador";
             // 
             // Veterinarios
             // 
-            Veterinarios.Location = new Point(47, 121);
+            Veterinarios.Location = new Point(12, 56);
             Veterinarios.Name = "Veterinarios";
             Veterinarios.Size = new Size(95, 38);
             Veterinarios.TabIndex = 1;
@@ -57,16 +49,16 @@
             // 
             // Medicamentos
             // 
-            Medicamentos.Location = new Point(47, 195);
+            Medicamentos.Location = new Point(113, 56);
             Medicamentos.Name = "Medicamentos";
-            Medicamentos.Size = new Size(95, 38);
+            Medicamentos.Size = new Size(102, 38);
             Medicamentos.TabIndex = 5;
             Medicamentos.Text = "Medicamentos";
             Medicamentos.UseVisualStyleBackColor = true;
             // 
             // Estudios
             // 
-            Estudios.Location = new Point(47, 272);
+            Estudios.Location = new Point(221, 57);
             Estudios.Name = "Estudios";
             Estudios.Size = new Size(95, 38);
             Estudios.TabIndex = 6;
@@ -75,30 +67,50 @@
             // 
             // panelContenido
             // 
-            panelContenido.Location = new Point(183, 78);
+            panelContenido.Location = new Point(0, 100);
             panelContenido.Name = "panelContenido";
-            panelContenido.Size = new Size(605, 360);
+            panelContenido.Size = new Size(800, 352);
             panelContenido.TabIndex = 7;
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(label1);
+            panel1.Controls.Add(Estudios);
+            panel1.Controls.Add(Medicamentos);
+            panel1.Controls.Add(Veterinarios);
+            panel1.Dock = DockStyle.Top;
+            panel1.Location = new Point(0, 0);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(800, 95);
+            panel1.TabIndex = 8;
+            panel1.Paint += panel1_Paint;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 24F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Location = new Point(12, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(223, 45);
+            label1.TabIndex = 7;
+            label1.Text = "Administrador";
+            label1.Click += label1_Click;
             // 
             // AdminHome
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(panel1);
             Controls.Add(panelContenido);
-            Controls.Add(Estudios);
-            Controls.Add(Medicamentos);
-            Controls.Add(Veterinarios);
-            Controls.Add(label1);
             Name = "AdminHome";
             Text = "  ";
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
-
-        private Label label1;
         private Button Veterinarios;
         private Button button1;
         private Button button2;
@@ -106,5 +118,7 @@
         private Button Medicamentos;
         private Button Estudios;
         private Panel panelContenido;
+        private Panel panel1;
+        private Label label1;
     }
 }
