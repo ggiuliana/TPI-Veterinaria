@@ -39,6 +39,9 @@ namespace WinFormsApp1
                 SeleccionVet.DisplayMember = "Texto";
                 SeleccionVet.DataSource = lista;
 
+                SeleccionVet.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                SeleccionVet.AutoCompleteSource = AutoCompleteSource.ListItems;
+
                 SeleccionVet.SelectedIndex = -1;
 
                 SeleccionVet.SelectedIndexChanged += SeleccionVet_SelectedIndexChanged;
