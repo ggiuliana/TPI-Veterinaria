@@ -42,35 +42,33 @@
             // 
             // descripcionEstudio
             // 
-            descripcionEstudio.Location = new Point(131, 264);
-            descripcionEstudio.Margin = new Padding(3, 4, 3, 4);
+            descripcionEstudio.Location = new Point(115, 198);
             descripcionEstudio.Name = "descripcionEstudio";
-            descripcionEstudio.Size = new Size(260, 27);
+            descripcionEstudio.Size = new Size(228, 23);
             descripcionEstudio.TabIndex = 36;
             // 
             // nombreEstudio
             // 
-            nombreEstudio.Location = new Point(131, 217);
-            nombreEstudio.Margin = new Padding(3, 4, 3, 4);
+            nombreEstudio.Location = new Point(115, 163);
             nombreEstudio.Name = "nombreEstudio";
-            nombreEstudio.Size = new Size(260, 27);
+            nombreEstudio.Size = new Size(228, 23);
             nombreEstudio.TabIndex = 35;
             // 
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new Point(39, 268);
+            label10.Location = new Point(34, 201);
             label10.Name = "label10";
-            label10.Size = new Size(90, 20);
+            label10.Size = new Size(72, 15);
             label10.TabIndex = 34;
             label10.Text = "Descripción:";
             // 
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new Point(39, 221);
+            label11.Location = new Point(34, 166);
             label11.Name = "label11";
-            label11.Size = new Size(67, 20);
+            label11.Size = new Size(54, 15);
             label11.TabIndex = 33;
             label11.Text = "Nombre:";
             // 
@@ -78,9 +76,9 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(13, 160);
+            label3.Location = new Point(11, 120);
             label3.Name = "label3";
-            label3.Size = new Size(476, 25);
+            label3.Size = new Size(357, 20);
             label3.TabIndex = 32;
             label3.Text = "----------------------------------------------------------";
             // 
@@ -88,39 +86,37 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(40, 112);
+            label2.Location = new Point(35, 84);
             label2.Name = "label2";
-            label2.Size = new Size(78, 25);
+            label2.Size = new Size(61, 20);
             label2.TabIndex = 31;
             label2.Text = "Estudio:";
             // 
             // SeleccionEstudio
             // 
             SeleccionEstudio.FormattingEnabled = true;
-            SeleccionEstudio.Location = new Point(131, 113);
-            SeleccionEstudio.Margin = new Padding(3, 4, 3, 4);
+            SeleccionEstudio.Location = new Point(115, 85);
             SeleccionEstudio.Name = "SeleccionEstudio";
-            SeleccionEstudio.Size = new Size(242, 28);
+            SeleccionEstudio.Size = new Size(212, 23);
             SeleccionEstudio.TabIndex = 30;
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(88, 32);
+            label1.Location = new Point(77, 24);
             label1.Name = "label1";
-            label1.Size = new Size(290, 37);
+            label1.Size = new Size(225, 30);
             label1.TabIndex = 29;
             label1.Text = "MODIFICAR ESTUDIO";
             // 
             // Cancelar
             // 
-            Cancelar.BackColor = SystemColors.ActiveCaption;
+            Cancelar.BackColor = SystemColors.ControlLight;
             Cancelar.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Cancelar.Location = new Point(59, 347);
-            Cancelar.Margin = new Padding(3, 4, 3, 4);
+            Cancelar.Location = new Point(52, 260);
             Cancelar.Name = "Cancelar";
-            Cancelar.Size = new Size(141, 52);
+            Cancelar.Size = new Size(123, 39);
             Cancelar.TabIndex = 38;
             Cancelar.Text = "Cancelar";
             Cancelar.UseVisualStyleBackColor = false;
@@ -128,21 +124,22 @@
             // 
             // Guardar
             // 
+            Guardar.BackColor = SystemColors.ActiveCaption;
             Guardar.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Guardar.Location = new Point(233, 347);
-            Guardar.Margin = new Padding(3, 4, 3, 4);
+            Guardar.ForeColor = SystemColors.ControlText;
+            Guardar.Location = new Point(204, 260);
             Guardar.Name = "Guardar";
-            Guardar.Size = new Size(141, 52);
+            Guardar.Size = new Size(123, 39);
             Guardar.TabIndex = 37;
             Guardar.Text = "Guardar";
-            Guardar.UseVisualStyleBackColor = true;
+            Guardar.UseVisualStyleBackColor = false;
             Guardar.Click += Guardar_Click;
             // 
             // UpdateEstudio
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(432, 428);
+            ClientSize = new Size(378, 321);
             Controls.Add(Cancelar);
             Controls.Add(Guardar);
             Controls.Add(descripcionEstudio);
@@ -153,7 +150,6 @@
             Controls.Add(label2);
             Controls.Add(SeleccionEstudio);
             Controls.Add(label1);
-            Margin = new Padding(3, 4, 3, 4);
             Name = "UpdateEstudio";
             Text = "UpdateEstudio";
             ResumeLayout(false);

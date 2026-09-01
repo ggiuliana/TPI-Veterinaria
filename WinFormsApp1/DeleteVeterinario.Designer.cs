@@ -31,17 +31,17 @@
             label1 = new Label();
             label2 = new Label();
             SeleccionVet = new ComboBox();
-            Aceptar = new Button();
             Cancelar = new Button();
+            Guardar = new Button();
             SuspendLayout();
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(85, 36);
+            label1.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold);
+            label1.Location = new Point(59, 29);
             label1.Name = "label1";
-            label1.Size = new Size(295, 32);
+            label1.Size = new Size(259, 30);
             label1.TabIndex = 0;
             label1.Text = "ELIMINAR VETERINARIO";
             // 
@@ -49,57 +49,55 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(107, 116);
+            label2.Location = new Point(94, 89);
             label2.Name = "label2";
-            label2.Size = new Size(231, 28);
+            label2.Size = new Size(185, 21);
             label2.TabIndex = 1;
             label2.Text = "Selecciona un Veterinario";
             // 
             // SeleccionVet
             // 
             SeleccionVet.FormattingEnabled = true;
-            SeleccionVet.Location = new Point(107, 175);
-            SeleccionVet.Margin = new Padding(3, 4, 3, 4);
+            SeleccionVet.Location = new Point(94, 133);
             SeleccionVet.Name = "SeleccionVet";
-            SeleccionVet.Size = new Size(230, 28);
+            SeleccionVet.Size = new Size(202, 23);
             SeleccionVet.TabIndex = 2;
-            // 
-            // Aceptar
-            // 
-            Aceptar.Font = new Font("Segoe UI", 15.75F);
-            Aceptar.Location = new Point(242, 268);
-            Aceptar.Margin = new Padding(3, 4, 3, 4);
-            Aceptar.Name = "Aceptar";
-            Aceptar.Size = new Size(152, 45);
-            Aceptar.TabIndex = 3;
-            Aceptar.Text = "Aceptar";
-            Aceptar.UseVisualStyleBackColor = true;
-            Aceptar.Click += Aceptar_Click;
             // 
             // Cancelar
             // 
-            Cancelar.BackColor = SystemColors.ActiveCaption;
-            Cancelar.Font = new Font("Segoe UI", 15.75F);
-            Cancelar.Location = new Point(35, 268);
-            Cancelar.Margin = new Padding(3, 4, 3, 4);
+            Cancelar.BackColor = SystemColors.ControlLight;
+            Cancelar.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Cancelar.Location = new Point(51, 194);
             Cancelar.Name = "Cancelar";
-            Cancelar.Size = new Size(152, 45);
-            Cancelar.TabIndex = 4;
+            Cancelar.Size = new Size(123, 39);
+            Cancelar.TabIndex = 40;
             Cancelar.Text = "Cancelar";
             Cancelar.UseVisualStyleBackColor = false;
             Cancelar.Click += Cancelar_Click;
             // 
+            // Guardar
+            // 
+            Guardar.BackColor = SystemColors.ActiveCaption;
+            Guardar.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Guardar.ForeColor = SystemColors.ControlText;
+            Guardar.Location = new Point(203, 194);
+            Guardar.Name = "Guardar";
+            Guardar.Size = new Size(123, 39);
+            Guardar.TabIndex = 39;
+            Guardar.Text = "Eliminar";
+            Guardar.UseVisualStyleBackColor = false;
+            Guardar.Click += Aceptar_Click;
+            // 
             // DeleteVeterinario
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(431, 351);
+            ClientSize = new Size(377, 263);
             Controls.Add(Cancelar);
-            Controls.Add(Aceptar);
+            Controls.Add(Guardar);
             Controls.Add(SeleccionVet);
             Controls.Add(label2);
             Controls.Add(label1);
-            Margin = new Padding(3, 4, 3, 4);
             Name = "DeleteVeterinario";
             Text = "Form1";
             Load += DeleteVeterinario_Load;
@@ -112,7 +110,7 @@
         private Label label1;
         private Label label2;
         private ComboBox SeleccionVet;
-        private Button Aceptar;
         private Button Cancelar;
+        private Button Guardar;
     }
 }

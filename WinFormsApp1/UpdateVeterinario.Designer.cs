@@ -48,8 +48,8 @@
             label4 = new Label();
             label10 = new Label();
             label11 = new Label();
-            Guardar = new Button();
             Cancelar = new Button();
+            Guardar = new Button();
             SuspendLayout();
             // 
             // label1
@@ -197,7 +197,7 @@
             label4.AutoSize = true;
             label4.Location = new Point(35, 234);
             label4.Name = "label4";
-            label4.Size = new Size(56, 15);
+            label4.Size = new Size(55, 15);
             label4.TabIndex = 21;
             label4.Text = "Telefono:";
             // 
@@ -219,28 +219,30 @@
             label11.TabIndex = 19;
             label11.Text = "Nombre:";
             // 
-            // Guardar
-            // 
-            Guardar.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Guardar.Location = new Point(202, 473);
-            Guardar.Name = "Guardar";
-            Guardar.Size = new Size(123, 39);
-            Guardar.TabIndex = 35;
-            Guardar.Text = "Guardar";
-            Guardar.UseVisualStyleBackColor = true;
-            Guardar.Click += Guardar_Click;
-            // 
             // Cancelar
             // 
-            Cancelar.BackColor = SystemColors.ActiveCaption;
+            Cancelar.BackColor = SystemColors.ControlLight;
             Cancelar.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Cancelar.Location = new Point(50, 473);
+            Cancelar.Location = new Point(52, 471);
             Cancelar.Name = "Cancelar";
             Cancelar.Size = new Size(123, 39);
-            Cancelar.TabIndex = 36;
+            Cancelar.TabIndex = 40;
             Cancelar.Text = "Cancelar";
             Cancelar.UseVisualStyleBackColor = false;
             Cancelar.Click += Cancelar_Click;
+            // 
+            // Guardar
+            // 
+            Guardar.BackColor = SystemColors.ActiveCaption;
+            Guardar.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Guardar.ForeColor = SystemColors.ControlText;
+            Guardar.Location = new Point(204, 471);
+            Guardar.Name = "Guardar";
+            Guardar.Size = new Size(123, 39);
+            Guardar.TabIndex = 39;
+            Guardar.Text = "Guardar";
+            Guardar.UseVisualStyleBackColor = false;
+            Guardar.Click += Guardar_Click;
             // 
             // UpdateVeterinario
             // 
@@ -298,7 +300,7 @@
         private Label label4;
         private Label label10;
         private Label label11;
-        private Button Guardar;
         private Button Cancelar;
+        private Button Guardar;
     }
 }

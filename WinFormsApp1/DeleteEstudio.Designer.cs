@@ -28,78 +28,76 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Cancelar = new Button();
-            Aceptar = new Button();
             SeleccionEstudio = new ComboBox();
             label2 = new Label();
             label1 = new Label();
+            button1 = new Button();
+            Guardar = new Button();
             SuspendLayout();
-            // 
-            // Cancelar
-            // 
-            Cancelar.BackColor = SystemColors.ActiveCaption;
-            Cancelar.Font = new Font("Segoe UI", 15.75F);
-            Cancelar.Location = new Point(35, 268);
-            Cancelar.Margin = new Padding(3, 4, 3, 4);
-            Cancelar.Name = "Cancelar";
-            Cancelar.Size = new Size(152, 45);
-            Cancelar.TabIndex = 9;
-            Cancelar.Text = "Cancelar";
-            Cancelar.UseVisualStyleBackColor = false;
-            Cancelar.Click += Cancelar_Click;
-            // 
-            // Aceptar
-            // 
-            Aceptar.Font = new Font("Segoe UI", 15.75F);
-            Aceptar.Location = new Point(242, 268);
-            Aceptar.Margin = new Padding(3, 4, 3, 4);
-            Aceptar.Name = "Aceptar";
-            Aceptar.Size = new Size(152, 45);
-            Aceptar.TabIndex = 8;
-            Aceptar.Text = "Aceptar";
-            Aceptar.UseVisualStyleBackColor = true;
-            Aceptar.Click += Aceptar_Click;
             // 
             // SeleccionEstudio
             // 
             SeleccionEstudio.FormattingEnabled = true;
-            SeleccionEstudio.Location = new Point(107, 175);
-            SeleccionEstudio.Margin = new Padding(3, 4, 3, 4);
+            SeleccionEstudio.Location = new Point(94, 131);
             SeleccionEstudio.Name = "SeleccionEstudio";
-            SeleccionEstudio.Size = new Size(230, 28);
+            SeleccionEstudio.Size = new Size(202, 23);
             SeleccionEstudio.TabIndex = 7;
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(131, 116);
+            label2.Location = new Point(115, 87);
             label2.Name = "label2";
-            label2.Size = new Size(201, 28);
+            label2.Size = new Size(160, 21);
             label2.TabIndex = 6;
             label2.Text = "Selecciona un Estudio";
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(109, 36);
+            label1.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold);
+            label1.Location = new Point(84, 27);
             label1.Name = "label1";
-            label1.Size = new Size(238, 32);
+            label1.Size = new Size(209, 30);
             label1.TabIndex = 5;
             label1.Text = "ELIMINAR ESTUDIO";
             // 
+            // button1
+            // 
+            button1.BackColor = SystemColors.ControlLight;
+            button1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button1.Location = new Point(51, 196);
+            button1.Name = "button1";
+            button1.Size = new Size(123, 39);
+            button1.TabIndex = 40;
+            button1.Text = "Cancelar";
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += Cancelar_Click;
+            // 
+            // Guardar
+            // 
+            Guardar.BackColor = SystemColors.ActiveCaption;
+            Guardar.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Guardar.ForeColor = SystemColors.ControlText;
+            Guardar.Location = new Point(203, 196);
+            Guardar.Name = "Guardar";
+            Guardar.Size = new Size(123, 39);
+            Guardar.TabIndex = 39;
+            Guardar.Text = "Eliminar";
+            Guardar.UseVisualStyleBackColor = false;
+            Guardar.Click += Aceptar_Click;
+            // 
             // DeleteEstudio
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(431, 351);
-            Controls.Add(Cancelar);
-            Controls.Add(Aceptar);
+            ClientSize = new Size(377, 263);
+            Controls.Add(button1);
+            Controls.Add(Guardar);
             Controls.Add(SeleccionEstudio);
             Controls.Add(label2);
             Controls.Add(label1);
-            Margin = new Padding(3, 4, 3, 4);
             Name = "DeleteEstudio";
             Text = "DeleteEstudio";
             ResumeLayout(false);
@@ -107,12 +105,11 @@
         }
 
         #endregion
-
-        private Button Cancelar;
-        private Button Aceptar;
         private ComboBox SeleccionVet;
         private Label label2;
         private Label label1;
         private ComboBox SeleccionEstudio;
+        private Button button1;
+        private Button Guardar;
     }
 }

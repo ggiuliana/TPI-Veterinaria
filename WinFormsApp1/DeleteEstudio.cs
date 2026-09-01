@@ -62,7 +62,7 @@ namespace WinFormsApp1
             {
                 try
                 {
-                    
+
                     await EstudioClient.DeleteAsync(idEstudio);
 
                     MessageBox.Show("Estudio eliminado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -81,5 +81,6 @@ namespace WinFormsApp1
             DialogResult = DialogResult.Cancel;
             Close();
         }
+     
     }
 }
