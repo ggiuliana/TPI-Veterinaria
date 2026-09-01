@@ -47,9 +47,5 @@ namespace WinFormsApp1
             Close();
         }
 
-        private void guardar_Click_1(object sender, EventArgs e)
-        {
-
-        }
     }
 }
