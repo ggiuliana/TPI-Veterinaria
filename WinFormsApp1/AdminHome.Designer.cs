@@ -64,6 +64,7 @@
             Estudios.TabIndex = 6;
             Estudios.Text = "Estudios";
             Estudios.UseVisualStyleBackColor = true;
+            Estudios.Click += Estudios_Click;
             // 
             // panelContenido
             // 

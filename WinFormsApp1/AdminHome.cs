@@ -43,5 +43,10 @@ namespace WinFormsApp1
         {
 
         }
+
+        private void Estudios_Click(object sender, EventArgs e)
+        {
+            MostrarCRUD(new EstudioCRUD());
+        }
     }
 }

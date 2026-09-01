@@ -39,7 +39,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(158, 19);
+            label1.Location = new Point(74, 27);
             label1.Name = "label1";
             label1.Size = new Size(229, 25);
             label1.TabIndex = 0;
@@ -49,23 +49,23 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(45, 136);
+            label2.Location = new Point(94, 87);
             label2.Name = "label2";
-            label2.Size = new Size(188, 21);
+            label2.Size = new Size(185, 21);
             label2.TabIndex = 1;
-            label2.Text = "Selecciona un Veterinario:";
+            label2.Text = "Selecciona un Veterinario";
             // 
             // SeleccionVet
             // 
             SeleccionVet.FormattingEnabled = true;
-            SeleccionVet.Location = new Point(264, 134);
+            SeleccionVet.Location = new Point(94, 131);
             SeleccionVet.Name = "SeleccionVet";
             SeleccionVet.Size = new Size(202, 23);
             SeleccionVet.TabIndex = 2;
             // 
             // Aceptar
             // 
-            Aceptar.Location = new Point(300, 233);
+            Aceptar.Location = new Point(212, 201);
             Aceptar.Name = "Aceptar";
             Aceptar.Size = new Size(133, 34);
             Aceptar.TabIndex = 3;
@@ -76,7 +76,7 @@
             // Cancelar
             // 
             Cancelar.BackColor = SystemColors.ActiveCaption;
-            Cancelar.Location = new Point(109, 233);
+            Cancelar.Location = new Point(31, 201);
             Cancelar.Name = "Cancelar";
             Cancelar.Size = new Size(133, 34);
             Cancelar.TabIndex = 4;
@@ -88,7 +88,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(570, 333);
+            ClientSize = new Size(377, 263);
             Controls.Add(Cancelar);
             Controls.Add(Aceptar);
             Controls.Add(SeleccionVet);
