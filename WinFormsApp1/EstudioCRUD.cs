@@ -16,7 +16,7 @@ namespace WinFormsApp1
             Load += EstudioCRUD_Load;
         }
 
-        private async void EstudioCRUD_Load(object sender, EventArgs e)
+        private async void EstudioCRUD_Load(object? sender, EventArgs e)
         {
             await CargarEstudiosSeguroAsync();
         }
@@ -29,6 +29,10 @@ namespace WinFormsApp1
 
                 dataGridView1.AutoGenerateColumns = true;
                 dataGridView1.DataSource = estudios;
+            
+                dataGridView1.Columns["IdEstudio"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dataGridView1.Columns["NombreEstudio"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dataGridView1.Columns["DescripcionEstudio"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
             catch (Exception ex)
             {
@@ -54,7 +58,7 @@ namespace WinFormsApp1
             try
             {
                 var estudio = await EstudioClient.GetAsync(id);
-                dataGridView1.DataSource = new List<EstudioDTO> { estudio };
+                dataGridView1.DataSource = new List<EstudioDTO> { estudio! };
             }
             catch (Exception ex)
             {
@@ -71,7 +75,7 @@ namespace WinFormsApp1
             }
         }
 
-        private async void Delete_Click(object sender, EventArgs e)
+        private async void Delete_Click(object? sender, EventArgs e)
         {
             // Necesitarás crear el formulario DeleteEstudio
             using var form = new DeleteEstudio();

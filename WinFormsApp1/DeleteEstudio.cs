@@ -15,7 +15,7 @@ namespace WinFormsApp1
             Load += DeleteEstudio_Load;
         }
 
-        private async void DeleteEstudio_Load(object sender, EventArgs e)
+        private async void DeleteEstudio_Load(object? sender, EventArgs e)
         {
             await CargarEstudiosSeguroAsync();
         }
@@ -41,7 +41,7 @@ namespace WinFormsApp1
             }
         }
 
-        private async void Aceptar_Click(object sender, EventArgs e)
+        private async void Aceptar_Click(object? sender, EventArgs e)
         {
             if (SeleccionEstudio.SelectedValue == null)
             {
@@ -76,7 +76,7 @@ namespace WinFormsApp1
             }
         }
 
-        private void Cancelar_Click(object sender, EventArgs e)
+        private void Cancelar_Click(object? sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();
