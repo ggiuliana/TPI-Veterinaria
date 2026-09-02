@@ -66,6 +66,7 @@
             // button1
             // 
             button1.BackColor = SystemColors.ControlLight;
+            button1.Cursor = Cursors.Hand;
             button1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button1.Location = new Point(51, 196);
             button1.Name = "button1";
@@ -78,6 +79,7 @@
             // Guardar
             // 
             Guardar.BackColor = SystemColors.ActiveCaption;
+            Guardar.Cursor = Cursors.Hand;
             Guardar.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Guardar.ForeColor = SystemColors.ControlText;
             Guardar.Location = new Point(203, 196);

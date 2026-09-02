@@ -83,6 +83,7 @@
             // 
             // ingreso
             // 
+            ingreso.Cursor = Cursors.Hand;
             ingreso.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
             ingreso.Location = new Point(139, 332);
             ingreso.Name = "ingreso";
@@ -92,8 +93,9 @@
             ingreso.UseVisualStyleBackColor = true;
             ingreso.Click += IngresoClick;
             // 
-            // Form1
+            // Login
             // 
+            AcceptButton = ingreso;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(401, 450);
@@ -103,7 +105,7 @@
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(Título);
-            Name = "Form1";
+            Name = "Login";
             Text = "Form1";
             ResumeLayout(false);
             PerformLayout();

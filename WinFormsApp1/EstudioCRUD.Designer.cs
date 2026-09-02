@@ -41,6 +41,7 @@
             // 
             // Create
             // 
+            Create.Cursor = Cursors.Hand;
             Create.Location = new Point(682, 312);
             Create.Name = "Create";
             Create.Size = new Size(75, 23);
@@ -51,6 +52,7 @@
             // 
             // Update
             // 
+            Update.Cursor = Cursors.Hand;
             Update.Location = new Point(601, 312);
             Update.Name = "Update";
             Update.Size = new Size(75, 23);
@@ -61,6 +63,7 @@
             // 
             // Delete
             // 
+            Delete.Cursor = Cursors.Hand;
             Delete.Location = new Point(43, 312);
             Delete.Name = "Delete";
             Delete.Size = new Size(75, 23);
@@ -71,6 +74,7 @@
             // 
             // Buscar
             // 
+            Buscar.Cursor = Cursors.Hand;
             Buscar.Location = new Point(142, 39);
             Buscar.Name = "Buscar";
             Buscar.Size = new Size(75, 23);

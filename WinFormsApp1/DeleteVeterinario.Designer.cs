@@ -66,6 +66,7 @@
             // Cancelar
             // 
             Cancelar.BackColor = SystemColors.ControlLight;
+            Cancelar.Cursor = Cursors.Hand;
             Cancelar.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Cancelar.Location = new Point(51, 194);
             Cancelar.Name = "Cancelar";
@@ -78,6 +79,7 @@
             // Guardar
             // 
             Guardar.BackColor = SystemColors.ActiveCaption;
+            Guardar.Cursor = Cursors.Hand;
             Guardar.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Guardar.ForeColor = SystemColors.ControlText;
             Guardar.Location = new Point(203, 194);
