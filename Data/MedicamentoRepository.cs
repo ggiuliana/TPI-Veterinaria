@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ModeloDominio;
 
 namespace Data
@@ -12,10 +7,7 @@ namespace Data
     {
         private readonly VeterinariaContext context;
 
-        public MedicamentoRepository(VeterinariaContext context)
-        {
-            this.context = context;
-        }
+        public MedicamentoRepository(VeterinariaContext context) => this.context = context;
 
         public async Task AddAsync(Medicamento medicamento)
         {
@@ -28,7 +20,7 @@ namespace Data
             if (medicamento != null)
             {
                 context.Medicamentos.Remove(medicamento);
-                context.SaveChangesAsync();
+                await context.SaveChangesAsync();
                 return true;
             }
             return false;
@@ -48,7 +40,7 @@ namespace Data
             {
                 existingMedicamento.SetNombreMedicamento(medicamento.NombreMedicamento);
                 existingMedicamento.SetCantidadRestante(medicamento.CantidadRestante);
-                context.SaveChangesAsync();
+                await context.SaveChangesAsync();
                 return true;
             }
             return false;

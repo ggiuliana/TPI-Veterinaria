@@ -15,7 +15,7 @@ namespace WinFormsApp1
             Load += DeleteVeterinario_Load; 
         }
 
-        private async void DeleteVeterinario_Load(object sender, EventArgs e)
+        private async void DeleteVeterinario_Load(object? sender, EventArgs e)
         {
             await CargarVeterinariosSeguroAsync();
         }

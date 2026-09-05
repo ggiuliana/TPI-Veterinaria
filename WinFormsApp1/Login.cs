@@ -7,10 +7,7 @@ namespace WinFormsApp1
 {
     public partial class Login : Form
     {
-        public Login()
-        {
-            InitializeComponent();
-        }
+        public Login() => InitializeComponent();
 
         private async void IngresoClick(object sender, EventArgs e)
         {

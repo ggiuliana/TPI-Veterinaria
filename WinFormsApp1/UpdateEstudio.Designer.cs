@@ -160,13 +160,10 @@
 
         #endregion
 
-        private TextBox apellidoVeterinario;
-        private TextBox nombreVeterinario;
         private Label label10;
         private Label label11;
         private Label label3;
         private Label label2;
-        private ComboBox SeleccionVet;
         private Label label1;
         private Button Cancelar;
         private Button Guardar;

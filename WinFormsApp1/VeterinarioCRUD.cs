@@ -15,7 +15,7 @@ namespace WinFormsApp1
             Load += VeterinarioCRUD_Load;
         }
 
-        private async void VeterinarioCRUD_Load(object sender, EventArgs e)
+        private async void VeterinarioCRUD_Load(object? sender, EventArgs e)
         {
             await CargarVeterinariosSeguroAsync();
         }
@@ -52,7 +52,7 @@ namespace WinFormsApp1
             try
             {
                 var vet = await VeterinarioClient.GetAsync(id);
-                dataGridView1.DataSource = new List<VeterinarioDTO> { vet };
+                dataGridView1.DataSource = new List<VeterinarioDTO> { vet! };
             }
             catch (Exception ex)
             {
@@ -92,11 +92,6 @@ namespace WinFormsApp1
             {
                 await CargarVeterinariosSeguroAsync();
             }
-        }
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 }

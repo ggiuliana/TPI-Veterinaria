@@ -8,10 +8,7 @@ namespace ServiciosApp
     {
         private readonly IVeterinarioRepository repo;
 
-        public VeterinarioService(IVeterinarioRepository repo)
-        {
-            this.repo = repo;
-        }
+        public VeterinarioService(IVeterinarioRepository repo) => this.repo = repo;
         public async Task<VeterinarioDTO> AddAsync(VeterinarioDTO dto)
         {
             if (await repo.MailExistsAsync(dto.Mail))
@@ -61,7 +58,7 @@ namespace ServiciosApp
         public async Task<IEnumerable<VeterinarioDTO>> GetAllAsync()
         {
             IEnumerable<Veterinario> veterinarios = await repo.GetAllAsync();
-            return veterinarios.Select(veterinario => new VeterinarioDTO
+            return [.. veterinarios.Select(veterinario => new VeterinarioDTO
             {
                 IdVeterinario = veterinario.IdPersona,
                 NombreVeterinario = veterinario.NombrePersona,
@@ -72,7 +69,7 @@ namespace ServiciosApp
                 Direccion = veterinario.Direccion,
                 Matricula = veterinario.Matricula,
                 Especialidad = veterinario.Especialidad
-            }).ToList();
+            })];
         }
         public async Task<bool> UpdateAsync(VeterinarioDTO dto)
         {

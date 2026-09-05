@@ -1,6 +1,4 @@
-using WinFormsApp1;
-
-namespace VeterinariaWinForms
+namespace WinFormsApp1
 {
     internal static class Program
     {
@@ -12,4 +10,4 @@ namespace VeterinariaWinForms
             Application.Run(new Login());
         }
     }
-}
+}   

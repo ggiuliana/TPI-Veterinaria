@@ -16,7 +16,7 @@ namespace WinFormsApp1
             Load += UpdateEstudio_Load;
         }
 
-        private async void UpdateEstudio_Load(object sender, EventArgs e)
+        private async void UpdateEstudio_Load(object? sender, EventArgs e)
         {
             await CargarEstudiosSeguroAsync();
         }
@@ -52,7 +52,7 @@ namespace WinFormsApp1
             }
         }
 
-        private async void SeleccionEstudio_SelectedIndexChanged(object sender, EventArgs e)
+        private async void SeleccionEstudio_SelectedIndexChanged(object? sender, EventArgs e)
         {
             if (SeleccionEstudio.SelectedValue == null)
                 return;

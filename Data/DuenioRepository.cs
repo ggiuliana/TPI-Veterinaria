@@ -7,9 +7,7 @@ namespace Data
     {
         private readonly VeterinariaContext context;
 
-        public DuenioRepository(VeterinariaContext context) {
-            this.context = context;
-        } 
+        public DuenioRepository(VeterinariaContext context) => this.context = context;
         public async Task AddAsync(Duenio duenio)
         {
             context.Duenios.Add(duenio);

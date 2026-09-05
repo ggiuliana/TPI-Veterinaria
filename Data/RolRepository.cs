@@ -13,10 +13,7 @@ namespace Data
 
         private readonly VeterinariaContext context;
 
-        public RolRepository(VeterinariaContext context)
-        {
-            this.context = context;
-        }
+        public RolRepository(VeterinariaContext context) => this.context = context;
 
         public async Task<Rol?> GetAsync(int id)
         {

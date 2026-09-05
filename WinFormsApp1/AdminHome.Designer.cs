@@ -82,7 +82,6 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(800, 92);
             panel1.TabIndex = 8;
-            panel1.Paint += panel1_Paint;
             // 
             // label1
             // 
@@ -93,7 +92,6 @@
             label1.Size = new Size(199, 40);
             label1.TabIndex = 7;
             label1.Text = "Administrador";
-            label1.Click += label1_Click;
             // 
             // AdminHome
             // 
@@ -110,10 +108,8 @@
         }
 
         #endregion
+
         private Button Veterinarios;
-        private Button button1;
-        private Button button2;
-        private Button button3;
         private Button Estudios;
         private Panel panelContenido;
         private Panel panel1;

@@ -7,10 +7,7 @@ namespace WinFormsApp1
 {
     public partial class CreateVeterinario : Form
     {
-        public CreateVeterinario()
-        {
-            InitializeComponent();
-        }
+        public CreateVeterinario() => InitializeComponent();
 
         private async void Guardar_Click(object sender, EventArgs e)
         {

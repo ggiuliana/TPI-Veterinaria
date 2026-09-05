@@ -13,14 +13,11 @@ namespace ServiciosApp
     {
         private readonly IMedicamentoRepository repo;
 
-        public MedicamentoService(IMedicamentoRepository repo)
-        {
-            this.repo = repo;
-        }
+        public MedicamentoService(IMedicamentoRepository repo) => this.repo = repo;
 
         public async Task<MedicamentoDTO> AddAsync(MedicamentoDTO dto)
         {
-            Medicamento medicamento = new Medicamento(0, dto.NombreMedicamento, dto.CantidadRestante);
+            Medicamento medicamento = new(0, dto.NombreMedicamento, dto.CantidadRestante);
             await repo.AddAsync(medicamento);
             dto.IdMedicamento = medicamento.IdMedicamento;
             return dto;
@@ -29,7 +26,7 @@ namespace ServiciosApp
         {
             return await repo.DeleteAsync(id);
         }
-        public async Task<MedicamentoDTO> GetAsync(int id)
+        public async Task<MedicamentoDTO?> GetAsync(int id)
         {
             Medicamento? med = await repo.GetAsync(id);
             if (med == null)
@@ -46,12 +43,12 @@ namespace ServiciosApp
         public async Task<IEnumerable<MedicamentoDTO>> GetAllAsync()
         {
             IEnumerable<Medicamento> tipovacs = await repo.GetAllAsync();
-            return tipovacs.Select(t => new MedicamentoDTO
+            return [.. tipovacs.Select(t => new MedicamentoDTO
             {
                 IdMedicamento = t.IdMedicamento,
                 NombreMedicamento = t.NombreMedicamento,
                 CantidadRestante = t.CantidadRestante
-            }).ToList();
+            })];
         }
         public async Task<bool> UpdateAsync(MedicamentoDTO dto)
         {
@@ -60,7 +57,7 @@ namespace ServiciosApp
             {
                 return false;
             }
-            Medicamento med = new Medicamento(dto.IdMedicamento, dto.NombreMedicamento, dto.CantidadRestante);
+            Medicamento med = new(dto.IdMedicamento, dto.NombreMedicamento, dto.CantidadRestante);
             await repo.UpdateAsync(med);
             return true;
         }

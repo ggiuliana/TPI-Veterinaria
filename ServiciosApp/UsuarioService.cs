@@ -11,7 +11,8 @@ namespace ServiciosApp
         private readonly IDuenioRepository repoDuenio;
         private readonly IVeterinarioRepository repoVeterinario;
 
-        public UsuarioService(IUsuarioRepository repo, IDuenioRepository repoDuenio, IVeterinarioRepository repoVeterinario, IRolRepository repoRol)
+        public UsuarioService(
+            IUsuarioRepository repo, IDuenioRepository repoDuenio, IVeterinarioRepository repoVeterinario, IRolRepository repoRol)
         {
             this.repo = repo;
             this.repoDuenio = repoDuenio;
@@ -22,8 +23,7 @@ namespace ServiciosApp
         {
             Persona? personaEncontrada = await repoDuenio.GetAsync(idPersona);
 
-            if (personaEncontrada == null)
-                personaEncontrada = await repoVeterinario.GetAsync(idPersona);
+            personaEncontrada ??= await repoVeterinario.GetAsync(idPersona);
 
             if (personaEncontrada == null)
                 throw new ArgumentException($"No se encontró ningún Dueño ni Veterinario con el ID {idPersona}.");
@@ -40,12 +40,8 @@ namespace ServiciosApp
             if (await repo.PersonaHasUsuarioAsync(dto.IdPersona))
                 throw new ArgumentException($"La persona ya tiene una cuenta de usuario asignada.");
 
-            Rol rol = await repoRol.GetAsync(dto.IdRol);
-
-            if (rol == null)
-                throw new ArgumentException($"No existe el rol asignado.");
-
-            Usuario usuario = new Usuario(0, dto.NombreUsuario, dto.Contrasenia, dto.EstadoUsuario, persona, rol);
+            Rol? rol = await repoRol.GetAsync(dto.IdRol) ?? throw new ArgumentException($"No existe el rol asignado.");
+            Usuario usuario = new(0, dto.NombreUsuario, dto.Contrasenia, dto.EstadoUsuario, persona, rol);
             await repo.AddAsync(usuario);
 
             dto.IdUsuario = usuario.IdUsuario;
@@ -77,7 +73,7 @@ namespace ServiciosApp
         public async Task<IEnumerable<UsuarioDTO>> GetAllAsync()
         {
             IEnumerable<Usuario> usuarios = await repo.GetAllAsync();
-            return usuarios.Select(usuario => new UsuarioDTO
+            return [.. usuarios.Select(usuario => new UsuarioDTO
             {
                 IdUsuario = usuario.IdUsuario,
                 NombreUsuario = usuario.NombreUsuario,
@@ -85,14 +81,14 @@ namespace ServiciosApp
                 EstadoUsuario = usuario.EstadoUsuario,
                 FechaAlta = usuario.FechaAlta,
                 IdPersona = usuario.Persona?.IdPersona ?? 0
-            }).ToList();
+            })];
         }
         public async Task<bool> UpdateAsync(UsuarioDTO dto)
         {
             if (await repo.NombreUsuarioExistsAsync(dto.NombreUsuario))
                 throw new ArgumentException($"Ya existe un usuario con el nombre de usuario '{dto.NombreUsuario}'.");
             
-            Usuario usuario = new Usuario(dto.IdUsuario, dto.NombreUsuario, dto.Contrasenia, dto.EstadoUsuario);
+            Usuario usuario = new(dto.IdUsuario, dto.NombreUsuario, dto.Contrasenia, dto.EstadoUsuario);
             return await repo.UpdateAsync(usuario);
         }
     }

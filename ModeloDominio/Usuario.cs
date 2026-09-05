@@ -10,7 +10,7 @@
         public int? IdPersona { get; private set; }
         public Persona? Persona { get; private set; }
         public int IdRol { get; private set; }
-        public Rol Rol { get; private set; }
+        public Rol? Rol { get; private set; }
 
         public Usuario(int idUsuario, string nombreUsuario, string contrasenia, string estadoUsuario) {
             SetIdUsuario(idUsuario);

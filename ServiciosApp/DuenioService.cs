@@ -8,10 +8,7 @@ namespace ServiciosApp
     {
         private readonly IDuenioRepository repo;
 
-        public DuenioService(IDuenioRepository repo)
-        {
-            this.repo = repo;
-        }
+        public DuenioService(IDuenioRepository repo) => this.repo = repo;
         public async Task<DuenioDTO> AddAsync(DuenioDTO dto)
         {
             if (await repo.MailExistsAsync(dto.Mail))
@@ -50,7 +47,7 @@ namespace ServiciosApp
         public async Task<IEnumerable<DuenioDTO>> GetAllAsync()
         {
             IEnumerable<Duenio> duenios = await repo.GetAllAsync();
-            return duenios.Select(duenio => new DuenioDTO
+            return [.. duenios.Select(duenio => new DuenioDTO
             {
                 IdDuenio = duenio.IdPersona,
                 NombreDuenio = duenio.NombrePersona,
@@ -59,7 +56,7 @@ namespace ServiciosApp
                 Mail = duenio.Mail,
                 Dni = duenio.Dni,
                 Direccion = duenio.Direccion
-            }).ToList();
+            })];
         }
         public async Task<bool> UpdateAsync(DuenioDTO dto)
         {

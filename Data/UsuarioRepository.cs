@@ -8,10 +8,7 @@ namespace ServiciosApp
     {
         private readonly VeterinariaContext context;
 
-        public UsuarioRepository(VeterinariaContext context)
-        {
-            this.context = context;
-        }
+        public UsuarioRepository(VeterinariaContext context) => this.context = context;
 
         public async Task AddAsync(Usuario usuario)
         {

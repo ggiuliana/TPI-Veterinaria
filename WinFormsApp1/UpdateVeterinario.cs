@@ -16,7 +16,7 @@ namespace WinFormsApp1
             Load += UpdateVeterinario_Load;
         }
 
-        private async void UpdateVeterinario_Load(object sender, EventArgs e)
+        private async void UpdateVeterinario_Load(object? sender, EventArgs e)
         {
             await CargarVeterinariosSeguroAsync();
         }
@@ -52,7 +52,7 @@ namespace WinFormsApp1
             }
         }
 
-        private async void SeleccionVet_SelectedIndexChanged(object sender, EventArgs e)
+        private async void SeleccionVet_SelectedIndexChanged(object? sender, EventArgs e)
         {
             if (SeleccionVet.SelectedValue == null)
                 return;

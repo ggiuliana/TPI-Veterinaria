@@ -9,8 +9,8 @@ namespace ModeloDominio
     public class TipoVacuna
     {
         public int IdTipoVacuna { get; private set; }
-        public string NombreTipoVacuna { get; private set; }
-        public string DescripcionTipoVacuna { get; private set; }
+        public string NombreTipoVacuna { get; private set; } = string.Empty;
+        public string DescripcionTipoVacuna { get; private set; } = string.Empty;
         public TipoVacuna() { }
         public TipoVacuna(int idTipoVacuna, string nombreTipoVacuna, string descripcionTipoVacuna) {
             SetIdTipoVacuna(idTipoVacuna);

@@ -9,7 +9,7 @@ namespace ModeloDominio
     public class Medicamento
     {
         public int IdMedicamento { get; private set; }
-        public string NombreMedicamento { get; private set; }
+        public string NombreMedicamento { get; private set; } = string.Empty;
         public int CantidadRestante { get; private set; }
         public Medicamento() { }
         public Medicamento(int idMedicamento, string nombreMedicamento, int cantidadRestante) {

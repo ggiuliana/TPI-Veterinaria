@@ -107,7 +107,7 @@
         }
 
         #endregion
-        private ComboBox SeleccionVet;
+        
         private Label label2;
         private Label label1;
         private ComboBox SeleccionEstudio;

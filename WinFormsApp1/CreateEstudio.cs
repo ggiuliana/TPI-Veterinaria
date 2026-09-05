@@ -7,10 +7,7 @@ namespace WinFormsApp1
 {
     public partial class CreateEstudio : Form
     {
-        public CreateEstudio()
-        {
-            InitializeComponent();
-        }
+        public CreateEstudio() => InitializeComponent();
 
         private async void Guardar_Click(object sender, EventArgs e)
         {

@@ -31,7 +31,7 @@
             components = new System.ComponentModel.Container();
             veterinarioServiceBindingSource = new BindingSource(components);
             Create = new Button();
-            Update = new Button();
+            Modificar = new Button();
             Delete = new Button();
             Buscar = new Button();
             idVet = new TextBox();
@@ -45,31 +45,34 @@
             // Create
             // 
             Create.Cursor = Cursors.Hand;
-            Create.Location = new Point(682, 312);
+            Create.Location = new Point(779, 416);
+            Create.Margin = new Padding(3, 4, 3, 4);
             Create.Name = "Create";
-            Create.Size = new Size(75, 23);
+            Create.Size = new Size(86, 31);
             Create.TabIndex = 23;
             Create.Text = "Agregar";
             Create.UseVisualStyleBackColor = true;
             Create.Click += Create_Click;
             // 
-            // Update
+            // Modificar
             // 
-            Update.Cursor = Cursors.Hand;
-            Update.Location = new Point(601, 312);
-            Update.Name = "Update";
-            Update.Size = new Size(75, 23);
-            Update.TabIndex = 22;
-            Update.Text = "Modificar";
-            Update.UseVisualStyleBackColor = true;
-            Update.Click += Update_Click;
+            Modificar.Cursor = Cursors.Hand;
+            Modificar.Location = new Point(687, 416);
+            Modificar.Margin = new Padding(3, 4, 3, 4);
+            Modificar.Name = "Modificar";
+            Modificar.Size = new Size(86, 31);
+            Modificar.TabIndex = 22;
+            Modificar.Text = "Modificar";
+            Modificar.UseVisualStyleBackColor = true;
+            Modificar.Click += Update_Click;
             // 
             // Delete
             // 
             Delete.Cursor = Cursors.Hand;
-            Delete.Location = new Point(43, 312);
+            Delete.Location = new Point(49, 416);
+            Delete.Margin = new Padding(3, 4, 3, 4);
             Delete.Name = "Delete";
-            Delete.Size = new Size(75, 23);
+            Delete.Size = new Size(86, 31);
             Delete.TabIndex = 21;
             Delete.Text = "Eliminar";
             Delete.UseVisualStyleBackColor = true;
@@ -78,9 +81,10 @@
             // Buscar
             // 
             Buscar.Cursor = Cursors.Hand;
-            Buscar.Location = new Point(142, 39);
+            Buscar.Location = new Point(162, 52);
+            Buscar.Margin = new Padding(3, 4, 3, 4);
             Buscar.Name = "Buscar";
-            Buscar.Size = new Size(75, 23);
+            Buscar.Size = new Size(86, 31);
             Buscar.TabIndex = 20;
             Buscar.Text = "Buscar";
             Buscar.UseVisualStyleBackColor = true;
@@ -88,18 +92,19 @@
             // 
             // idVet
             // 
-            idVet.Location = new Point(68, 39);
+            idVet.Location = new Point(78, 52);
+            idVet.Margin = new Padding(3, 4, 3, 4);
             idVet.Name = "idVet";
-            idVet.Size = new Size(68, 23);
+            idVet.Size = new Size(77, 27);
             idVet.TabIndex = 19;
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(43, 41);
+            label2.Location = new Point(49, 55);
             label2.Name = "label2";
-            label2.Size = new Size(19, 17);
+            label2.Size = new Size(25, 23);
             label2.TabIndex = 18;
             label2.Text = "Id";
             // 
@@ -107,9 +112,9 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(333, 17);
+            label1.Location = new Point(381, 23);
             label1.Name = "label1";
-            label1.Size = new Size(108, 20);
+            label1.Size = new Size(136, 25);
             label1.TabIndex = 17;
             label1.Text = "VETERINARIOS";
             // 
@@ -118,25 +123,28 @@
             dataGridView1.AutoGenerateColumns = false;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.DataSource = veterinarioServiceBindingSource;
-            dataGridView1.Location = new Point(43, 68);
+            dataGridView1.Location = new Point(49, 91);
+            dataGridView1.Margin = new Padding(3, 4, 3, 4);
             dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(714, 229);
+            dataGridView1.RowHeadersWidth = 51;
+            dataGridView1.Size = new Size(816, 305);
             dataGridView1.TabIndex = 16;
             // 
             // VeterinarioCRUD
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(Create);
-            Controls.Add(Update);
+            Controls.Add(Modificar);
             Controls.Add(Delete);
             Controls.Add(Buscar);
             Controls.Add(idVet);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(dataGridView1);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "VeterinarioCRUD";
-            Size = new Size(800, 352);
+            Size = new Size(914, 469);
             Load += VeterinarioCRUD_Load;
             ((System.ComponentModel.ISupportInitialize)veterinarioServiceBindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
@@ -147,7 +155,7 @@
         #endregion
         private BindingSource veterinarioServiceBindingSource;
         private Button Create;
-        private Button Update;
+        private Button Modificar;
         private Button Delete;
         private Button Buscar;
         private TextBox idVet;

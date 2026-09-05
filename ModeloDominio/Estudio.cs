@@ -9,8 +9,8 @@ namespace ModeloDominio
     public class Estudio
     {
         public int IdEstudio { get; private set; }
-        public string NombreEstudio { get; private set; }
-        public string DescripcionEstudio { get; private set; }
+        public string NombreEstudio { get; private set; } = string.Empty;
+        public string DescripcionEstudio { get; private set; } = string.Empty;
 
         public Estudio() { }
         public Estudio(int idEstudio, string nombreEstudio, string descripcionEstudio) {

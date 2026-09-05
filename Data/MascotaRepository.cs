@@ -12,9 +12,7 @@ namespace Data
     {
         private readonly VeterinariaContext context;
 
-        public MascotaRepository(VeterinariaContext context) {
-            this.context = context;
-        }
+        public MascotaRepository(VeterinariaContext context) => this.context = context;
 
         public async Task AddAsync(Mascota mascota, Duenio duenio)
         {

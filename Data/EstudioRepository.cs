@@ -12,10 +12,7 @@ namespace Data
     {
         private readonly VeterinariaContext context;
 
-        public EstudioRepository(VeterinariaContext context)
-        {
-            this.context = context;
-        }
+        public EstudioRepository(VeterinariaContext context) => this.context = context;
 
         public async Task AddAsync(Estudio estudio) {
             context.Estudios.Add(estudio);

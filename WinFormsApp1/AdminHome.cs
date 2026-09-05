@@ -14,11 +14,7 @@ namespace WinFormsApp1
     public partial class AdminHome : Form
     {
 
-        public AdminHome()
-        {
-            InitializeComponent();
-
-        }
+        public AdminHome() => InitializeComponent();
 
         private void VeterinariosCRUD_Click(object sender, EventArgs e)
         {
@@ -33,17 +29,6 @@ namespace WinFormsApp1
 
             panelContenido.Controls.Add(crud);
         }
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void Estudios_Click(object sender, EventArgs e)
         {
             MostrarCRUD(new EstudioCRUD());

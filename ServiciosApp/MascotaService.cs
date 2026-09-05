@@ -22,11 +22,7 @@ namespace ServiciosApp
 
         public async Task<MascotaDTO> AddAsync(MascotaDTO dto)
         {
-            var duenio = await repoDuenio.GetAsync(dto.IdDuenio);
-            if (duenio == null)
-            {
-                throw new ArgumentException("Dueño no encontrado");
-            }
+            var duenio = await repoDuenio.GetAsync(dto.IdDuenio) ?? throw new ArgumentException("Dueño no encontrado");
             Mascota mascota = new Mascota(
                 0,
                 dto.NombreMascota,
@@ -69,7 +65,7 @@ namespace ServiciosApp
         public async Task<IEnumerable<MascotaDTO>> GetAllAsync()
         {
             IEnumerable<Mascota> mascotas = await repo.GetAllAsync();
-            return mascotas.Select(mascota => new MascotaDTO
+            return [.. mascotas.Select(mascota => new MascotaDTO
             {
                 IdMascota = mascota.IdMascota,
                 NombreMascota = mascota.NombreMascota,
@@ -79,18 +75,14 @@ namespace ServiciosApp
                 Sexo = mascota.Sexo,
                 FechaNac = mascota.FechaNac,
                 IdDuenio = mascota.Duenio?.IdPersona ?? 0
-            }).ToList();
+            })];
         }
 
         public async Task<IEnumerable<MascotaDTO>> GetAllByDuenioAsync(int idDuenio)
         {
-            var duenio = await repoDuenio.GetAsync(idDuenio);
-            if (duenio == null)
-            {
-                throw new ArgumentException("Dueño no encontrado");
-            }
+            var duenio = await repoDuenio.GetAsync(idDuenio) ?? throw new ArgumentException("Dueño no encontrado");
             IEnumerable<Mascota> mascotas = await repo.GetAllByDuenioAsync(duenio);
-            return mascotas.Select(mascota => new MascotaDTO
+            return [.. mascotas.Select(mascota => new MascotaDTO
             {
                 IdMascota = mascota.IdMascota,
                 NombreMascota = mascota.NombreMascota,
@@ -100,18 +92,13 @@ namespace ServiciosApp
                 Sexo = mascota.Sexo,
                 FechaNac = mascota.FechaNac,
                 IdDuenio = mascota.Duenio?.IdPersona ?? 0   
-            }).ToList();
+            })];
         }
 
         public async Task<bool> UpdateAsync(MascotaDTO dto)
         {
 
-            var duenio = await repoDuenio.GetAsync(dto.IdDuenio);
-
-            if (duenio == null)
-            {
-                throw new ArgumentException("Dueño no encontrado");
-            }
+            var duenio = await repoDuenio.GetAsync(dto.IdDuenio) ?? throw new ArgumentException("Dueño no encontrado");
             Mascota mascota = new Mascota(
                 dto.IdMascota,
                 dto.NombreMascota,

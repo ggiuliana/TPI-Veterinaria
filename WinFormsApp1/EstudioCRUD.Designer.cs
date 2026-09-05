@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             Create = new Button();
-            Update = new Button();
+            Modificar = new Button();
             Delete = new Button();
             Buscar = new Button();
             idEstudio = new TextBox();
@@ -42,31 +42,34 @@
             // Create
             // 
             Create.Cursor = Cursors.Hand;
-            Create.Location = new Point(682, 312);
+            Create.Location = new Point(779, 416);
+            Create.Margin = new Padding(3, 4, 3, 4);
             Create.Name = "Create";
-            Create.Size = new Size(75, 23);
+            Create.Size = new Size(86, 31);
             Create.TabIndex = 31;
             Create.Text = "Agregar";
             Create.UseVisualStyleBackColor = true;
             Create.Click += Create_Click;
             // 
-            // Update
+            // Modificar
             // 
-            Update.Cursor = Cursors.Hand;
-            Update.Location = new Point(601, 312);
-            Update.Name = "Update";
-            Update.Size = new Size(75, 23);
-            Update.TabIndex = 30;
-            Update.Text = "Modificar";
-            Update.UseVisualStyleBackColor = true;
-            Update.Click += Update_Click;
+            Modificar.Cursor = Cursors.Hand;
+            Modificar.Location = new Point(687, 416);
+            Modificar.Margin = new Padding(3, 4, 3, 4);
+            Modificar.Name = "Modificar";
+            Modificar.Size = new Size(86, 31);
+            Modificar.TabIndex = 30;
+            Modificar.Text = "Modificar";
+            Modificar.UseVisualStyleBackColor = true;
+            Modificar.Click += Update_Click;
             // 
             // Delete
             // 
             Delete.Cursor = Cursors.Hand;
-            Delete.Location = new Point(43, 312);
+            Delete.Location = new Point(49, 416);
+            Delete.Margin = new Padding(3, 4, 3, 4);
             Delete.Name = "Delete";
-            Delete.Size = new Size(75, 23);
+            Delete.Size = new Size(86, 31);
             Delete.TabIndex = 29;
             Delete.Text = "Eliminar";
             Delete.UseVisualStyleBackColor = true;
@@ -75,9 +78,10 @@
             // Buscar
             // 
             Buscar.Cursor = Cursors.Hand;
-            Buscar.Location = new Point(142, 39);
+            Buscar.Location = new Point(162, 52);
+            Buscar.Margin = new Padding(3, 4, 3, 4);
             Buscar.Name = "Buscar";
-            Buscar.Size = new Size(75, 23);
+            Buscar.Size = new Size(86, 31);
             Buscar.TabIndex = 28;
             Buscar.Text = "Buscar";
             Buscar.UseVisualStyleBackColor = true;
@@ -85,18 +89,19 @@
             // 
             // idEstudio
             // 
-            idEstudio.Location = new Point(68, 39);
+            idEstudio.Location = new Point(78, 52);
+            idEstudio.Margin = new Padding(3, 4, 3, 4);
             idEstudio.Name = "idEstudio";
-            idEstudio.Size = new Size(68, 23);
+            idEstudio.Size = new Size(77, 27);
             idEstudio.TabIndex = 27;
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(43, 41);
+            label2.Location = new Point(49, 55);
             label2.Name = "label2";
-            label2.Size = new Size(19, 17);
+            label2.Size = new Size(25, 23);
             label2.TabIndex = 26;
             label2.Text = "Id";
             // 
@@ -104,35 +109,37 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(333, 17);
+            label1.Location = new Point(381, 23);
             label1.Name = "label1";
-            label1.Size = new Size(77, 20);
+            label1.Size = new Size(97, 25);
             label1.TabIndex = 25;
             label1.Text = "ESTUDIOS";
-            label1.Click += label1_Click;
             // 
             // dataGridView1
             // 
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(43, 68);
+            dataGridView1.Location = new Point(49, 91);
+            dataGridView1.Margin = new Padding(3, 4, 3, 4);
             dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(714, 229);
+            dataGridView1.RowHeadersWidth = 51;
+            dataGridView1.Size = new Size(816, 305);
             dataGridView1.TabIndex = 24;
             // 
             // EstudioCRUD
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(Create);
-            Controls.Add(Update);
+            Controls.Add(Modificar);
             Controls.Add(Delete);
             Controls.Add(Buscar);
             Controls.Add(idEstudio);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(dataGridView1);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "EstudioCRUD";
-            Size = new Size(800, 352);
+            Size = new Size(914, 469);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -141,10 +148,9 @@
         #endregion
 
         private Button Create;
-        private Button Update;
+        private Button Modificar;
         private Button Delete;
         private Button Buscar;
-        private TextBox idEstudios;
         private Label label2;
         private Label label1;
         private DataGridView dataGridView1;

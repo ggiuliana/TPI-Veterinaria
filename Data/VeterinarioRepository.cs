@@ -7,10 +7,7 @@ namespace Data
     {
         private readonly VeterinariaContext context;
 
-        public VeterinarioRepository(VeterinariaContext context)
-        {
-            this.context = context;
-        }
+        public VeterinarioRepository(VeterinariaContext context) => this.context = context;
         public async Task AddAsync(Veterinario Veterinario)
         {
             context.Veterinarios.Add(Veterinario);
