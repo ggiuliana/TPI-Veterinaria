@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System.IO;
 using ModeloDominio;
-using System;
 
 namespace Data
 {
@@ -90,9 +88,9 @@ namespace Data
                         NombrePersona = "Gerardo", 
                         Apellido = "Díaz", 
                         Telefono = "341252554", 
-                        Mail = "vet1@veterinaria.com", 
+                        Mail = "gdiaz@veterinaria.com", 
                         Dni = "5125124", 
-                        Direccion = "Calle falsa 123", 
+                        Direccion = "Génova 1344", 
                         Matricula = "AF1124", 
                         Especialidad = "Cardiología" 
                     },
@@ -102,10 +100,10 @@ namespace Data
                         NombrePersona = "Mariana",
                         Apellido = "Locre",
                         Telefono = "341251142",
-                        Mail = "vet2@veterinaria.com",
+                        Mail = "mlocre@veterinaria.com",
                         Dni = "55123142",
-                        Direccion = "Calle falsa 1234",
-                        Matricula = "51w124",
+                        Direccion = "Corrientes 4880",
+                        Matricula = "51W124",
                         Especialidad = "Oncología"
                     }
                     );
@@ -217,7 +215,7 @@ namespace Data
                     new
                     {
                         IdUsuario = 2,
-                        NombreUsuario = "vet1",
+                        NombreUsuario = "vet",
                         Contrasenia = "vet123",
                         EstadoUsuario = "Activo",
                         IdPersona = 1,
@@ -300,7 +298,7 @@ namespace Data
                     new
                     {
                         IdMedicamento = 1,
-                        NombreMedicamento = "Rivotril",
+                        NombreMedicamento = "Albendazol",
                         CantidadRestante = 4
                     });
             });
