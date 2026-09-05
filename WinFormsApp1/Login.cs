@@ -33,9 +33,16 @@ namespace WinFormsApp1
                 {
                     MessageBox.Show("Inicio de sesión correcto.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    AdminHome adminhome = new AdminHome();
-                    adminhome.Show();
+                    AdminHome adminhome = new();
 
+                    adminhome.FormClosed += (s, args) =>
+                    {
+                        this.Show();
+                        nombreusuario.Clear();
+                        contrasenia.Clear();
+                    };
+
+                    adminhome.Show();
                     this.Hide();
                 }
                 else

@@ -13,7 +13,6 @@ namespace WinFormsApp1
 {
     public partial class AdminHome : Form
     {
-
         public AdminHome() => InitializeComponent();
 
         private void VeterinariosCRUD_Click(object sender, EventArgs e)
@@ -32,6 +31,11 @@ namespace WinFormsApp1
         private void Estudios_Click(object sender, EventArgs e)
         {
             MostrarCRUD(new EstudioCRUD());
+        }
+
+        private void LogOut_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
