@@ -28,114 +28,75 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Veterinarios = new Button();
-            Estudios = new Button();
-            panelContenido = new Panel();
-            panel1 = new Panel();
-            LogOut = new Button();
-            label1 = new Label();
-            panel1.SuspendLayout();
+            menuStrip1 = new MenuStrip();
+            vistaToolStripMenuItem = new ToolStripMenuItem();
+            veterinariosToolStripMenuItem = new ToolStripMenuItem();
+            estudiosToolStripMenuItem = new ToolStripMenuItem();
+            cerrarSesiónToolStripMenuItem = new ToolStripMenuItem();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
-            // Veterinarios
+            // menuStrip1
             // 
-            Veterinarios.BackColor = SystemColors.Control;
-            Veterinarios.Cursor = Cursors.Hand;
-            Veterinarios.FlatStyle = FlatStyle.Flat;
-            Veterinarios.Location = new Point(10, 85);
-            Veterinarios.Margin = new Padding(3, 4, 3, 4);
-            Veterinarios.Name = "Veterinarios";
-            Veterinarios.Size = new Size(109, 31);
-            Veterinarios.TabIndex = 1;
-            Veterinarios.Text = "Veterinarios";
-            Veterinarios.UseVisualStyleBackColor = false;
-            Veterinarios.Click += VeterinariosCRUD_Click;
+            menuStrip1.ImageScalingSize = new Size(20, 20);
+            menuStrip1.Items.AddRange(new ToolStripItem[] { vistaToolStripMenuItem, cerrarSesiónToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(981, 28);
+            menuStrip1.TabIndex = 10;
+            menuStrip1.Text = "menuStrip1";
             // 
-            // Estudios
+            // vistaToolStripMenuItem
             // 
-            Estudios.BackColor = SystemColors.ButtonFace;
-            Estudios.Cursor = Cursors.Hand;
-            Estudios.FlatStyle = FlatStyle.Flat;
-            Estudios.ForeColor = SystemColors.ControlText;
-            Estudios.Location = new Point(129, 85);
-            Estudios.Margin = new Padding(3, 4, 3, 4);
-            Estudios.Name = "Estudios";
-            Estudios.Size = new Size(109, 31);
-            Estudios.TabIndex = 6;
-            Estudios.Text = "Estudios";
-            Estudios.UseVisualStyleBackColor = false;
-            Estudios.Click += Estudios_Click;
+            vistaToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { veterinariosToolStripMenuItem, estudiosToolStripMenuItem });
+            vistaToolStripMenuItem.Name = "vistaToolStripMenuItem";
+            vistaToolStripMenuItem.Size = new Size(73, 24);
+            vistaToolStripMenuItem.Text = "Gestión";
             // 
-            // panelContenido
+            // veterinariosToolStripMenuItem
             // 
-            panelContenido.BackColor = SystemColors.Control;
-            panelContenido.Location = new Point(0, 124);
-            panelContenido.Margin = new Padding(3, 4, 3, 4);
-            panelContenido.Name = "panelContenido";
-            panelContenido.Size = new Size(914, 479);
-            panelContenido.TabIndex = 7;
+            veterinariosToolStripMenuItem.Name = "veterinariosToolStripMenuItem";
+            veterinariosToolStripMenuItem.Size = new Size(224, 26);
+            veterinariosToolStripMenuItem.Text = "Veterinarios";
+            veterinariosToolStripMenuItem.Click += VeterinariosToolStripMenuItem_Click;
             // 
-            // panel1
+            // estudiosToolStripMenuItem
             // 
-            panel1.BackColor = SystemColors.ControlLight;
-            panel1.Controls.Add(LogOut);
-            panel1.Controls.Add(Veterinarios);
-            panel1.Controls.Add(label1);
-            panel1.Controls.Add(Estudios);
-            panel1.Dock = DockStyle.Top;
-            panel1.Location = new Point(0, 0);
-            panel1.Margin = new Padding(3, 4, 3, 4);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(914, 123);
-            panel1.TabIndex = 8;
+            estudiosToolStripMenuItem.Name = "estudiosToolStripMenuItem";
+            estudiosToolStripMenuItem.Size = new Size(224, 26);
+            estudiosToolStripMenuItem.Text = "Estudios";
+            estudiosToolStripMenuItem.Click += EstudiosToolStripMenuItem_Click;
             // 
-            // LogOut
+            // cerrarSesiónToolStripMenuItem
             // 
-            LogOut.BackColor = SystemColors.GradientActiveCaption;
-            LogOut.Cursor = Cursors.Hand;
-            LogOut.FlatStyle = FlatStyle.Popup;
-            LogOut.ForeColor = SystemColors.ControlText;
-            LogOut.Location = new Point(791, 82);
-            LogOut.Margin = new Padding(3, 4, 3, 4);
-            LogOut.Name = "LogOut";
-            LogOut.Size = new Size(109, 29);
-            LogOut.TabIndex = 8;
-            LogOut.Text = "Cerrar Sesión";
-            LogOut.UseVisualStyleBackColor = false;
-            LogOut.Click += LogOut_Click;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(5, 5);
-            label1.Name = "label1";
-            label1.Size = new Size(257, 50);
-            label1.TabIndex = 7;
-            label1.Text = "Administrador";
+            cerrarSesiónToolStripMenuItem.Name = "cerrarSesiónToolStripMenuItem";
+            cerrarSesiónToolStripMenuItem.Size = new Size(110, 24);
+            cerrarSesiónToolStripMenuItem.Text = "Cerrar Sesión";
+            cerrarSesiónToolStripMenuItem.Click += LogOut_Click;
             // 
             // AdminHome
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(914, 600);
-            Controls.Add(panelContenido);
-            Controls.Add(panel1);
+            ClientSize = new Size(981, 632);
+            Controls.Add(menuStrip1);
+            IsMdiContainer = true;
+            MainMenuStrip = menuStrip1;
             Margin = new Padding(3, 4, 3, 4);
             Name = "AdminHome";
             Text = "  ";
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
+            WindowState = FormWindowState.Maximized;
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
-
-        private Button Veterinarios;
-        private Button Estudios;
-        private Panel panelContenido;
-        private Panel panel1;
-        private Label label1;
-        private Button LogOut;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem vistaToolStripMenuItem;
+        private ToolStripMenuItem veterinariosToolStripMenuItem;
+        private ToolStripMenuItem estudiosToolStripMenuItem;
+        private ToolStripMenuItem cerrarSesiónToolStripMenuItem;
     }
 }

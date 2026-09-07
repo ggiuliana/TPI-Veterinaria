@@ -10,9 +10,10 @@ namespace API.Clients
 
         private static HttpClient CreateHttpClient()
         {
-            var httpClient = new HttpClient();
-
-            httpClient.BaseAddress = new Uri("http://localhost:5124/");
+            var httpClient = new HttpClient
+            {
+                BaseAddress = new Uri("http://localhost:5124/")
+            };
 
             httpClient.DefaultRequestHeaders.Accept.Clear();
             httpClient.DefaultRequestHeaders.Accept.Add(

@@ -29,10 +29,11 @@ namespace WinFormsApp1
 
                 dataGridView1.AutoGenerateColumns = true;
                 dataGridView1.DataSource = estudios;
-            
+
                 dataGridView1.Columns["IdEstudio"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                dataGridView1.Columns["NombreEstudio"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                dataGridView1.Columns["DescripcionEstudio"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dataGridView1.Columns["IdEstudio"].HeaderText = "ID";
+                dataGridView1.Columns["NombreEstudio"].HeaderText = "Nombre";
+                dataGridView1.Columns["DescripcionEstudio"].HeaderText = "Descripción";
             }
             catch (Exception ex)
             {
@@ -42,7 +43,6 @@ namespace WinFormsApp1
 
         private async void Buscar_Click(object sender, EventArgs e)
         {
-            // Nota: Asegúrate de que el TextBox de búsqueda se llame "idEstudio"
             if (string.IsNullOrWhiteSpace(idEstudio.Text))
             {
                 await CargarEstudiosSeguroAsync();
@@ -77,7 +77,6 @@ namespace WinFormsApp1
 
         private async void Delete_Click(object? sender, EventArgs e)
         {
-            // Necesitarás crear el formulario DeleteEstudio
             using var form = new DeleteEstudio();
             if (form.ShowDialog() == DialogResult.OK)
             {
@@ -87,7 +86,6 @@ namespace WinFormsApp1
 
         private async void Update_Click(object sender, EventArgs e)
         {
-            // Necesitarás crear el formulario UpdateEstudio
             using var form = new UpdateEstudio();
             if (form.ShowDialog() == DialogResult.OK)
             {
@@ -97,7 +95,6 @@ namespace WinFormsApp1
 
         private async void Create_Click(object sender, EventArgs e)
         {
-            // Necesitarás crear el formulario CreateEstudio
             using var form = new CreateEstudio();
             if (form.ShowDialog() == DialogResult.OK)
             {

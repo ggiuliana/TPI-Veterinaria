@@ -15,8 +15,16 @@ namespace Data
         public DbSet<Estudio> Estudios { get; set; } = null!;
         public DbSet<TipoVacuna> TipoVacunas { get; set; } = null!;
         public DbSet<Medicamento> Medicamentos { get; set; } = null!;
-        public VeterinariaContext(DbContextOptions<VeterinariaContext> options) : base(options) => this.Database.EnsureCreated();
-        internal VeterinariaContext() => this.Database.EnsureCreated();
+        public VeterinariaContext(DbContextOptions<VeterinariaContext> options) : base(options)
+        {
+            //this.Database.EnsureDeleted();
+            this.Database.EnsureCreated();
+        }
+        internal VeterinariaContext()
+        {
+            //this.Database.EnsureDeleted();
+            this.Database.EnsureCreated();
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

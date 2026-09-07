@@ -44,6 +44,7 @@
             // 
             // Create
             // 
+            Create.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             Create.Cursor = Cursors.Hand;
             Create.Location = new Point(779, 416);
             Create.Margin = new Padding(3, 4, 3, 4);
@@ -56,6 +57,7 @@
             // 
             // Modificar
             // 
+            Modificar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             Modificar.Cursor = Cursors.Hand;
             Modificar.Location = new Point(687, 416);
             Modificar.Margin = new Padding(3, 4, 3, 4);
@@ -68,6 +70,7 @@
             // 
             // Delete
             // 
+            Delete.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             Delete.Cursor = Cursors.Hand;
             Delete.Location = new Point(49, 416);
             Delete.Margin = new Padding(3, 4, 3, 4);
@@ -112,7 +115,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(381, 23);
+            label1.Location = new Point(745, 23);
             label1.Name = "label1";
             label1.Size = new Size(136, 25);
             label1.TabIndex = 17;
@@ -120,7 +123,9 @@
             // 
             // dataGridView1
             // 
+            dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView1.AutoGenerateColumns = false;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.DataSource = veterinarioServiceBindingSource;
             dataGridView1.Location = new Point(49, 91);

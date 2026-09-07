@@ -41,6 +41,7 @@
             // 
             // Create
             // 
+            Create.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             Create.Cursor = Cursors.Hand;
             Create.Location = new Point(779, 416);
             Create.Margin = new Padding(3, 4, 3, 4);
@@ -53,6 +54,7 @@
             // 
             // Modificar
             // 
+            Modificar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             Modificar.Cursor = Cursors.Hand;
             Modificar.Location = new Point(687, 416);
             Modificar.Margin = new Padding(3, 4, 3, 4);
@@ -65,6 +67,7 @@
             // 
             // Delete
             // 
+            Delete.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             Delete.Cursor = Cursors.Hand;
             Delete.Location = new Point(49, 416);
             Delete.Margin = new Padding(3, 4, 3, 4);
@@ -107,16 +110,20 @@
             // 
             // label1
             // 
+            label1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(381, 23);
+            label1.Location = new Point(788, 30);
             label1.Name = "label1";
             label1.Size = new Size(97, 25);
             label1.TabIndex = 25;
             label1.Text = "ESTUDIOS";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // dataGridView1
             // 
+            dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Location = new Point(49, 91);
             dataGridView1.Margin = new Padding(3, 4, 3, 4);
@@ -129,17 +136,17 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(label1);
             Controls.Add(Create);
             Controls.Add(Modificar);
             Controls.Add(Delete);
             Controls.Add(Buscar);
             Controls.Add(idEstudio);
             Controls.Add(label2);
-            Controls.Add(label1);
             Controls.Add(dataGridView1);
             Margin = new Padding(3, 4, 3, 4);
             Name = "EstudioCRUD";
-            Size = new Size(914, 469);
+            Size = new Size(927, 526);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();
