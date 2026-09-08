@@ -35,20 +35,22 @@
             // 
             veterinariocrud1.Dock = DockStyle.Fill;
             veterinariocrud1.Location = new Point(0, 0);
-            veterinariocrud1.Margin = new Padding(3, 4, 3, 4);
             veterinariocrud1.Name = "veterinariocrud1";
-            veterinariocrud1.Size = new Size(897, 473);
+            veterinariocrud1.Size = new Size(1087, 544);
             veterinariocrud1.TabIndex = 1;
+            veterinariocrud1.Load += veterinariocrud1_Load;
             // 
             // FormVeterinarioCRUD
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(897, 473);
+            ClientSize = new Size(1087, 544);
             Controls.Add(veterinariocrud1);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "FormVeterinarioCRUD";
             Text = "FormVeterinarioCRUD";
             WindowState = FormWindowState.Maximized;
+            Load += FormVeterinarioCRUD_Load_1;
             ResumeLayout(false);
         }
 

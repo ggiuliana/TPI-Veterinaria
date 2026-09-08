@@ -78,31 +78,71 @@ namespace WinFormsApp1
             }
         }
 
-        private async void Delete_Click(object sender, EventArgs e)
+        private void Delete_Click(object sender, EventArgs e)
         {
-            using var form = new DeleteVeterinario();
-            if (form.ShowDialog() == DialogResult.OK)
+            DeleteVeterinario formCrear = new DeleteVeterinario();
+            Form formPadre = this.FindForm().MdiParent;
+
+            formCrear.MdiParent = formPadre;
+
+            formCrear.StartPosition = FormStartPosition.Manual;
+
+            formCrear.Location = new Point(
+                (formPadre.ClientSize.Width - formCrear.Width) / 2,
+                (formPadre.ClientSize.Height - formCrear.Height) / 2
+            );
+            formCrear.FormClosed += async (s, args) =>
             {
                 await CargarVeterinariosSeguroAsync();
-            }
+            };
+            formCrear.Show();
         }
 
-        private async void Update_Click(object sender, EventArgs e)
+        private void Update_Click(object sender, EventArgs e)
         {
-            using var form = new UpdateVeterinario();
-            if (form.ShowDialog() == DialogResult.OK)
+            UpdateVeterinario formCrear = new UpdateVeterinario();
+            Form formPadre = this.FindForm().MdiParent;
+
+            formCrear.MdiParent = formPadre;
+
+            formCrear.StartPosition = FormStartPosition.Manual;
+
+            formCrear.Location = new Point(
+                (formPadre.ClientSize.Width - formCrear.Width) / 2,
+                (formPadre.ClientSize.Height - formCrear.Height) / 2
+            );
+
+            formCrear.FormClosed += async (s, args) =>
             {
                 await CargarVeterinariosSeguroAsync();
-            }
+            };
+            formCrear.Show();
         }
 
-        private async void Create_Click(object sender, EventArgs e)
+        private void Create_Click(object sender, EventArgs e)
         {
-            using var form = new CreateVeterinario();
-            if (form.ShowDialog() == DialogResult.OK)
+            CreateVeterinario formCrear = new CreateVeterinario();
+            Form formPadre = this.FindForm().MdiParent;
+
+            formCrear.MdiParent = formPadre;
+
+            formCrear.StartPosition = FormStartPosition.Manual;
+
+            formCrear.Location = new Point(
+                (formPadre.ClientSize.Width - formCrear.Width) / 2,
+                (formPadre.ClientSize.Height - formCrear.Height) / 2
+            );
+
+            formCrear.FormClosed += async (s, args) =>
             {
                 await CargarVeterinariosSeguroAsync();
-            }
+            };
+            formCrear.Show();
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

@@ -35,17 +35,18 @@
             // 
             estudiocrud1.Dock = DockStyle.Fill;
             estudiocrud1.Location = new Point(0, 0);
-            estudiocrud1.Margin = new Padding(3, 4, 3, 4);
             estudiocrud1.Name = "estudiocrud1";
-            estudiocrud1.Size = new Size(893, 467);
+            estudiocrud1.Size = new Size(1067, 538);
             estudiocrud1.TabIndex = 0;
+            estudiocrud1.Load += estudiocrud1_Load;
             // 
             // FormEstudioCRUD
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(893, 467);
+            ClientSize = new Size(1067, 538);
             Controls.Add(estudiocrud1);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "FormEstudioCRUD";
             Text = "FormEstudioCRUD";
             WindowState = FormWindowState.Maximized;

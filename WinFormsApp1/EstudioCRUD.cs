@@ -75,31 +75,77 @@ namespace WinFormsApp1
             }
         }
 
-        private async void Delete_Click(object? sender, EventArgs e)
+        private void Delete_Click(object? sender, EventArgs e)
         {
-            using var form = new DeleteEstudio();
-            if (form.ShowDialog() == DialogResult.OK)
+            DeleteEstudio formCrear = new DeleteEstudio();
+            Form formPadre = this.FindForm().MdiParent;
+
+            formCrear.MdiParent = formPadre;
+
+            formCrear.StartPosition = FormStartPosition.Manual;
+
+            formCrear.Location = new Point(
+                (formPadre.ClientSize.Width - formCrear.Width) / 2,
+                (formPadre.ClientSize.Height - formCrear.Height) / 2
+            );
+
+            formCrear.FormClosed += async (s, args) =>
             {
                 await CargarEstudiosSeguroAsync();
-            }
+            };
+
+
+            formCrear.Show();
         }
 
-        private async void Update_Click(object sender, EventArgs e)
+        private void Update_Click(object sender, EventArgs e)
         {
-            using var form = new UpdateEstudio();
-            if (form.ShowDialog() == DialogResult.OK)
+            UpdateEstudio formCrear = new UpdateEstudio();
+            Form formPadre = this.FindForm().MdiParent;
+
+            formCrear.MdiParent = formPadre;
+
+            formCrear.StartPosition = FormStartPosition.Manual;
+
+            formCrear.Location = new Point(
+                (formPadre.ClientSize.Width - formCrear.Width) / 2,
+                (formPadre.ClientSize.Height - formCrear.Height) / 2
+            );
+
+            formCrear.FormClosed += async (s, args) =>
             {
                 await CargarEstudiosSeguroAsync();
-            }
+            };
+
+
+            formCrear.Show();
         }
 
-        private async void Create_Click(object sender, EventArgs e)
+        private void Create_Click(object sender, EventArgs e)
         {
-            using var form = new CreateEstudio();
-            if (form.ShowDialog() == DialogResult.OK)
+            CreateEstudio formCrear = new CreateEstudio();
+            Form formPadre = this.FindForm().MdiParent;
+
+            formCrear.MdiParent = formPadre;
+
+            formCrear.StartPosition = FormStartPosition.Manual;
+
+            formCrear.Location = new Point(
+                (formPadre.ClientSize.Width - formCrear.Width) / 2,
+                (formPadre.ClientSize.Height - formCrear.Height) / 2
+            );
+
+            formCrear.FormClosed += async (s, args) =>
             {
                 await CargarEstudiosSeguroAsync();
-            }
+            };
+
+            formCrear.Show();
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

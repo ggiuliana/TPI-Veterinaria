@@ -43,10 +43,9 @@
             // 
             Create.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             Create.Cursor = Cursors.Hand;
-            Create.Location = new Point(779, 416);
-            Create.Margin = new Padding(3, 4, 3, 4);
+            Create.Location = new Point(682, 312);
             Create.Name = "Create";
-            Create.Size = new Size(86, 31);
+            Create.Size = new Size(75, 23);
             Create.TabIndex = 31;
             Create.Text = "Agregar";
             Create.UseVisualStyleBackColor = true;
@@ -56,10 +55,9 @@
             // 
             Modificar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             Modificar.Cursor = Cursors.Hand;
-            Modificar.Location = new Point(687, 416);
-            Modificar.Margin = new Padding(3, 4, 3, 4);
+            Modificar.Location = new Point(601, 312);
             Modificar.Name = "Modificar";
-            Modificar.Size = new Size(86, 31);
+            Modificar.Size = new Size(75, 23);
             Modificar.TabIndex = 30;
             Modificar.Text = "Modificar";
             Modificar.UseVisualStyleBackColor = true;
@@ -69,10 +67,9 @@
             // 
             Delete.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             Delete.Cursor = Cursors.Hand;
-            Delete.Location = new Point(49, 416);
-            Delete.Margin = new Padding(3, 4, 3, 4);
+            Delete.Location = new Point(43, 312);
             Delete.Name = "Delete";
-            Delete.Size = new Size(86, 31);
+            Delete.Size = new Size(75, 23);
             Delete.TabIndex = 29;
             Delete.Text = "Eliminar";
             Delete.UseVisualStyleBackColor = true;
@@ -81,10 +78,9 @@
             // Buscar
             // 
             Buscar.Cursor = Cursors.Hand;
-            Buscar.Location = new Point(162, 52);
-            Buscar.Margin = new Padding(3, 4, 3, 4);
+            Buscar.Location = new Point(142, 39);
             Buscar.Name = "Buscar";
-            Buscar.Size = new Size(86, 31);
+            Buscar.Size = new Size(75, 23);
             Buscar.TabIndex = 28;
             Buscar.Text = "Buscar";
             Buscar.UseVisualStyleBackColor = true;
@@ -92,19 +88,18 @@
             // 
             // idEstudio
             // 
-            idEstudio.Location = new Point(78, 52);
-            idEstudio.Margin = new Padding(3, 4, 3, 4);
+            idEstudio.Location = new Point(68, 39);
             idEstudio.Name = "idEstudio";
-            idEstudio.Size = new Size(77, 27);
+            idEstudio.Size = new Size(68, 23);
             idEstudio.TabIndex = 27;
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(49, 55);
+            label2.Location = new Point(43, 41);
             label2.Name = "label2";
-            label2.Size = new Size(25, 23);
+            label2.Size = new Size(19, 17);
             label2.TabIndex = 26;
             label2.Text = "Id";
             // 
@@ -113,9 +108,9 @@
             label1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(788, 30);
+            label1.Location = new Point(690, 22);
             label1.Name = "label1";
-            label1.Size = new Size(97, 25);
+            label1.Size = new Size(77, 20);
             label1.TabIndex = 25;
             label1.Text = "ESTUDIOS";
             label1.TextAlign = ContentAlignment.MiddleCenter;
@@ -125,16 +120,16 @@
             dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(49, 91);
-            dataGridView1.Margin = new Padding(3, 4, 3, 4);
+            dataGridView1.Location = new Point(43, 68);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(816, 305);
+            dataGridView1.Size = new Size(714, 229);
             dataGridView1.TabIndex = 24;
+            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             // 
             // EstudioCRUD
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(label1);
             Controls.Add(Create);
@@ -144,9 +139,8 @@
             Controls.Add(idEstudio);
             Controls.Add(label2);
             Controls.Add(dataGridView1);
-            Margin = new Padding(3, 4, 3, 4);
             Name = "EstudioCRUD";
-            Size = new Size(927, 526);
+            Size = new Size(811, 394);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();

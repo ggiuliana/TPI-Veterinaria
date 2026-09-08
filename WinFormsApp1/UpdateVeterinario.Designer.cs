@@ -50,13 +50,15 @@
             label11 = new Label();
             Cancelar = new Button();
             Guardar = new Button();
+            panel1 = new Panel();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(50, 24);
+            label1.Location = new Point(75, 13);
             label1.Name = "label1";
             label1.Size = new Size(275, 30);
             label1.TabIndex = 0;
@@ -65,7 +67,7 @@
             // SeleccionVet
             // 
             SeleccionVet.FormattingEnabled = true;
-            SeleccionVet.Location = new Point(136, 82);
+            SeleccionVet.Location = new Point(161, 71);
             SeleccionVet.Name = "SeleccionVet";
             SeleccionVet.Size = new Size(189, 23);
             SeleccionVet.TabIndex = 1;
@@ -75,7 +77,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(36, 81);
+            label2.Location = new Point(61, 70);
             label2.Name = "label2";
             label2.Size = new Size(84, 20);
             label2.TabIndex = 2;
@@ -85,7 +87,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(12, 117);
+            label3.Location = new Point(37, 106);
             label3.Name = "label3";
             label3.Size = new Size(357, 20);
             label3.TabIndex = 3;
@@ -93,56 +95,56 @@
             // 
             // especialidadVeterinario
             // 
-            especialidadVeterinario.Location = new Point(116, 408);
+            especialidadVeterinario.Location = new Point(141, 397);
             especialidadVeterinario.Name = "especialidadVeterinario";
             especialidadVeterinario.Size = new Size(228, 23);
             especialidadVeterinario.TabIndex = 34;
             // 
             // matriculaVeterinario
             // 
-            matriculaVeterinario.Location = new Point(116, 375);
+            matriculaVeterinario.Location = new Point(141, 364);
             matriculaVeterinario.Name = "matriculaVeterinario";
             matriculaVeterinario.Size = new Size(228, 23);
             matriculaVeterinario.TabIndex = 33;
             // 
             // dniVeterinario
             // 
-            dniVeterinario.Location = new Point(116, 340);
+            dniVeterinario.Location = new Point(141, 329);
             dniVeterinario.Name = "dniVeterinario";
             dniVeterinario.Size = new Size(228, 23);
             dniVeterinario.TabIndex = 32;
             // 
             // direccionVeterinario
             // 
-            direccionVeterinario.Location = new Point(116, 304);
+            direccionVeterinario.Location = new Point(141, 293);
             direccionVeterinario.Name = "direccionVeterinario";
             direccionVeterinario.Size = new Size(228, 23);
             direccionVeterinario.TabIndex = 31;
             // 
             // mailVeterinario
             // 
-            mailVeterinario.Location = new Point(116, 267);
+            mailVeterinario.Location = new Point(141, 256);
             mailVeterinario.Name = "mailVeterinario";
             mailVeterinario.Size = new Size(228, 23);
             mailVeterinario.TabIndex = 30;
             // 
             // telefonoVeterinario
             // 
-            telefonoVeterinario.Location = new Point(116, 231);
+            telefonoVeterinario.Location = new Point(141, 220);
             telefonoVeterinario.Name = "telefonoVeterinario";
             telefonoVeterinario.Size = new Size(228, 23);
             telefonoVeterinario.TabIndex = 29;
             // 
             // apellidoVeterinario
             // 
-            apellidoVeterinario.Location = new Point(116, 195);
+            apellidoVeterinario.Location = new Point(141, 184);
             apellidoVeterinario.Name = "apellidoVeterinario";
             apellidoVeterinario.Size = new Size(228, 23);
             apellidoVeterinario.TabIndex = 28;
             // 
             // nombreVeterinario
             // 
-            nombreVeterinario.Location = new Point(116, 160);
+            nombreVeterinario.Location = new Point(141, 149);
             nombreVeterinario.Name = "nombreVeterinario";
             nombreVeterinario.Size = new Size(228, 23);
             nombreVeterinario.TabIndex = 27;
@@ -150,7 +152,7 @@
             // label9
             // 
             label9.AutoSize = true;
-            label9.Location = new Point(35, 411);
+            label9.Location = new Point(60, 400);
             label9.Name = "label9";
             label9.Size = new Size(75, 15);
             label9.TabIndex = 26;
@@ -159,7 +161,7 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(35, 378);
+            label8.Location = new Point(60, 367);
             label8.Name = "label8";
             label8.Size = new Size(60, 15);
             label8.TabIndex = 25;
@@ -168,7 +170,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(35, 343);
+            label7.Location = new Point(60, 332);
             label7.Name = "label7";
             label7.Size = new Size(28, 15);
             label7.TabIndex = 24;
@@ -177,7 +179,7 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(35, 307);
+            label6.Location = new Point(60, 296);
             label6.Name = "label6";
             label6.Size = new Size(60, 15);
             label6.TabIndex = 23;
@@ -186,7 +188,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(35, 270);
+            label5.Location = new Point(60, 259);
             label5.Name = "label5";
             label5.Size = new Size(33, 15);
             label5.TabIndex = 22;
@@ -195,16 +197,16 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(35, 234);
+            label4.Location = new Point(60, 223);
             label4.Name = "label4";
-            label4.Size = new Size(55, 15);
+            label4.Size = new Size(56, 15);
             label4.TabIndex = 21;
             label4.Text = "Telefono:";
             // 
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new Point(35, 198);
+            label10.Location = new Point(60, 187);
             label10.Name = "label10";
             label10.Size = new Size(54, 15);
             label10.TabIndex = 20;
@@ -213,7 +215,7 @@
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new Point(35, 163);
+            label11.Location = new Point(60, 152);
             label11.Name = "label11";
             label11.Size = new Size(54, 15);
             label11.TabIndex = 19;
@@ -224,7 +226,7 @@
             Cancelar.BackColor = SystemColors.ControlLight;
             Cancelar.Cursor = Cursors.Hand;
             Cancelar.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Cancelar.Location = new Point(52, 471);
+            Cancelar.Location = new Point(77, 460);
             Cancelar.Name = "Cancelar";
             Cancelar.Size = new Size(123, 39);
             Cancelar.TabIndex = 40;
@@ -238,7 +240,7 @@
             Guardar.Cursor = Cursors.Hand;
             Guardar.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Guardar.ForeColor = SystemColors.ControlText;
-            Guardar.Location = new Point(204, 471);
+            Guardar.Location = new Point(229, 460);
             Guardar.Name = "Guardar";
             Guardar.Size = new Size(123, 39);
             Guardar.TabIndex = 39;
@@ -246,38 +248,48 @@
             Guardar.UseVisualStyleBackColor = false;
             Guardar.Click += Guardar_Click;
             // 
+            // panel1
+            // 
+            panel1.Anchor = AnchorStyles.None;
+            panel1.Controls.Add(Guardar);
+            panel1.Controls.Add(Cancelar);
+            panel1.Controls.Add(label1);
+            panel1.Controls.Add(SeleccionVet);
+            panel1.Controls.Add(especialidadVeterinario);
+            panel1.Controls.Add(label2);
+            panel1.Controls.Add(matriculaVeterinario);
+            panel1.Controls.Add(label3);
+            panel1.Controls.Add(dniVeterinario);
+            panel1.Controls.Add(label11);
+            panel1.Controls.Add(direccionVeterinario);
+            panel1.Controls.Add(label10);
+            panel1.Controls.Add(mailVeterinario);
+            panel1.Controls.Add(label4);
+            panel1.Controls.Add(telefonoVeterinario);
+            panel1.Controls.Add(label5);
+            panel1.Controls.Add(apellidoVeterinario);
+            panel1.Controls.Add(label6);
+            panel1.Controls.Add(nombreVeterinario);
+            panel1.Controls.Add(label7);
+            panel1.Controls.Add(label9);
+            panel1.Controls.Add(label8);
+            panel1.Location = new Point(12, 12);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(421, 514);
+            panel1.TabIndex = 41;
+            // 
             // UpdateVeterinario
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(378, 545);
-            Controls.Add(Cancelar);
-            Controls.Add(Guardar);
-            Controls.Add(especialidadVeterinario);
-            Controls.Add(matriculaVeterinario);
-            Controls.Add(dniVeterinario);
-            Controls.Add(direccionVeterinario);
-            Controls.Add(mailVeterinario);
-            Controls.Add(telefonoVeterinario);
-            Controls.Add(apellidoVeterinario);
-            Controls.Add(nombreVeterinario);
-            Controls.Add(label9);
-            Controls.Add(label8);
-            Controls.Add(label7);
-            Controls.Add(label6);
-            Controls.Add(label5);
-            Controls.Add(label4);
-            Controls.Add(label10);
-            Controls.Add(label11);
-            Controls.Add(label3);
-            Controls.Add(label2);
-            Controls.Add(SeleccionVet);
-            Controls.Add(label1);
+            ClientSize = new Size(452, 545);
+            Controls.Add(panel1);
             Name = "UpdateVeterinario";
             Text = "Form1";
             Load += UpdateVeterinario_Load;
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -304,5 +316,6 @@
         private Label label11;
         private Button Cancelar;
         private Button Guardar;
+        private Panel panel1;
     }
 }

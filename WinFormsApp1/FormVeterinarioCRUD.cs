@@ -16,5 +16,20 @@ namespace WinFormsApp1
         {
             InitializeComponent();
         }
+
+        private void veterinariocrud1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void FormVeterinarioCRUD_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void FormVeterinarioCRUD_Load_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }
