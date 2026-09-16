@@ -71,5 +71,12 @@ namespace ServiciosApp
 
             return await query.AnyAsync();
         }
+
+        public async Task<Usuario?> GetByCredencialesAsync(string nombreUsuario, string contrasenia)
+        {
+            return await context.Usuarios
+                .Include(u => u.Persona)
+                .FirstOrDefaultAsync(u => u.NombreUsuario == nombreUsuario && u.Contrasenia == contrasenia);
+        }
     }
 }

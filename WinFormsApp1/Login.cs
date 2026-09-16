@@ -22,14 +22,8 @@ namespace WinFormsApp1
 
             try
             {
-                var usuarios = await UsuarioClient.GetAllAsync();
-
-                var usuarioEncontrado = usuarios.FirstOrDefault(u =>
-                    u.NombreUsuario == usuario &&
-                    u.Contrasenia == contra
-                );
-
-                if (usuarioEncontrado != null)
+                var usuarioResponse = await UsuarioClient.Login(usuario, contra);
+                if (usuarioResponse != null)
                 {
                     MessageBox.Show("Inicio de sesión correcto.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 

@@ -9,7 +9,7 @@ namespace WebAPI
         {
             app.MapGet("/usuarios/{id}", async (int id, IUsuarioService usuarioService) =>
             {
-                UsuarioDTO? dto = await usuarioService.GetAsync(id);
+                UsuarioResponseDTO? dto = await usuarioService.GetAsync(id);
 
                 if (dto == null)
                 {
@@ -19,7 +19,7 @@ namespace WebAPI
                 return Results.Ok(dto);
             })
             .WithName("GetUsuario")
-            .Produces<UsuarioDTO>(StatusCodes.Status200OK)
+            .Produces<UsuarioCreateDTO>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
             .WithOpenApi();
 
@@ -30,14 +30,14 @@ namespace WebAPI
                 return Results.Ok(dtos);
             })
             .WithName("GetAllUsuarios")
-            .Produces<List<UsuarioDTO>>(StatusCodes.Status200OK)
+            .Produces<List<UsuarioCreateDTO>>(StatusCodes.Status200OK)
             .WithOpenApi();
 
-            app.MapPost("/usuarios", async (UsuarioDTO dto, IUsuarioService usuarioService) =>
+            app.MapPost("/usuarios", async (UsuarioCreateDTO dto, IUsuarioService usuarioService) =>
             {
                 try
                 {
-                    UsuarioDTO usuarioDto = await usuarioService.AddAsync(dto);
+                    UsuarioCreateDTO usuarioDto = await usuarioService.AddAsync(dto);
                     return Results.Created($"/usuarios/{usuarioDto.IdUsuario}", usuarioDto);
                 }
                 catch (ArgumentException ex)
@@ -46,11 +46,11 @@ namespace WebAPI
                 }
             })
             .WithName("AddUsuario")
-            .Produces<UsuarioDTO>(StatusCodes.Status201Created)
+            .Produces<UsuarioCreateDTO>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
             .WithOpenApi();
 
-            app.MapPut("/usuarios", async (UsuarioDTO dto, IUsuarioService usuarioService) =>
+            app.MapPut("/usuarios", async (UsuarioCreateDTO dto, IUsuarioService usuarioService) =>
             {
                 try
                 {
@@ -88,6 +88,19 @@ namespace WebAPI
             .Produces(StatusCodes.Status404NotFound)
             .WithOpenApi();
 
+            app.MapPost("/usuarios/login", async (LoginDTO dto, IUsuarioService usuarioService) =>
+            {
+                var usuario = await usuarioService.Login(dto);
+                if (usuario == null)
+                {
+                    return Results.Unauthorized();
+                }
+                return Results.Ok(usuario);
+            })
+            .WithName("LoginUsuario")
+            .Produces<UsuarioResponseDTO>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .WithOpenApi();
         }
     }
 }

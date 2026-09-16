@@ -35,7 +35,7 @@ namespace WinFormsApp1
                     return;
                 }
 
-                var usuario = new UsuarioDTO
+                var usuario = new UsuarioCreateDTO
                 {
                     IdUsuario = 0,
                     NombreUsuario = nombreUsuario.Text,

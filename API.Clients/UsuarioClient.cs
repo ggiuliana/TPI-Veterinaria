@@ -11,7 +11,7 @@ namespace API.Clients
 {
     public class UsuarioClient : BaseApiClient
     {
-        public static async Task<UsuarioDTO?> GetAsync(int id)
+        public static async Task<UsuarioResponseDTO?> GetAsync(int id)
         {
             var response = await client.GetAsync($"usuarios/{id}");
 
@@ -22,20 +22,20 @@ namespace API.Clients
 
             response.EnsureSuccessStatusCode();
 
-            return await response.Content.ReadFromJsonAsync<UsuarioDTO>();
+            return await response.Content.ReadFromJsonAsync<UsuarioResponseDTO>();
         }
 
-        public static async Task<List<UsuarioDTO>> GetAllAsync()
+        public static async Task<List<UsuarioResponseDTO>> GetAllAsync()
         {
             var response = await client.GetAsync("usuarios");
 
             response.EnsureSuccessStatusCode();
 
-            return await response.Content.ReadFromJsonAsync<List<UsuarioDTO>>()
-                   ?? new List<UsuarioDTO>();
+            return await response.Content.ReadFromJsonAsync<List<UsuarioResponseDTO>>()
+                   ?? new List<UsuarioResponseDTO>();
         }
 
-        public static async Task<UsuarioDTO?> AddAsync(UsuarioDTO dto)
+        public static async Task<UsuarioCreateDTO?> AddAsync(UsuarioCreateDTO dto)
         {
             var response = await client.PostAsJsonAsync("usuarios", dto);
 
@@ -46,10 +46,10 @@ namespace API.Clients
 
             response.EnsureSuccessStatusCode();
 
-            return await response.Content.ReadFromJsonAsync<UsuarioDTO>();
+            return await response.Content.ReadFromJsonAsync<UsuarioCreateDTO>();
         }
 
-        public static async Task<bool> UpdateAsync(UsuarioDTO dto)
+        public static async Task<bool> UpdateAsync(UsuarioCreateDTO dto)
         {
             var response = await client.PutAsJsonAsync("usuarios", dto);
 
@@ -75,6 +75,20 @@ namespace API.Clients
             response.EnsureSuccessStatusCode();
 
             return true;
+        }
+
+        public static async Task<UsuarioResponseDTO?> Login(string nombreUsuario, string contrasenia) { 
+            var logdto = new LoginDTO{ NombreUsuario = nombreUsuario, Contrasenia = contrasenia };
+            var response = await client.PostAsJsonAsync("usuarios/login", logdto);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                return null;
+            }
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<UsuarioResponseDTO>();
         }
     }
 }

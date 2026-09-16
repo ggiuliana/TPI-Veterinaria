@@ -5,10 +5,11 @@ namespace ServiciosApp
 {
     public interface IUsuarioService
     {
-        Task<UsuarioDTO> AddAsync(UsuarioDTO dto);
+        Task<UsuarioCreateDTO> AddAsync(UsuarioCreateDTO dto);
         Task<bool> DeleteAsync(int id);
-        Task<UsuarioDTO?> GetAsync(int id);
-        Task<IEnumerable<UsuarioDTO>> GetAllAsync();
-        Task<bool> UpdateAsync(UsuarioDTO dto);
+        Task<UsuarioResponseDTO?> GetAsync(int id);
+        Task<IEnumerable<UsuarioResponseDTO>> GetAllAsync();
+        Task<bool> UpdateAsync(UsuarioCreateDTO dto);
+        Task<UsuarioResponseDTO?> Login(LoginDTO dto);
     }
 }
