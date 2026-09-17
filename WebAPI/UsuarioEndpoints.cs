@@ -101,6 +101,48 @@ namespace WebAPI
             .Produces<UsuarioResponseDTO>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status401Unauthorized)
             .WithOpenApi();
+
+            app.MapPost("/usuarios/register/vet", async (VeterinarioRegisterDTO dto, IUsuarioService usuarioService) =>
+            {
+                try
+                {
+                    var result = await usuarioService.RegisterVetAsync(dto);
+                    if (!result)
+                    {
+                        return Results.BadRequest(new { error = "No se pudo registrar el veterinario." });
+                    }
+                    return Results.Ok();
+                }
+                catch (ArgumentException ex)
+                {
+                    return Results.BadRequest(new { error = ex.Message });
+                }
+            })
+            .WithName("RegisterVeterinario")
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest)
+            .WithOpenApi();
+
+            app.MapPost("/usuarios/register/duenio", async (DuenioRegisterDTO dto, IUsuarioService usuarioService) =>
+            {
+                try
+                {
+                    var result = await usuarioService.RegisterDuenioAsync(dto);
+                    if (!result)
+                    {
+                        return Results.BadRequest(new { error = "No se pudo registrar el dueño." });
+                    }
+                    return Results.Ok();
+                }
+                catch (ArgumentException ex)
+                {
+                    return Results.BadRequest(new { error = ex.Message });
+                }
+            })
+            .WithName("RegisterDuenio")
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest)
+            .WithOpenApi();
         }
     }
 }

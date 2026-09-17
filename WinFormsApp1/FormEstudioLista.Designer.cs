@@ -1,16 +1,16 @@
 ﻿namespace WinFormsApp1
 {
-    partial class VeterinarioCRUD
+    partial class FormEstudioLista
     {
-        /// <summary> 
-        /// Variable del diseñador necesaria.
+        /// <summary>
+        /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        /// Limpiar los recursos que se estén usando.
+        /// <summary>
+        /// Clean up any resources being used.
         /// </summary>
-        /// <param name="disposing">true si los recursos administrados se deben desechar; false en caso contrario.</param>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,36 +20,45 @@
             base.Dispose(disposing);
         }
 
-        #region Código generado por el Diseñador de componentes
+        #region Windows Form Designer generated code
 
-        /// <summary> 
-        /// Método necesario para admitir el Diseñador. No se puede modificar
-        /// el contenido de este método con el editor de código.
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            veterinarioServiceBindingSource = new BindingSource(components);
+            label1 = new Label();
             Create = new Button();
             Modificar = new Button();
             Delete = new Button();
             Buscar = new Button();
-            idVet = new TextBox();
+            idEstudio = new TextBox();
             label2 = new Label();
-            label1 = new Label();
             dataGridView1 = new DataGridView();
-            ((System.ComponentModel.ISupportInitialize)veterinarioServiceBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
+            // 
+            // label1
+            // 
+            label1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Location = new Point(675, 16);
+            label1.Name = "label1";
+            label1.Size = new Size(77, 20);
+            label1.TabIndex = 33;
+            label1.Text = "ESTUDIOS";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // Create
             // 
             Create.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             Create.Cursor = Cursors.Hand;
-            Create.Location = new Point(682, 312);
+            Create.Location = new Point(712, 384);
             Create.Name = "Create";
             Create.Size = new Size(75, 23);
-            Create.TabIndex = 23;
+            Create.TabIndex = 39;
             Create.Text = "Agregar";
             Create.UseVisualStyleBackColor = true;
             Create.Click += Create_Click;
@@ -58,10 +67,10 @@
             // 
             Modificar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             Modificar.Cursor = Cursors.Hand;
-            Modificar.Location = new Point(601, 312);
+            Modificar.Location = new Point(623, 384);
             Modificar.Name = "Modificar";
             Modificar.Size = new Size(75, 23);
-            Modificar.TabIndex = 22;
+            Modificar.TabIndex = 38;
             Modificar.Text = "Modificar";
             Modificar.UseVisualStyleBackColor = true;
             Modificar.Click += Update_Click;
@@ -70,10 +79,10 @@
             // 
             Delete.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             Delete.Cursor = Cursors.Hand;
-            Delete.Location = new Point(43, 312);
+            Delete.Location = new Point(27, 384);
             Delete.Name = "Delete";
             Delete.Size = new Size(75, 23);
-            Delete.TabIndex = 21;
+            Delete.TabIndex = 37;
             Delete.Text = "Eliminar";
             Delete.UseVisualStyleBackColor = true;
             Delete.Click += Delete_Click;
@@ -81,85 +90,73 @@
             // Buscar
             // 
             Buscar.Cursor = Cursors.Hand;
-            Buscar.Location = new Point(142, 39);
+            Buscar.Location = new Point(127, 33);
             Buscar.Name = "Buscar";
             Buscar.Size = new Size(75, 23);
-            Buscar.TabIndex = 20;
+            Buscar.TabIndex = 36;
             Buscar.Text = "Buscar";
             Buscar.UseVisualStyleBackColor = true;
             Buscar.Click += Buscar_Click;
             // 
-            // idVet
+            // idEstudio
             // 
-            idVet.Location = new Point(68, 39);
-            idVet.Name = "idVet";
-            idVet.Size = new Size(68, 23);
-            idVet.TabIndex = 19;
+            idEstudio.Location = new Point(53, 33);
+            idEstudio.Name = "idEstudio";
+            idEstudio.Size = new Size(68, 23);
+            idEstudio.TabIndex = 35;
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(43, 41);
+            label2.Location = new Point(28, 35);
             label2.Name = "label2";
             label2.Size = new Size(19, 17);
-            label2.TabIndex = 18;
+            label2.TabIndex = 34;
             label2.Text = "Id";
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(652, 17);
-            label1.Name = "label1";
-            label1.Size = new Size(108, 20);
-            label1.TabIndex = 17;
-            label1.Text = "VETERINARIOS";
             // 
             // dataGridView1
             // 
             dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dataGridView1.AutoGenerateColumns = false;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.DataSource = veterinarioServiceBindingSource;
-            dataGridView1.Location = new Point(43, 68);
+            dataGridView1.Location = new Point(28, 62);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(714, 229);
-            dataGridView1.TabIndex = 16;
-            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
+            dataGridView1.Size = new Size(760, 316);
+            dataGridView1.TabIndex = 32;
             // 
-            // VeterinarioCRUD
+            // FormEstudioCRUD
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(821, 429);
+            Controls.Add(label1);
             Controls.Add(Create);
             Controls.Add(Modificar);
             Controls.Add(Delete);
             Controls.Add(Buscar);
-            Controls.Add(idVet);
+            Controls.Add(idEstudio);
             Controls.Add(label2);
-            Controls.Add(label1);
             Controls.Add(dataGridView1);
-            Name = "VeterinarioCRUD";
-            Size = new Size(800, 352);
-            Load += VeterinarioCRUD_Load;
-            ((System.ComponentModel.ISupportInitialize)veterinarioServiceBindingSource).EndInit();
+            Margin = new Padding(3, 2, 3, 2);
+            Name = "FormEstudioCRUD";
+            Text = "FormEstudioCRUD";
+            WindowState = FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-        private BindingSource veterinarioServiceBindingSource;
+
+        private Label label1;
         private Button Create;
         private Button Modificar;
         private Button Delete;
         private Button Buscar;
-        private TextBox idVet;
+        private TextBox idEstudio;
         private Label label2;
-        private Label label1;
         private DataGridView dataGridView1;
     }
 }

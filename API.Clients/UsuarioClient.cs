@@ -90,5 +90,36 @@ namespace API.Clients
 
             return await response.Content.ReadFromJsonAsync<UsuarioResponseDTO>();
         }
+
+        public static async Task<(bool Exito, string Mensaje)> RegisterVetAsync(VeterinarioRegisterDTO dto)
+        {
+            var response = await client.PostAsJsonAsync("usuarios/register/vet", dto);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return (true, "Veterinario registrado correctamente");
+            }
+
+            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                var errorResult = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                return (false, errorResult?.Error ?? "Error de validación al registrar.");
+            }
+
+            return (false, "Error inesperado en el servidor.");
+        }
+
+        public class ErrorResponse { public string Error { get; set; } }
+
+        public static async Task<bool> RegisterDuenioAsync(DuenioRegisterDTO dto)
+        {
+            var response = await client.PostAsJsonAsync("usuarios/register/duenio", dto);
+            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                return false;
+            }
+            response.EnsureSuccessStatusCode();
+            return true;
+        }
     }
 }

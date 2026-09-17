@@ -14,25 +14,7 @@ namespace WinFormsApp1
     public partial class AdminHome : Form
     {
         public AdminHome() => InitializeComponent();
-        /*
-        private void VeterinariosCRUD_Click(object sender, EventArgs e)
-        {
-            MostrarCRUD(new VeterinarioCRUD());
-        }
         
-        private void MostrarCRUD(UserControl crud)
-        {
-            panelContenido.Controls.Clear();
-
-            crud.Dock = DockStyle.Fill;
-
-            panelContenido.Controls.Add(crud);
-        }
-        private void Estudios_Click(object sender, EventArgs e)
-        {
-            MostrarCRUD(new EstudioCRUD());
-        }
-        */
         private void LogOut_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -40,30 +22,38 @@ namespace WinFormsApp1
 
         private void VeterinariosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Application.OpenForms.OfType<FormVeterinarioCRUD>().Any())
+            if (Application.OpenForms.OfType<FormVeterinarioLista>().Any())
             {
-                Application.OpenForms.OfType<FormVeterinarioCRUD>().First().BringToFront();
+                Application.OpenForms.OfType<FormVeterinarioLista>().First().BringToFront();
                 return;
             }
 
-            FormVeterinarioCRUD formVet = new()
+            FormVeterinarioLista formVet = new()
             {
-                MdiParent = this
+                MdiParent = this,
+
+                FormBorderStyle = FormBorderStyle.None,
+
+                Dock = DockStyle.Fill
             };
             formVet.Show();
         }
 
         private void EstudiosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Application.OpenForms.OfType<FormEstudioCRUD>().Any())
+            if (Application.OpenForms.OfType<FormEstudioLista>().Any())
             {
-                Application.OpenForms.OfType<FormEstudioCRUD>().First().BringToFront();
+                Application.OpenForms.OfType<FormEstudioLista>().First().BringToFront();
                 return;
             }
 
-            FormEstudioCRUD formEstudio = new()
+            FormEstudioLista formEstudio = new()
             {
-                MdiParent = this
+                MdiParent = this,
+
+                FormBorderStyle = FormBorderStyle.None,
+
+                Dock = DockStyle.Fill
             };
             formEstudio.Show();
 

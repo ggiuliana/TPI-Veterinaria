@@ -1,5 +1,6 @@
-﻿using DTOs;
-using Data;
+﻿using Data;
+using DTOs;
+using Microsoft.EntityFrameworkCore;
 using ModeloDominio;
 
 namespace ServiciosApp
@@ -7,13 +8,23 @@ namespace ServiciosApp
     public class VeterinarioService : IVeterinarioService
     {
         private readonly IVeterinarioRepository repo;
+        private readonly IUsuarioRepository usuarioRepo;
 
-        public VeterinarioService(IVeterinarioRepository repo) => this.repo = repo;
+        public VeterinarioService(IVeterinarioRepository repo, IUsuarioRepository usuarioRepo)
+        {
+            this.repo = repo;
+            this.usuarioRepo = usuarioRepo;
+        }
+
         public async Task<VeterinarioDTO> AddAsync(VeterinarioDTO dto)
         {
             if (await repo.MailExistsAsync(dto.Mail))
             {
                 throw new ArgumentException($"Ya existe un veterinario con el Email '{dto.Mail}'.");
+            }
+            if (await repo.MatriculaExistsAsync(dto.Matricula))
+            {
+                throw new ArgumentException($"Ya existe un veterinario con la Matrícula '{dto.Matricula}'.");
             }
             Veterinario veterinario = new Veterinario(
                 0, 
@@ -88,6 +99,7 @@ namespace ServiciosApp
         {
             return await repo.MatriculaExistsAsync(matricula, excludeId);
         }
+
     }
 }
 

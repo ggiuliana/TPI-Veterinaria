@@ -14,5 +14,6 @@ namespace Data
         Task<bool> NombreUsuarioExistsAsync(string nombreUsuario, int? excludeId = null);
         Task<bool> PersonaHasUsuarioAsync(int idPersona, int? excludeIdUsuario = null);
         Task<Usuario?> GetByCredencialesAsync(string nombreUsuario, string contrasenia);
+        Task<bool> RegisterAsync(Persona persona, Usuario usuario);
     }
 }

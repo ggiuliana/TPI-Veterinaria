@@ -1,6 +1,6 @@
 ﻿namespace WinFormsApp1
 {
-    partial class CreateVeterinario
+    partial class FormVeterinarioDetalle
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
+            lblTitulo = new Label();
             label2 = new Label();
             label3 = new Label();
             label4 = new Label();
@@ -54,18 +54,20 @@
             Cancelar = new Button();
             Guardar = new Button();
             panel1 = new Panel();
+            pnlUsuario = new Panel();
             panel1.SuspendLayout();
+            pnlUsuario.SuspendLayout();
             SuspendLayout();
             // 
-            // label1
+            // lblTitulo
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(70, 15);
-            label1.Name = "label1";
-            label1.Size = new Size(230, 30);
-            label1.TabIndex = 0;
-            label1.Text = "NUEVO VETERINARIO";
+            lblTitulo.AutoSize = true;
+            lblTitulo.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblTitulo.Location = new Point(70, 15);
+            lblTitulo.Name = "lblTitulo";
+            lblTitulo.Size = new Size(230, 30);
+            lblTitulo.TabIndex = 0;
+            lblTitulo.Text = "NUEVO VETERINARIO";
             // 
             // label2
             // 
@@ -198,7 +200,7 @@
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new Point(52, 361);
+            label10.Location = new Point(50, 14);
             label10.Name = "label10";
             label10.Size = new Size(257, 15);
             label10.TabIndex = 19;
@@ -208,7 +210,7 @@
             // 
             label11.AutoSize = true;
             label11.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label11.Location = new Point(73, 389);
+            label11.Location = new Point(75, 44);
             label11.Name = "label11";
             label11.Size = new Size(225, 30);
             label11.TabIndex = 20;
@@ -217,7 +219,7 @@
             // label12
             // 
             label12.AutoSize = true;
-            label12.Location = new Point(21, 439);
+            label12.Location = new Point(23, 94);
             label12.Name = "label12";
             label12.Size = new Size(96, 15);
             label12.TabIndex = 21;
@@ -226,7 +228,7 @@
             // label13
             // 
             label13.AutoSize = true;
-            label13.Location = new Point(21, 476);
+            label13.Location = new Point(23, 131);
             label13.Name = "label13";
             label13.Size = new Size(70, 15);
             label13.TabIndex = 22;
@@ -234,24 +236,25 @@
             // 
             // nombreUsuario
             // 
-            nombreUsuario.Location = new Point(123, 436);
+            nombreUsuario.Location = new Point(125, 91);
             nombreUsuario.Name = "nombreUsuario";
             nombreUsuario.Size = new Size(207, 23);
             nombreUsuario.TabIndex = 23;
             // 
             // contraseniaUsuario
             // 
-            contraseniaUsuario.Location = new Point(123, 473);
+            contraseniaUsuario.Location = new Point(125, 128);
             contraseniaUsuario.Name = "contraseniaUsuario";
             contraseniaUsuario.Size = new Size(207, 23);
             contraseniaUsuario.TabIndex = 24;
             // 
             // Cancelar
             // 
+            Cancelar.Anchor = AnchorStyles.None;
             Cancelar.BackColor = SystemColors.ControlLight;
             Cancelar.Cursor = Cursors.Hand;
             Cancelar.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Cancelar.Location = new Point(48, 535);
+            Cancelar.Location = new Point(49, 572);
             Cancelar.Name = "Cancelar";
             Cancelar.Size = new Size(123, 39);
             Cancelar.TabIndex = 40;
@@ -261,11 +264,12 @@
             // 
             // Guardar
             // 
+            Guardar.Anchor = AnchorStyles.None;
             Guardar.BackColor = SystemColors.ActiveCaption;
             Guardar.Cursor = Cursors.Hand;
             Guardar.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Guardar.ForeColor = SystemColors.ControlText;
-            Guardar.Location = new Point(200, 535);
+            Guardar.Location = new Point(201, 572);
             Guardar.Name = "Guardar";
             Guardar.Size = new Size(123, 39);
             Guardar.TabIndex = 39;
@@ -276,21 +280,13 @@
             // panel1
             // 
             panel1.Anchor = AnchorStyles.None;
-            panel1.Controls.Add(contraseniaUsuario);
-            panel1.Controls.Add(Cancelar);
-            panel1.Controls.Add(label1);
-            panel1.Controls.Add(Guardar);
+            panel1.Controls.Add(lblTitulo);
             panel1.Controls.Add(label2);
             panel1.Controls.Add(label3);
-            panel1.Controls.Add(nombreUsuario);
             panel1.Controls.Add(label4);
-            panel1.Controls.Add(label13);
             panel1.Controls.Add(label5);
-            panel1.Controls.Add(label12);
             panel1.Controls.Add(label6);
-            panel1.Controls.Add(label11);
             panel1.Controls.Add(label7);
-            panel1.Controls.Add(label10);
             panel1.Controls.Add(label8);
             panel1.Controls.Add(especialidadVeterinario);
             panel1.Controls.Add(label9);
@@ -301,27 +297,46 @@
             panel1.Controls.Add(direccionVeterinario);
             panel1.Controls.Add(telefonoVeterinario);
             panel1.Controls.Add(mailVeterinario);
-            panel1.Location = new Point(12, 12);
+            panel1.Location = new Point(17, 12);
             panel1.Name = "panel1";
-            panel1.Size = new Size(348, 591);
+            panel1.Size = new Size(348, 366);
             panel1.TabIndex = 41;
             // 
-            // CreateVeterinario
+            // pnlUsuario
+            // 
+            pnlUsuario.Anchor = AnchorStyles.None;
+            pnlUsuario.Controls.Add(contraseniaUsuario);
+            pnlUsuario.Controls.Add(label11);
+            pnlUsuario.Controls.Add(label12);
+            pnlUsuario.Controls.Add(label13);
+            pnlUsuario.Controls.Add(nombreUsuario);
+            pnlUsuario.Controls.Add(label10);
+            pnlUsuario.Location = new Point(17, 384);
+            pnlUsuario.Name = "pnlUsuario";
+            pnlUsuario.Size = new Size(348, 167);
+            pnlUsuario.TabIndex = 42;
+            // 
+            // FormVeterinarioDetalle
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(371, 615);
+            ClientSize = new Size(380, 633);
+            Controls.Add(pnlUsuario);
+            Controls.Add(Guardar);
+            Controls.Add(Cancelar);
             Controls.Add(panel1);
-            Name = "CreateVeterinario";
+            Name = "FormVeterinarioDetalle";
             Text = "Form1";
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            pnlUsuario.ResumeLayout(false);
+            pnlUsuario.PerformLayout();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private Label label1;
+        private Label lblTitulo;
         private Label label2;
         private Label label3;
         private Label label4;
@@ -347,5 +362,6 @@
         private Button Cancelar;
         private Button Guardar;
         private Panel panel1;
+        private Panel pnlUsuario;
     }
 }

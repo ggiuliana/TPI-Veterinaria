@@ -11,5 +11,7 @@ namespace ServiciosApp
         Task<IEnumerable<UsuarioResponseDTO>> GetAllAsync();
         Task<bool> UpdateAsync(UsuarioCreateDTO dto);
         Task<UsuarioResponseDTO?> Login(LoginDTO dto);
+        Task<bool> RegisterVetAsync(VeterinarioRegisterDTO dto);
+        Task<bool> RegisterDuenioAsync(DuenioRegisterDTO dto);
     }
 }

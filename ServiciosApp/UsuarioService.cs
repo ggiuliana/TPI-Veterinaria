@@ -108,6 +108,77 @@ namespace ServiciosApp
                 IdPersona = usuEncontrado.Persona?.IdPersona ?? 0
             };
         }
+        public async Task<bool> RegisterVetAsync(VeterinarioRegisterDTO dto)
+        {
+            var vet = dto.veterinario;
+            var usu = dto.usuario;
+
+            if (await repoVeterinario.MailExistsAsync(vet.Mail))
+            {
+                throw new ArgumentException($"Ya existe una persona con el Email '{vet.Mail}'.");
+            }
+
+            if (await repoVeterinario.MatriculaExistsAsync(vet.Matricula))
+            {
+                throw new ArgumentException($"Ya existe un veterinario con la Matrícula '{vet.Matricula}'.");
+            }
+
+            Veterinario veterinario = new Veterinario
+                (
+                0,
+                vet.NombreVeterinario,
+                vet.Apellido,
+                vet.Telefono,
+                vet.Mail,
+                vet.Dni,
+                vet.Direccion,
+                vet.Matricula,
+                vet.Especialidad
+                );
+            Usuario usuario = new Usuario
+                (
+                0,
+                usu.NombreUsuario,
+                usu.Contrasenia,
+                "Activo",
+                veterinario,
+                await repoRol.GetAsync(2)
+                );
+
+            return await repo.RegisterAsync(veterinario, usuario);
+        }
+
+        public async Task<bool> RegisterDuenioAsync(DuenioRegisterDTO dto)
+        {
+            var duenio = dto.duenio;
+            var usu = dto.usuario;
+
+            if (await repoDuenio.MailExistsAsync(duenio.Mail))
+            {
+                throw new ArgumentException($"Ya existe una persona con el Email '{duenio.Mail}'.");
+            }
+
+            Duenio duenioNuevo = new Duenio
+                (
+                0,
+                duenio.NombreDuenio,
+                duenio.Apellido,
+                duenio.Telefono,
+                duenio.Mail,
+                duenio.Dni,
+                duenio.Direccion
+                );
+            Usuario usuario = new Usuario
+                (
+                0,
+                usu.NombreUsuario,
+                usu.Contrasenia,
+                "Activo"
+                );
+
+            return await repo.RegisterAsync(duenioNuevo, usuario);
+        }
+
     }
 }
 

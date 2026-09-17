@@ -78,5 +78,32 @@ namespace ServiciosApp
                 .Include(u => u.Persona)
                 .FirstOrDefaultAsync(u => u.NombreUsuario == nombreUsuario && u.Contrasenia == contrasenia);
         }
+
+        public async Task<bool> RegisterAsync(Persona persona, Usuario usuario)
+        {
+            using var transaction = await context.Database.BeginTransactionAsync();
+
+            try
+            {
+
+                context.Personas.Add(persona);
+                await context.SaveChangesAsync();
+
+                usuario.SetPersona(persona);
+
+                context.Usuarios.Add(usuario);
+                await context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+
+                return false;
+            }
+        }
     }
 }

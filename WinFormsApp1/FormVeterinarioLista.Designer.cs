@@ -1,16 +1,16 @@
 ﻿namespace WinFormsApp1
 {
-    partial class EstudioCRUD
+    partial class FormVeterinarioLista
     {
-        /// <summary> 
-        /// Variable del diseñador necesaria.
+        /// <summary>
+        /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        /// Limpiar los recursos que se estén usando.
+        /// <summary>
+        /// Clean up any resources being used.
         /// </summary>
-        /// <param name="disposing">true si los recursos administrados se deben desechar; false en caso contrario.</param>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,11 +20,11 @@
             base.Dispose(disposing);
         }
 
-        #region Código generado por el Diseñador de componentes
+        #region Windows Form Designer generated code
 
-        /// <summary> 
-        /// Método necesario para admitir el Diseñador. No se puede modificar
-        /// el contenido de este método con el editor de código.
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
@@ -32,7 +32,7 @@
             Modificar = new Button();
             Delete = new Button();
             Buscar = new Button();
-            idEstudio = new TextBox();
+            idVet = new TextBox();
             label2 = new Label();
             label1 = new Label();
             dataGridView1 = new DataGridView();
@@ -43,7 +43,7 @@
             // 
             Create.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             Create.Cursor = Cursors.Hand;
-            Create.Location = new Point(682, 312);
+            Create.Location = new Point(713, 327);
             Create.Name = "Create";
             Create.Size = new Size(75, 23);
             Create.TabIndex = 31;
@@ -55,7 +55,7 @@
             // 
             Modificar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             Modificar.Cursor = Cursors.Hand;
-            Modificar.Location = new Point(601, 312);
+            Modificar.Location = new Point(632, 327);
             Modificar.Name = "Modificar";
             Modificar.Size = new Size(75, 23);
             Modificar.TabIndex = 30;
@@ -67,7 +67,7 @@
             // 
             Delete.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             Delete.Cursor = Cursors.Hand;
-            Delete.Location = new Point(43, 312);
+            Delete.Location = new Point(25, 327);
             Delete.Name = "Delete";
             Delete.Size = new Size(75, 23);
             Delete.TabIndex = 29;
@@ -78,7 +78,7 @@
             // Buscar
             // 
             Buscar.Cursor = Cursors.Hand;
-            Buscar.Location = new Point(142, 39);
+            Buscar.Location = new Point(124, 20);
             Buscar.Name = "Buscar";
             Buscar.Size = new Size(75, 23);
             Buscar.TabIndex = 28;
@@ -86,18 +86,18 @@
             Buscar.UseVisualStyleBackColor = true;
             Buscar.Click += Buscar_Click;
             // 
-            // idEstudio
+            // idVet
             // 
-            idEstudio.Location = new Point(68, 39);
-            idEstudio.Name = "idEstudio";
-            idEstudio.Size = new Size(68, 23);
-            idEstudio.TabIndex = 27;
+            idVet.Location = new Point(50, 20);
+            idVet.Name = "idVet";
+            idVet.Size = new Size(68, 23);
+            idVet.TabIndex = 27;
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(43, 41);
+            label2.Location = new Point(25, 22);
             label2.Name = "label2";
             label2.Size = new Size(19, 17);
             label2.TabIndex = 26;
@@ -105,42 +105,40 @@
             // 
             // label1
             // 
-            label1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(690, 22);
+            label1.Location = new Point(632, 9);
             label1.Name = "label1";
-            label1.Size = new Size(77, 20);
+            label1.Size = new Size(108, 20);
             label1.TabIndex = 25;
-            label1.Text = "ESTUDIOS";
-            label1.TextAlign = ContentAlignment.MiddleCenter;
+            label1.Text = "VETERINARIOS";
             // 
             // dataGridView1
             // 
             dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(43, 68);
+            dataGridView1.Location = new Point(25, 49);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(714, 229);
+            dataGridView1.Size = new Size(763, 262);
             dataGridView1.TabIndex = 24;
-            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             // 
-            // EstudioCRUD
+            // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(label1);
+            ClientSize = new Size(816, 362);
             Controls.Add(Create);
             Controls.Add(Modificar);
             Controls.Add(Delete);
             Controls.Add(Buscar);
-            Controls.Add(idEstudio);
+            Controls.Add(idVet);
             Controls.Add(label2);
+            Controls.Add(label1);
             Controls.Add(dataGridView1);
-            Name = "EstudioCRUD";
-            Size = new Size(811, 394);
+            Name = "Form1";
+            Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -152,9 +150,9 @@
         private Button Modificar;
         private Button Delete;
         private Button Buscar;
+        private TextBox idVet;
         private Label label2;
         private Label label1;
         private DataGridView dataGridView1;
-        private TextBox idEstudio;
     }
 }
