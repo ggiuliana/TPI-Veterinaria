@@ -29,6 +29,8 @@ namespace WinFormsApp1
 
                     AdminHome adminhome = new();
 
+                    adminhome.StartPosition = FormStartPosition.CenterScreen;
+
                     adminhome.FormClosed += (s, args) =>
                     {
                         this.Show();

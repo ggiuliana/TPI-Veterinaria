@@ -45,5 +45,10 @@ namespace Data
             }
             return false;
         }
+
+        public async Task<ICollection<Medicamento>> GetByIdsAsync(IEnumerable<int> ids)
+        {
+            return await context.Medicamentos.Where(m => ids.Contains(m.IdMedicamento)).ToListAsync();
+        }
     }
 }

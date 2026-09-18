@@ -11,6 +11,7 @@ namespace API.Clients
 {
     public class UsuarioClient : BaseApiClient
     {
+        public class ErrorResponse { public string Error { get; set; } }
         public static async Task<UsuarioResponseDTO?> GetAsync(int id)
         {
             var response = await client.GetAsync($"usuarios/{id}");
@@ -108,8 +109,6 @@ namespace API.Clients
 
             return (false, "Error inesperado en el servidor.");
         }
-
-        public class ErrorResponse { public string Error { get; set; } }
 
         public static async Task<bool> RegisterDuenioAsync(DuenioRegisterDTO dto)
         {

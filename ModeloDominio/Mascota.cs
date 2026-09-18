@@ -16,6 +16,7 @@ namespace ModeloDominio
         public char Sexo { get; private set; }
         public DateTime FechaNac { get; private set; }
         public Duenio? Duenio { get; private set; }
+        public ICollection<Vacuna>? Vacunas { get; private set; } = new List<Vacuna>();
 
         public Mascota() { }
         public Mascota(int idMascota, string nombreMascota, string especie, string raza, bool castrado, char sexo, DateTime fechaNac, Duenio duenio)
@@ -79,6 +80,11 @@ namespace ModeloDominio
             if (duenio == null)
                 throw new ArgumentNullException(nameof(duenio), "El dueño no puede ser nulo.");
             Duenio = duenio;
+        }
+
+        public void SetVacunas(ICollection<Vacuna> vacunas)
+        {
+            Vacunas = vacunas;
         }
     }
 }

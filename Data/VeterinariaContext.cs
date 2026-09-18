@@ -15,6 +15,10 @@ namespace Data
         public DbSet<Estudio> Estudios { get; set; } = null!;
         public DbSet<TipoVacuna> TipoVacunas { get; set; } = null!;
         public DbSet<Medicamento> Medicamentos { get; set; } = null!;
+        public DbSet<Turno> Turnos { get; set; } = null!;
+        public DbSet<Consulta> Consultas { get; set; } = null!;
+        public DbSet<MedicamentosUsados> MedicamentosUsados { get; set; } = null!;
+        public DbSet<Vacuna> Vacunas { get; set; } = null!;
         public VeterinariaContext(DbContextOptions<VeterinariaContext> options) : base(options)
         {
             //this.Database.EnsureDeleted();
@@ -49,7 +53,8 @@ namespace Data
                 .HasValue<Veterinario>("Veterinario");
 
                 entity.HasKey(p => p.IdPersona);
-                entity.Property(p => p.IdPersona).ValueGeneratedOnAdd();
+                entity.Property(p => p.IdPersona)
+                .ValueGeneratedOnAdd();
 
                 entity.Property(p => p.NombrePersona)
                 .IsRequired()
@@ -176,6 +181,11 @@ namespace Data
 
                 entity.HasOne(m => m.Duenio)
                 .WithMany();
+
+                entity.HasMany(m => m.Vacunas)
+                .WithOne(v => v.Mascota)
+                .HasForeignKey(v => v.IdMascota)
+                .IsRequired(false);
             });
             modelBuilder.Entity<Usuario>(entity =>
             {
@@ -309,6 +319,94 @@ namespace Data
                         NombreMedicamento = "Albendazol",
                         CantidadRestante = 4
                     });
+            });
+            modelBuilder.Entity<Turno>(entity =>
+            {
+                entity.HasKey(t => t.IdTurno);
+
+                entity.Property(t => t.IdTurno)
+                .ValueGeneratedOnAdd()
+                .IsRequired();
+
+                entity.Property(t => t.FechaTurno)
+                .IsRequired();
+
+                entity.Property(t => t.HoraTurno)
+                .IsRequired();
+
+                entity.Property(t => t.EstadoTurno)
+                .IsRequired()
+                .HasMaxLength(30);
+
+                entity.HasOne(t => t.Mascota)
+                .WithMany()
+                .HasForeignKey(t => t.IdMascota)
+                .IsRequired(false);
+
+                entity.HasOne(t => t.Veterinario)
+                .WithMany()
+                .HasForeignKey(t => t.IdVeterinario)
+                .IsRequired();
+            });
+            modelBuilder.Entity<Consulta>(entity =>
+            {
+                entity.HasKey(c => c.IdConsulta);
+
+                entity.Property(c => c.IdConsulta)
+                .ValueGeneratedOnAdd()
+                .IsRequired();
+
+                entity.Property(c => c.Diagnostico)
+                .IsRequired()
+                .HasMaxLength(200);
+
+                entity.Property(c => c.Tratamiento)
+                .IsRequired()
+                .HasMaxLength(200);
+
+                entity.Property(c => c.Peso)
+                .IsRequired();
+
+                entity.Property(c => c.Observaciones)
+                .HasMaxLength(200);
+
+                entity.HasMany(c => c.Estudios)
+                .WithMany()
+                .UsingEntity("ConsultaEstudio");
+
+                entity.HasMany(c => c.MedicamentosUsados)
+                .WithOne()
+                .HasForeignKey("IdConsulta")
+                .IsRequired(false);
+
+                entity.HasOne(c => c.Turno)
+                .WithMany()
+                .HasForeignKey(c => c.IdTurno)
+                .IsRequired();
+            });
+            modelBuilder.Entity<MedicamentosUsados>(entity =>
+            {
+                entity.HasKey(mu => new { mu.IdConsulta, mu.IdMedicamento });
+
+                entity.Property(mu => mu.CantidadUsada)
+                .IsRequired();
+            });
+            modelBuilder.Entity<Vacuna>(entity =>
+            {
+                entity.HasKey(v => new { v.IdTipoVacuna, v.IdMascota, v.FechaColocacion});
+
+                entity.Property(v => v.FechaColocacion)
+                .IsRequired();
+
+                entity.HasOne(v => v.TipoVacuna)
+                .WithMany()
+                .HasForeignKey(v => v.IdTipoVacuna)
+                .IsRequired();
+
+                entity.HasOne(v => v.Mascota)
+                .WithMany()
+                .HasForeignKey(v => v.IdMascota)
+                .IsRequired();
             });
         }
     }

@@ -46,5 +46,10 @@ namespace Data
             return false;
         }
 
+        public async Task<ICollection<Estudio>> GetByIdListAsync(ICollection<int> ids) 
+        {
+            return await context.Estudios.Where(e => ids.Contains(e.IdEstudio)).ToListAsync();
+        }
+
     }
 }

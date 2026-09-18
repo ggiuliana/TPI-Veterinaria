@@ -14,5 +14,6 @@ namespace Data
         Task<TipoVacuna?> GetAsync(int id);
         Task<IEnumerable<TipoVacuna>> GetAllAsync();
         Task<bool> UpdateAsync(TipoVacuna tipoVacuna);
+        Task<ICollection<TipoVacuna>> GetByIdListAsync(List<int> ids);
     }
 }

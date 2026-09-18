@@ -41,5 +41,9 @@ namespace Data
             }
             return false;
         }
+        public async Task<ICollection<TipoVacuna>> GetByIdListAsync(List<int> ids)
+        {
+            return await context.TipoVacunas.Where(tv => ids.Contains(tv.IdTipoVacuna)).ToListAsync();
+        }
     }
 }

@@ -15,5 +15,6 @@ namespace Data
         Task<Medicamento?> GetAsync(int id);
         Task<IEnumerable<Medicamento>> GetAllAsync();
         Task<bool> UpdateAsync(Medicamento medicamento);
+        Task<ICollection<Medicamento>> GetByIdsAsync(IEnumerable<int> ids);
     }
 }

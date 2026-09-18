@@ -14,9 +14,8 @@ namespace Data
 
         public MascotaRepository(VeterinariaContext context) => this.context = context;
 
-        public async Task AddAsync(Mascota mascota, Duenio duenio)
+        public async Task AddAsync(Mascota mascota)
         {
-            mascota.SetDuenio(duenio);
             context.Mascotas.Add(mascota);
             await context.SaveChangesAsync();
         }

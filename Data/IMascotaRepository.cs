@@ -9,7 +9,7 @@ namespace Data
 {
     public interface IMascotaRepository
     {
-        Task AddAsync(Mascota mascota, Duenio duenio);
+        Task AddAsync(Mascota mascota);
         Task<bool> DeleteAsync(int id);
         Task<Mascota?> GetAsync(int id);
         Task<IEnumerable<Mascota>> GetAllAsync();

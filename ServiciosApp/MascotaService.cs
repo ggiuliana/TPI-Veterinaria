@@ -13,11 +13,13 @@ namespace ServiciosApp
     {
         private readonly IMascotaRepository repo;
         private readonly IDuenioRepository repoDuenio;
+        private readonly ITipoVacunaRepository repoTipoVacuna;
 
-        public MascotaService(IMascotaRepository repo, IDuenioRepository repoDuenio)
+        public MascotaService(IMascotaRepository repo, IDuenioRepository repoDuenio, ITipoVacunaRepository repoTipoVacuna)
         {
             this.repo = repo;
             this.repoDuenio = repoDuenio;
+            this.repoTipoVacuna = repoTipoVacuna;
         }
 
         public async Task<MascotaDTO> AddAsync(MascotaDTO dto)
@@ -32,7 +34,28 @@ namespace ServiciosApp
                 dto.Sexo,
                 dto.FechaNac,
                 duenio);
-            await repo.AddAsync(mascota, duenio);
+            if (dto.Vacunas != null && dto.Vacunas.Any()) 
+            {
+                var vacunasParaGuardar = new List<Vacuna>();
+
+                var idsTipos = dto.Vacunas.Select(v => v.IdTipoVacuna).Distinct().ToList();
+                var tiposVacunaDb = await repoTipoVacuna.GetByIdListAsync(idsTipos);
+
+                foreach (var vacuna in dto.Vacunas)
+                {
+                    var tipoVacuna = tiposVacunaDb.FirstOrDefault(t => t.IdTipoVacuna == vacuna.IdTipoVacuna);
+                    if (tipoVacuna == null)
+                    {
+                        throw new ArgumentException($"Tipo de vacuna con ID {vacuna.IdTipoVacuna} no encontrado");
+                    }
+                    var vacunaNueva = new Vacuna(vacuna.FechaColocacion, tipoVacuna, mascota);
+
+                    vacunasParaGuardar.Add(vacunaNueva);
+                }
+
+                mascota.SetVacunas(vacunasParaGuardar);
+            }
+            await repo.AddAsync(mascota);
             dto.IdMascota = mascota.IdMascota;
             return dto;
         }
@@ -108,6 +131,30 @@ namespace ServiciosApp
                 dto.Sexo,
                 dto.FechaNac,
                 duenio);
+
+            mascota.Vacunas.Clear();
+
+            if (dto.Vacunas != null && dto.Vacunas.Any())
+            {
+                var idsTiposVacunas = dto.Vacunas.Select(v => v.IdTipoVacuna).Distinct().ToList();
+                var tiposVacunaDb = await repoTipoVacuna.GetByIdListAsync(idsTiposVacunas);
+
+                var vacunasParaGuardar = new List<Vacuna>();
+
+                foreach (var vacunaDto in dto.Vacunas)
+                {
+                    var tipoVacuna = tiposVacunaDb.FirstOrDefault(t => t.IdTipoVacuna == vacunaDto.IdTipoVacuna);
+                    if (tipoVacuna == null)
+                    {
+                        throw new Exception($"Tipo de vacuna con ID {vacunaDto.IdTipoVacuna} no encontrado");
+                    }
+
+                    var vacunaNueva = new Vacuna(vacunaDto.FechaColocacion, tipoVacuna, mascota);
+
+                    vacunasParaGuardar.Add(vacunaNueva);
+                }
+                mascota.SetVacunas(vacunasParaGuardar);
+            }
             return await repo.UpdateAsync(mascota);
         }
     }

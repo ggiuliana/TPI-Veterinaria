@@ -7,7 +7,11 @@ namespace WinFormsApp1
         {
             ApplicationConfiguration.Initialize();
 
-            Application.Run(new Login());
+            Login formLogin = new Login();
+
+            formLogin.StartPosition = FormStartPosition.CenterScreen;
+
+            Application.Run(formLogin);
         }
     }
 }   

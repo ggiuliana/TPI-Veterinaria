@@ -14,5 +14,6 @@ namespace Data
         Task<Estudio?> GetAsync(int id);
         Task<IEnumerable<Estudio>> GetAllAsync();
         Task<bool> UpdateAsync(Estudio estudio);
+        Task<ICollection<Estudio>> GetByIdListAsync(ICollection<int> ids);
     }
 }
