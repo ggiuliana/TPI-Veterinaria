@@ -28,12 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             Título = new Label();
             label1 = new Label();
             label2 = new Label();
             nombreusuario = new TextBox();
             contrasenia = new TextBox();
             ingreso = new Button();
+            errorProvider = new ErrorProvider(components);
+            ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             SuspendLayout();
             // 
             // Título
@@ -93,6 +96,10 @@
             ingreso.UseVisualStyleBackColor = true;
             ingreso.Click += IngresoClick;
             // 
+            // errorProvider
+            // 
+            errorProvider.ContainerControl = this;
+            // 
             // Login
             // 
             AcceptButton = ingreso;
@@ -107,6 +114,7 @@
             Controls.Add(Título);
             Name = "Login";
             Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -118,6 +126,7 @@
         private Label label2;
         private TextBox nombreusuario;
         private TextBox contrasenia;
-        private Button ingreso;        
+        private Button ingreso;
+        private ErrorProvider errorProvider;
     }
 }

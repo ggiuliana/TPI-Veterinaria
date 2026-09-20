@@ -7,10 +7,9 @@ namespace ServiciosApp
     {
         Task<UsuarioCreateDTO> AddAsync(UsuarioCreateDTO dto);
         Task<bool> DeleteAsync(int id);
-        Task<UsuarioResponseDTO?> GetAsync(int id);
-        Task<IEnumerable<UsuarioResponseDTO>> GetAllAsync();
+        Task<UsuarioDTO?> GetAsync(int id);
+        Task<IEnumerable<UsuarioDTO>> GetAllAsync();
         Task<bool> UpdateAsync(UsuarioCreateDTO dto);
-        Task<UsuarioResponseDTO?> Login(LoginDTO dto);
         Task<bool> RegisterVetAsync(VeterinarioRegisterDTO dto);
         Task<bool> RegisterDuenioAsync(DuenioRegisterDTO dto);
     }

@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    public interface IRolRepository
+    public interface IGrupoPermisoRepository
     {
-        Task<Rol?> GetAsync(int id);
+        Task<GrupoPermiso?> GetAsync(int id);
     }
 }

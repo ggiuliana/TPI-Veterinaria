@@ -35,6 +35,13 @@ namespace ServiciosApp
         {
             return await context.Usuarios.ToListAsync();
         }
+        public async Task<Usuario?> GetByUsernameAsync(string nombreUsuario)
+        {
+            return await context.Usuarios
+                .Include(u => u.Grupo)
+                    .ThenInclude(g => g.Permisos.Where(p => p.Activo))
+                .FirstOrDefaultAsync(u => u.NombreUsuario == nombreUsuario && u.EstadoUsuario == "Activo");
+        }
         public async Task<bool> UpdateAsync(Usuario usuario)
         {
             var existingUsuario = await context.Usuarios.FirstOrDefaultAsync(u => u.IdUsuario == usuario.IdUsuario);
@@ -70,13 +77,6 @@ namespace ServiciosApp
             }
 
             return await query.AnyAsync();
-        }
-
-        public async Task<Usuario?> GetByCredencialesAsync(string nombreUsuario, string contrasenia)
-        {
-            return await context.Usuarios
-                .Include(u => u.Persona)
-                .FirstOrDefaultAsync(u => u.NombreUsuario == nombreUsuario && u.Contrasenia == contrasenia);
         }
 
         public async Task<bool> RegisterAsync(Persona persona, Usuario usuario)

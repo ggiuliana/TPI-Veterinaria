@@ -12,7 +12,7 @@ namespace API.Clients
     public class UsuarioClient : BaseApiClient
     {
         public class ErrorResponse { public string Error { get; set; } }
-        public static async Task<UsuarioResponseDTO?> GetAsync(int id)
+        public static async Task<UsuarioDTO?> GetAsync(int id)
         {
             var response = await client.GetAsync($"usuarios/{id}");
 
@@ -23,17 +23,17 @@ namespace API.Clients
 
             response.EnsureSuccessStatusCode();
 
-            return await response.Content.ReadFromJsonAsync<UsuarioResponseDTO>();
+            return await response.Content.ReadFromJsonAsync<UsuarioDTO>();
         }
 
-        public static async Task<List<UsuarioResponseDTO>> GetAllAsync()
+        public static async Task<List<UsuarioDTO>> GetAllAsync()
         {
             var response = await client.GetAsync("usuarios");
 
             response.EnsureSuccessStatusCode();
 
-            return await response.Content.ReadFromJsonAsync<List<UsuarioResponseDTO>>()
-                   ?? new List<UsuarioResponseDTO>();
+            return await response.Content.ReadFromJsonAsync<List<UsuarioDTO>>()
+                   ?? new List<UsuarioDTO>();
         }
 
         public static async Task<UsuarioCreateDTO?> AddAsync(UsuarioCreateDTO dto)
@@ -76,20 +76,6 @@ namespace API.Clients
             response.EnsureSuccessStatusCode();
 
             return true;
-        }
-
-        public static async Task<UsuarioResponseDTO?> Login(string nombreUsuario, string contrasenia) { 
-            var logdto = new LoginDTO{ NombreUsuario = nombreUsuario, Contrasenia = contrasenia };
-            var response = await client.PostAsJsonAsync("usuarios/login", logdto);
-
-            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-            {
-                return null;
-            }
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadFromJsonAsync<UsuarioResponseDTO>();
         }
 
         public static async Task<(bool Exito, string Mensaje)> RegisterVetAsync(VeterinarioRegisterDTO dto)

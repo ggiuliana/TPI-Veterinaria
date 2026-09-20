@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsApp1", "WinFormsApp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.Clients", "API.Clients\API.Clients.csproj", "{CC626A10-E97A-4222-AB53-3399D1924719}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.Auth.WinForms", "API.Auth.WinForms\API.Auth.WinForms.csproj", "{1448BCFC-715D-44E0-8AA8-2FE2AAC35BA6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{CC626A10-E97A-4222-AB53-3399D1924719}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC626A10-E97A-4222-AB53-3399D1924719}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC626A10-E97A-4222-AB53-3399D1924719}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1448BCFC-715D-44E0-8AA8-2FE2AAC35BA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1448BCFC-715D-44E0-8AA8-2FE2AAC35BA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1448BCFC-715D-44E0-8AA8-2FE2AAC35BA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1448BCFC-715D-44E0-8AA8-2FE2AAC35BA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

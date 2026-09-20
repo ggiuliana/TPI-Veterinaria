@@ -25,7 +25,7 @@ namespace Data
         }
         public async Task<Duenio?> GetAsync(int id)
         {
-            return await context.Duenios.FirstOrDefaultAsync(c => c.IdPersona == id); ;
+            return await context.Duenios.FirstOrDefaultAsync(c => c.IdPersona == id);
         }
         public async Task<IEnumerable<Duenio>> GetAllAsync()
         {

@@ -9,8 +9,8 @@
         public DateTime FechaAlta { get; private set; }
         public int? IdPersona { get; private set; }
         public Persona? Persona { get; private set; }
-        public int IdRol { get; private set; }
-        public Rol? Rol { get; private set; }
+        public int? GrupoPermisoId { get; private set; }
+        public virtual GrupoPermiso? Grupo { get; private set; }
 
         public Usuario(int idUsuario, string nombreUsuario, string contrasenia, string estadoUsuario) {
             SetIdUsuario(idUsuario);
@@ -18,14 +18,14 @@
             SetContrasenia(contrasenia);
             SetEstadoUsuario(estadoUsuario);
         }
-        public Usuario(int idUsuario, string nombreUsuario, string contrasenia, string estadoUsuario, Persona? persona, Rol? rol)
+        public Usuario(int idUsuario, string nombreUsuario, string contrasenia, string estadoUsuario, Persona? persona, GrupoPermiso? grupo)
         {
             SetIdUsuario(idUsuario);
             SetNombreUsuario(nombreUsuario);
             SetContrasenia(contrasenia);
             SetEstadoUsuario(estadoUsuario);
             SetPersona(persona);
-            SetRol(rol);
+            SetGrupo(grupo);
         }
         public void SetIdUsuario(int idUsuario)
         {
@@ -66,11 +66,32 @@
 
         }
 
-        public void SetRol(Rol? rol)
+        public void SetGrupo(GrupoPermiso? grupo)
         { 
-            if(rol == null)
-                throw new ArgumentNullException(nameof(rol), "El rol no puede ser nulo.");
-            Rol = rol;
+            if(grupo == null)
+                throw new ArgumentNullException(nameof(grupo), "El grupo no puede ser nulo.");
+            Grupo = grupo;
+        }
+
+        public bool TienePermiso(string nombrePermiso)
+        {
+            if (EstadoUsuario == "Inactivo" || Grupo == null || !Grupo.Activo)
+                return false;
+
+            return Grupo.TienePermiso(nombrePermiso);
+        }
+
+        public IEnumerable<string> ObtenerTodosLosPermisos()
+        {
+            if (Grupo == null || !Grupo.Activo)
+                return new List<string>();
+
+            return Grupo.ObtenerNombresPermisos();
+        }
+
+        public string? ObtenerNombreGrupo()
+        {
+            return Grupo?.Nombre;
         }
     }
 }

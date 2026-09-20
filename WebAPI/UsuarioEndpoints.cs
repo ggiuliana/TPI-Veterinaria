@@ -9,7 +9,7 @@ namespace WebAPI
         {
             app.MapGet("/usuarios/{id}", async (int id, IUsuarioService usuarioService) =>
             {
-                UsuarioResponseDTO? dto = await usuarioService.GetAsync(id);
+                UsuarioDTO? dto = await usuarioService.GetAsync(id);
 
                 if (dto == null)
                 {
@@ -86,20 +86,6 @@ namespace WebAPI
             .WithName("DeleteUsuarios")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
-            .WithOpenApi();
-
-            app.MapPost("/usuarios/login", async (LoginDTO dto, IUsuarioService usuarioService) =>
-            {
-                var usuario = await usuarioService.Login(dto);
-                if (usuario == null)
-                {
-                    return Results.Unauthorized();
-                }
-                return Results.Ok(usuario);
-            })
-            .WithName("LoginUsuario")
-            .Produces<UsuarioResponseDTO>(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status401Unauthorized)
             .WithOpenApi();
 
             app.MapPost("/usuarios/register/vet", async (VeterinarioRegisterDTO dto, IUsuarioService usuarioService) =>

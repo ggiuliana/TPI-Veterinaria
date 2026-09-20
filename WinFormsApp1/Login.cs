@@ -1,4 +1,5 @@
 using API.Clients;
+using DTOs;
 using System;
 using System.Linq;
 using System.Windows.Forms;
@@ -8,52 +9,56 @@ namespace WinFormsApp1
     public partial class Login : Form
     {
         public Login() => InitializeComponent();
-
         private async void IngresoClick(object sender, EventArgs e)
         {
-            string usuario = nombreusuario.Text;
-            string contra = contrasenia.Text;
-
-            if (string.IsNullOrWhiteSpace(usuario) || string.IsNullOrWhiteSpace(contra))
+            if (ValidateInput())
             {
-                MessageBox.Show("Ingrese usuario y contraseña.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            try
-            {
-                var usuarioResponse = await UsuarioClient.Login(usuario, contra);
-                if (usuarioResponse != null)
+                try
                 {
-                    MessageBox.Show("Inicio de sesión correcto.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    var authService = AuthServiceProvider.Instance;
+                    bool success = await authService.LoginAsync(nombreusuario.Text, contrasenia.Text);
 
-                    AdminHome adminhome = new();
-
-                    adminhome.StartPosition = FormStartPosition.CenterScreen;
-
-                    adminhome.FormClosed += (s, args) =>
+                    if (success)
                     {
-                        this.Show();
-                        nombreusuario.Clear();
+                        this.DialogResult = DialogResult.OK;
+                        var adminhome = new AdminHome();
+                        this.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Usuario o contraseña incorrectos.", "Error de autenticación",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
                         contrasenia.Clear();
-                    };
-
-                    adminhome.Show();
-                    this.Hide();
+                        contrasenia.Focus();
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Usuario o contraseña incorrectos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error al iniciar sesión: {ex.Message}", "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            catch (Exception ex)
+        }
+        private bool ValidateInput()
+        {
+            errorProvider.SetError(nombreusuario, string.Empty);
+            errorProvider.SetError(contrasenia, string.Empty);
+
+            bool isValid = true;
+
+            if (string.IsNullOrWhiteSpace(nombreusuario.Text))
             {
-                MessageBox.Show(
-                    $"Error de conexión al iniciar sesión: {ex.Message}",
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                errorProvider.SetError(nombreusuario, "El nombre de usuario es requerido");
+                isValid = false;
             }
+
+            if (string.IsNullOrWhiteSpace(contrasenia.Text))
+            {
+                errorProvider.SetError(contrasenia, "La contraseña es requerida");
+                isValid = false;
+            }
+
+            return isValid;
         }
     }
 }

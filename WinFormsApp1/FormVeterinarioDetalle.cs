@@ -75,7 +75,7 @@ namespace WinFormsApp1
                     {
                         NombreUsuario = nombreUsuario.Text,
                         Contrasenia = contraseniaUsuario.Text,
-                        IdRol = 2
+                        IdGrupo = 2
                     };
                     var createDto = new VeterinarioRegisterDTO
                     {

@@ -10,10 +10,10 @@ namespace Data
         Task<bool> DeleteAsync(int id);
         Task<Usuario?> GetAsync(int id);
         Task<IEnumerable<Usuario>> GetAllAsync();
+        Task<Usuario?> GetByUsernameAsync(string nombreUsuario);
         Task<bool> UpdateAsync(Usuario usuario);
         Task<bool> NombreUsuarioExistsAsync(string nombreUsuario, int? excludeId = null);
         Task<bool> PersonaHasUsuarioAsync(int idPersona, int? excludeIdUsuario = null);
-        Task<Usuario?> GetByCredencialesAsync(string nombreUsuario, string contrasenia);
         Task<bool> RegisterAsync(Persona persona, Usuario usuario);
     }
 }
