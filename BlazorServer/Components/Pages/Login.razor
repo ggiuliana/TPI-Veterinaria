@@ -1,0 +1,66 @@
+﻿@page "/login"
+@using System.ComponentModel.DataAnnotations
+@using API.Clients
+@inject NavigationManager NavigationManager
+@inject IAuthService AuthService
+
+<EditForm Model="@loginModel" OnValidSubmit="HandleLogin" FormName="loginForm" class="d-flex flex-column gap-4">
+    <DataAnnotationsValidator />
+
+    <div>
+        <label for="username" class="form-label">Usuario:</label>
+        <InputText id="username" class="form-control" @bind-Value="loginModel.Username" />
+        <ValidationMessage For="@(() => loginModel.Username)" class="text-danger text-sm" />
+    </div>
+
+    <div>
+        <label for="password" class="form-label">Contraseña:</label>
+        <InputText id="password" type="password" class="form-control" @bind-Value="loginModel.Password" />
+        <ValidationMessage For="@(() => loginModel.Password)" class="text-danger text-sm" />
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">Ingresar</button>
+</EditForm>
+
+@code {
+    [SupplyParameterFromForm]
+    private LoginModel loginModel { get; set; } = new LoginModel();
+
+    private string? errorMessage;
+
+    private async Task HandleLogin()
+    {
+        bool isValidUser = await AuthService.LoginAsync(loginModel.Username, loginModel.Password);
+
+        if (isValidUser)
+        {
+            string? userRole = await AuthService.GetRolAsync();
+
+            switch (userRole?.Trim().ToUpper())
+            {
+                case "ADMINISTRADOR":
+                    NavigationManager.NavigateTo("/admin");
+                    break;
+                case "VETERINARIO":
+                    NavigationManager.NavigateTo("/vet");
+                    break;
+                case "DUENIO":
+                    NavigationManager.NavigateTo("/duenio");
+                    break;
+                default:
+                    NavigationManager.NavigateTo("/");
+                    break;
+            }
+        }
+        else
+        {
+            errorMessage = "Credenciales incorrectas.";
+        }
+    }
+
+    public class LoginModel
+    {
+        public string Username { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+    }
+}

@@ -41,7 +41,8 @@ namespace ServiciosApp
             {
                 Token = token,
                 ExpiresAt = expiresAt,
-                Username = usuario.NombreUsuario
+                Username = usuario.NombreUsuario,
+                Rol = usuario.Grupo.Nombre
             };
         }
         private string GenerateJwtToken(Usuario usuario)

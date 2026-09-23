@@ -1,0 +1,29 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+<PageTitle>Panel Principal</PageTitle>
+
+<AuthorizeView Roles="Administrador">
+    <Authorized>
+        <h1>Panel de Administración</h1>
+        <p>Aquí puedes gestionar usuarios, reportes y configuración del sistema.</p>
+        @* <DashboardAdmin /> *@
+    </Authorized>
+</AuthorizeView>
+
+<AuthorizeView Roles="Veterinario">
+    <Authorized>
+        <h1>Panel del Veterinario</h1>
+        <p>Tus turnos de hoy y acceso a historias clínicas.</p>
+        @* <DashboardVeterinario /> *@
+    </Authorized>
+</AuthorizeView>
+
+<AuthorizeView Roles="Duenio">
+    <Authorized>
+        <h1>Bienvenido</h1>
+        <p>Revisa el carnet de vacunación de tus mascotas y solicita turnos.</p>
+        @* <DashboardDuenio /> *@
+    </Authorized>
+</AuthorizeView>
