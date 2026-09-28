@@ -1,0 +1,320 @@
+﻿@using DTOs
+@using API.Clients
+@using System.Text.RegularExpressions
+@inject IJSRuntime JSRuntime
+
+@if (showModal)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        @if (mode == FormMode.Add)
+                        {
+                            <text>Agregar</text>
+                        }
+                        else
+                        {
+                            <text>Editar</text>
+                        }
+                    </h5>
+                    <button type="button" class="btn-close" @onclick="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="currentVeterinario" OnValidSubmit="HandleValidSubmit">
+                        <DataAnnotationsValidator />
+
+                        @if (mode == FormMode.Update)
+                        {
+                            <div class="mb-3">
+                                <label class="form-label">Id</label>
+                                <input type="text" class="form-control" value="@currentVeterinario.IdVeterinario" readonly />
+                            </div>
+                        }
+
+                        <div class="mb-3">
+                            <label class="form-label">Nombre *</label>
+                            <InputText @bind-Value="currentVeterinario.NombreVeterinario" class="form-control" />
+                            @if (validationErrors.ContainsKey("Nombre"))
+                            {
+                                <div class="text-danger small">@validationErrors["Nombre"]</div>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Apellido *</label>
+                            <InputText @bind-Value="currentVeterinario.Apellido" class="form-control" />
+                            @if (validationErrors.ContainsKey("Apellido"))
+                            {
+                                <div class="text-danger small">@validationErrors["Apellido"]</div>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Mail *</label>
+                            <InputText @bind-Value="currentVeterinario.Mail" class="form-control" />
+                            @if (validationErrors.ContainsKey("Mail"))
+                            {
+                                <div class="text-danger small">@validationErrors["Mail"]</div>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Telefono *</label>
+                            <InputText @bind-Value="currentVeterinario.Telefono" class="form-control" />
+                            @if (validationErrors.ContainsKey("Telefono"))
+                            {
+                                <div class="text-danger small">@validationErrors["Telefono"]</div>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Dni *</label>
+                            <InputText @bind-Value="currentVeterinario.Dni" class="form-control" />
+                            @if (validationErrors.ContainsKey("Dni"))
+                            {
+                                <div class="text-danger small">@validationErrors["Dni"]</div>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Direccion *</label>
+                            <InputText @bind-Value="currentVeterinario.Direccion" class="form-control" />
+                            @if (validationErrors.ContainsKey("Direccion"))
+                            {
+                                <div class="text-danger small">@validationErrors["Direccion"]</div>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Matricula *</label>
+                            <InputText @bind-Value="currentVeterinario.Matricula" class="form-control" />
+                            @if (validationErrors.ContainsKey("Matricula"))
+                            {
+                                <div class="text-danger small">@validationErrors["Matricula"]</div>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Especialidad *</label>
+                            <InputText @bind-Value="currentVeterinario.Especialidad" class="form-control" />
+                            @if (validationErrors.ContainsKey("Especialidad"))
+                            {
+                                <div class="text-danger small">@validationErrors["Especialidad"]</div>
+                            }
+                        </div>
+
+                        @if (mode == FormMode.Add)
+                        {
+                            <div class="mb-3">
+                                <label class="form-label">Nombre de Usuario *</label>
+                                <InputText @bind-Value="currentUsuario.NombreUsuario" class="form-control" />
+                                @if (validationErrors.ContainsKey("NombreUsuario"))
+                                {
+                                    <div class="text-danger small">@validationErrors["NombreUsuario"]</div>
+                                }
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Contraseña *</label>
+                                <InputText type="password" @bind-Value="currentUsuario.Contrasenia" class="form-control" />
+                                @if (validationErrors.ContainsKey("Contrasenia"))
+                                {
+                                    <div class="text-danger small">@validationErrors["Contrasenia"]</div>
+                                }
+                            </div>
+                        }
+
+                        @if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            <div class="alert alert-danger">
+                                @errorMessage
+                            </div>
+                        }
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" @onclick="Close">Cancelar</button>
+                            <button type="submit" class="btn btn-primary" disabled="@saving">
+                                @if (saving)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
+                                }
+                                @(mode == FormMode.Add ? "Agregar" : "Actualizar")
+                            </button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public EventCallback OnVeterinarioChanged { get; set; }
+
+    private bool showModal = false;
+    private FormMode mode = FormMode.Add;
+    private VeterinarioDTO currentVeterinario = new VeterinarioDTO();
+    private UsuarioCreateDTO currentUsuario = new UsuarioCreateDTO();
+    private VeterinarioRegisterDTO currentRegister = new VeterinarioRegisterDTO();
+    private bool saving = false;
+    private string errorMessage = string.Empty;
+    private Dictionary<string, string> validationErrors = new Dictionary<string, string>();
+
+    public enum FormMode
+    {
+        Add,
+        Update
+    }
+
+    public async Task ShowAddModal()
+    {
+        mode = FormMode.Add;
+        currentRegister = new VeterinarioRegisterDTO
+        {
+            veterinario = new VeterinarioDTO(), 
+            usuario = new UsuarioCreateDTO()
+        };
+        currentVeterinario = currentRegister.veterinario;
+        currentUsuario = currentRegister.usuario;
+        ClearValidationErrors();
+        showModal = true;
+        StateHasChanged();
+    }
+
+    public async Task ShowEditModal(VeterinarioDTO veterinario)
+    {
+        mode = FormMode.Update;
+        currentVeterinario = new VeterinarioDTO
+        {
+            IdVeterinario = veterinario.IdVeterinario,
+            NombreVeterinario = veterinario.NombreVeterinario,
+            Apellido = veterinario.Apellido,
+            Telefono = veterinario.Telefono,
+            Mail = veterinario.Mail,
+            Dni = veterinario.Dni,
+            Direccion = veterinario.Direccion,
+            Matricula = veterinario.Matricula,
+            Especialidad = veterinario.Especialidad
+        };
+        ClearValidationErrors();
+        showModal = true;
+        StateHasChanged();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (!ValidateVeterinario())
+            return;
+
+        try
+        {
+            saving = true;
+            errorMessage = string.Empty;
+
+            if (mode == FormMode.Add)
+            {
+                await UsuarioClient.RegisterVetAsync(currentRegister);
+            }
+            else
+            {
+                await VeterinarioClient.UpdateAsync(currentVeterinario);
+            }
+
+            await OnVeterinarioChanged.InvokeAsync();
+            Close();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            saving = false;
+        }
+    }
+
+    private bool ValidateVeterinario()
+    {
+        ClearValidationErrors();
+        bool isValid = true;
+
+        if (string.IsNullOrWhiteSpace(currentVeterinario.NombreVeterinario))
+        {
+            validationErrors["Nombre"] = "El Nombre es requerido";
+            isValid = false;
+        }
+
+        if (string.IsNullOrWhiteSpace(currentVeterinario.Apellido))
+        {
+            validationErrors["Apellido"] = "El Apellido es requerido";
+            isValid = false;
+        }
+
+        if (string.IsNullOrWhiteSpace(currentVeterinario.Mail))
+        {
+            validationErrors["Email"] = "El Email es requerido";
+            isValid = false;
+        }
+
+        else if (!IsValidEmail(currentVeterinario.Mail))
+        {
+            validationErrors["Email"] = "El formato del Email no es válido";
+            isValid = false;
+        }
+
+        if (string.IsNullOrWhiteSpace(currentVeterinario.Telefono))
+        {
+            validationErrors["Telefono"] = "El Telefono es requerido";
+            isValid = false;
+        }
+
+        if (string.IsNullOrWhiteSpace(currentVeterinario.Dni))
+        {
+            validationErrors["Dni"] = "El Dni es requerido";
+            isValid = false;
+        }
+
+        if (string.IsNullOrWhiteSpace(currentVeterinario.Direccion))
+        {
+            validationErrors["Direccion"] = "La Direccion es requerida";
+            isValid = false;
+        }
+
+        if (string.IsNullOrWhiteSpace(currentVeterinario.Matricula))
+        {
+            validationErrors["Matricula"] = "La Matricula es requerida";
+            isValid = false;
+        }
+
+        if (string.IsNullOrWhiteSpace(currentVeterinario.Especialidad))
+        {
+            validationErrors["Especialidad"] = "La Especialidad es requerida";
+            isValid = false;
+        }
+
+        StateHasChanged();
+        return isValid;
+    }
+
+    private bool IsValidEmail(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+            return false;
+        return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+    }
+
+    private void ClearValidationErrors()
+    {
+        validationErrors.Clear();
+        errorMessage = string.Empty;
+    }
+
+    private void Close()
+    {
+        showModal = false;
+        ClearValidationErrors();
+        StateHasChanged();
+    }
+}

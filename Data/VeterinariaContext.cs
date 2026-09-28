@@ -24,11 +24,13 @@ namespace Data
         {
             //this.Database.EnsureDeleted();
             this.Database.EnsureCreated();
+            SeedInitialData();
         }
         internal VeterinariaContext()
         {
             //this.Database.EnsureDeleted();
             this.Database.EnsureCreated();
+            SeedInitialData();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -237,7 +239,7 @@ namespace Data
                 new { Id = 35, Nombre = "actualizar", Descripcion = "Actualizar consultas", Categoria = "consultas", Activo = true },
                 new { Id = 36, Nombre = "eliminar", Descripcion = "Eliminar consultas", Categoria = "consultas", Activo = true },
                 // Permisos para Veterinarios
-                new { Id = 37, Nombre = "leer", Descripcion = "Leer veterinarios", Categoria = "veterinaios", Activo = true },
+                new { Id = 37, Nombre = "leer", Descripcion = "Leer veterinarios", Categoria = "veterinarios", Activo = true },
                 new { Id = 38, Nombre = "agregar", Descripcion = "Agregar veterinarios", Categoria = "veterinarios", Activo = true },
                 new { Id = 39, Nombre = "actualizar", Descripcion = "Actualizar veterinarios", Categoria = "veterinarios", Activo = true },
                 new { Id = 40, Nombre = "eliminar", Descripcion = "Eliminar veterinarios", Categoria = "veterinarios", Activo = true }
@@ -343,40 +345,6 @@ namespace Data
                 .WithOne(v => v.Mascota)
                 .HasForeignKey(v => v.IdMascota)
                 .IsRequired(false);
-            });
-            modelBuilder.Entity<Usuario>(entity =>
-            {
-                entity.HasKey(u => u.IdUsuario);
-
-                entity.Property(u => u.IdUsuario)
-                .ValueGeneratedOnAdd();
-
-                entity.Property(u => u.NombreUsuario)
-                .IsRequired()
-                .HasMaxLength(50);
-
-                entity.HasIndex(u => u.NombreUsuario)
-                .IsUnique();
-
-                entity.Property(u => u.Contrasenia)
-                .IsRequired()
-                .HasMaxLength(50);
-
-                entity.Property(u => u.EstadoUsuario)
-                .IsRequired();
-
-                entity.Property(u => u.FechaAlta)
-                .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                entity.HasOne(u => u.Persona)
-                .WithOne(p => p.Usuario)
-                .HasForeignKey<Usuario>(u => u.IdPersona)
-                .OnDelete(DeleteBehavior.Cascade);
-
-                entity.HasOne(u => u.Grupo)
-                .WithMany()
-                .HasForeignKey(u => u.GrupoPermisoId);
-
             });
             modelBuilder.Entity<Estudio>(entity =>
             {
@@ -546,14 +514,11 @@ namespace Data
                 .IsRequired();
             }); 
         }
-        private void SeedInitialData()
+        public void SeedInitialData()
         {
             try
             {
-                if (!Usuarios.Any(u => u.GrupoPermisoId != null) &&
-                    Usuarios.Any() &&
-                    GruposPermisos.Any() &&
-                    Permisos.Any())
+                if (Usuarios.Any() && GruposPermisos.Any() && Permisos.Any())
                 {
                     var adminUser = Usuarios.Include(u => u.Grupo).FirstOrDefault(u => u.NombreUsuario == "admin");
                     var veterinarioUser = Usuarios.Include(u => u.Grupo).FirstOrDefault(u => u.NombreUsuario == "veterinario");

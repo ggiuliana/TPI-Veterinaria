@@ -24,6 +24,10 @@ builder.Services.AddScoped<AuthenticationStateProvider, BlazorServerAuthService>
 builder.Services.AddScoped<IAuthService>(sp =>
     (IAuthService)sp.GetRequiredService<AuthenticationStateProvider>());
 
+builder.Services.AddScoped<VeterinarioClient>();
+builder.Services.AddScoped<UsuarioClient>();
+
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
