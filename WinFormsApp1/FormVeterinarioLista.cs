@@ -31,9 +31,10 @@ namespace WinFormsApp1
             try
             {
                 var veterinarios = await VeterinarioClient.GetAllAsync();
-                dataGridView1.AutoGenerateColumns = true;
-                dataGridView1.DataSource = veterinarios;
+                dataGridView1.AutoGenerateColumns = false;
 
+                dataGridView1.DataSource = veterinarios;
+                /*
                 dataGridView1.Columns["IdVeterinario"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 dataGridView1.Columns["IdVeterinario"].HeaderText = "ID";
                 dataGridView1.Columns["NombreVeterinario"].HeaderText = "Nombre";
@@ -44,13 +45,13 @@ namespace WinFormsApp1
                 dataGridView1.Columns["Direccion"].HeaderText = "Dirección";
                 dataGridView1.Columns["Matricula"].HeaderText = "Matrícula";
                 dataGridView1.Columns["Especialidad"].HeaderText = "Especialidad";
+                */
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error al cargar los datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         private async void Buscar_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(idVet.Text))
@@ -64,7 +65,6 @@ namespace WinFormsApp1
                 MessageBox.Show("Ingrese un ID válido.");
                 return;
             }
-
             try
             {
                 var veterinario = await VeterinarioClient.GetAsync(id);
@@ -106,7 +106,6 @@ namespace WinFormsApp1
                 await CargarVeterinariosSeguroAsync();
             }
         }
-
         private async void Delete_Click(object? sender, EventArgs e)
         {
             if (dataGridView1.CurrentRow == null)
