@@ -16,7 +16,7 @@ namespace Data
         public DbSet<Medicamento> Medicamentos { get; set; } = null!;
         public DbSet<Turno> Turnos { get; set; } = null!;
         public DbSet<Consulta> Consultas { get; set; } = null!;
-        public DbSet<MedicamentosUsados> MedicamentosUsados { get; set; } = null!;
+        public DbSet<MedicamentoConsulta> MedicamentoConsulta { get; set; } = null!;
         public DbSet<Vacuna> Vacunas { get; set; } = null!;
         public DbSet<Permiso> Permisos { get; set; } = null!;
         public DbSet<GrupoPermiso> GruposPermisos { get; set; } = null!;
@@ -478,7 +478,7 @@ namespace Data
                 .WithMany()
                 .UsingEntity("ConsultaEstudio");
 
-                entity.HasMany(c => c.MedicamentosUsados)
+                entity.HasMany(c => c.MedicamentoConsulta)
                 .WithOne()
                 .HasForeignKey("IdConsulta")
                 .IsRequired(false);
@@ -488,7 +488,7 @@ namespace Data
                 .HasForeignKey(c => c.IdTurno)
                 .IsRequired();
             });
-            modelBuilder.Entity<MedicamentosUsados>(entity =>
+            modelBuilder.Entity<MedicamentoConsulta>(entity =>
             {
                 entity.HasKey(mu => new { mu.IdConsulta, mu.IdMedicamento });
 

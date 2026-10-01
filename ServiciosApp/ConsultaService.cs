@@ -1,13 +1,6 @@
 ﻿using Data;
 using DTOs;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using ModeloDominio;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServiciosApp
 {
@@ -39,21 +32,21 @@ namespace ServiciosApp
                 ICollection<Estudio> estudios = await repoEstudio.GetByIdListAsync(dto.IdEstudios);
                 consulta.SetEstudios(estudios);
             }
-            if (dto.MedicamentosUsados != null && dto.MedicamentosUsados.Any())
+            if (dto.MedicamentoConsulta != null && dto.MedicamentoConsulta.Any())
             {
-                var idsMedicamentos = dto.MedicamentosUsados.Select(m => m.IdMedicamento).ToList();
+                var idsMedicamentos = dto.MedicamentoConsulta.Select(m => m.IdMedicamento).ToList();
                 var medicamentosDb = await repoMedicamento.GetByIdsAsync(idsMedicamentos);
 
-                ICollection<MedicamentosUsados> medicamentosUsados = dto.MedicamentosUsados.Select(itemDto => new MedicamentosUsados
+                ICollection<MedicamentoConsulta> medicamentoConsulta = dto.MedicamentoConsulta.Select(itemDto => new MedicamentoConsulta
                 (
                 itemDto.IdConsulta,
                 itemDto.IdMedicamento,
                 itemDto.CantidadUsada
                 )).ToList();
 
-                consulta.SetMedicamentosUsados(medicamentosUsados);
+                consulta.SetMedicamentoConsulta(medicamentoConsulta);
 
-                foreach (var itemDto in dto.MedicamentosUsados)
+                foreach (var itemDto in dto.MedicamentoConsulta)
                 {
                     var medicamento = medicamentosDb.FirstOrDefault(m => m.IdMedicamento == itemDto.IdMedicamento);
 
@@ -94,7 +87,7 @@ namespace ServiciosApp
                 Observaciones = consulta.Observaciones,
                 IdTurno = consulta.IdTurno,
                 IdEstudios = consulta.Estudios?.Select(e => e.IdEstudio).ToList()??null,
-                MedicamentosUsados = consulta.MedicamentosUsados?.Select(mu => new MedicamentosUsadosDTO
+                MedicamentoConsulta = consulta.MedicamentoConsulta?.Select(mu => new MedicamentoConsultaDTO
                 {
                     IdConsulta = mu.IdConsulta,
                     IdMedicamento = mu.IdMedicamento,
@@ -114,7 +107,7 @@ namespace ServiciosApp
                 Observaciones = consulta.Observaciones,
                 IdTurno = consulta.IdTurno,
                 IdEstudios = consulta.Estudios?.Select(e => e.IdEstudio).ToList()??null,
-                MedicamentosUsados = consulta.MedicamentosUsados?.Select(mu => new MedicamentosUsadosDTO
+                MedicamentoConsulta = consulta.MedicamentoConsulta?.Select(mu => new MedicamentoConsultaDTO
                 {
                     IdConsulta = mu.IdConsulta,
                     IdMedicamento = mu.IdMedicamento,
@@ -142,13 +135,13 @@ namespace ServiciosApp
                 consulta.SetEstudios(estudios);
             }
 
-            var idsViejos = consulta.MedicamentosUsados.Select(m => m.IdMedicamento);
-            var idsNuevos = dto.MedicamentosUsados?.Select(m => m.IdMedicamento) ?? new List<int>();
+            var idsViejos = consulta.MedicamentoConsulta.Select(m => m.IdMedicamento);
+            var idsNuevos = dto.MedicamentoConsulta?.Select(m => m.IdMedicamento) ?? new List<int>();
             var todosLosIds = idsViejos.Union(idsNuevos).Distinct().ToList();
 
             var medicamentosDb = await repoMedicamento.GetByIdsAsync(todosLosIds);
 
-            foreach (var medicamenteViejo in consulta.MedicamentosUsados)
+            foreach (var medicamenteViejo in consulta.MedicamentoConsulta)
             {
                 var medicamento = medicamentosDb.FirstOrDefault(m => m.IdMedicamento == medicamenteViejo.IdMedicamento);
                 if (medicamento != null)
@@ -158,11 +151,11 @@ namespace ServiciosApp
                 }
             }
 
-            consulta.MedicamentosUsados.Clear();
+            consulta.MedicamentoConsulta.Clear();
 
-            if (dto.MedicamentosUsados != null && dto.MedicamentosUsados.Any())
+            if (dto.MedicamentoConsulta != null && dto.MedicamentoConsulta.Any())
             {
-                foreach (var itemDto in dto.MedicamentosUsados)
+                foreach (var itemDto in dto.MedicamentoConsulta)
                 {
                     var medicamento = medicamentosDb.FirstOrDefault(m => m.IdMedicamento == itemDto.IdMedicamento);
                     if (medicamento != null)
@@ -175,13 +168,13 @@ namespace ServiciosApp
                         var cantidad = medicamento.CantidadRestante;
                         medicamento.SetCantidadRestante(cantidad -= itemDto.CantidadUsada);
 
-                        var nuevaRelacion = new MedicamentosUsados(
+                        var nuevaRelacion = new MedicamentoConsulta(
                             consulta.IdConsulta,
                             itemDto.IdMedicamento,
                             itemDto.CantidadUsada
                         );
 
-                        consulta.MedicamentosUsados.Add(nuevaRelacion);
+                        consulta.MedicamentoConsulta.Add(nuevaRelacion);
                     }
                 }
             }

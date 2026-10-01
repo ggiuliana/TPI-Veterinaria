@@ -16,7 +16,7 @@ namespace ModeloDominio
         public int IdTurno { get; private set; }
         public Turno Turno { get; private set; } = null!;
         public ICollection<Estudio>? Estudios { get; private set; } = null!;
-        public ICollection<MedicamentosUsados> MedicamentosUsados { get; private set; } = new List<MedicamentosUsados>();
+        public ICollection<MedicamentoConsulta> MedicamentoConsulta { get; private set; } = new List<MedicamentoConsulta>();
 
         public Consulta() { }
 
@@ -59,9 +59,9 @@ namespace ModeloDominio
             Estudios = estudios;
         }
 
-        public void SetMedicamentosUsados(ICollection<MedicamentosUsados> medicamentosUsados)
+        public void SetMedicamentoConsulta(ICollection<MedicamentoConsulta> medicamentoConsulta)
         {
-            MedicamentosUsados = medicamentosUsados;
+            MedicamentoConsulta = medicamentoConsulta;
         }
     }
 }

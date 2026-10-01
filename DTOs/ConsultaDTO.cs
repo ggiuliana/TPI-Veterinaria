@@ -15,7 +15,6 @@ namespace DTOs
         public string? Observaciones { get; set; }
         public int IdTurno { get; set; }
         public ICollection<int>? IdEstudios { get; set; } = null!;
-        public ICollection<MedicamentosUsadosDTO>? MedicamentosUsados { get; set; } = null!;
+        public ICollection<MedicamentoConsultaDTO>? MedicamentoConsulta{ get; set; } = null!;
     }
 }
-

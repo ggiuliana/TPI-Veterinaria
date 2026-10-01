@@ -7,11 +7,9 @@
         public string Descripcion { get; private set; } = string.Empty;
         public string Categoria { get; private set; } = string.Empty;
         public bool Activo { get; private set; }
-
         private Permiso() { }
 
         public virtual ICollection<GrupoPermiso> Grupos { get; private set; } = new List<GrupoPermiso>();
-
         public Permiso(int id, string nombre, string descripcion, string categoria, bool activo = true)
         {
             SetId(id);
@@ -20,14 +18,12 @@
             SetCategoria(categoria);
             SetActivo(activo);
         }
-
         public void SetId(int id)
         {
             if (id < 0)
                 throw new ArgumentException("El Id debe ser mayor o igual a 0.", nameof(id));
             Id = id;
         }
-
         public void SetNombre(string nombre)
         {
             if (string.IsNullOrWhiteSpace(nombre))
@@ -38,7 +34,6 @@
 
             Nombre = nombre;
         }
-
         public void SetDescripcion(string descripcion)
         {
             if (string.IsNullOrWhiteSpace(descripcion))

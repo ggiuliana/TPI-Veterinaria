@@ -6,21 +6,20 @@ using System.Threading.Tasks;
 
 namespace ModeloDominio
 {
-    public class MedicamentosUsados
+    public class MedicamentoConsulta
     {
         public int IdConsulta { get; private set; }
         public int IdMedicamento { get; private set; }
         public int CantidadUsada { get; private set; }
 
-        public MedicamentosUsados() { }
+        public MedicamentoConsulta() { }
 
-        public MedicamentosUsados(int idConsulta, int idMedicamento, int cantidadUsada)
+        public MedicamentoConsulta(int idConsulta, int idMedicamento, int cantidadUsada)
         {
             SetIdConsulta(idConsulta);
             SetIdMedicamento(idMedicamento);
             SetCantidadUsada(cantidadUsada);
         }
-
         public void SetIdConsulta(int idConsulta)
         {
             IdConsulta = idConsulta;
