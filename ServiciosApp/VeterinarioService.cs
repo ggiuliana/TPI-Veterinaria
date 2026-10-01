@@ -1,6 +1,5 @@
 ﻿using Data;
 using DTOs;
-using Microsoft.EntityFrameworkCore;
 using ModeloDominio;
 
 namespace ServiciosApp
