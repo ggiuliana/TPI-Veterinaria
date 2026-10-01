@@ -26,12 +26,8 @@ namespace WinFormsApp1
             try
             {
                 var estudios = await EstudioClient.GetAllAsync();
+                dataGridView1.AutoGenerateColumns = false;
                 dataGridView1.DataSource = estudios;
-
-                dataGridView1.Columns["IdEstudio"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                dataGridView1.Columns["IdEstudio"].HeaderText = "ID";
-                dataGridView1.Columns["NombreEstudio"].HeaderText = "Nombre";
-                dataGridView1.Columns["DescripcionEstudio"].HeaderText = "Descripción";
             }
             catch (Exception ex)
             {
@@ -41,13 +37,13 @@ namespace WinFormsApp1
 
         private async void Buscar_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(idEstudio.Text))
+            if (string.IsNullOrWhiteSpace(idEstudioBuscar.Text))
             {
                 await CargarEstudiosSeguroAsync();
                 return;
             }
 
-            if (!int.TryParse(idEstudio.Text, out int id))
+            if (!int.TryParse(idEstudioBuscar.Text, out int id))
             {
                 MessageBox.Show("Ingrese un ID válido.");
                 return;

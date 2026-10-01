@@ -37,14 +37,14 @@
             label1 = new Label();
             dataGridView1 = new DataGridView();
             IdVeterinario = new DataGridViewTextBoxColumn();
-            Mail = new DataGridViewTextBoxColumn();
-            Dni = new DataGridViewTextBoxColumn();
-            Direcccion = new DataGridViewTextBoxColumn();
-            Especialidad = new DataGridViewTextBoxColumn();
-            Matricula = new DataGridViewTextBoxColumn();
             NombreVeterinario = new DataGridViewTextBoxColumn();
             Apellido = new DataGridViewTextBoxColumn();
+            Especialidad = new DataGridViewTextBoxColumn();
+            Dni = new DataGridViewTextBoxColumn();
+            Mail = new DataGridViewTextBoxColumn();
             Telefono = new DataGridViewTextBoxColumn();
+            Direcccion = new DataGridViewTextBoxColumn();
+            Matricula = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -135,7 +135,7 @@
             dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { IdVeterinario, Mail, Dni, Direcccion, Especialidad, Matricula, NombreVeterinario, Apellido, Telefono });
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { IdVeterinario, NombreVeterinario, Apellido, Especialidad, Dni, Mail, Telefono, Direcccion, Matricula });
             dataGridView1.Location = new Point(29, 65);
             dataGridView1.Margin = new Padding(3, 4, 3, 4);
             dataGridView1.Name = "dataGridView1";
@@ -155,51 +155,6 @@
             IdVeterinario.ReadOnly = true;
             IdVeterinario.Width = 53;
             // 
-            // Mail
-            // 
-            Mail.DataPropertyName = "Mail";
-            Mail.FillWeight = 100.467926F;
-            Mail.HeaderText = "Mail";
-            Mail.MinimumWidth = 6;
-            Mail.Name = "Mail";
-            Mail.ReadOnly = true;
-            // 
-            // Dni
-            // 
-            Dni.DataPropertyName = "Dni";
-            Dni.FillWeight = 100.467926F;
-            Dni.HeaderText = "Dni";
-            Dni.MinimumWidth = 6;
-            Dni.Name = "Dni";
-            Dni.ReadOnly = true;
-            // 
-            // Direcccion
-            // 
-            Direcccion.DataPropertyName = "Direccion";
-            Direcccion.FillWeight = 100.467926F;
-            Direcccion.HeaderText = "Dirección";
-            Direcccion.MinimumWidth = 6;
-            Direcccion.Name = "Direcccion";
-            Direcccion.ReadOnly = true;
-            // 
-            // Especialidad
-            // 
-            Especialidad.DataPropertyName = "Especialidad";
-            Especialidad.FillWeight = 100.467926F;
-            Especialidad.HeaderText = "Especialidad";
-            Especialidad.MinimumWidth = 6;
-            Especialidad.Name = "Especialidad";
-            Especialidad.ReadOnly = true;
-            // 
-            // Matricula
-            // 
-            Matricula.DataPropertyName = "Matricula";
-            Matricula.FillWeight = 100.467926F;
-            Matricula.HeaderText = "Matrícula";
-            Matricula.MinimumWidth = 6;
-            Matricula.Name = "Matricula";
-            Matricula.ReadOnly = true;
-            // 
             // NombreVeterinario
             // 
             NombreVeterinario.DataPropertyName = "NombreVeterinario";
@@ -218,6 +173,33 @@
             Apellido.Name = "Apellido";
             Apellido.ReadOnly = true;
             // 
+            // Especialidad
+            // 
+            Especialidad.DataPropertyName = "Especialidad";
+            Especialidad.FillWeight = 100.467926F;
+            Especialidad.HeaderText = "Especialidad";
+            Especialidad.MinimumWidth = 6;
+            Especialidad.Name = "Especialidad";
+            Especialidad.ReadOnly = true;
+            // 
+            // Dni
+            // 
+            Dni.DataPropertyName = "Dni";
+            Dni.FillWeight = 100.467926F;
+            Dni.HeaderText = "DNI";
+            Dni.MinimumWidth = 6;
+            Dni.Name = "Dni";
+            Dni.ReadOnly = true;
+            // 
+            // Mail
+            // 
+            Mail.DataPropertyName = "Mail";
+            Mail.FillWeight = 100.467926F;
+            Mail.HeaderText = "Mail";
+            Mail.MinimumWidth = 6;
+            Mail.Name = "Mail";
+            Mail.ReadOnly = true;
+            // 
             // Telefono
             // 
             Telefono.DataPropertyName = "Telefono";
@@ -226,6 +208,24 @@
             Telefono.MinimumWidth = 6;
             Telefono.Name = "Telefono";
             Telefono.ReadOnly = true;
+            // 
+            // Direcccion
+            // 
+            Direcccion.DataPropertyName = "Direccion";
+            Direcccion.FillWeight = 100.467926F;
+            Direcccion.HeaderText = "Dirección";
+            Direcccion.MinimumWidth = 6;
+            Direcccion.Name = "Direcccion";
+            Direcccion.ReadOnly = true;
+            // 
+            // Matricula
+            // 
+            Matricula.DataPropertyName = "Matricula";
+            Matricula.FillWeight = 100.467926F;
+            Matricula.HeaderText = "Matrícula";
+            Matricula.MinimumWidth = 6;
+            Matricula.Name = "Matricula";
+            Matricula.ReadOnly = true;
             // 
             // FormVeterinarioLista
             // 
@@ -259,13 +259,13 @@
         private Label label1;
         private DataGridView dataGridView1;
         private DataGridViewTextBoxColumn IdVeterinario;
-        private DataGridViewTextBoxColumn Mail;
-        private DataGridViewTextBoxColumn Dni;
-        private DataGridViewTextBoxColumn Direcccion;
-        private DataGridViewTextBoxColumn Especialidad;
-        private DataGridViewTextBoxColumn Matricula;
         private DataGridViewTextBoxColumn NombreVeterinario;
         private DataGridViewTextBoxColumn Apellido;
+        private DataGridViewTextBoxColumn Especialidad;
+        private DataGridViewTextBoxColumn Dni;
+        private DataGridViewTextBoxColumn Mail;
         private DataGridViewTextBoxColumn Telefono;
+        private DataGridViewTextBoxColumn Direcccion;
+        private DataGridViewTextBoxColumn Matricula;
     }
 }
