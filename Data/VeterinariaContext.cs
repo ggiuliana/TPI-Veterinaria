@@ -123,7 +123,6 @@ namespace Data
                         Especialidad = "Oncología"
                     }
                     );
-
             });
             modelBuilder.Entity<Duenio>()
                 .HasData(
