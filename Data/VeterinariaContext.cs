@@ -22,13 +22,13 @@ namespace Data
         public DbSet<GrupoPermiso> GruposPermisos { get; set; } = null!;
         public VeterinariaContext(DbContextOptions<VeterinariaContext> options) : base(options)
         {
-            //this.Database.EnsureDeleted();
+            this.Database.EnsureDeleted();
             this.Database.EnsureCreated();
             SeedInitialData();
         }
         internal VeterinariaContext()
         {
-            //this.Database.EnsureDeleted();
+            this.Database.EnsureDeleted();
             this.Database.EnsureCreated();
             SeedInitialData();
         }
@@ -344,6 +344,18 @@ namespace Data
                 .WithOne(v => v.Mascota)
                 .HasForeignKey(v => v.IdMascota)
                 .IsRequired(false);
+                entity.HasData(
+                new
+                {
+                    IdMascota = 1,
+                    NombreMascota = "Ciro",
+                    Especie = "Perro",
+                    Raza = "Mestizo",
+                    Castrado = false,
+                    Sexo = "Macho",
+                    FechaNac = new DateTime(2019, 2, 22),
+                    IdDuenio = 3
+                });
             });
             modelBuilder.Entity<Estudio>(entity =>
             {
@@ -451,6 +463,35 @@ namespace Data
                 .WithMany()
                 .HasForeignKey(t => t.IdVeterinario)
                 .IsRequired();
+
+                entity.HasData(
+                    new 
+                    {
+                        IdTurno = 1,
+                        FechaTurno = new DateTime(2026, 10, 15),
+                        HoraTurno = new TimeSpan(10, 0, 0),
+                        EstadoTurno = "Otorgado",
+                        IdMascota = 1,
+                        IdVeterinario = 1
+                    },
+                    new
+                    {
+                        IdTurno = 2,
+                        FechaTurno = new DateTime(2026, 10, 16),
+                        HoraTurno = new TimeSpan(11, 0, 0),
+                        EstadoTurno = "Otorgado",
+                        IdMascota = 1,
+                        IdVeterinario = 2
+                    },
+                    new
+                    {
+                        IdTurno = 3,
+                        FechaTurno = new DateTime(2026, 10, 20),
+                        HoraTurno = new TimeSpan(12, 0, 0),
+                        EstadoTurno = "Otorgado",
+                        IdMascota = 1,
+                        IdVeterinario = 2
+                    });
             });
             modelBuilder.Entity<Consulta>(entity =>
             {
@@ -487,6 +528,27 @@ namespace Data
                 .WithMany()
                 .HasForeignKey(c => c.IdTurno)
                 .IsRequired();
+
+                entity.HasData(
+                    new
+                    {
+                        IdConsulta = 1,
+                        Diagnostico = "Gastroenteritis",
+                        Tratamiento = "Reposo y dieta blanda",
+                        Peso = 14,
+                        Observaciones = "El animal se encuentra estable.",
+                        IdTurno = 1
+                    },
+                    new
+                    {
+                        IdConsulta = 2,
+                        Diagnostico = "Otitis",
+                        Tratamiento = "Limpieza de oídos y antibióticos",
+                        Peso = 13,
+                        Observaciones = "Se recomienda seguimiento en una semana.",
+                        IdTurno = 2
+                    }
+                );
             });
             modelBuilder.Entity<MedicamentoConsulta>(entity =>
             {
@@ -502,6 +564,15 @@ namespace Data
                 entity.HasOne(mc => mc.Medicamento)
                 .WithMany()
                 .HasForeignKey(mc => mc.IdMedicamento);
+
+                entity.HasData(
+                    new
+                    {
+                        IdConsulta = 1,
+                        IdMedicamento = 1,
+                        CantidadUsada = 2
+                    }
+                );
             }); 
             modelBuilder.Entity<Vacuna>(entity =>
             {
