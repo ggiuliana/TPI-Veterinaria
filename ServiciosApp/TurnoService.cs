@@ -71,7 +71,7 @@ namespace ServiciosApp
         {
             var vet = await repoVeterinario.GetAsync(dto.IdVeterinario) ?? throw new ArgumentException($"No se encontró el veterinario con ID {dto.IdVeterinario}");
             var mascota = dto.IdMascota.HasValue ? await repoMascota.GetAsync(dto.IdMascota.Value) : null;
-            Turno turno = new Turno(0, dto.FechaTurno, dto.HoraTurno, dto.EstadoTurno, vet);
+            Turno turno = new Turno(dto.IdTurno, dto.FechaTurno, dto.HoraTurno, dto.EstadoTurno, vet);
             if (dto.Observaciones != null)
             {
                 turno.SetObservaciones(dto.Observaciones);

@@ -22,13 +22,13 @@ namespace Data
         public DbSet<GrupoPermiso> GruposPermisos { get; set; } = null!;
         public VeterinariaContext(DbContextOptions<VeterinariaContext> options) : base(options)
         {
-            this.Database.EnsureDeleted();
+            //this.Database.EnsureDeleted();
             this.Database.EnsureCreated();
             SeedInitialData();
         }
         internal VeterinariaContext()
         {
-            this.Database.EnsureDeleted();
+            //this.Database.EnsureDeleted();
             this.Database.EnsureCreated();
             SeedInitialData();
         }
@@ -352,7 +352,7 @@ namespace Data
                     Especie = "Perro",
                     Raza = "Mestizo",
                     Castrado = false,
-                    Sexo = "Macho",
+                    Sexo = 'M',
                     FechaNac = new DateTime(2019, 2, 22),
                     IdDuenio = 3
                 });
@@ -468,8 +468,8 @@ namespace Data
                     new 
                     {
                         IdTurno = 1,
-                        FechaTurno = new DateTime(2026, 10, 15),
-                        HoraTurno = new TimeSpan(10, 0, 0),
+                        FechaTurno = new DateOnly(2026, 10, 15),
+                        HoraTurno = new TimeOnly(10, 0, 0),
                         EstadoTurno = "Otorgado",
                         IdMascota = 1,
                         IdVeterinario = 1
@@ -477,8 +477,8 @@ namespace Data
                     new
                     {
                         IdTurno = 2,
-                        FechaTurno = new DateTime(2026, 10, 16),
-                        HoraTurno = new TimeSpan(11, 0, 0),
+                        FechaTurno = new DateOnly(2026, 10, 16),
+                        HoraTurno = new TimeOnly(11, 0, 0),
                         EstadoTurno = "Otorgado",
                         IdMascota = 1,
                         IdVeterinario = 2
@@ -486,8 +486,8 @@ namespace Data
                     new
                     {
                         IdTurno = 3,
-                        FechaTurno = new DateTime(2026, 10, 20),
-                        HoraTurno = new TimeSpan(12, 0, 0),
+                        FechaTurno = new DateOnly(2026, 10, 20),
+                        HoraTurno = new TimeOnly(12, 0, 0),
                         EstadoTurno = "Otorgado",
                         IdMascota = 1,
                         IdVeterinario = 2
@@ -535,7 +535,7 @@ namespace Data
                         IdConsulta = 1,
                         Diagnostico = "Gastroenteritis",
                         Tratamiento = "Reposo y dieta blanda",
-                        Peso = 14,
+                        Peso = 13.75f,
                         Observaciones = "El animal se encuentra estable.",
                         IdTurno = 1
                     },
@@ -544,7 +544,7 @@ namespace Data
                         IdConsulta = 2,
                         Diagnostico = "Otitis",
                         Tratamiento = "Limpieza de oídos y antibióticos",
-                        Peso = 13,
+                        Peso = 13.25f,
                         Observaciones = "Se recomienda seguimiento en una semana.",
                         IdTurno = 2
                     }

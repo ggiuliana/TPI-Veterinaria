@@ -58,6 +58,22 @@ namespace WinFormsApp1
             formEstudio.Show();
 
         }
+        private void TurnosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Application.OpenForms.OfType<FormTurnoLista>().Any())
+            {
+                Application.OpenForms.OfType<FormTurnoLista>().First().BringToFront();
+                return;
+            }
+
+            FormTurnoLista formTurnos = new()
+            {
+                MdiParent = this,
+                FormBorderStyle = FormBorderStyle.None,
+                Dock = DockStyle.Fill
+            };
+            formTurnos.Show();
+        }
 
     }
 }

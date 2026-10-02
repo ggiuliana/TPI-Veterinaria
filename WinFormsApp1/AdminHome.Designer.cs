@@ -32,6 +32,7 @@
             vistaToolStripMenuItem = new ToolStripMenuItem();
             veterinariosToolStripMenuItem = new ToolStripMenuItem();
             estudiosToolStripMenuItem = new ToolStripMenuItem();
+            turnosToolStripMenuItem = new ToolStripMenuItem();
             cerrarSesiónToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
@@ -42,47 +43,54 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { vistaToolStripMenuItem, cerrarSesiónToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(981, 28);
+            menuStrip1.Padding = new Padding(5, 2, 0, 2);
+            menuStrip1.Size = new Size(858, 24);
             menuStrip1.TabIndex = 10;
             menuStrip1.Text = "menuStrip1";
             // 
             // vistaToolStripMenuItem
             // 
-            vistaToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { veterinariosToolStripMenuItem, estudiosToolStripMenuItem });
+            vistaToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { veterinariosToolStripMenuItem, estudiosToolStripMenuItem, turnosToolStripMenuItem });
             vistaToolStripMenuItem.Name = "vistaToolStripMenuItem";
-            vistaToolStripMenuItem.Size = new Size(73, 24);
+            vistaToolStripMenuItem.Size = new Size(59, 20);
             vistaToolStripMenuItem.Text = "Gestión";
             // 
             // veterinariosToolStripMenuItem
             // 
             veterinariosToolStripMenuItem.Name = "veterinariosToolStripMenuItem";
-            veterinariosToolStripMenuItem.Size = new Size(224, 26);
+            veterinariosToolStripMenuItem.Size = new Size(180, 22);
             veterinariosToolStripMenuItem.Text = "Veterinarios";
             veterinariosToolStripMenuItem.Click += VeterinariosToolStripMenuItem_Click;
             // 
             // estudiosToolStripMenuItem
             // 
             estudiosToolStripMenuItem.Name = "estudiosToolStripMenuItem";
-            estudiosToolStripMenuItem.Size = new Size(224, 26);
+            estudiosToolStripMenuItem.Size = new Size(180, 22);
             estudiosToolStripMenuItem.Text = "Estudios";
             estudiosToolStripMenuItem.Click += EstudiosToolStripMenuItem_Click;
+            // 
+            // turnosToolStripMenuItem
+            // 
+            turnosToolStripMenuItem.Name = "turnosToolStripMenuItem";
+            turnosToolStripMenuItem.Size = new Size(180, 22);
+            turnosToolStripMenuItem.Text = "Turnos";
+            turnosToolStripMenuItem.Click += TurnosToolStripMenuItem_Click;
             // 
             // cerrarSesiónToolStripMenuItem
             // 
             cerrarSesiónToolStripMenuItem.Name = "cerrarSesiónToolStripMenuItem";
-            cerrarSesiónToolStripMenuItem.Size = new Size(110, 24);
+            cerrarSesiónToolStripMenuItem.Size = new Size(88, 20);
             cerrarSesiónToolStripMenuItem.Text = "Cerrar Sesión";
             cerrarSesiónToolStripMenuItem.Click += LogOut_Click;
             // 
             // AdminHome
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(981, 632);
+            ClientSize = new Size(858, 474);
             Controls.Add(menuStrip1);
             IsMdiContainer = true;
             MainMenuStrip = menuStrip1;
-            Margin = new Padding(3, 4, 3, 4);
             Name = "AdminHome";
             Text = "  ";
             WindowState = FormWindowState.Maximized;
@@ -98,5 +106,6 @@
         private ToolStripMenuItem veterinariosToolStripMenuItem;
         private ToolStripMenuItem estudiosToolStripMenuItem;
         private ToolStripMenuItem cerrarSesiónToolStripMenuItem;
+        private ToolStripMenuItem turnosToolStripMenuItem;
     }
 }

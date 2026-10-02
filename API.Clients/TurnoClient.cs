@@ -36,7 +36,7 @@ namespace API.Clients
 
         public static async Task<TurnoDTO?> AddAsync(TurnoDTO dto)
         {
-            var response = await client.PostAsJsonAsync("turnos", dto);
+            /*var response = await client.PostAsJsonAsync("turnos", dto);
 
             if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
             {
@@ -44,6 +44,16 @@ namespace API.Clients
             }
 
             response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<TurnoDTO>();*/
+            var response = await client.PostAsJsonAsync("turnos", dto);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                // Esto va a leer el error exacto que manda .NET (ej: "The EstadoTurno field is required")
+                string errorDetalle = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error de validación 400: {errorDetalle}");
+            }
 
             return await response.Content.ReadFromJsonAsync<TurnoDTO>();
         }

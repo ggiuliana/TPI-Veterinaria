@@ -48,6 +48,8 @@ namespace Data
                 existingTurno.SetHoraTurno(turno.HoraTurno);
                 existingTurno.SetEstadoTurno(turno.EstadoTurno);
                 existingTurno.SetVeterinario(turno.Veterinario);
+
+
                 if (turno.Mascota != null)
                 {
                     existingTurno.SetMascota(turno.Mascota);
