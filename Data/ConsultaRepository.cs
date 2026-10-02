@@ -46,9 +46,9 @@ namespace Data
                 {
                     existingConsulta.SetEstudios(consulta.Estudios);
                 }
-                if (consulta.MedicamentoConsulta != null)
+                if (consulta.MedicamentosConsulta != null)
                 {
-                    existingConsulta.SetMedicamentoConsulta(consulta.MedicamentoConsulta);
+                    existingConsulta.SetMedicamentoConsulta(consulta.MedicamentosConsulta);
                 }
                 if (consulta.Observaciones != null)
                 {

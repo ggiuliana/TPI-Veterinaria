@@ -23,5 +23,22 @@
         {
             this.CantidadRestante = cantidadRestante;    
         }
+        public void DescontarStock(int cantidadAUsar)
+        {
+            if (cantidadAUsar <= 0)
+                throw new ArgumentException("La cantidad a descontar debe ser mayor a 0.");
+
+            if (CantidadRestante < cantidadAUsar)
+                throw new InvalidOperationException("No hay stock suficiente para recetar esta cantidad.");
+
+            CantidadRestante -= cantidadAUsar;
+        }
+        public void AgregarStock(int cantidadADevolver)
+        {
+            if (cantidadADevolver <= 0)
+                throw new ArgumentException("La cantidad a devolver debe ser mayor a 0.");
+
+            CantidadRestante += cantidadADevolver;
+        }
     }
 }

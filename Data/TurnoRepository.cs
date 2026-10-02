@@ -26,12 +26,18 @@ namespace Data
             return false;
         }
         public async Task<Turno?> GetAsync(int id)
-        {
-            return await context.Turnos.FirstOrDefaultAsync(t => t.IdTurno == id);
+        {           
+            return await context.Turnos
+                .Include(t => t.Veterinario) 
+                .Include(t => t.Mascota)    
+                .FirstOrDefaultAsync(t => t.IdTurno == id);
         }
         public async Task<IEnumerable<Turno>> GetAllAsync()
         {
-            return await context.Turnos.ToListAsync();
+            return await context.Turnos
+               .Include(t => t.Veterinario)
+               .Include(t => t.Mascota)
+               .ToListAsync();
         }
         public async Task<bool> UpdateAsync(Turno turno)
         {

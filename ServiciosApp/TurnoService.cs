@@ -41,6 +41,7 @@ namespace ServiciosApp
             {
                 return null;
             }
+
             return new TurnoDTO
             {
                 IdTurno = turno.IdTurno,
@@ -48,7 +49,7 @@ namespace ServiciosApp
                 HoraTurno = turno.HoraTurno,
                 EstadoTurno = turno.EstadoTurno,
                 Observaciones = turno.Observaciones,
-                IdVeterinario = turno.Veterinario.IdPersona,
+                IdVeterinario = turno.Veterinario?.IdPersona ?? 0,
                 IdMascota = turno.Mascota?.IdMascota
             };
         }
@@ -62,7 +63,7 @@ namespace ServiciosApp
                 HoraTurno = turno.HoraTurno,
                 EstadoTurno = turno.EstadoTurno,
                 Observaciones = turno.Observaciones,
-                IdVeterinario = turno.Veterinario.IdPersona,
+                IdVeterinario = turno.Veterinario?.IdPersona ?? 0,
                 IdMascota = turno.Mascota?.IdMascota
             })];
         }

@@ -3,7 +3,9 @@
     public class MedicamentoConsulta
     {
         public int IdConsulta { get; private set; }
+        public Consulta? Consulta { get; private set; }
         public int IdMedicamento { get; private set; }
+        public Medicamento? Medicamento { get; private set; }
         public int CantidadUsada { get; private set; }
 
         public MedicamentoConsulta() { }

@@ -478,7 +478,7 @@ namespace Data
                 .WithMany()
                 .UsingEntity("ConsultaEstudio");
 
-                entity.HasMany(c => c.MedicamentoConsulta)
+                entity.HasMany(c => c.MedicamentosConsulta)
                 .WithOne()
                 .HasForeignKey("IdConsulta")
                 .IsRequired(false);
@@ -490,11 +490,19 @@ namespace Data
             });
             modelBuilder.Entity<MedicamentoConsulta>(entity =>
             {
-                entity.HasKey(mu => new { mu.IdConsulta, mu.IdMedicamento });
+                entity.HasKey(mc => new { mc.IdConsulta, mc.IdMedicamento });
 
-                entity.Property(mu => mu.CantidadUsada)
+                entity.Property(mc => mc.CantidadUsada)
                 .IsRequired();
-            });
+
+                entity.HasOne(mc => mc.Consulta)
+                .WithMany(c => c.MedicamentosConsulta)
+                .HasForeignKey(mc => mc.IdConsulta);
+
+                entity.HasOne(mc => mc.Medicamento)
+                .WithMany()
+                .HasForeignKey(mc => mc.IdMedicamento);
+            }); 
             modelBuilder.Entity<Vacuna>(entity =>
             {
                 entity.HasKey(v => new { v.IdTipoVacuna, v.IdMascota, v.FechaColocacion });

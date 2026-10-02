@@ -10,7 +10,7 @@
         public int IdTurno { get; private set; }
         public Turno Turno { get; private set; } = null!;
         public ICollection<Estudio>? Estudios { get; private set; } = null!;
-        public ICollection<MedicamentoConsulta> MedicamentoConsulta { get; private set; } = new List<MedicamentoConsulta>();
+        public ICollection<MedicamentoConsulta> MedicamentosConsulta { get; private set; } = new List<MedicamentoConsulta>();
 
         public Consulta() { }
 
@@ -55,7 +55,7 @@
 
         public void SetMedicamentoConsulta(ICollection<MedicamentoConsulta> medicamentoConsulta)
         {
-            MedicamentoConsulta = medicamentoConsulta;
+            MedicamentosConsulta = medicamentoConsulta;
         }
     }
 }

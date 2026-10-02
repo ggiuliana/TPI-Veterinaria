@@ -87,7 +87,7 @@ namespace ServiciosApp
                 Observaciones = consulta.Observaciones,
                 IdTurno = consulta.IdTurno,
                 IdEstudios = consulta.Estudios?.Select(e => e.IdEstudio).ToList()??null,
-                MedicamentoConsulta = consulta.MedicamentoConsulta?.Select(mu => new MedicamentoConsultaDTO
+                MedicamentoConsulta = consulta.MedicamentosConsulta?.Select(mu => new MedicamentoConsultaDTO
                 {
                     IdConsulta = mu.IdConsulta,
                     IdMedicamento = mu.IdMedicamento,
@@ -107,7 +107,7 @@ namespace ServiciosApp
                 Observaciones = consulta.Observaciones,
                 IdTurno = consulta.IdTurno,
                 IdEstudios = consulta.Estudios?.Select(e => e.IdEstudio).ToList()??null,
-                MedicamentoConsulta = consulta.MedicamentoConsulta?.Select(mu => new MedicamentoConsultaDTO
+                MedicamentoConsulta = consulta.MedicamentosConsulta?.Select(mu => new MedicamentoConsultaDTO
                 {
                     IdConsulta = mu.IdConsulta,
                     IdMedicamento = mu.IdMedicamento,
@@ -135,13 +135,13 @@ namespace ServiciosApp
                 consulta.SetEstudios(estudios);
             }
 
-            var idsViejos = consulta.MedicamentoConsulta.Select(m => m.IdMedicamento);
+            var idsViejos = consulta.MedicamentosConsulta.Select(m => m.IdMedicamento);
             var idsNuevos = dto.MedicamentoConsulta?.Select(m => m.IdMedicamento) ?? new List<int>();
             var todosLosIds = idsViejos.Union(idsNuevos).Distinct().ToList();
 
             var medicamentosDb = await repoMedicamento.GetByIdsAsync(todosLosIds);
 
-            foreach (var medicamenteViejo in consulta.MedicamentoConsulta)
+            foreach (var medicamenteViejo in consulta.MedicamentosConsulta)
             {
                 var medicamento = medicamentosDb.FirstOrDefault(m => m.IdMedicamento == medicamenteViejo.IdMedicamento);
                 if (medicamento != null)
@@ -151,7 +151,7 @@ namespace ServiciosApp
                 }
             }
 
-            consulta.MedicamentoConsulta.Clear();
+            consulta.MedicamentosConsulta.Clear();
 
             if (dto.MedicamentoConsulta != null && dto.MedicamentoConsulta.Any())
             {
@@ -174,7 +174,7 @@ namespace ServiciosApp
                             itemDto.CantidadUsada
                         );
 
-                        consulta.MedicamentoConsulta.Add(nuevaRelacion);
+                        consulta.MedicamentosConsulta.Add(nuevaRelacion);
                     }
                 }
             }
