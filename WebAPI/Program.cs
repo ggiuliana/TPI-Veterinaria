@@ -2,15 +2,63 @@ using Microsoft.EntityFrameworkCore;
 using WebAPI;
 using ServiciosApp;
 using Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<VeterinariaContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("VeterinariaDB")));
 
-// Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+            ValidAudience = builder.Configuration["JwtSettings:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"]!))
+        };
+    });
+
+builder.Services.AddAuthorization();
+
+// Configuración de Swagger con seguridad
+builder.Services.AddSwaggerGen(c =>
+{
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header. Escribí 'Bearer ' seguido de tu token.",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
 // Add Dependency Injection
 
@@ -54,6 +102,8 @@ if (!app.Environment.IsDevelopment())
 }
 
 // Map endpoints
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapDuenioEndpoints();
 app.MapMascotaEndpoints();
 app.MapVeterinarioEndpoints();

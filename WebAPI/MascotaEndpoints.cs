@@ -20,7 +20,8 @@ namespace WebAPI
             .WithName("GetMascotas")
             .Produces<MascotaDTO>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization();
 
             app.MapGet("/mascotas", async (IMascotaService mascotaService) =>
             {
