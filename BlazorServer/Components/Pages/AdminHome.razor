@@ -2,15 +2,30 @@
 
 <h3>Panel de Administración</h3>
 
-<div class="btn-group mb-4" role="group">
-    <a href="/veterinarios" class="btn btn-outline-primary">
-        Gestionar Veterinarios
-    </a>
-    <a href="/usuarios" class="btn btn-outline-primary">
-        Gestionar Usuarios
-    </a>
+<div class="mb-4 w-50">
+    <label for="entidadSelect" class="form-label fw-bold">Gestionar entidad:</label>
+    <select id="entidadSelect" class="form-select" @bind="entidadSeleccionada">
+        <option value="">-- Seleccione una opción --</option>
+        <option value="veterinarios">Veterinarios</option>
+        <option value="estudios">Estudios</option>
+    </select>
 </div>
 
-<div class="p-3 border rounded">
-    <p class="text-muted">Por favor, seleccione una entidad del menú superior para comenzar a operar.</p>
+<div class="p-3 border rounded bg-light">
+    @switch (entidadSeleccionada)
+    {
+        case "veterinarios":
+            <Veterinarios />
+            break;
+        case "estudios":
+            <Estudios />
+            break;
+        default:
+            <p class="text-muted m-0">Por favor, seleccione una entidad del menú superior para comenzar a operar.</p>
+            break;
+    }
 </div>
+
+@code {
+    private string entidadSeleccionada = "";
+}

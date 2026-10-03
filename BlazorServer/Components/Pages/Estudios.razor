@@ -3,14 +3,14 @@
 @inject IJSRuntime JSRuntime
 @inject IAuthService AuthService
 @inject NavigationManager Navigation
-@inject VeterinarioClient VeterinarioClient
+@inject EstudioClient EstudioClient
 
-<h4>Gestión de Veterinarios</h4>
+<h4>Gestión de Estudios</h4>
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <h3>Veterinarios</h3>
+            <h3>Estudios</h3>
 
             @if (!string.IsNullOrEmpty(errorMessage))
             {
@@ -53,41 +53,29 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>Telefono</th>
-                                <th>Mail</th>
-                                <th>Dni</th>
-                                <th>Direccion</th>
-                                <th>Matricula</th>
-                                <th>Especialidad</th>
+                                <th>Descripcion</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if (veterinarios != null && veterinarios.Any())
+                            @if (estudios != null && estudios.Any())
                             {
-                                @foreach (var vet in veterinarios)
+                                @foreach (var est in estudios)
                                 {
                                     <tr>
-                                        <td>@vet.IdVeterinario</td>
-                                        <td>@vet.NombreVeterinario</td>
-                                        <td>@vet.Apellido</td>
-                                        <td>@vet.Telefono</td>
-                                        <td>@vet.Mail</td>
-                                        <td>@vet.Dni</td>
-                                        <td>@vet.Direccion</td>
-                                        <td>@vet.Matricula</td>
-                                        <td>@vet.Especialidad</td>
+                                        <td>@est.IdEstudio</td>
+                                        <td>@est.NombreEstudio</td>
+                                        <td>@est.DescripcionEstudio</td>
                                         <td>
                                             @if (canUpdate)
                                             {
-                                                <button type="button" class="btn btn-sm btn-outline-primary me-1" @onclick="() => OpenEditModal(vet)">
+                                                <button type="button" class="btn btn-sm btn-outline-primary me-1" @onclick="() => OpenEditModal(est)">
                                                     <i class="fas fa-edit"></i> Editar
                                                 </button>
                                             }
                                             @if (canDelete)
                                             {
-                                                <button type="button" class="btn btn-sm btn-outline-danger" @onclick="() => ConfirmDelete(vet)">
+                                                <button type="button" class="btn btn-sm btn-outline-danger" @onclick="() => ConfirmDelete(est)">
                                                     <i class="fas fa-trash"></i> Eliminar
                                                 </button>
                                             }
@@ -103,15 +91,15 @@
     </div>
 </div>
 
-<VeterinarioModal @ref="veterinarioModal" OnVeterinarioChanged="LoadVeterinarios" />
+<EstudioModal @ref="estudioModal" OnEstudioChanged="LoadEstudios" />
 
 @code {
-    private List<VeterinarioDTO>? veterinarios;
+    private List<EstudioDTO>? estudios;
     private bool loading = true;
     private string errorMessage = string.Empty;
     private string successMessage = string.Empty;
 
-    private VeterinarioModal veterinarioModal = default!;
+    private EstudioModal estudioModal = default!;
 
     private bool canRead = false;
     private bool canAdd = false;
@@ -120,8 +108,8 @@
 
     private bool isEditing = false;
     private bool saving = false;
-    private VeterinarioModal.FormMode mode;
-    private VeterinarioRegisterDTO currentRegister = new();
+    private EstudioModal.FormMode mode;
+    private EstudioDTO currentEstudio = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -136,11 +124,11 @@
 
         if (canRead)
         {
-            await LoadVeterinarios();
+            await LoadEstudios();
         }
         else
         {
-            errorMessage = "No tiene permisos para ver veterinarios.";
+            errorMessage = "No tiene permisos para ver estudios.";
         }
 
         StateHasChanged();
@@ -161,11 +149,11 @@
 
             if (canRead)
             {
-                await LoadVeterinarios();
+                await LoadEstudios();
             }
             else
             {
-                errorMessage = "No tiene permisos para ver veterinarios.";
+                errorMessage = "No tiene permisos para ver estudios.";
             }
 
             StateHasChanged();
@@ -175,23 +163,23 @@
 
     private async Task LoadPermissions()
     {
-        canRead = await AuthService.HasPermissionAsync("veterinarios.leer");
-        canAdd = await AuthService.HasPermissionAsync("veterinarios.agregar");
-        canUpdate = await AuthService.HasPermissionAsync("veterinarios.actualizar");
-        canDelete = await AuthService.HasPermissionAsync("veterinarios.eliminar");
+        canRead = await AuthService.HasPermissionAsync("estudios.leer");
+        canAdd = await AuthService.HasPermissionAsync("estudios.agregar");
+        canUpdate = await AuthService.HasPermissionAsync("estudios.actualizar");
+        canDelete = await AuthService.HasPermissionAsync("estudios.eliminar");
     }
 
-    private async Task LoadVeterinarios()
+    private async Task LoadEstudios()
     {
         try
         {
             loading = true;
-            veterinarios = (await VeterinarioClient.GetAllAsync())?.ToList();
+            estudios = (await EstudioClient.GetAllAsync())?.ToList();
             successMessage = string.Empty;
         }
         catch (Exception ex)
         {
-            errorMessage = $"Error al cargar veterinarios: {ex.Message}";
+            errorMessage = $"Error al cargar estudios: {ex.Message}";
         }
         finally
         {
@@ -201,24 +189,24 @@
 
     private async Task OpenAddModal()
     {
-        if (veterinarioModal != null)
+        if (estudioModal != null)
         {
-            await veterinarioModal.ShowAddModal();
+            await estudioModal.ShowAddModal();
         }
     }
 
-    private async Task OpenEditModal(VeterinarioDTO vet)
+    private async Task OpenEditModal(EstudioDTO est)
     {
-        if (veterinarioModal != null)
+        if (estudioModal != null)
         {
-            await veterinarioModal.ShowEditModal(vet);
+            await estudioModal.ShowEditModal(est);
         }
     }
 
-    private async Task Eliminar(VeterinarioDTO vet)
+    private async Task Eliminar(EstudioDTO est)
     {
-        await VeterinarioClient.DeleteAsync(vet.IdVeterinario);
-        await LoadVeterinarios();
+        await EstudioClient.DeleteAsync(est.IdEstudio);
+        await LoadEstudios();
     }
 
     private void Cancel()
@@ -226,28 +214,28 @@
         isEditing = false;
     }
 
-    private async Task ConfirmDelete(VeterinarioDTO vet)
+    private async Task ConfirmDelete(EstudioDTO est)
     {
         var confirm = await JSRuntime.InvokeAsync<bool>("confirm",
-            $"¿Está seguro que desea eliminar el veterinario {vet.NombreVeterinario} {vet.Apellido} ({vet.Mail})?");
+            $"¿Está seguro que desea eliminar el estudio {est.NombreEstudio}?");
 
         if (confirm)
         {
-            await DeleteVeterinario(vet.IdVeterinario);
+            await DeleteEstudio(est.IdEstudio);
         }
     }
 
-    private async Task DeleteVeterinario(int id)
+    private async Task DeleteEstudio(int id)
     {
         try
         {
-            await VeterinarioClient.DeleteAsync(id);
-            successMessage = "Veterinario eliminado exitosamente.";
-            await LoadVeterinarios();
+            await EstudioClient.DeleteAsync(id);
+            successMessage = "Estudio eliminado exitosamente.";
+            await LoadEstudios();
         }
         catch (Exception ex)
         {
-            errorMessage = $"Error al eliminar veterinario: {ex.Message}";
+            errorMessage = $"Error al eliminar estudio: {ex.Message}";
         }
     }
 }

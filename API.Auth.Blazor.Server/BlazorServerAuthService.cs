@@ -40,6 +40,16 @@ namespace API.Auth.Blazor.Server
             return Task.FromResult(new AuthenticationState(user));
         }
 
+        public void NotificarLoginExitoso()
+        {
+            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+        }
+        public void NotificarLogout()
+        {
+            _currentSession = null;
+            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+        }
+
         public Task<bool> IsAuthenticatedAsync()
         {
             try

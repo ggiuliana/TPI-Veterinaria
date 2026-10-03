@@ -26,7 +26,7 @@ builder.Services.AddScoped<IAuthService>(sp =>
 
 builder.Services.AddScoped<VeterinarioClient>();
 builder.Services.AddScoped<UsuarioClient>();
-
+builder.Services.AddScoped<EstudioClient>();
 
 var app = builder.Build();
 

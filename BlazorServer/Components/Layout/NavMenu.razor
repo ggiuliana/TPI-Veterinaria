@@ -1,30 +1,76 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using API.Clients
+@inject IAuthService AuthService
+@implements IDisposable
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">BlazorServer</a>
+        <a class="navbar-brand" href="">Blazor Server</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
     </div>
 </div>
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
-
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
     <nav class="flex-column">
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+                <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </NavLink>
-        </div>
+        @if (canReadVeterinarios)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="veterinarios">
+                    <span class="oi oi-people" aria-hidden="true"></span> Veterinarios
+                </NavLink>
+            </div>
+        }
     </nav>
 </div>
 
+@code {
+    private bool collapseNavMenu = true;
+    private bool canReadVeterinarios = false;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        AuthService.AuthenticationStateChanged += OnAuthenticationStateChanged;
+        await CheckPermissions();
+        await base.OnInitializedAsync();
+    }
+
+    private async Task CheckPermissions()
+    {
+        var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+        if (isAuthenticated)
+        {
+            canReadVeterinarios = await AuthService.HasPermissionAsync("veterinarios.leer");
+        }
+        else
+        {
+            canReadVeterinarios = false;
+        }
+        StateHasChanged();
+    }
+
+    private void OnAuthenticationStateChanged(bool authenticated)
+    {
+        InvokeAsync(async () =>
+        {
+            await CheckPermissions();
+        });
+    }
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    public void Dispose()
+    {
+        AuthService.AuthenticationStateChanged -= OnAuthenticationStateChanged;
+    }
+}

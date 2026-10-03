@@ -1,7 +1,9 @@
 ﻿@page "/login"
 @using System.ComponentModel.DataAnnotations
+@using API.Auth.Blazor.Server
 @using API.Clients
 @inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthStateProvider
 @inject IAuthService AuthService
 
 <EditForm Model="@loginModel" OnValidSubmit="HandleLogin" FormName="loginForm" class="d-flex flex-column gap-4">
@@ -34,6 +36,9 @@
 
         if (isValidUser)
         {
+            var customAuthStateProvider = (BlazorServerAuthService)AuthStateProvider;
+            customAuthStateProvider.NotificarLoginExitoso();
+
             string? userRole = await AuthService.GetRolAsync();
 
             switch (userRole?.Trim().ToUpper())
