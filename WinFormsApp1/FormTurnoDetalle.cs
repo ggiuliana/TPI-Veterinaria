@@ -21,6 +21,9 @@ namespace WinFormsApp1
                 this.Text = "Editar Turno";
                 lblTitulo.Text = "MODIFICAR TURNO";
 
+                txtIdMascota.Visible = true;
+                lblMascota.Visible = true;
+
                 try
                 {
                     var turno = await TurnoClient.GetAsync(_idTurnoActual);
@@ -32,6 +35,7 @@ namespace WinFormsApp1
 
                         txtIdMascota.Text = turno.IdMascota.ToString();
                         txtIdVeterinario.Text = turno.IdVeterinario.ToString();
+                        txtObservaciones.Text = turno.Observaciones ?? "";
                     }
                 }
                 catch (Exception ex)
@@ -46,6 +50,11 @@ namespace WinFormsApp1
                 lblTitulo.Text = "NUEVO TURNO";
                 dtpFecha.Value = DateTime.Now;
                 dtpHora.Value = DateTime.Now;
+
+                txtIdMascota.Visible = false;
+                lblMascota.Visible = false;
+                txtIdMascota.Text = "";
+                txtObservaciones.Text = "";
             }
         }
 
@@ -80,7 +89,8 @@ namespace WinFormsApp1
                     IdVeterinario = idVeterinario,
                     IdMascota = idMascota,
 
-                    EstadoTurno = idMascota.HasValue ? "Otorgado" : "Pendiente"
+                    EstadoTurno = idMascota.HasValue ? "Otorgado" : "Pendiente",
+                    Observaciones = string.IsNullOrWhiteSpace(txtObservaciones.Text) ? null : txtObservaciones.Text
                 };
 
                 if (_idTurnoActual == 0)

@@ -22,6 +22,7 @@ namespace WinFormsApp1
             try
             {
                 var turnos = await TurnoClient.GetAllAsync();
+                dataGridView1.AutoGenerateColumns = false;
                 dataGridView1.DataSource = turnos;
             }
             catch (Exception ex)
