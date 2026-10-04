@@ -74,6 +74,21 @@ namespace WinFormsApp1
             };
             formTurnos.Show();
         }
+        private void ConsultasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Application.OpenForms.OfType<FormConsultaLista>().Any())
+            {
+                Application.OpenForms.OfType<FormConsultaLista>().First().BringToFront();
+                return;
+            }
+            FormConsultaLista formConsultas = new()
+            {
+                MdiParent = this,
+                FormBorderStyle = FormBorderStyle.None,
+                Dock = DockStyle.Fill
+            };
+            formConsultas.Show();
+        }
 
     }
 }

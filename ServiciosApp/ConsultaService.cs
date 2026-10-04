@@ -67,10 +67,10 @@ namespace ServiciosApp
             return dto;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        /*public async Task<bool> DeleteAsync(int id)
         {
             return await repo.DeleteAsync(id);
-        }
+        }*/
         public async Task<ConsultaDTO?> GetAsync(int id)
         {
             Consulta? consulta = await repo.GetAsync(id);
@@ -115,71 +115,33 @@ namespace ServiciosApp
                 }).ToList()?? null
             })];
         }
-        /*public async Task<bool> UpdateAsync(ConsultaDTO dto)
+        public async Task<bool> DeleteAsync(int id)
         {
-            var consulta = await repo.GetAsync(dto.IdConsulta);
-            if (consulta == null) throw new Exception("Consulta no encontrada");
-
-            var turno = await repoTurno.GetAsync(dto.IdTurno) ?? throw new ArgumentException($"No se encontró el turno con ID {dto.IdTurno}");
-            consulta.SetTurno(turno);
-            consulta.SetDiagnostico(dto.Diagnostico);
-            consulta.SetTratamiento(dto.Tratamiento);
-            consulta.SetPeso(dto.Peso);
-            if (dto.Observaciones != null)
+            var consulta = await repo.GetAsync(id);
+            if (consulta == null)
             {
-                consulta.SetObservaciones(dto.Observaciones);
+                return false;
             }
-            if (dto.IdEstudios != null && dto.IdEstudios.Any())
+            if (consulta.MedicamentosConsulta != null && consulta.MedicamentosConsulta.Any())
             {
-                ICollection<Estudio> estudios = await repoEstudio.GetByIdListAsync(dto.IdEstudios);
-                consulta.SetEstudios(estudios);
-            }
+                var idsMedicamentos = consulta.MedicamentosConsulta.Select(m => m.IdMedicamento).ToList();
+                var medicamentosDb = await repoMedicamento.GetByIdsAsync(idsMedicamentos);
 
-            var idsViejos = consulta.MedicamentosConsulta.Select(m => m.IdMedicamento);
-            var idsNuevos = dto.MedicamentoConsulta?.Select(m => m.IdMedicamento) ?? new List<int>();
-            var todosLosIds = idsViejos.Union(idsNuevos).Distinct().ToList();
-
-            var medicamentosDb = await repoMedicamento.GetByIdsAsync(todosLosIds);
-
-            foreach (var medicamenteViejo in consulta.MedicamentosConsulta)
-            {
-                var medicamento = medicamentosDb.FirstOrDefault(m => m.IdMedicamento == medicamenteViejo.IdMedicamento);
-                if (medicamento != null)
+                foreach (var relacion in consulta.MedicamentosConsulta)
                 {
-                    var cantidad = medicamento.CantidadRestante;
-                    medicamento.SetCantidadRestante(cantidad += medicamenteViejo.CantidadUsada);
-                }
-            }
-
-            consulta.MedicamentosConsulta.Clear();
-
-            if (dto.MedicamentoConsulta != null && dto.MedicamentoConsulta.Any())
-            {
-                foreach (var itemDto in dto.MedicamentoConsulta)
-                {
-                    var medicamento = medicamentosDb.FirstOrDefault(m => m.IdMedicamento == itemDto.IdMedicamento);
-                    if (medicamento != null)
+                    var medDb = medicamentosDb.FirstOrDefault(m => m.IdMedicamento == relacion.IdMedicamento);
+                    if (medDb != null)
                     {
-                        if (medicamento.CantidadRestante < itemDto.CantidadUsada)
-                        {
-                            throw new Exception($"Stock insuficiente para el medicamento ID {medicamento.IdMedicamento}");
-                        }
-
-                        var cantidad = medicamento.CantidadRestante;
-                        medicamento.SetCantidadRestante(cantidad -= itemDto.CantidadUsada);
-
-                        var nuevaRelacion = new MedicamentoConsulta(
-                            consulta.IdConsulta,
-                            itemDto.IdMedicamento,
-                            itemDto.CantidadUsada
-                        );
-
-                        consulta.MedicamentosConsulta.Add(nuevaRelacion);
+                        medDb.SetCantidadRestante(medDb.CantidadRestante + relacion.CantidadUsada);
                     }
                 }
+
+                consulta.MedicamentosConsulta.Clear();
+
+                await repo.UpdateAsync(consulta);
             }
-            return await repo.UpdateAsync(consulta);
-        }*/
+            return await repo.DeleteAsync(id);
+        }
         public async Task<bool> UpdateAsync(ConsultaDTO dto)
         {
             var consulta = await repo.GetAsync(dto.IdConsulta);
@@ -239,7 +201,6 @@ namespace ServiciosApp
                     }
                 }
             }
-
             return await repo.UpdateAsync(consulta);
         }
         public async Task<ConsultaDTO?> GetByIdTurnoAsync(int idTurno)
