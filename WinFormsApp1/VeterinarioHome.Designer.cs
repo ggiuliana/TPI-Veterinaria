@@ -1,6 +1,6 @@
 ﻿namespace WinFormsApp1
 {
-    partial class AdminHome
+    partial class VeterinarioHome
     {
         /// <summary>
         /// Required designer variable.
@@ -33,8 +33,6 @@
             turnosToolStripMenuItem = new ToolStripMenuItem();
             consultasToolStripMenuItem = new ToolStripMenuItem();
             cerrarSesiónToolStripMenuItem = new ToolStripMenuItem();
-            estudiosToolStripMenuItem = new ToolStripMenuItem();
-            veterinariosToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -45,13 +43,13 @@
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new Padding(5, 2, 0, 2);
-            menuStrip1.Size = new Size(858, 24);
-            menuStrip1.TabIndex = 10;
+            menuStrip1.Size = new Size(800, 24);
+            menuStrip1.TabIndex = 11;
             menuStrip1.Text = "menuStrip1";
             // 
             // vistaToolStripMenuItem
             // 
-            vistaToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { veterinariosToolStripMenuItem, estudiosToolStripMenuItem, turnosToolStripMenuItem });
+            vistaToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { turnosToolStripMenuItem });
             vistaToolStripMenuItem.Name = "vistaToolStripMenuItem";
             vistaToolStripMenuItem.Size = new Size(59, 20);
             vistaToolStripMenuItem.Text = "Gestión";
@@ -67,7 +65,7 @@
             // consultasToolStripMenuItem
             // 
             consultasToolStripMenuItem.Name = "consultasToolStripMenuItem";
-            consultasToolStripMenuItem.Size = new Size(126, 22);
+            consultasToolStripMenuItem.Size = new Size(180, 22);
             consultasToolStripMenuItem.Text = "Consultas";
             consultasToolStripMenuItem.Click += ConsultasToolStripMenuItem_Click;
             // 
@@ -78,32 +76,15 @@
             cerrarSesiónToolStripMenuItem.Text = "Cerrar Sesión";
             cerrarSesiónToolStripMenuItem.Click += LogOut_Click;
             // 
-            // estudiosToolStripMenuItem
-            // 
-            estudiosToolStripMenuItem.Name = "estudiosToolStripMenuItem";
-            estudiosToolStripMenuItem.Size = new Size(180, 22);
-            estudiosToolStripMenuItem.Text = "Estudios";
-            estudiosToolStripMenuItem.Click += EstudiosToolStripMenuItem_Click;
-            // 
-            // veterinariosToolStripMenuItem
-            // 
-            veterinariosToolStripMenuItem.Name = "veterinariosToolStripMenuItem";
-            veterinariosToolStripMenuItem.Size = new Size(180, 22);
-            veterinariosToolStripMenuItem.Text = "Veterinarios";
-            veterinariosToolStripMenuItem.Click += VeterinariosToolStripMenuItem_Click;
-            // 
-            // AdminHome
+            // VeterinarioHome
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(858, 474);
+            ClientSize = new Size(800, 450);
             Controls.Add(menuStrip1);
             IsMdiContainer = true;
-            MainMenuStrip = menuStrip1;
-            Name = "AdminHome";
-            Text = "  ";
-            WindowState = FormWindowState.Maximized;
-            Load += AdminHome_Load;
+            Name = "VeterinarioHome";
+            Text = "Form1";
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);
@@ -111,12 +92,11 @@
         }
 
         #endregion
+
         private MenuStrip menuStrip1;
         private ToolStripMenuItem vistaToolStripMenuItem;
-        private ToolStripMenuItem cerrarSesiónToolStripMenuItem;
         private ToolStripMenuItem turnosToolStripMenuItem;
         private ToolStripMenuItem consultasToolStripMenuItem;
-        private ToolStripMenuItem veterinariosToolStripMenuItem;
-        private ToolStripMenuItem estudiosToolStripMenuItem;
+        private ToolStripMenuItem cerrarSesiónToolStripMenuItem;
     }
 }

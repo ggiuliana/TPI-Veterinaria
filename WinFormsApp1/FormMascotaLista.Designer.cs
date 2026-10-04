@@ -1,6 +1,6 @@
 ﻿namespace WinFormsApp1
 {
-    partial class FormEstudioLista
+    partial class FormMascotaLista
     {
         /// <summary>
         /// Required designer variable.
@@ -33,12 +33,16 @@
             Modificar = new Button();
             Delete = new Button();
             Buscar = new Button();
-            idEstudioBuscar = new TextBox();
+            idMascotaBuscar = new TextBox();
             label2 = new Label();
             dataGridView1 = new DataGridView();
-            IdEstudio = new DataGridViewTextBoxColumn();
-            NombreEstudio = new DataGridViewTextBoxColumn();
-            DescripcionEstudio = new DataGridViewTextBoxColumn();
+            IdMascota = new DataGridViewTextBoxColumn();
+            NombreMascota = new DataGridViewTextBoxColumn();
+            Especie = new DataGridViewTextBoxColumn();
+            Raza = new DataGridViewTextBoxColumn();
+            Castrado = new DataGridViewTextBoxColumn();
+            Sexo = new DataGridViewTextBoxColumn();
+            FechaNac = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -47,21 +51,21 @@
             label1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(675, 16);
+            label1.Location = new Point(668, 30);
             label1.Name = "label1";
-            label1.Size = new Size(77, 20);
-            label1.TabIndex = 33;
-            label1.Text = "ESTUDIOS";
+            label1.Size = new Size(84, 20);
+            label1.TabIndex = 41;
+            label1.Text = "MASCOTAS";
             label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // Create
             // 
             Create.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             Create.Cursor = Cursors.Hand;
-            Create.Location = new Point(712, 384);
+            Create.Location = new Point(705, 398);
             Create.Name = "Create";
             Create.Size = new Size(75, 23);
-            Create.TabIndex = 39;
+            Create.TabIndex = 47;
             Create.Text = "Agregar";
             Create.UseVisualStyleBackColor = true;
             Create.Click += Create_Click;
@@ -70,10 +74,10 @@
             // 
             Modificar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             Modificar.Cursor = Cursors.Hand;
-            Modificar.Location = new Point(623, 384);
+            Modificar.Location = new Point(616, 398);
             Modificar.Name = "Modificar";
             Modificar.Size = new Size(75, 23);
-            Modificar.TabIndex = 38;
+            Modificar.TabIndex = 46;
             Modificar.Text = "Modificar";
             Modificar.UseVisualStyleBackColor = true;
             Modificar.Click += Update_Click;
@@ -82,10 +86,10 @@
             // 
             Delete.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             Delete.Cursor = Cursors.Hand;
-            Delete.Location = new Point(27, 384);
+            Delete.Location = new Point(20, 398);
             Delete.Name = "Delete";
             Delete.Size = new Size(75, 23);
-            Delete.TabIndex = 37;
+            Delete.TabIndex = 45;
             Delete.Text = "Eliminar";
             Delete.UseVisualStyleBackColor = true;
             Delete.Click += Delete_Click;
@@ -93,29 +97,29 @@
             // Buscar
             // 
             Buscar.Cursor = Cursors.Hand;
-            Buscar.Location = new Point(127, 33);
+            Buscar.Location = new Point(120, 47);
             Buscar.Name = "Buscar";
             Buscar.Size = new Size(75, 23);
-            Buscar.TabIndex = 36;
+            Buscar.TabIndex = 44;
             Buscar.Text = "Buscar";
             Buscar.UseVisualStyleBackColor = true;
             Buscar.Click += Buscar_Click;
             // 
-            // idEstudioBuscar
+            // idMascotaBuscar
             // 
-            idEstudioBuscar.Location = new Point(53, 33);
-            idEstudioBuscar.Name = "idEstudioBuscar";
-            idEstudioBuscar.Size = new Size(68, 23);
-            idEstudioBuscar.TabIndex = 35;
+            idMascotaBuscar.Location = new Point(46, 47);
+            idMascotaBuscar.Name = "idMascotaBuscar";
+            idMascotaBuscar.Size = new Size(68, 23);
+            idMascotaBuscar.TabIndex = 43;
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(28, 35);
+            label2.Location = new Point(21, 49);
             label2.Name = "label2";
             label2.Size = new Size(19, 17);
-            label2.TabIndex = 34;
+            label2.TabIndex = 42;
             label2.Text = "Id";
             // 
             // dataGridView1
@@ -126,60 +130,100 @@
             dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { IdEstudio, NombreEstudio, DescripcionEstudio });
-            dataGridView1.Location = new Point(28, 62);
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { IdMascota, NombreMascota, Especie, Raza, Castrado, Sexo, FechaNac });
+            dataGridView1.Location = new Point(21, 76);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersWidth = 51;
             dataGridView1.Size = new Size(760, 316);
-            dataGridView1.TabIndex = 32;
+            dataGridView1.TabIndex = 40;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             // 
-            // IdEstudio
+            // IdMascota
             // 
-            IdEstudio.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            IdEstudio.DataPropertyName = "IdEstudio";
-            IdEstudio.HeaderText = "ID";
-            IdEstudio.MinimumWidth = 6;
-            IdEstudio.Name = "IdEstudio";
-            IdEstudio.ReadOnly = true;
-            IdEstudio.Width = 43;
+            IdMascota.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            IdMascota.DataPropertyName = "IdMascota";
+            IdMascota.HeaderText = "ID";
+            IdMascota.MinimumWidth = 6;
+            IdMascota.Name = "IdMascota";
+            IdMascota.ReadOnly = true;
+            IdMascota.Width = 43;
             // 
-            // NombreEstudio
+            // NombreMascota
             // 
-            NombreEstudio.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            NombreEstudio.DataPropertyName = "NombreEstudio";
-            NombreEstudio.HeaderText = "Nombre";
-            NombreEstudio.MinimumWidth = 6;
-            NombreEstudio.Name = "NombreEstudio";
-            NombreEstudio.ReadOnly = true;
-            NombreEstudio.Width = 76;
+            NombreMascota.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            NombreMascota.DataPropertyName = "NombreMascota";
+            NombreMascota.HeaderText = "Nombre";
+            NombreMascota.MinimumWidth = 6;
+            NombreMascota.Name = "NombreMascota";
+            NombreMascota.ReadOnly = true;
+            NombreMascota.Width = 76;
             // 
-            // DescripcionEstudio
+            // Especie
             // 
-            DescripcionEstudio.DataPropertyName = "DescripcionEstudio";
-            DescripcionEstudio.HeaderText = "Descripción";
-            DescripcionEstudio.MinimumWidth = 6;
-            DescripcionEstudio.Name = "DescripcionEstudio";
-            DescripcionEstudio.ReadOnly = true;
+            Especie.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            Especie.DataPropertyName = "Especie";
+            Especie.HeaderText = "Especie";
+            Especie.MinimumWidth = 6;
+            Especie.Name = "Especie";
+            Especie.ReadOnly = true;
+            Especie.Width = 71;
             // 
-            // FormEstudioLista
+            // Raza
+            // 
+            Raza.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            Raza.DataPropertyName = "Raza";
+            Raza.HeaderText = "Raza";
+            Raza.MinimumWidth = 6;
+            Raza.Name = "Raza";
+            Raza.ReadOnly = true;
+            Raza.Width = 56;
+            // 
+            // Castrado
+            // 
+            Castrado.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            Castrado.DataPropertyName = "Castrado";
+            Castrado.HeaderText = "Castrado";
+            Castrado.MinimumWidth = 6;
+            Castrado.Name = "Castrado";
+            Castrado.ReadOnly = true;
+            Castrado.Width = 56;
+            // 
+            // Sexo
+            // 
+            Sexo.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            Sexo.DataPropertyName = "Sexo";
+            Sexo.HeaderText = "Sexo";
+            Sexo.MinimumWidth = 6;
+            Sexo.Name = "Sexo";
+            Sexo.ReadOnly = true;
+            Sexo.Width = 56;
+            // 
+            // FechaNac
+            // 
+            FechaNac.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            FechaNac.DataPropertyName = "FechaNac";
+            FechaNac.HeaderText = "Fecha de Nacimiento";
+            FechaNac.MinimumWidth = 6;
+            FechaNac.Name = "FechaNac";
+            FechaNac.ReadOnly = true;
+            FechaNac.Width = 56;
+            // 
+            // FormMascotaLista
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(821, 429);
+            ClientSize = new Size(800, 450);
             Controls.Add(label1);
             Controls.Add(Create);
             Controls.Add(Modificar);
             Controls.Add(Delete);
             Controls.Add(Buscar);
-            Controls.Add(idEstudioBuscar);
+            Controls.Add(idMascotaBuscar);
             Controls.Add(label2);
             Controls.Add(dataGridView1);
-            Margin = new Padding(3, 2, 3, 2);
-            Name = "FormEstudioLista";
-            Text = "FormEstudioCRUD";
-            WindowState = FormWindowState.Maximized;
+            Name = "FormMascotaLista";
+            Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -192,11 +236,15 @@
         private Button Modificar;
         private Button Delete;
         private Button Buscar;
-        private TextBox idEstudioBuscar;
+        private TextBox idMascotaBuscar;
         private Label label2;
         private DataGridView dataGridView1;
-        private DataGridViewTextBoxColumn IdEstudio;
-        private DataGridViewTextBoxColumn NombreEstudio;
-        private DataGridViewTextBoxColumn DescripcionEstudio;
+        private DataGridViewTextBoxColumn IdMascota;
+        private DataGridViewTextBoxColumn NombreMascota;
+        private DataGridViewTextBoxColumn Especie;
+        private DataGridViewTextBoxColumn Raza;
+        private DataGridViewTextBoxColumn Castrado;
+        private DataGridViewTextBoxColumn Sexo;
+        private DataGridViewTextBoxColumn FechaNac;
     }
 }

@@ -10,6 +10,6 @@
         public char Sexo { get; set; }
         public DateTime FechaNac { get; set; }
         public int IdDuenio { get; set; }
-        public ICollection<VacunaDTO>? Vacunas { get; set; } = null!;
+        public ICollection<VacunaDTO>? Vacunas { get; set; }
     }
 }

@@ -37,7 +37,6 @@
             Guardar = new Button();
             panel1 = new Panel();
             panel1.SuspendLayout();
-            SuspendLayout();
             // 
             // descripcionEstudio
             // 

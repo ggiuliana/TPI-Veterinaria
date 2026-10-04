@@ -14,6 +14,7 @@ namespace API.Clients
         Task<string?> GetTokenAsync();
         Task<string?> GetUsernameAsync();
         Task<string?> GetRolAsync();
+        Task<int?> GetPersonaIdAsync();
         Task<bool> LoginAsync(string username, string password);
         Task LogoutAsync();
         Task CheckTokenExpirationAsync();

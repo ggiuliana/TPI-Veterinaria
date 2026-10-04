@@ -16,8 +16,8 @@ namespace WinFormsApp1
 
                     if (success)
                     {
+                        MessageBox.Show("Inicio de sesión exitoso.");
                         this.DialogResult = DialogResult.OK;
-                        var adminhome = new AdminHome();
                         this.Close();
                     }
                     else

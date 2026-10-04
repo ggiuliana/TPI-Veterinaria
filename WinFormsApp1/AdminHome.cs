@@ -14,9 +14,14 @@ namespace WinFormsApp1
     public partial class AdminHome : Form
     {
         public AdminHome() => InitializeComponent();
-        
-        private void LogOut_Click(object sender, EventArgs e)
+
+        private async void LogOut_Click(object sender, EventArgs e)
         {
+            var authService = AuthServiceProvider.Instance;
+
+            await authService.LogoutAsync();
+
+            this.DialogResult = DialogResult.OK;
             this.Close();
         }
 
@@ -90,5 +95,9 @@ namespace WinFormsApp1
             formConsultas.Show();
         }
 
+        private void AdminHome_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

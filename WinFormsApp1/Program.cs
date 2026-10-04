@@ -21,38 +21,50 @@ namespace WinFormsApp1
         }
         static async Task MainAsync()
         {
-            // Registrar AuthService en singleton
             var authService = new WindowsFormsAuthService();
             AuthServiceProvider.Register(authService);
 
-            // Loop principal de autenticación
             while (true)
             {
-
                 if (!await authService.IsAuthenticatedAsync())
                 {
                     var loginForm = new Login();
                     if (loginForm.ShowDialog() != DialogResult.OK)
                     {
-                        // Usuario canceló login, cerrar aplicación
                         return;
                     }
                 }
 
                 try
                 {
-                    Application.Run(new AdminHome());
-                    break; // La aplicación se cerró normalmente
+                    string? rol = await authService.GetRolAsync();
+                    Form homeForm;
+
+                    switch (rol)
+                    {
+                        case "Administrador":
+                            homeForm = new AdminHome();
+                            break;
+                        case "Veterinario":
+                            homeForm = new VeterinarioHome();
+                            break;
+                        case "Duenio":
+                            homeForm = new DuenioHome();
+                            break;
+                        default:
+                            MessageBox.Show($"Rol no válido: {rol}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            await authService.LogoutAsync();
+                            continue;
+                    }
+                    homeForm.WindowState = FormWindowState.Maximized;
+                    Application.Run(homeForm);
                 }
                 catch (UnauthorizedAccessException ex)
                 {
-                    // Sesión expirada, mostrar mensaje y volver al login
-                    MessageBox.Show(ex.Message, "Sesión Expirada",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    // El loop continuará y volverá a mostrar login
+                    MessageBox.Show(ex.Message, "Sesión Expirada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    await authService.LogoutAsync();
                 }
             }
-
         }
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {

@@ -119,29 +119,43 @@ namespace WinFormsApp1
                 MessageBox.Show("Por favor, seleccione un turno de la lista para eliminar.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private async void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            var authService = AuthServiceProvider.Instance;
+
+            int? personaId = await authService.GetPersonaIdAsync();
+
             if (e.RowIndex >= 0 && dataGridView1.Columns[e.ColumnIndex].Name == "colConsulta")
             {                 
                 var turnoSeleccionado = (TurnoDTO)dataGridView1.Rows[e.RowIndex].DataBoundItem;
 
-                if (turnoSeleccionado.EstadoTurno != "Otorgado")
+                if (turnoSeleccionado.EstadoTurno == "Pendiente")
                 {
-                    MessageBox.Show("Solo se puede agregar/ver una consulta en turnos con estado 'Otorgado'.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Solo se puede agregar o modificar una consulta en turnos con estado 'Otorgado'/'Resuelto'.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                /* Veterinario asociado al turno puede gestionar la consulta. Si no es el veterinario logueado, mostramos un mensaje de error.
-                int idVeterinarioLogueado = AuthServiceProvider.Instance.IdVeterinarioActual;
-                if (turnoSeleccionado.IdVeterinario != idVeterinarioLogueado)
+                if (turnoSeleccionado.IdVeterinario != personaId)
                 {
                     MessageBox.Show("Solo el veterinario asignado a este turno puede gestionar su consulta.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                */
 
                 FormConsultaDetalle formConsulta = new FormConsultaDetalle(turnoSeleccionado.IdTurno);
-                formConsulta.ShowDialog();
+                if (formConsulta.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        turnoSeleccionado.EstadoTurno = "Resuelto";
+                        await TurnoClient.UpdateAsync(turnoSeleccionado);
+
+                        MessageBox.Show("Consulta guardada y turno marcado como Resuelto.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"La consulta se creó, pero hubo un error al actualizar el estado del turno: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
             }
         }
     }
