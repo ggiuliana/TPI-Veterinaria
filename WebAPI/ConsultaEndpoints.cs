@@ -88,6 +88,16 @@ namespace WebAPI
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
             .WithOpenApi();
+            app.MapGet("/consultas/turno/{idTurno}", async (int idTurno, IConsultaService service) =>
+            {
+                var consulta = await service.GetByIdTurnoAsync(idTurno);
+
+                if (consulta == null)
+                    return Results.NotFound();
+
+                return Results.Ok(consulta);
+            });
         }
+
     }
 }

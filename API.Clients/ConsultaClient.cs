@@ -8,7 +8,7 @@ using DTOs;
 
 namespace API.Clients
 {
-    public class ConsultaCLient : BaseApiClient
+    public class ConsultaClient : BaseApiClient
     {
         public static async Task<ConsultaDTO?> GetAsync(int id)
         {
@@ -74,6 +74,18 @@ namespace API.Clients
             response.EnsureSuccessStatusCode();
 
             return true;
+        }
+        public static async Task<ConsultaDTO?> GetByIdTurnoAsync(int idTurno)
+        {
+            var response = await client.GetAsync($"consultas/turno/{idTurno}");
+
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<ConsultaDTO>();
         }
     }
 }

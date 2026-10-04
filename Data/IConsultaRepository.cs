@@ -9,5 +9,6 @@ namespace Data
         Task<bool> DeleteAsync(int id);
         Task<IEnumerable<Consulta>> GetAllAsync();
         Task<bool> UpdateAsync(Consulta consulta);
+        Task<Consulta?> GetByIdTurnoAsync(int idTurno);
     }
 }

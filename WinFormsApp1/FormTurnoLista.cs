@@ -78,7 +78,7 @@ namespace WinFormsApp1
         {
             if (dataGridView1.CurrentRow != null)
             {
-                int idTurno = Convert.ToInt32(dataGridView1.CurrentRow.Cells["IdTurno"].Value);
+                int idTurno = Convert.ToInt32(dataGridView1.CurrentRow.Cells["colIdTurno"].Value);
 
                 FormTurnoDetalle formDetalle = new FormTurnoDetalle(idTurno);
                 if (formDetalle.ShowDialog() == DialogResult.OK)
@@ -96,7 +96,7 @@ namespace WinFormsApp1
         {
             if (dataGridView1.CurrentRow != null)
             {
-                int idTurno = Convert.ToInt32(dataGridView1.CurrentRow.Cells["IdTurno"].Value);
+                int idTurno = Convert.ToInt32(dataGridView1.CurrentRow.Cells["colIdTurno"].Value);
 
                 var confirmacion = MessageBox.Show($"¿Está seguro que desea eliminar el turno ID {idTurno}?", "Confirmar Eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
@@ -117,6 +117,31 @@ namespace WinFormsApp1
             else
             {
                 MessageBox.Show("Por favor, seleccione un turno de la lista para eliminar.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && dataGridView1.Columns[e.ColumnIndex].Name == "colConsulta")
+            {                 
+                var turnoSeleccionado = (TurnoDTO)dataGridView1.Rows[e.RowIndex].DataBoundItem;
+
+                if (turnoSeleccionado.EstadoTurno != "Otorgado")
+                {
+                    MessageBox.Show("Solo se puede agregar/ver una consulta en turnos con estado 'Otorgado'.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                /* Veterinario asociado al turno puede gestionar la consulta. Si no es el veterinario logueado, mostramos un mensaje de error.
+                int idVeterinarioLogueado = AuthServiceProvider.Instance.IdVeterinarioActual;
+                if (turnoSeleccionado.IdVeterinario != idVeterinarioLogueado)
+                {
+                    MessageBox.Show("Solo el veterinario asignado a este turno puede gestionar su consulta.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                */
+
+                FormConsultaDetalle formConsulta = new FormConsultaDetalle(turnoSeleccionado.IdTurno);
+                formConsulta.ShowDialog();
             }
         }
     }

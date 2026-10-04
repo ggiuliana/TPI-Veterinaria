@@ -28,7 +28,7 @@ namespace Data
         }
         internal VeterinariaContext()
         {
-            //this.Database.EnsureDeleted();
+            //his.Database.EnsureDeleted();
             this.Database.EnsureCreated();
             SeedInitialData();
         }
@@ -433,7 +433,19 @@ namespace Data
                     {
                         IdMedicamento = 1,
                         NombreMedicamento = "Albendazol",
-                        CantidadRestante = 4
+                        CantidadRestante = 8
+                    },
+                    new
+                    {
+                        IdMedicamento = 2,
+                        NombreMedicamento = "Amoxicilina",
+                        CantidadRestante = 10
+                    },
+                    new 
+                    {
+                        IdMedicamento = 3,
+                        NombreMedicamento = "Ibuprofeno",
+                        CantidadRestante = 15
                     });
             });
             modelBuilder.Entity<Turno>(entity =>
@@ -522,6 +534,7 @@ namespace Data
                 entity.HasMany(c => c.MedicamentosConsulta)
                 .WithOne()
                 .HasForeignKey("IdConsulta")
+                .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired(false);
 
                 entity.HasOne(c => c.Turno)

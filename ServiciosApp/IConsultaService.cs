@@ -9,5 +9,6 @@ namespace ServiciosApp
         Task<ConsultaDTO?> GetAsync(int id);
         Task<IEnumerable<ConsultaDTO>> GetAllAsync();
         Task<bool> UpdateAsync(ConsultaDTO dto);
+        Task<ConsultaDTO?> GetByIdTurnoAsync(int idTurno);
     }
 }

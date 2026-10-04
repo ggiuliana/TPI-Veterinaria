@@ -115,7 +115,7 @@ namespace ServiciosApp
                 }).ToList()?? null
             })];
         }
-        public async Task<bool> UpdateAsync(ConsultaDTO dto)
+        /*public async Task<bool> UpdateAsync(ConsultaDTO dto)
         {
             var consulta = await repo.GetAsync(dto.IdConsulta);
             if (consulta == null) throw new Exception("Consulta no encontrada");
@@ -179,6 +179,91 @@ namespace ServiciosApp
                 }
             }
             return await repo.UpdateAsync(consulta);
+        }*/
+        public async Task<bool> UpdateAsync(ConsultaDTO dto)
+        {
+            var consulta = await repo.GetAsync(dto.IdConsulta);
+            if (consulta == null) throw new Exception("Consulta no encontrada");
+
+            var turno = await repoTurno.GetAsync(dto.IdTurno) ?? throw new ArgumentException($"No se encontró el turno");
+            consulta.SetTurno(turno);
+            consulta.SetDiagnostico(dto.Diagnostico);
+            consulta.SetTratamiento(dto.Tratamiento);
+            consulta.SetPeso(dto.Peso);
+            consulta.SetObservaciones(dto.Observaciones);
+
+            if (consulta.MedicamentosConsulta != null && consulta.MedicamentosConsulta.Any())
+            {
+                var idsViejos = consulta.MedicamentosConsulta.Select(m => m.IdMedicamento).ToList();
+                var medicamentosDbViejos = await repoMedicamento.GetByIdsAsync(idsViejos);
+
+                foreach (var relacionVieja in consulta.MedicamentosConsulta)
+                {
+                    var medDb = medicamentosDbViejos.FirstOrDefault(m => m.IdMedicamento == relacionVieja.IdMedicamento);
+                    if (medDb != null)
+                    {
+                        medDb.SetCantidadRestante(medDb.CantidadRestante + relacionVieja.CantidadUsada);
+                    }
+                }
+
+                consulta.MedicamentosConsulta.Clear();
+            }
+
+            if (dto.MedicamentoConsulta != null && dto.MedicamentoConsulta.Any())
+            {
+                var idsNuevos = dto.MedicamentoConsulta.Select(m => m.IdMedicamento).ToList();
+                var medicamentosDbNuevos = await repoMedicamento.GetByIdsAsync(idsNuevos);
+
+                foreach (var itemDto in dto.MedicamentoConsulta)
+                {
+                    var medDb = medicamentosDbNuevos.FirstOrDefault(m => m.IdMedicamento == itemDto.IdMedicamento);
+                    if (medDb != null)
+                    {
+                        if (medDb.CantidadRestante < itemDto.CantidadUsada)
+                        {
+                            throw new Exception($"Stock insuficiente para {medDb.NombreMedicamento}. Quedan {medDb.CantidadRestante}.");
+                        }
+
+                        medDb.SetCantidadRestante(medDb.CantidadRestante - itemDto.CantidadUsada);
+
+                        var nuevaRelacion = new MedicamentoConsulta(
+                            consulta.IdConsulta,
+                            itemDto.IdMedicamento,
+                            itemDto.CantidadUsada
+                        );
+
+                        consulta.MedicamentosConsulta?.Add(nuevaRelacion);
+                    }
+                }
+            }
+
+           return await repo.UpdateAsync(consulta);
+        }
+        public async Task<ConsultaDTO?> GetByIdTurnoAsync(int idTurno)
+        {
+            Consulta? consulta = await repo.GetByIdTurnoAsync(idTurno);
+
+            if (consulta == null)
+            {
+                return null;
+            }
+
+            return new ConsultaDTO
+            {
+                IdConsulta = consulta.IdConsulta,
+                Diagnostico = consulta.Diagnostico,
+                Tratamiento = consulta.Tratamiento,
+                Peso = consulta.Peso,
+                Observaciones = consulta.Observaciones,
+                IdTurno = consulta.IdTurno,
+                IdEstudios = consulta.Estudios?.Select(e => e.IdEstudio).ToList() ?? null,
+                MedicamentoConsulta = consulta.MedicamentosConsulta?.Select(mu => new MedicamentoConsultaDTO
+                {
+                    IdConsulta = mu.IdConsulta,
+                    IdMedicamento = mu.IdMedicamento,
+                    CantidadUsada = mu.CantidadUsada
+                }).ToList() ?? null
+            };
         }
     }
 }
