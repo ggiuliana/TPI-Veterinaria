@@ -43,7 +43,7 @@
         {
             Turno = turno;
         }
-        public void SetObservaciones(string observaciones)
+        public void SetObservaciones(string? observaciones)
         {
             Observaciones = observaciones;
         }

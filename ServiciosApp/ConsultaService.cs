@@ -192,52 +192,55 @@ namespace ServiciosApp
             consulta.SetPeso(dto.Peso);
             consulta.SetObservaciones(dto.Observaciones);
 
-            if (consulta.MedicamentosConsulta != null && consulta.MedicamentosConsulta.Any())
-            {
-                var idsViejos = consulta.MedicamentosConsulta.Select(m => m.IdMedicamento).ToList();
-                var medicamentosDbViejos = await repoMedicamento.GetByIdsAsync(idsViejos);
+            var medicamentosDb = consulta.MedicamentosConsulta ?? new List<MedicamentoConsulta>();
+            var medicamentosDto = dto.MedicamentoConsulta ?? new List<MedicamentoConsultaDTO>();
 
-                foreach (var relacionVieja in consulta.MedicamentosConsulta)
+            var idsEnDto = medicamentosDto.Select(m => m.IdMedicamento).ToList();
+            var aEliminar = medicamentosDb.Where(m => !idsEnDto.Contains(m.IdMedicamento)).ToList();
+
+            foreach (var itemEliminar in aEliminar)
+            {
+                var medDbDb = await repoMedicamento.GetAsync(itemEliminar.IdMedicamento);
+                if (medDbDb != null)
                 {
-                    var medDb = medicamentosDbViejos.FirstOrDefault(m => m.IdMedicamento == relacionVieja.IdMedicamento);
-                    if (medDb != null)
-                    {
-                        medDb.SetCantidadRestante(medDb.CantidadRestante + relacionVieja.CantidadUsada);
-                    }
+                    medDbDb.SetCantidadRestante(medDbDb.CantidadRestante + itemEliminar.CantidadUsada);
                 }
 
-                consulta.MedicamentosConsulta.Clear();
+                consulta.MedicamentosConsulta?.Remove(itemEliminar);
             }
 
-            if (dto.MedicamentoConsulta != null && dto.MedicamentoConsulta.Any())
+            foreach (var itemDto in medicamentosDto)
             {
-                var idsNuevos = dto.MedicamentoConsulta.Select(m => m.IdMedicamento).ToList();
-                var medicamentosDbNuevos = await repoMedicamento.GetByIdsAsync(idsNuevos);
-
-                foreach (var itemDto in dto.MedicamentoConsulta)
+                var medDb = await repoMedicamento.GetAsync(itemDto.IdMedicamento);
+                if (medDb != null)
                 {
-                    var medDb = medicamentosDbNuevos.FirstOrDefault(m => m.IdMedicamento == itemDto.IdMedicamento);
-                    if (medDb != null)
+                    var relacionExistente = medicamentosDb.FirstOrDefault(m => m.IdMedicamento == itemDto.IdMedicamento);
+
+                    if (relacionExistente != null)
+                    {              
+                        int diferencia = itemDto.CantidadUsada - relacionExistente.CantidadUsada;
+
+                        if (diferencia > 0 && medDb.CantidadRestante < diferencia)
+                            throw new Exception($"Stock insuficiente para {medDb.NombreMedicamento}.");
+
+                        medDb.SetCantidadRestante(medDb.CantidadRestante - diferencia);
+
+                        relacionExistente.SetCantidadUsada(itemDto.CantidadUsada);
+                    }
+                    else
                     {
                         if (medDb.CantidadRestante < itemDto.CantidadUsada)
-                        {
-                            throw new Exception($"Stock insuficiente para {medDb.NombreMedicamento}. Quedan {medDb.CantidadRestante}.");
-                        }
+                            throw new Exception($"Stock insuficiente para {medDb.NombreMedicamento}.");
 
                         medDb.SetCantidadRestante(medDb.CantidadRestante - itemDto.CantidadUsada);
 
-                        var nuevaRelacion = new MedicamentoConsulta(
-                            consulta.IdConsulta,
-                            itemDto.IdMedicamento,
-                            itemDto.CantidadUsada
-                        );
-
+                        var nuevaRelacion = new MedicamentoConsulta(consulta.IdConsulta, itemDto.IdMedicamento, itemDto.CantidadUsada);
                         consulta.MedicamentosConsulta?.Add(nuevaRelacion);
                     }
                 }
             }
 
-           return await repo.UpdateAsync(consulta);
+            return await repo.UpdateAsync(consulta);
         }
         public async Task<ConsultaDTO?> GetByIdTurnoAsync(int idTurno)
         {

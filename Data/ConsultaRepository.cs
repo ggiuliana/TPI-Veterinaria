@@ -64,6 +64,18 @@ namespace Data
         }*/
         public async Task<bool> UpdateAsync(Consulta consulta)
         {
+            var relacionesEnDb = await context.Set<MedicamentoConsulta>()
+                                              .Where(mc => mc.IdConsulta == consulta.IdConsulta)
+                                              .ToListAsync();
+
+            foreach (var dbItem in relacionesEnDb)
+            {
+                if (!consulta.MedicamentosConsulta.Any(mc => mc.IdMedicamento == dbItem.IdMedicamento))
+                {
+                    context.Set<MedicamentoConsulta>().Remove(dbItem);
+                }
+            }
+
             await context.SaveChangesAsync();
             return true;
         }

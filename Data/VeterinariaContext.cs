@@ -28,7 +28,7 @@ namespace Data
         }
         internal VeterinariaContext()
         {
-            //his.Database.EnsureDeleted();
+            //this.Database.EnsureDeleted();
             this.Database.EnsureCreated();
             SeedInitialData();
         }

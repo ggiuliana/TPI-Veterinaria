@@ -1,7 +1,8 @@
-﻿using API.Clients;
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using API.Clients;
 using DTOs;
 using ModeloDominio;
-using System.ComponentModel;
 
 namespace WinFormsApp1
 {
@@ -145,12 +146,12 @@ namespace WinFormsApp1
         {
             if (dgvMedicamentos.CurrentRow != null)
             {
-                var medSeleccionado = (MedicamentoConsultaDTO)dgvMedicamentos.CurrentRow.DataBoundItem;
-                _medicamentosTemporales.Remove(medSeleccionado);
-            }
-            else
-            {
-                MessageBox.Show("Seleccione un medicamento de la tabla para eliminarlo.");
+                var filaSeleccionada = (MedicamentoConsultaDTO)dgvMedicamentos.CurrentRow.DataBoundItem;
+
+                if (filaSeleccionada != null)
+                {
+                    _medicamentosTemporales.Remove(filaSeleccionada);
+                }
             }
         }
     }

@@ -59,10 +59,9 @@
             btnGuardar.Cursor = Cursors.Hand;
             btnGuardar.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnGuardar.ForeColor = SystemColors.ControlText;
-            btnGuardar.Location = new Point(448, 459);
-            btnGuardar.Margin = new Padding(3, 4, 3, 4);
+            btnGuardar.Location = new Point(400, 460);
             btnGuardar.Name = "btnGuardar";
-            btnGuardar.Size = new Size(141, 52);
+            btnGuardar.Size = new Size(123, 39);
             btnGuardar.TabIndex = 39;
             btnGuardar.Text = "Guardar";
             btnGuardar.UseVisualStyleBackColor = false;
@@ -73,10 +72,9 @@
             Cancelar.BackColor = SystemColors.ControlLight;
             Cancelar.Cursor = Cursors.Hand;
             Cancelar.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Cancelar.Location = new Point(262, 459);
-            Cancelar.Margin = new Padding(3, 4, 3, 4);
+            Cancelar.Location = new Point(237, 460);
             Cancelar.Name = "Cancelar";
-            Cancelar.Size = new Size(141, 52);
+            Cancelar.Size = new Size(123, 39);
             Cancelar.TabIndex = 40;
             Cancelar.Text = "Cancelar";
             Cancelar.UseVisualStyleBackColor = false;
@@ -85,115 +83,116 @@
             // lblDiagnostico
             // 
             lblDiagnostico.AutoSize = true;
-            lblDiagnostico.Location = new Point(217, 32);
+            lblDiagnostico.Location = new Point(198, 39);
             lblDiagnostico.Name = "lblDiagnostico";
-            lblDiagnostico.Size = new Size(92, 20);
+            lblDiagnostico.Size = new Size(73, 15);
             lblDiagnostico.TabIndex = 16;
             lblDiagnostico.Text = "Diagnóstico:";
             // 
             // txtDiagnostico
             // 
-            txtDiagnostico.Location = new Point(334, 29);
-            txtDiagnostico.Margin = new Padding(3, 4, 3, 4);
+            txtDiagnostico.Location = new Point(300, 37);
             txtDiagnostico.Multiline = true;
             txtDiagnostico.Name = "txtDiagnostico";
-            txtDiagnostico.Size = new Size(260, 27);
+            txtDiagnostico.Size = new Size(228, 21);
             txtDiagnostico.TabIndex = 19;
             // 
             // lblTratamiento
             // 
             lblTratamiento.AutoSize = true;
-            lblTratamiento.Location = new Point(217, 77);
+            lblTratamiento.Location = new Point(198, 73);
             lblTratamiento.Name = "lblTratamiento";
-            lblTratamiento.Size = new Size(92, 20);
+            lblTratamiento.Size = new Size(73, 15);
             lblTratamiento.TabIndex = 15;
             lblTratamiento.Text = "Tratamiento:";
             // 
             // txtTratamiento
             // 
-            txtTratamiento.Location = new Point(334, 74);
-            txtTratamiento.Margin = new Padding(3, 4, 3, 4);
+            txtTratamiento.Location = new Point(300, 71);
             txtTratamiento.Multiline = true;
             txtTratamiento.Name = "txtTratamiento";
-            txtTratamiento.Size = new Size(260, 27);
+            txtTratamiento.Size = new Size(228, 21);
             txtTratamiento.TabIndex = 41;
             // 
             // numPeso
             // 
             numPeso.DecimalPlaces = 2;
-            numPeso.Location = new Point(336, 119);
+            numPeso.Location = new Point(302, 104);
+            numPeso.Margin = new Padding(3, 2, 3, 2);
             numPeso.Name = "numPeso";
-            numPeso.Size = new Size(83, 27);
+            numPeso.Size = new Size(73, 23);
             numPeso.TabIndex = 42;
             // 
             // lblPeso
             // 
             lblPeso.AutoSize = true;
-            lblPeso.Location = new Point(238, 122);
+            lblPeso.Location = new Point(216, 107);
             lblPeso.Name = "lblPeso";
-            lblPeso.Size = new Size(42, 20);
+            lblPeso.Size = new Size(35, 15);
             lblPeso.TabIndex = 43;
             lblPeso.Text = "Peso:";
             // 
             // txtObservaciones
             // 
-            txtObservaciones.Location = new Point(336, 164);
-            txtObservaciones.Margin = new Padding(3, 4, 3, 4);
+            txtObservaciones.Location = new Point(302, 138);
             txtObservaciones.Multiline = true;
             txtObservaciones.Name = "txtObservaciones";
-            txtObservaciones.Size = new Size(260, 27);
+            txtObservaciones.Size = new Size(228, 21);
             txtObservaciones.TabIndex = 44;
             // 
             // lblObservaciones
             // 
             lblObservaciones.AutoSize = true;
-            lblObservaciones.Location = new Point(217, 167);
+            lblObservaciones.Location = new Point(198, 140);
             lblObservaciones.Name = "lblObservaciones";
-            lblObservaciones.Size = new Size(108, 20);
+            lblObservaciones.Size = new Size(87, 15);
             lblObservaciones.TabIndex = 45;
             lblObservaciones.Text = "Observaciones:";
             // 
             // cmbMedicamentos
             // 
             cmbMedicamentos.FormattingEnabled = true;
-            cmbMedicamentos.Location = new Point(164, 263);
+            cmbMedicamentos.Location = new Point(152, 246);
+            cmbMedicamentos.Margin = new Padding(3, 2, 3, 2);
             cmbMedicamentos.Name = "cmbMedicamentos";
-            cmbMedicamentos.Size = new Size(151, 28);
+            cmbMedicamentos.Size = new Size(133, 23);
             cmbMedicamentos.TabIndex = 46;
             // 
             // lblMedicamento
             // 
             lblMedicamento.AutoSize = true;
-            lblMedicamento.Location = new Point(42, 266);
+            lblMedicamento.Location = new Point(45, 249);
             lblMedicamento.Name = "lblMedicamento";
-            lblMedicamento.Size = new Size(104, 20);
+            lblMedicamento.Size = new Size(84, 15);
             lblMedicamento.TabIndex = 47;
             lblMedicamento.Text = "Medicamento:";
             // 
             // lblCantMedicamento
             // 
             lblCantMedicamento.AutoSize = true;
-            lblCantMedicamento.Location = new Point(61, 311);
+            lblCantMedicamento.Location = new Point(61, 292);
             lblCantMedicamento.Name = "lblCantMedicamento";
-            lblCantMedicamento.Size = new Size(72, 20);
+            lblCantMedicamento.Size = new Size(58, 15);
             lblCantMedicamento.TabIndex = 49;
             lblCantMedicamento.Text = "Cantidad:";
             // 
             // numCantidadMedicamento
             // 
-            numCantidadMedicamento.Location = new Point(164, 309);
+            numCantidadMedicamento.Location = new Point(152, 291);
+            numCantidadMedicamento.Margin = new Padding(3, 2, 3, 2);
             numCantidadMedicamento.Name = "numCantidadMedicamento";
-            numCantidadMedicamento.Size = new Size(61, 27);
+            numCantidadMedicamento.Size = new Size(53, 23);
             numCantidadMedicamento.TabIndex = 48;
             // 
             // dgvMedicamentos
             // 
             dgvMedicamentos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvMedicamentos.Columns.AddRange(new DataGridViewColumn[] { colIdMedicamento, colNombreMedicamento, colCantidadUsada });
-            dgvMedicamentos.Location = new Point(336, 235);
+            dgvMedicamentos.Location = new Point(302, 203);
+            dgvMedicamentos.Margin = new Padding(3, 2, 3, 2);
             dgvMedicamentos.Name = "dgvMedicamentos";
             dgvMedicamentos.RowHeadersWidth = 51;
-            dgvMedicamentos.Size = new Size(432, 119);
+            dgvMedicamentos.Size = new Size(421, 156);
             dgvMedicamentos.TabIndex = 50;
             // 
             // colIdMedicamento
@@ -204,7 +203,7 @@
             colIdMedicamento.MinimumWidth = 6;
             colIdMedicamento.Name = "colIdMedicamento";
             colIdMedicamento.ReadOnly = true;
-            colIdMedicamento.Width = 53;
+            colIdMedicamento.Width = 43;
             // 
             // colNombreMedicamento
             // 
@@ -223,13 +222,14 @@
             colCantidadUsada.MinimumWidth = 6;
             colCantidadUsada.Name = "colCantidadUsada";
             colCantidadUsada.ReadOnly = true;
-            colCantidadUsada.Width = 131;
+            colCantidadUsada.Width = 106;
             // 
             // btnAgregarMedicamento
             // 
-            btnAgregarMedicamento.Location = new Point(61, 368);
+            btnAgregarMedicamento.Location = new Point(45, 375);
+            btnAgregarMedicamento.Margin = new Padding(3, 2, 3, 2);
             btnAgregarMedicamento.Name = "btnAgregarMedicamento";
-            btnAgregarMedicamento.Size = new Size(176, 29);
+            btnAgregarMedicamento.Size = new Size(154, 22);
             btnAgregarMedicamento.TabIndex = 51;
             btnAgregarMedicamento.Text = "Agregar medicamento";
             btnAgregarMedicamento.UseVisualStyleBackColor = true;
@@ -237,9 +237,10 @@
             // 
             // btnQuitarMedicamento
             // 
-            btnQuitarMedicamento.Location = new Point(592, 368);
+            btnQuitarMedicamento.Location = new Point(569, 375);
+            btnQuitarMedicamento.Margin = new Padding(3, 2, 3, 2);
             btnQuitarMedicamento.Name = "btnQuitarMedicamento";
-            btnQuitarMedicamento.Size = new Size(176, 29);
+            btnQuitarMedicamento.Size = new Size(154, 22);
             btnQuitarMedicamento.TabIndex = 52;
             btnQuitarMedicamento.Text = "Quitar medicamento";
             btnQuitarMedicamento.UseVisualStyleBackColor = true;
@@ -247,9 +248,9 @@
             // 
             // FormConsultaDetalle
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(803, 547);
+            ClientSize = new Size(769, 529);
             Controls.Add(btnQuitarMedicamento);
             Controls.Add(btnAgregarMedicamento);
             Controls.Add(dgvMedicamentos);
@@ -267,6 +268,7 @@
             Controls.Add(txtDiagnostico);
             Controls.Add(lblTratamiento);
             Controls.Add(btnGuardar);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "FormConsultaDetalle";
             Text = "FormConsultaDetalle";
             ((System.ComponentModel.ISupportInitialize)numPeso).EndInit();
