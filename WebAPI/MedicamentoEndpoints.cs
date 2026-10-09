@@ -21,7 +21,8 @@ namespace WebAPI
             .WithName("GetMedicamento")
             .Produces<MedicamentoDTO>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("MedicamentosLeer");
 
             app.MapGet("/medicamentos", async (IMedicamentoService medicamentoService) =>
             {
@@ -31,7 +32,8 @@ namespace WebAPI
             })
             .WithName("GetAllMedicamentos")
             .Produces<List<MedicamentoDTO>>(StatusCodes.Status200OK)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("MedicamentosLeer");
 
             app.MapPost("/medicamentos", async (MedicamentoDTO dto, IMedicamentoService medicamentoService) =>
             {
@@ -48,7 +50,8 @@ namespace WebAPI
             .WithName("AddMedicamento")
             .Produces<MedicamentoDTO>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("MedicamentosAgregar");
 
             app.MapPut("/medicamentos", async (MedicamentoDTO dto, IMedicamentoService medicamentoService) =>
             {
@@ -71,7 +74,8 @@ namespace WebAPI
             .WithName("UpdateMedicamentos")
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status400BadRequest)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("MedicamentosActualizar");
 
             app.MapDelete("/medicamentos/{id}", async (int id, IMedicamentoService medicamentoService) =>
             {
@@ -87,7 +91,8 @@ namespace WebAPI
             .WithName("DeleteMedicamentos")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("MedicamentosEliminar");
 
         }
     }

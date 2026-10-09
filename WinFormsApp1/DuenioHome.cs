@@ -20,7 +20,7 @@ namespace WinFormsApp1
 
         private async void LogOut_Click(object sender, EventArgs e)
         {
-            var authService = AuthServiceProvider.Instance;
+            var authService = Program.AuthService;
 
             await authService.LogoutAsync();
 
@@ -64,6 +64,16 @@ namespace WinFormsApp1
                 Dock = DockStyle.Fill
             };
             formMascotas.Show();
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
+
+            if (this.DialogResult != DialogResult.OK)
+            {
+                Program.AuthService.LogoutAsync().GetAwaiter().GetResult();
+            }
         }
     }
 }

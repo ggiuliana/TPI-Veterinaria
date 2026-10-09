@@ -21,7 +21,8 @@ namespace WebAPI
             .WithName("GetConsulta")
             .Produces<ConsultaDTO>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("ConsultasLeer");
 
             app.MapGet("/consultas", async (IConsultaService consultaService) =>
             {
@@ -31,7 +32,8 @@ namespace WebAPI
             })
             .WithName("GetAllConsultas")
             .Produces<List<ConsultaDTO>>(StatusCodes.Status200OK)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("ConsultasLeer");
 
             app.MapPost("/consultas", async (ConsultaDTO dto, IConsultaService consultaService) =>
             {
@@ -48,7 +50,8 @@ namespace WebAPI
             .WithName("AddConsulta")
             .Produces<ConsultaDTO>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("ConsultasAgregar");
 
             app.MapPut("/consultas", async (ConsultaDTO dto, IConsultaService consultaService) =>
             {
@@ -71,7 +74,8 @@ namespace WebAPI
             .WithName("UpdateConsultas")
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status400BadRequest)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("ConsultasActualizar");
 
             app.MapDelete("/consultas/{id}", async (int id, IConsultaService consultaService) =>
             {
@@ -87,7 +91,9 @@ namespace WebAPI
             .WithName("DeleteConsultas")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("ConsultasEliminar");
+
             app.MapGet("/consultas/turno/{idTurno}", async (int idTurno, IConsultaService service) =>
             {
                 var consulta = await service.GetByIdTurnoAsync(idTurno);
@@ -96,7 +102,12 @@ namespace WebAPI
                     return Results.NotFound();
 
                 return Results.Ok(consulta);
-            });
+            })
+            .WithName("GetConsultaByTurno")
+            .Produces<ConsultaDTO>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status404NotFound)
+            .WithOpenApi()
+            .RequireAuthorization("ConsultasLeer");
         }
 
     }

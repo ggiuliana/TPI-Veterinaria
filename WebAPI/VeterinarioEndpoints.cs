@@ -21,7 +21,8 @@ namespace WebAPI
             .WithName("GetVeterinario")
             .Produces<VeterinarioDTO>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("ConsultasLeer");
 
             app.MapGet("/veterinarios", async (IVeterinarioService veterinarioService) =>
             {
@@ -31,7 +32,8 @@ namespace WebAPI
             })
             .WithName("GetAllVeterinarios")
             .Produces<List<VeterinarioDTO>>(StatusCodes.Status200OK)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("VeterinariosLeer");
 
             app.MapPost("/veterinarios", async (VeterinarioDTO dto, IVeterinarioService veterinarioService) =>
             {
@@ -48,7 +50,8 @@ namespace WebAPI
             .WithName("AddVeterinario")
             .Produces<VeterinarioDTO>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("VeterinariosAgregar");
 
             app.MapPut("/veterinarios", async (VeterinarioDTO dto, IVeterinarioService veterinarioService) =>
             {
@@ -70,7 +73,8 @@ namespace WebAPI
             .WithName("UpdateVeterinarios")
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status400BadRequest)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("VeterinariosActualizar");
 
             app.MapDelete("/veterinarios/{id}", async (int id, IVeterinarioService veterinarioService) =>
             {
@@ -86,8 +90,8 @@ namespace WebAPI
             .WithName("DeleteVeterinarios")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
-            .WithOpenApi();
-
+            .WithOpenApi()
+            .RequireAuthorization("VeterinariosEliminar");
         }
     }
 }

@@ -15,7 +15,8 @@ namespace WebAPI
             })
             .WithName("GetMedicamentosByConsulta")
             .Produces<List<MedicamentoConsultaDTO>>(StatusCodes.Status200OK)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("ConsultasLeer");
 
             app.MapPost("/medicamentoconsultas", async (MedicamentoConsultaDTO dto, IMedicamentoConsultaService service) =>
             {
@@ -32,7 +33,8 @@ namespace WebAPI
             .WithName("AddMedicamentoConsulta")
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("ConsultasAgregar");
 
             app.MapDelete("/medicamentoconsultas/{idConsulta}/{idMedicamento}", async (int idConsulta, int idMedicamento, IMedicamentoConsultaService service) =>
             {
@@ -49,7 +51,8 @@ namespace WebAPI
             .WithName("DeleteMedicamentoConsulta")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status400BadRequest)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("ConsultasEliminar");
         }
     }
 }

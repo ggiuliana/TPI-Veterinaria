@@ -20,7 +20,8 @@ namespace WebAPI
             .WithName("GetMascotas")
             .Produces<MascotaDTO>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("MascotasLeer");
 
             app.MapGet("/mascotas", async (IMascotaService mascotaService) =>
             {
@@ -30,7 +31,8 @@ namespace WebAPI
             })
             .WithName("GetAllMascotas")
             .Produces<List<MascotaDTO>>(StatusCodes.Status200OK)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("MascotasLeer");
 
             app.MapGet("/mascotas/duenio/{id}", async (int id, IMascotaService mascotaService) =>
             {
@@ -40,7 +42,8 @@ namespace WebAPI
             })
             .WithName("GetMascotasByDuenio")
             .Produces<List<MascotaDTO>>(StatusCodes.Status200OK)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("MascotasLeer");
 
             app.MapPost("/mascotas", async (MascotaDTO dto, IMascotaService mascotaService) =>
             {
@@ -57,7 +60,8 @@ namespace WebAPI
             .WithName("AddMascota")
             .Produces<MascotaDTO>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("MascotasAgregar");
 
             app.MapPut("/mascotas", async (MascotaDTO dto, IMascotaService mascotaService) =>
             {
@@ -80,7 +84,8 @@ namespace WebAPI
             .WithName("UpdateMascota")
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status400BadRequest)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("MascotasActualizar");
 
             app.MapDelete("/mascotas/{id}", async (int id, IMascotaService mascotaService) =>
             {
@@ -96,8 +101,8 @@ namespace WebAPI
             .WithName("DeleteMascota")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
-            .WithOpenApi();
-
+            .WithOpenApi()
+            .RequireAuthorization("MascotasEliminar");
         }
     }
 }

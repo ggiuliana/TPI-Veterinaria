@@ -8,11 +8,16 @@ namespace WinFormsApp1
     public partial class FormVeterinarioDetalle : Form
     {
         private readonly int _idVeterinarioActual;
+        private readonly VeterinarioClient VeterinarioClient;
+        private readonly UsuarioClient UsuarioClient;
         public FormVeterinarioDetalle(int idVeterinario = 0)
         {
             InitializeComponent();
             _idVeterinarioActual = idVeterinario;
             this.Load += FormVeterinarioDetalle_Load;
+            IAuthService authService = Program.AuthService;
+            VeterinarioClient = new VeterinarioClient(authService);
+            UsuarioClient = new UsuarioClient(authService);
         }
 
         private async void FormVeterinarioDetalle_Load(object? sender, EventArgs e)

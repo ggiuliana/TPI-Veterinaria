@@ -13,10 +13,12 @@ namespace WinFormsApp1
 {
     public partial class FormTurnosDisponibles : Form
     {
+        private readonly TurnoClient TurnoClient;
         public FormTurnosDisponibles()
         {
             InitializeComponent();
-            
+            IAuthService authService = Program.AuthService;
+            TurnoClient = new TurnoClient(authService);
         }
 
         private async void FormTurnosDisponibles_Load(object sender, EventArgs e)

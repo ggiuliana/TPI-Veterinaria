@@ -21,7 +21,8 @@ namespace WebAPI
             .WithName("GetTipoVacuna")
             .Produces<TipoVacunaDTO>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("TipoVacunasLeer");
 
             app.MapGet("/tipovacunas", async (ITipoVacunaService tipovacunaService) =>
             {
@@ -31,7 +32,8 @@ namespace WebAPI
             })
             .WithName("GetAllTipoVacunas")
             .Produces<List<TipoVacunaDTO>>(StatusCodes.Status200OK)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("TipoVacunasLeer");
 
             app.MapPost("/tipovacunas", async (TipoVacunaDTO dto, ITipoVacunaService tipovacunaService) =>
             {
@@ -48,7 +50,8 @@ namespace WebAPI
             .WithName("AddTipoVacuna")
             .Produces<TipoVacunaDTO>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("TipoVacunasAgregar");
 
             app.MapPut("/tipovacunas", async (TipoVacunaDTO dto, ITipoVacunaService tipovacunaService) =>
             {
@@ -71,7 +74,8 @@ namespace WebAPI
             .WithName("UpdateTipoVacunas")
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status400BadRequest)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("TipoVacunasActualizar");
 
             app.MapDelete("/tipovacunas/{id}", async (int id, ITipoVacunaService tipovacunaService) =>
             {
@@ -87,7 +91,8 @@ namespace WebAPI
             .WithName("DeleteTipoVacunas")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("TipoVacunasEliminar");
 
         }
     }

@@ -10,8 +10,13 @@ namespace API.Clients
 {
     public class TurnoClient : BaseApiClient
     {
-        public static async Task<TurnoDTO?> GetAsync(int id)
+        public TurnoClient(IAuthService authService) : base(authService)
         {
+        }
+
+        public async Task<TurnoDTO?> GetAsync(int id)
+        {
+            using var client = await CreateHttpClientAsync();
             var response = await client.GetAsync($"turnos/{id}");
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -24,8 +29,9 @@ namespace API.Clients
             return await response.Content.ReadFromJsonAsync<TurnoDTO>();
         }
 
-        public static async Task<List<TurnoDTO>> GetAllAsync()
+        public async Task<List<TurnoDTO>> GetAllAsync()
         {
+            using var client = await CreateHttpClientAsync();
             var response = await client.GetAsync("turnos");
 
             response.EnsureSuccessStatusCode();
@@ -34,23 +40,13 @@ namespace API.Clients
                    ?? new List<TurnoDTO>();
         }
 
-        public static async Task<TurnoDTO?> AddAsync(TurnoDTO dto)
+        public async Task<TurnoDTO?> AddAsync(TurnoDTO dto)
         {
-            /*var response = await client.PostAsJsonAsync("turnos", dto);
-
-            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-            {
-                return null;
-            }
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadFromJsonAsync<TurnoDTO>();*/
+            using var client = await CreateHttpClientAsync();
             var response = await client.PostAsJsonAsync("turnos", dto);
 
             if (!response.IsSuccessStatusCode)
             {
-                // Esto va a leer el error exacto que manda .NET (ej: "The EstadoTurno field is required")
                 string errorDetalle = await response.Content.ReadAsStringAsync();
                 throw new Exception($"Error de validación 400: {errorDetalle}");
             }
@@ -58,8 +54,9 @@ namespace API.Clients
             return await response.Content.ReadFromJsonAsync<TurnoDTO>();
         }
 
-        public static async Task<bool> UpdateAsync(TurnoDTO dto)
+        public async Task<bool> UpdateAsync(TurnoDTO dto)
         {
+            using var client = await CreateHttpClientAsync();
             var response = await client.PutAsJsonAsync("turnos", dto);
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -72,8 +69,9 @@ namespace API.Clients
             return true;
         }
 
-        public static async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
+            using var client = await CreateHttpClientAsync();
             var response = await client.DeleteAsync($"turnos/{id}");
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)

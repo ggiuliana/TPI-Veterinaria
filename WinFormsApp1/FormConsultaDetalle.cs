@@ -10,6 +10,8 @@ namespace WinFormsApp1
     {
         private readonly int _idTurnoActual;
         private ConsultaDTO? _consultaExistente;
+        private readonly ConsultaClient ConsultaClient;
+        private readonly MedicamentoClient MedicamentoClient;
 
         private BindingList<MedicamentoConsultaDTO> _medicamentosTemporales = new BindingList<MedicamentoConsultaDTO>();
 
@@ -18,6 +20,9 @@ namespace WinFormsApp1
             InitializeComponent();
             _idTurnoActual = idTurno;
             this.Load += FormConsultaDetalle_Load;
+            IAuthService authService = Program.AuthService;
+            ConsultaClient = new ConsultaClient(authService);
+            MedicamentoClient = new MedicamentoClient(authService);
         }
 
         private async void FormConsultaDetalle_Load(object? sender, EventArgs e)

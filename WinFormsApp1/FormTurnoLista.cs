@@ -5,10 +5,13 @@ namespace WinFormsApp1
 {
     public partial class FormTurnoLista : Form
     {
+        private readonly TurnoClient TurnoClient;
         public FormTurnoLista()
         {
             InitializeComponent();
             this.Load += FormTurnoLista_Load;
+            IAuthService authService = Program.AuthService;
+            TurnoClient = new TurnoClient(authService);
         }
 
         private void FormTurnoLista_Load(object? sender, EventArgs e)
@@ -121,7 +124,7 @@ namespace WinFormsApp1
         }
         private async void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            var authService = AuthServiceProvider.Instance;
+            var authService = Program.AuthService;
 
             int? personaId = await authService.GetPersonaIdAsync();
 

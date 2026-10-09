@@ -1,16 +1,18 @@
-﻿@using DTOs
+﻿@page "/veterinarios"
+
+@using DTOs
 @using API.Clients
 @inject IJSRuntime JSRuntime
 @inject IAuthService AuthService
 @inject NavigationManager Navigation
 @inject VeterinarioClient VeterinarioClient
 
-<h4>Gestión de Veterinarios</h4>
+<PageTitle>Gestión de Veterinarios</PageTitle>
 
-<div class="container-fluid">
+<div class="container-fluid mt-3">
     <div class="row">
         <div class="col-12">
-            <h3>Veterinarios</h3>
+            <h3 class="mb-4">Veterinarios</h3>
 
             @if (!string.IsNullOrEmpty(errorMessage))
             {
@@ -39,28 +41,28 @@
 
             @if (loading)
             {
-                <div class="d-flex justify-content-center">
-                    <div class="spinner-border" role="status">
+                <div class="d-flex justify-content-center mt-5">
+                    <div class="spinner-border text-primary" role="status">
                         <span class="visually-hidden">Cargando...</span>
                     </div>
                 </div>
             }
-            else
+            else if (canRead)
             {
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover">
+                <div class="table-responsive shadow-sm rounded">
+                    <table class="table table-striped table-hover mb-0">
                         <thead class="table-dark">
                             <tr>
                                 <th>Id</th>
                                 <th>Nombre</th>
                                 <th>Apellido</th>
-                                <th>Telefono</th>
+                                <th>Teléfono</th>
                                 <th>Mail</th>
-                                <th>Dni</th>
-                                <th>Direccion</th>
-                                <th>Matricula</th>
+                                <th>DNI</th>
+                                <th>Dirección</th>
+                                <th>Matrícula</th>
                                 <th>Especialidad</th>
-                                <th></th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -69,16 +71,16 @@
                                 @foreach (var vet in veterinarios)
                                 {
                                     <tr>
-                                        <td>@vet.IdVeterinario</td>
-                                        <td>@vet.NombreVeterinario</td>
-                                        <td>@vet.Apellido</td>
-                                        <td>@vet.Telefono</td>
-                                        <td>@vet.Mail</td>
-                                        <td>@vet.Dni</td>
-                                        <td>@vet.Direccion</td>
-                                        <td>@vet.Matricula</td>
-                                        <td>@vet.Especialidad</td>
-                                        <td>
+                                        <td class="align-middle">@vet.IdVeterinario</td>
+                                        <td class="align-middle">@vet.NombreVeterinario</td>
+                                        <td class="align-middle">@vet.Apellido</td>
+                                        <td class="align-middle">@vet.Telefono</td>
+                                        <td class="align-middle">@vet.Mail</td>
+                                        <td class="align-middle">@vet.Dni</td>
+                                        <td class="align-middle">@vet.Direccion</td>
+                                        <td class="align-middle">@vet.Matricula</td>
+                                        <td class="align-middle">@vet.Especialidad</td>
+                                        <td class="align-middle text-nowrap">
                                             @if (canUpdate)
                                             {
                                                 <button type="button" class="btn btn-sm btn-outline-primary me-1" @onclick="() => OpenEditModal(vet)">
@@ -94,6 +96,12 @@
                                         </td>
                                     </tr>
                                 }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="10" class="text-center py-4 text-muted">No hay veterinarios registrados.</td>
+                                </tr>
                             }
                         </tbody>
                     </table>
@@ -118,17 +126,20 @@
     private bool canUpdate = false;
     private bool canDelete = false;
 
-    private bool isEditing = false;
-    private bool saving = false;
-    private VeterinarioModal.FormMode mode;
-    private VeterinarioRegisterDTO currentRegister = new();
-
     protected override async Task OnInitializedAsync()
     {
         var isAuthenticated = await AuthService.IsAuthenticatedAsync();
         if (!isAuthenticated)
         {
             Navigation.NavigateTo("/login");
+            return;
+        }
+
+        // Se verifica si el usuario tiene el rol Administrador (opcional, por doble seguridad)
+        var rol = await AuthService.GetRolAsync();
+        if (rol?.Trim().ToUpper() != "ADMINISTRADOR")
+        {
+            Navigation.NavigateTo("/");
             return;
         }
 
@@ -140,37 +151,9 @@
         }
         else
         {
+            loading = false;
             errorMessage = "No tiene permisos para ver veterinarios.";
         }
-
-        StateHasChanged();
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            var isAuthenticated = await AuthService.IsAuthenticatedAsync();
-            if (!isAuthenticated)
-            {
-                Navigation.NavigateTo("/login");
-                return;
-            }
-
-            await LoadPermissions();
-
-            if (canRead)
-            {
-                await LoadVeterinarios();
-            }
-            else
-            {
-                errorMessage = "No tiene permisos para ver veterinarios.";
-            }
-
-            StateHasChanged();
-        }
-        await base.OnAfterRenderAsync(firstRender);
     }
 
     private async Task LoadPermissions()
@@ -186,8 +169,8 @@
         try
         {
             loading = true;
+            errorMessage = string.Empty;
             veterinarios = (await VeterinarioClient.GetAllAsync())?.ToList();
-            successMessage = string.Empty;
         }
         catch (Exception ex)
         {
@@ -213,17 +196,6 @@
         {
             await veterinarioModal.ShowEditModal(vet);
         }
-    }
-
-    private async Task Eliminar(VeterinarioDTO vet)
-    {
-        await VeterinarioClient.DeleteAsync(vet.IdVeterinario);
-        await LoadVeterinarios();
-    }
-
-    private void Cancel()
-    {
-        isEditing = false;
     }
 
     private async Task ConfirmDelete(VeterinarioDTO vet)

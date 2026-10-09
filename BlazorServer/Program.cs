@@ -21,9 +21,12 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<AuthenticationStateProvider, BlazorServerAuthService>();
 
+builder.Services.AddScoped<IAuthService, BlazorServerAuthService>();
+
 builder.Services.AddScoped<IAuthService>(sp =>
     (IAuthService)sp.GetRequiredService<AuthenticationStateProvider>());
 
+builder.Services.AddScoped<AuthApiClient>();
 builder.Services.AddScoped<VeterinarioClient>();
 builder.Services.AddScoped<UsuarioClient>();
 builder.Services.AddScoped<EstudioClient>();

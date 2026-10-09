@@ -10,8 +10,13 @@ namespace API.Clients
 {
     public class ConsultaClient : BaseApiClient
     {
-        public static async Task<ConsultaDTO?> GetAsync(int id)
+        public ConsultaClient(IAuthService authService) : base(authService)
         {
+        }
+
+        public async Task<ConsultaDTO?> GetAsync(int id)
+        {
+            using var client = await CreateHttpClientAsync();
             var response = await client.GetAsync($"consultas/{id}");
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -24,8 +29,9 @@ namespace API.Clients
             return await response.Content.ReadFromJsonAsync<ConsultaDTO>();
         }
 
-        public static async Task<List<ConsultaDTO>> GetAllAsync()
+        public async Task<List<ConsultaDTO>> GetAllAsync()
         {
+            using var client = await CreateHttpClientAsync();
             var response = await client.GetAsync("consultas");
 
             response.EnsureSuccessStatusCode();
@@ -34,8 +40,9 @@ namespace API.Clients
                    ?? new List<ConsultaDTO>();
         }
 
-        public static async Task<ConsultaDTO?> AddAsync(ConsultaDTO dto)
+        public async Task<ConsultaDTO?> AddAsync(ConsultaDTO dto)
         {
+            using var client = await CreateHttpClientAsync();
             var response = await client.PostAsJsonAsync("consultas", dto);
 
             if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
@@ -48,8 +55,9 @@ namespace API.Clients
             return await response.Content.ReadFromJsonAsync<ConsultaDTO>();
         }
 
-        public static async Task<bool> UpdateAsync(ConsultaDTO dto)
+        public async Task<bool> UpdateAsync(ConsultaDTO dto)
         {
+            using var client = await CreateHttpClientAsync();
             var response = await client.PutAsJsonAsync("consultas", dto);
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -62,8 +70,9 @@ namespace API.Clients
             return true;
         }
 
-        public static async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
+            using var client = await CreateHttpClientAsync();
             var response = await client.DeleteAsync($"consultas/{id}");
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -75,8 +84,9 @@ namespace API.Clients
 
             return true;
         }
-        public static async Task<ConsultaDTO?> GetByIdTurnoAsync(int idTurno)
+        public async Task<ConsultaDTO?> GetByIdTurnoAsync(int idTurno)
         {
+            using var client = await CreateHttpClientAsync();
             var response = await client.GetAsync($"consultas/turno/{idTurno}");
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)

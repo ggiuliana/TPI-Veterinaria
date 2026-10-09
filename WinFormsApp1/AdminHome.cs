@@ -17,7 +17,7 @@ namespace WinFormsApp1
 
         private async void LogOut_Click(object sender, EventArgs e)
         {
-            var authService = AuthServiceProvider.Instance;
+            IAuthService authService = Program.AuthService;
 
             await authService.LogoutAsync();
 
@@ -98,6 +98,16 @@ namespace WinFormsApp1
         private void AdminHome_Load(object sender, EventArgs e)
         {
 
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
+
+            if (this.DialogResult != DialogResult.OK)
+            {
+                Program.AuthService.LogoutAsync().GetAwaiter().GetResult();
+            }
         }
     }
 }

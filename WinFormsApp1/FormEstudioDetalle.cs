@@ -8,12 +8,15 @@ namespace WinFormsApp1
     public partial class FormEstudioDetalle : Form
     {
         private readonly int _idEstudioActual;
+        private readonly EstudioClient EstudioClient;
         public FormEstudioDetalle(int idEstudio = 0)
         {
             InitializeComponent();
             _idEstudioActual = idEstudio;
 
             this.Load += FormEstudioDetalle_Load;
+            IAuthService authService = Program.AuthService;
+            EstudioClient = new EstudioClient(authService);
         }
         private async void FormEstudioDetalle_Load(object? sender, EventArgs e)
         {

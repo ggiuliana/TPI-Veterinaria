@@ -5,10 +5,13 @@ namespace WinFormsApp1
 {
     public partial class FormConsultaLista : Form
     {
+        private readonly ConsultaClient ConsultaClient;
         public FormConsultaLista()
         {
             InitializeComponent();
             this.Load += FormConsultaLista_Load;
+            IAuthService authService = Program.AuthService;
+            ConsultaClient = new ConsultaClient(authService);
         }
 
         private void FormConsultaLista_Load(object? sender, EventArgs e)

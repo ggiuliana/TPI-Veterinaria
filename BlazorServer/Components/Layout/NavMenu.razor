@@ -4,7 +4,7 @@
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">Blazor Server</a>
+        <a class="navbar-brand" href="@homeRoute">Veterinaria</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -14,15 +14,25 @@
 <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
     <nav class="flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
+            <NavLink class="nav-link" href="@homeRoute" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Inicio
             </NavLink>
         </div>
+
         @if (canReadVeterinarios)
         {
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="veterinarios">
                     <span class="oi oi-people" aria-hidden="true"></span> Veterinarios
+                </NavLink>
+            </div>
+        }
+
+        @if (canReadEstudios)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="estudios">
+                    <span class="oi oi-document" aria-hidden="true"></span> Estudios
                 </NavLink>
             </div>
         }
@@ -32,6 +42,9 @@
 @code {
     private bool collapseNavMenu = true;
     private bool canReadVeterinarios = false;
+    private bool canReadEstudios = false;
+
+    private string homeRoute = "";
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
@@ -48,10 +61,23 @@
         if (isAuthenticated)
         {
             canReadVeterinarios = await AuthService.HasPermissionAsync("veterinarios.leer");
+            canReadEstudios = await AuthService.HasPermissionAsync("estudios.leer");
+
+            var rol = await AuthService.GetRolAsync();
+            if (rol?.Trim().ToUpper() == "ADMINISTRADOR")
+            {
+                homeRoute = "admin";
+            }
+            else
+            {
+                homeRoute = "";
+            }
         }
         else
         {
             canReadVeterinarios = false;
+            canReadEstudios = false;
+            homeRoute = "";
         }
         StateHasChanged();
     }

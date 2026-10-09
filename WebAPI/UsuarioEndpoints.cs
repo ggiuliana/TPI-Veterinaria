@@ -21,7 +21,8 @@ namespace WebAPI
             .WithName("GetUsuario")
             .Produces<UsuarioCreateDTO>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("UsuariosLeer");
 
             app.MapGet("/usuarios", async (IUsuarioService usuarioService) =>
             {
@@ -31,7 +32,8 @@ namespace WebAPI
             })
             .WithName("GetAllUsuarios")
             .Produces<List<UsuarioCreateDTO>>(StatusCodes.Status200OK)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("UsuariosLeer");
 
             app.MapPost("/usuarios", async (UsuarioCreateDTO dto, IUsuarioService usuarioService) =>
             {
@@ -48,7 +50,8 @@ namespace WebAPI
             .WithName("AddUsuario")
             .Produces<UsuarioCreateDTO>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("UsuariosAgregar");
 
             app.MapPut("/usuarios", async (UsuarioCreateDTO dto, IUsuarioService usuarioService) =>
             {
@@ -70,7 +73,8 @@ namespace WebAPI
             .WithName("UpdateUsuarios")
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status400BadRequest)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("UsuariosActualizar");
 
             app.MapDelete("/usuarios/{id}", async (int id, IUsuarioService usuarioService) =>
             {
@@ -86,7 +90,8 @@ namespace WebAPI
             .WithName("DeleteUsuarios")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("UsuariosEliminar");
 
             app.MapPost("/usuarios/register/vet", async (VeterinarioRegisterDTO dto, IUsuarioService usuarioService) =>
             {
@@ -107,7 +112,8 @@ namespace WebAPI
             .WithName("RegisterVeterinario")
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("UsuariosAgregar");
 
             app.MapPost("/usuarios/register/duenio", async (DuenioRegisterDTO dto, IUsuarioService usuarioService) =>
             {

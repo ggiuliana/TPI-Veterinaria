@@ -3,17 +3,21 @@ using API.Clients;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace API.Auth.Blazor.Server
 {
     public class BlazorServerAuthService : AuthenticationStateProvider, IAuthService
     {
-        private static SessionData? _currentSession;
+        private SessionData? _currentSession;
 
         public event Action<bool>? AuthenticationStateChanged;
 
-        public BlazorServerAuthService()
+        private readonly IServiceProvider _serviceProvider;
+
+        public BlazorServerAuthService(IServiceProvider serviceProvider)
         {
+            _serviceProvider = serviceProvider;
         }
 
         private class SessionData
@@ -22,6 +26,19 @@ namespace API.Auth.Blazor.Server
             public string? Username { get; set; }
             public DateTime Expiration { get; set; }
             public string? Rol { get; set; }
+            public int? PersonaId { get; set; }
+        }
+
+        public Task<int?> GetPersonaIdAsync()
+        {
+            try
+            {
+                return Task.FromResult(_currentSession?.PersonaId);
+            }
+            catch
+            {
+                return Task.FromResult<int?>(null);
+            }
         }
 
         public override Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -33,7 +50,14 @@ namespace API.Auth.Blazor.Server
                 var handler = new JwtSecurityTokenHandler();
                 var jwtToken = handler.ReadJwtToken(_currentSession.Token);
 
-                identity = new ClaimsIdentity(jwtToken.Claims, "jwtAuth");
+                var claims = jwtToken.Claims.ToList();
+
+                if (!string.IsNullOrEmpty(_currentSession.Rol))
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, _currentSession.Rol));
+                }
+
+                identity = new ClaimsIdentity(claims, "jwtAuth");
             }
 
             var user = new ClaimsPrincipal(identity);
@@ -44,6 +68,7 @@ namespace API.Auth.Blazor.Server
         {
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         }
+
         public void NotificarLogout()
         {
             _currentSession = null;
@@ -68,38 +93,20 @@ namespace API.Auth.Blazor.Server
 
         public Task<string?> GetTokenAsync()
         {
-            try
-            {
-                return Task.FromResult(_currentSession?.Token);
-            }
-            catch
-            {
-                return Task.FromResult<string?>(null);
-            }
+            try { return Task.FromResult(_currentSession?.Token); }
+            catch { return Task.FromResult<string?>(null); }
         }
 
         public Task<string?> GetUsernameAsync()
         {
-            try
-            {
-                return Task.FromResult(_currentSession?.Username);
-            }
-            catch
-            {
-                return Task.FromResult<string?>(null);
-            }
+            try { return Task.FromResult(_currentSession?.Username); }
+            catch { return Task.FromResult<string?>(null); }
         }
 
         public Task<string?> GetRolAsync()
         {
-            try
-            {
-                return Task.FromResult(_currentSession?.Rol);
-            }
-            catch
-            {
-                return Task.FromResult<string?>(null);
-            }
+            try { return Task.FromResult(_currentSession?.Rol); }
+            catch { return Task.FromResult<string?>(null); }
         }
 
         public async Task<bool> LoginAsync(string username, string password)
@@ -110,7 +117,7 @@ namespace API.Auth.Blazor.Server
                 Contrasenia = password
             };
 
-            var authClient = new AuthApiClient();
+            var authClient = _serviceProvider.GetRequiredService<AuthApiClient>();
             var response = await authClient.LoginAsync(request);
 
             if (response != null)
@@ -124,6 +131,7 @@ namespace API.Auth.Blazor.Server
                 };
 
                 AuthenticationStateChanged?.Invoke(true);
+                NotificarLoginExitoso();
                 return true;
             }
 
@@ -134,6 +142,7 @@ namespace API.Auth.Blazor.Server
         {
             _currentSession = null;
             AuthenticationStateChanged?.Invoke(false);
+            NotificarLogout();
             return Task.CompletedTask;
         }
 

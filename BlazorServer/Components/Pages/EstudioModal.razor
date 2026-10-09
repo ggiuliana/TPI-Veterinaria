@@ -2,6 +2,7 @@
 @using API.Clients
 @using System.Text.RegularExpressions
 @inject IJSRuntime JSRuntime
+@inject EstudioClient EstudioClient
 
 @if (showModal)
 {
@@ -47,7 +48,7 @@
                             <InputText @bind-Value="currentEstudio.DescripcionEstudio" class="form-control" />
                             @if (validationErrors.ContainsKey("DescripcionEstudio"))
                             {
-                                <div class="text-danger small">@validationErrors["Descripcion"]</div>
+                                <div class="text-danger small">@validationErrors["DescripcionEstudio"]</div>
                             }
                         </div>
 

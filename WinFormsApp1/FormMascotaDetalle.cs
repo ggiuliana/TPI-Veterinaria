@@ -8,12 +8,15 @@ namespace WinFormsApp1
     public partial class FormMascotaDetalle : Form
     {
         private readonly int _idMascotaActual;
+        private readonly MascotaClient MascotaClient;
         public FormMascotaDetalle(int idMascota = 0)
         {
             InitializeComponent();
             _idMascotaActual = idMascota;
 
             this.Load += FormMascotaDetalle_Load;
+            IAuthService authService = Program.AuthService;
+            MascotaClient = new MascotaClient(authService);
         }
         private async void FormMascotaDetalle_Load(object? sender, EventArgs e)
         {
@@ -50,7 +53,7 @@ namespace WinFormsApp1
         {
             try
             {
-                var authService = AuthServiceProvider.Instance;
+                var authService = Program.AuthService;
 
                 int? personaId = await authService.GetPersonaIdAsync();
 

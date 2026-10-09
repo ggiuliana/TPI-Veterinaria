@@ -9,8 +9,13 @@ namespace API.Clients
 {
     public class EstudioClient : BaseApiClient
     {
-        public static async Task<EstudioDTO?> GetAsync(int id)
+        public EstudioClient(IAuthService authService) : base(authService)
         {
+        }
+
+        public async Task<EstudioDTO?> GetAsync(int id)
+        {
+            using var client = await CreateHttpClientAsync();
             var response = await client.GetAsync($"estudios/{id}");
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -23,8 +28,9 @@ namespace API.Clients
             return await response.Content.ReadFromJsonAsync<EstudioDTO>();
         }
 
-        public static async Task<List<EstudioDTO>> GetAllAsync()
+        public async Task<List<EstudioDTO>> GetAllAsync()
         {
+            using var client = await CreateHttpClientAsync();
             var response = await client.GetAsync("estudios");
 
             response.EnsureSuccessStatusCode();
@@ -33,8 +39,9 @@ namespace API.Clients
                    ?? new List<EstudioDTO>();
         }
 
-        public static async Task<EstudioDTO?> AddAsync(EstudioDTO dto)
+        public async Task<EstudioDTO?> AddAsync(EstudioDTO dto)
         {
+            using var client = await CreateHttpClientAsync();
             var response = await client.PostAsJsonAsync("estudios", dto);
 
             if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
@@ -47,8 +54,9 @@ namespace API.Clients
             return await response.Content.ReadFromJsonAsync<EstudioDTO>();
         }
 
-        public static async Task<bool> UpdateAsync(EstudioDTO dto)
+        public async Task<bool> UpdateAsync(EstudioDTO dto)
         {
+            using var client = await CreateHttpClientAsync();
             var response = await client.PutAsJsonAsync("estudios", dto);
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -61,8 +69,9 @@ namespace API.Clients
             return true;
         }
 
-        public static async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
+            using var client = await CreateHttpClientAsync();
             var response = await client.DeleteAsync($"estudios/{id}");
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)

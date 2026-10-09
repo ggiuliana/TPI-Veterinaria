@@ -1,31 +1,75 @@
 ﻿@page "/admin"
 
-<h3>Panel de Administración</h3>
+<PageTitle>Panel de Administración</PageTitle>
 
-<div class="mb-4 w-50">
-    <label for="entidadSelect" class="form-label fw-bold">Gestionar entidad:</label>
-    <select id="entidadSelect" class="form-select" @bind="entidadSeleccionada">
-        <option value="">-- Seleccione una opción --</option>
-        <option value="veterinarios">Veterinarios</option>
-        <option value="estudios">Estudios</option>
-    </select>
-</div>
+<div class="container-fluid mt-3">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="fw-normal text-secondary border-bottom pb-2">Panel de Administración</h2>
+        </div>
+    </div>
 
-<div class="p-3 border rounded bg-light">
-    @switch (entidadSeleccionada)
-    {
-        case "veterinarios":
-            <Veterinarios />
-            break;
-        case "estudios":
-            <Estudios />
-            break;
-        default:
-            <p class="text-muted m-0">Por favor, seleccione una entidad del menú superior para comenzar a operar.</p>
-            break;
-    }
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="alert alert-secondary border-0 shadow-sm d-flex align-items-center" role="alert">
+                <i class="fas fa-info-circle fs-4 me-3 text-primary"></i>
+                <div>
+                    <h5 class="alert-heading mb-1 fw-bold">Sistema de Gestión Veterinaria</h5>
+                    <p class="mb-0 text-dark">
+                        Para comenzar a operar y gestionar los registros, <strong>utilice el menú de navegación situado en el panel izquierdo.</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-primary bg-opacity-10 p-3 rounded">
+                            <i class="fas fa-user-md text-primary fs-4"></i>
+                        </div>
+                        <h5 class="card-title ms-3 mb-0 fw-bold">Personal Veterinario</h5>
+                    </div>
+                    <p class="card-text text-muted">
+                        Administre el directorio de profesionales. Permite dar de alta nuevos veterinarios, actualizar datos de contacto, matrículas y asignar especialidades.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-success bg-opacity-10 p-3 rounded">
+                            <i class="fas fa-file-medical text-success fs-4"></i>
+                        </div>
+                        <h5 class="card-title ms-3 mb-0 fw-bold">Estudios Médicos</h5>
+                    </div>
+                    <p class="card-text text-muted">
+                        Gestione el catálogo de prácticas y estudios clínicos disponibles. Mantenga las descripciones organizadas para el uso diario en las consultas.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm border-0 bg-light">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
+                    <i class="fas fa-shield-alt text-secondary fs-2 mb-3"></i>
+                    <h6 class="text-secondary fw-bold">Acceso Seguro</h6>
+                    <p class="text-muted small mb-0">
+                        Sesión iniciada con privilegios de Administrador. Todas las acciones de alta, baja y modificación quedan registradas bajo su perfil.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @code {
-    private string entidadSeleccionada = "";
+
 }

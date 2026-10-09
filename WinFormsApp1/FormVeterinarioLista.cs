@@ -15,10 +15,13 @@ namespace WinFormsApp1
 {
     public partial class FormVeterinarioLista : Form
     {
+        private readonly VeterinarioClient VeterinarioClient;
         public FormVeterinarioLista()
         {
             InitializeComponent();
             this.Load += FormVeterinarioLista_Load;
+            IAuthService authService = Program.AuthService;
+            VeterinarioClient = new VeterinarioClient(authService);
         }
 
         private async void FormVeterinarioLista_Load(object? sender, EventArgs e)

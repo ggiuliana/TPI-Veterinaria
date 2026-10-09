@@ -21,7 +21,8 @@ namespace WebAPI
             .WithName("GetEstudio")
             .Produces<EstudioDTO>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("EstudiosLeer");
 
             app.MapGet("/estudios", async (IEstudioService estudioService) =>
             {
@@ -31,7 +32,8 @@ namespace WebAPI
             })
             .WithName("GetAllEstudios")
             .Produces<List<EstudioDTO>>(StatusCodes.Status200OK)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("EstudiosLeer");
 
             app.MapPost("/estudios", async (EstudioDTO dto, IEstudioService estudioService) =>
             {
@@ -48,7 +50,8 @@ namespace WebAPI
             .WithName("AddEstudio")
             .Produces<EstudioDTO>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("EstudiosAgregar");
 
             app.MapPut("/estudios", async (EstudioDTO dto, IEstudioService estudioService) =>
             {
@@ -71,7 +74,8 @@ namespace WebAPI
             .WithName("UpdateEstudios")
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status400BadRequest)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("EstudiosActualizar");
 
             app.MapDelete("/estudios/{id}", async (int id, IEstudioService estudioService) =>
             {
@@ -87,7 +91,8 @@ namespace WebAPI
             .WithName("DeleteEstudios")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("EstudiosEliminar");
 
         }
     }

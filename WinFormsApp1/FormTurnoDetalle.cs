@@ -6,12 +6,14 @@ namespace WinFormsApp1
     public partial class FormTurnoDetalle : Form
     {
         private readonly int _idTurnoActual;
-
+        private readonly TurnoClient TurnoClient;
         public FormTurnoDetalle(int idTurno = 0)
         {
             InitializeComponent();
             _idTurnoActual = idTurno;
             this.Load += FormTurnoDetalle_Load;
+            IAuthService authService = Program.AuthService;
+            TurnoClient = new TurnoClient(authService);
         }
 
         private async void FormTurnoDetalle_Load(object? sender, EventArgs e)

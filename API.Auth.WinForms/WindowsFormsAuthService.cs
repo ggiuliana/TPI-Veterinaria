@@ -50,7 +50,7 @@ namespace API.Auth.WindowsForms
                 Contrasenia = password
             };
 
-            var authClient = new AuthApiClient();
+            var authClient = new AuthApiClient(this);
             var response = await authClient.LoginAsync(request);
 
             if (response != null)

@@ -10,14 +10,18 @@ namespace WinFormsApp1
 {
     public partial class FormEstudioLista : Form
     {
+        private readonly EstudioClient EstudioClient;
         public FormEstudioLista()
         {
             InitializeComponent();
             this.Load += FormEstudioLista_Load;
+            IAuthService authService = Program.AuthService;
+            EstudioClient = new EstudioClient(authService);
         }
 
         private async void FormEstudioLista_Load(object? sender, EventArgs e)
         {
+            await ConfigureButtonPermissions();
             await CargarEstudiosSeguroAsync();
         }
 
@@ -119,6 +123,22 @@ namespace WinFormsApp1
                     MessageBox.Show($"Error al eliminar: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+        private async Task ConfigureButtonPermissions()
+        {
+            var authService = Program.AuthService;
+
+            bool canAdd = await authService.HasPermissionAsync("estudios.agregar");
+            bool canUpdate = await authService.HasPermissionAsync("estudios.actualizar");
+            bool canDelete = await authService.HasPermissionAsync("estudios.eliminar");
+
+            Create.Visible = canAdd;
+            Modificar.Visible = canUpdate;
+            Delete.Visible = canDelete;
+
+            Create.Tag = canAdd;
+            Modificar.Tag = canUpdate;
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)

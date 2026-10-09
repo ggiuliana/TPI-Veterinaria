@@ -21,6 +21,11 @@
         <ValidationMessage For="@(() => loginModel.Password)" class="text-danger text-sm" />
     </div>
 
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <span class="text-danger fw-bold">@errorMessage</span>
+    }
+
     <button type="submit" class="btn btn-primary mt-2">Ingresar</button>
 </EditForm>
 
@@ -36,9 +41,6 @@
 
         if (isValidUser)
         {
-            var customAuthStateProvider = (BlazorServerAuthService)AuthStateProvider;
-            customAuthStateProvider.NotificarLoginExitoso();
-
             string? userRole = await AuthService.GetRolAsync();
 
             switch (userRole?.Trim().ToUpper())
@@ -65,7 +67,10 @@
 
     public class LoginModel
     {
+        [Required(ErrorMessage = "El nombre de usuario es requerido.")]
         public string Username { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "La contraseña es requerida.")]
         public string Password { get; set; } = string.Empty;
     }
 }

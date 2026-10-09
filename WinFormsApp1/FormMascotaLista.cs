@@ -15,11 +15,14 @@ namespace WinFormsApp1
 {
     public partial class FormMascotaLista : Form
     {
+        private readonly MascotaClient MascotaClient;
         public FormMascotaLista()
         {
             InitializeComponent();
             this.Load += FormMascotaLista_Load;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            IAuthService authService = Program.AuthService;
+            MascotaClient = new MascotaClient(authService);
         }
 
         private async void FormMascotaLista_Load(object? sender, EventArgs e)
@@ -31,7 +34,7 @@ namespace WinFormsApp1
         {
             try
             {
-                var authService = AuthServiceProvider.Instance;
+                var authService = Program.AuthService;
 
                 int? personaId = await authService.GetPersonaIdAsync();
 

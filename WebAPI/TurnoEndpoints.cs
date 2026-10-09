@@ -21,7 +21,8 @@ namespace WebAPI
             .WithName("GetTurno")
             .Produces<TurnoDTO>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("TurnosLeer");
 
             app.MapGet("/turnos", async (ITurnoService turnoService) =>
             {
@@ -31,7 +32,8 @@ namespace WebAPI
             })
             .WithName("GetAllTurnos")
             .Produces<List<TurnoDTO>>(StatusCodes.Status200OK)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("TurnosLeer");
 
             app.MapPost("/turnos", async (TurnoDTO dto, ITurnoService turnoService) =>
             {
@@ -48,7 +50,8 @@ namespace WebAPI
             .WithName("AddTurno")
             .Produces<TurnoDTO>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("TurnosAgregar");
 
             app.MapPut("/turnos", async (TurnoDTO dto, ITurnoService turnoService) =>
             {
@@ -71,7 +74,8 @@ namespace WebAPI
             .WithName("UpdateTurnos")
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status400BadRequest)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("TurnosActualizar");
 
             app.MapDelete("/turnos/{id}", async (int id, ITurnoService turnoService) =>
             {
@@ -87,7 +91,8 @@ namespace WebAPI
             .WithName("DeleteTurnos")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("TurnosEliminar");
 
         }
     }

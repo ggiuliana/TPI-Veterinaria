@@ -10,8 +10,14 @@ namespace API.Clients
 {
     public class AuthApiClient : BaseApiClient
     {
+        public AuthApiClient(IAuthService authService) : base(authService)
+        {
+        }
+
         public async Task<LoginResponse?> LoginAsync(LoginRequest request)
         {
+            using var client = await CreateHttpClientAsync();
+
             var json = JsonSerializer.Serialize(request);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 

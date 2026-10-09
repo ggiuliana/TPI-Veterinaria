@@ -11,7 +11,7 @@ namespace WinFormsApp1
             {
                 try
                 {
-                    var authService = AuthServiceProvider.Instance;
+                    var authService = Program.AuthService;
                     bool success = await authService.LoginAsync(nombreusuario.Text, contrasenia.Text);
 
                     if (success)

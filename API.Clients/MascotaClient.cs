@@ -9,8 +9,13 @@ namespace API.Clients
 {
     public class MascotaClient : BaseApiClient
     {
-        public static async Task<MascotaDTO?> GetAsync(int id)
+        public MascotaClient(IAuthService authService) : base(authService)
         {
+        }
+
+        public async Task<MascotaDTO?> GetAsync(int id)
+        {
+            using var client = await CreateHttpClientAsync();
             var response = await client.GetAsync($"mascotas/{id}");
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -23,8 +28,9 @@ namespace API.Clients
             return await response.Content.ReadFromJsonAsync<MascotaDTO>();
         }
 
-        public static async Task<List<MascotaDTO>> GetAllAsync()
+        public async Task<List<MascotaDTO>> GetAllAsync()
         {
+            using var client = await CreateHttpClientAsync();
             var response = await client.GetAsync("mascotas");
 
             response.EnsureSuccessStatusCode();
@@ -33,8 +39,9 @@ namespace API.Clients
                    ?? new List<MascotaDTO>();
         }
 
-        public static async Task<List<MascotaDTO>> GetAllByDuenioAsync(int id)
-        { 
+        public async Task<List<MascotaDTO>> GetAllByDuenioAsync(int id)
+        {
+            using var client = await CreateHttpClientAsync();
             var response = await client.GetAsync($"mascotas/duenio/{id}");
 
             response.EnsureSuccessStatusCode();
@@ -43,8 +50,9 @@ namespace API.Clients
                    ?? new List<MascotaDTO>();
         }
 
-        public static async Task<MascotaDTO?> AddAsync(MascotaDTO dto)
+        public async Task<MascotaDTO?> AddAsync(MascotaDTO dto)
         {
+            using var client = await CreateHttpClientAsync();
             var response = await client.PostAsJsonAsync("mascotas", dto);
 
             if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
@@ -57,8 +65,9 @@ namespace API.Clients
             return await response.Content.ReadFromJsonAsync<MascotaDTO>();
         }
 
-        public static async Task<bool> UpdateAsync(MascotaDTO dto)
+        public async Task<bool> UpdateAsync(MascotaDTO dto)
         {
+            using var client = await CreateHttpClientAsync();
             var response = await client.PutAsJsonAsync("mascotas", dto);
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -71,8 +80,9 @@ namespace API.Clients
             return true;
         }
 
-        public static async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
+            using var client = await CreateHttpClientAsync();
             var response = await client.DeleteAsync($"mascotas/{id}");
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)

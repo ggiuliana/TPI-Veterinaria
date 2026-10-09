@@ -14,10 +14,15 @@ namespace WinFormsApp1
     public partial class FormSacarTurno : Form
     {
         private readonly int _idTurno;
+        private readonly TurnoClient TurnoClient;
+        private readonly MascotaClient MascotaClient;
         public FormSacarTurno(int idTurno)
         {
             InitializeComponent();
             this._idTurno = idTurno;
+            IAuthService authService = Program.AuthService;
+            TurnoClient = new TurnoClient(authService);
+            MascotaClient = new MascotaClient(authService);
         }
 
         private async void FormSacarTurno_Load(object sender, EventArgs e)
@@ -29,7 +34,7 @@ namespace WinFormsApp1
         {
             try
             {
-                var authService = AuthServiceProvider.Instance;
+                var authService = Program.AuthService;
                 int? idDuenio = await authService.GetPersonaIdAsync();
 
                 if (idDuenio.HasValue)

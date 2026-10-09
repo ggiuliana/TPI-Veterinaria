@@ -11,9 +11,14 @@ namespace API.Clients
 {
     public class UsuarioClient : BaseApiClient
     {
-        public class ErrorResponse { public string Error { get; set; } }
-        public static async Task<UsuarioDTO?> GetAsync(int id)
+        public UsuarioClient(IAuthService authService) : base(authService)
         {
+        }
+
+        public class ErrorResponse { public string Error { get; set; } }
+        public async Task<UsuarioDTO?> GetAsync(int id)
+        {
+            using var client = await CreateHttpClientAsync();
             var response = await client.GetAsync($"usuarios/{id}");
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -26,8 +31,9 @@ namespace API.Clients
             return await response.Content.ReadFromJsonAsync<UsuarioDTO>();
         }
 
-        public static async Task<List<UsuarioDTO>> GetAllAsync()
+        public async Task<List<UsuarioDTO>> GetAllAsync()
         {
+            using var client = await CreateHttpClientAsync();
             var response = await client.GetAsync("usuarios");
 
             response.EnsureSuccessStatusCode();
@@ -36,8 +42,9 @@ namespace API.Clients
                    ?? new List<UsuarioDTO>();
         }
 
-        public static async Task<UsuarioCreateDTO?> AddAsync(UsuarioCreateDTO dto)
+        public async Task<UsuarioCreateDTO?> AddAsync(UsuarioCreateDTO dto)
         {
+            using var client = await CreateHttpClientAsync();
             var response = await client.PostAsJsonAsync("usuarios", dto);
 
             if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
@@ -50,8 +57,9 @@ namespace API.Clients
             return await response.Content.ReadFromJsonAsync<UsuarioCreateDTO>();
         }
 
-        public static async Task<bool> UpdateAsync(UsuarioCreateDTO dto)
+        public async Task<bool> UpdateAsync(UsuarioCreateDTO dto)
         {
+            using var client = await CreateHttpClientAsync();
             var response = await client.PutAsJsonAsync("usuarios", dto);
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -64,8 +72,9 @@ namespace API.Clients
             return true;
         }
         
-        public static async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
+            using var client = await CreateHttpClientAsync();
             var response = await client.DeleteAsync($"usuarios/{id}");
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -78,8 +87,9 @@ namespace API.Clients
             return true;
         }
 
-        public static async Task<(bool Exito, string Mensaje)> RegisterVetAsync(VeterinarioRegisterDTO dto)
+        public async Task<(bool Exito, string Mensaje)> RegisterVetAsync(VeterinarioRegisterDTO dto)
         {
+            using var client = await CreateHttpClientAsync();
             var response = await client.PostAsJsonAsync("usuarios/register/vet", dto);
 
             if (response.IsSuccessStatusCode)
@@ -96,8 +106,9 @@ namespace API.Clients
             return (false, "Error inesperado en el servidor.");
         }
 
-        public static async Task<bool> RegisterDuenioAsync(DuenioRegisterDTO dto)
+        public async Task<bool> RegisterDuenioAsync(DuenioRegisterDTO dto)
         {
+            using var client = await CreateHttpClientAsync();
             var response = await client.PostAsJsonAsync("usuarios/register/duenio", dto);
             if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
             {

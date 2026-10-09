@@ -21,7 +21,8 @@ namespace WebAPI
             .WithName("GetDuenio")
             .Produces<DuenioDTO>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("DueniosLeer");
 
             app.MapGet("/duenios", async (IDuenioService duenioService) =>
             {
@@ -31,7 +32,8 @@ namespace WebAPI
             })
             .WithName("GetAllDuenios")
             .Produces<List<DuenioDTO>>(StatusCodes.Status200OK)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("DueniosLeer");
 
             app.MapPost("/duenios", async (DuenioDTO dto, IDuenioService duenioService) =>
             {
@@ -48,7 +50,8 @@ namespace WebAPI
             .WithName("AddDuenio")
             .Produces<DuenioDTO>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("DueniosAgregar");
 
             app.MapPut("/duenios", async (DuenioDTO dto, IDuenioService duenioService) =>
             {
@@ -71,7 +74,8 @@ namespace WebAPI
             .WithName("UpdateDuenios")
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status400BadRequest)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("DueniosActualizar");
 
             app.MapDelete("/duenios/{id}", async (int id, IDuenioService duenioService) =>
             {
@@ -87,7 +91,8 @@ namespace WebAPI
             .WithName("DeleteDuenios")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization("DueniosEliminar");
 
         }
     }
