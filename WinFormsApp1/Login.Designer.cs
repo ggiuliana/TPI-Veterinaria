@@ -36,6 +36,8 @@
             contrasenia = new TextBox();
             ingreso = new Button();
             errorProvider = new ErrorProvider(components);
+            Registrarse = new Button();
+            label3 = new Label();
             ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             SuspendLayout();
             // 
@@ -88,7 +90,7 @@
             // 
             ingreso.Cursor = Cursors.Hand;
             ingreso.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            ingreso.Location = new Point(139, 332);
+            ingreso.Location = new Point(135, 294);
             ingreso.Name = "ingreso";
             ingreso.Size = new Size(117, 46);
             ingreso.TabIndex = 5;
@@ -100,12 +102,36 @@
             // 
             errorProvider.ContainerControl = this;
             // 
+            // Registrarse
+            // 
+            Registrarse.Cursor = Cursors.Hand;
+            Registrarse.Font = new Font("Segoe UI", 12F);
+            Registrarse.Location = new Point(233, 384);
+            Registrarse.Name = "Registrarse";
+            Registrarse.Size = new Size(130, 37);
+            Registrarse.TabIndex = 6;
+            Registrarse.Text = "Registrarse";
+            Registrarse.UseVisualStyleBackColor = true;
+            Registrarse.Click += Registrarse_Click;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label3.Location = new Point(23, 392);
+            label3.Name = "label3";
+            label3.Size = new Size(204, 21);
+            label3.TabIndex = 7;
+            label3.Text = "Eres nuevo? Registrate aqui:";
+            // 
             // Login
             // 
             AcceptButton = ingreso;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(401, 450);
+            Controls.Add(label3);
+            Controls.Add(Registrarse);
             Controls.Add(ingreso);
             Controls.Add(contrasenia);
             Controls.Add(nombreusuario);
@@ -113,12 +139,11 @@
             Controls.Add(label1);
             Controls.Add(Título);
             Name = "Login";
-            Text = "Form1";
+            Text = "Login";
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
-
         #endregion
 
         private Label Título;
@@ -128,5 +153,7 @@
         private TextBox contrasenia;
         private Button ingreso;
         private ErrorProvider errorProvider;
+        private Label label3;
+        private Button Registrarse;
     }
 }

@@ -36,43 +36,50 @@ namespace Data
         {
             return await context.Consultas.ToListAsync();
         }
-        /*public async Task<bool> UpdateAsync(Consulta consulta)
-        {
-            var existingConsulta = await context.Consultas.FirstOrDefaultAsync(t => t.IdConsulta == consulta.IdConsulta);
-            if (existingConsulta != null)
-            {
-                existingConsulta.SetDiagnostico(consulta.Diagnostico);
-                existingConsulta.SetTratamiento(consulta.Tratamiento);
-                existingConsulta.SetPeso(consulta.Peso);
-                existingConsulta.SetTurno(consulta.Turno);
-                if (consulta.Estudios != null)
-                {
-                    existingConsulta.SetEstudios(consulta.Estudios);
-                }
-                if (consulta.MedicamentosConsulta != null)
-                {
-                    existingConsulta.SetMedicamentoConsulta(consulta.MedicamentosConsulta);
-                }
-                if (consulta.Observaciones != null)
-                {
-                    existingConsulta.SetObservaciones(consulta.Observaciones);
-                }
-                await context.SaveChangesAsync();
-                return true;
-            }
-            return false;
-        }*/
         public async Task<bool> UpdateAsync(Consulta consulta)
         {
-            var relacionesEnDb = await context.Set<MedicamentoConsulta>()
-                                              .Where(mc => mc.IdConsulta == consulta.IdConsulta)
-                                              .ToListAsync();
+            var existingConsulta = await context.Consultas
+                .Include(c => c.MedicamentosConsulta)
+                .FirstOrDefaultAsync(t => t.IdConsulta == consulta.IdConsulta);
 
-            foreach (var dbItem in relacionesEnDb)
+            if (existingConsulta == null)
             {
-                if (!consulta.MedicamentosConsulta.Any(mc => mc.IdMedicamento == dbItem.IdMedicamento))
+                return false;
+            }
+
+            existingConsulta.SetDiagnostico(consulta.Diagnostico);
+            existingConsulta.SetTratamiento(consulta.Tratamiento);
+            existingConsulta.SetPeso(consulta.Peso);
+            existingConsulta.SetTurno(consulta.Turno);
+
+            if (consulta.Estudios != null)
+            {
+                existingConsulta.SetEstudios(consulta.Estudios);
+            }
+
+            if (consulta.Observaciones != null)
+            {
+                existingConsulta.SetObservaciones(consulta.Observaciones);
+            }
+
+            if (consulta.MedicamentosConsulta != null)
+            {
+                var medicamentosAEliminar = existingConsulta.MedicamentosConsulta
+                    .Where(dbItem => !consulta.MedicamentosConsulta.Any(mc => mc.IdMedicamento == dbItem.IdMedicamento))
+                    .ToList();
+
+                foreach (var item in medicamentosAEliminar)
                 {
-                    context.Set<MedicamentoConsulta>().Remove(dbItem);
+                    existingConsulta.MedicamentosConsulta.Remove(item);
+                }
+
+                var medicamentosAAgregar = consulta.MedicamentosConsulta
+                    .Where(mc => !existingConsulta.MedicamentosConsulta.Any(dbItem => dbItem.IdMedicamento == mc.IdMedicamento))
+                    .ToList();
+
+                foreach (var item in medicamentosAAgregar)
+                {
+                    existingConsulta.MedicamentosConsulta.Add(item);
                 }
             }
 

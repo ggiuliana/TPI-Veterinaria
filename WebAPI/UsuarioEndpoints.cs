@@ -132,6 +132,7 @@ namespace WebAPI
                 }
             })
             .WithName("RegisterDuenio")
+            .AllowAnonymous()
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest)
             .WithOpenApi();

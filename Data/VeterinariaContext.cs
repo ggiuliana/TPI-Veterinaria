@@ -222,11 +222,6 @@ namespace Data
                 new { Id = 22, Nombre = "agregar", Descripcion = "Agregar medicamentos", Categoria = "medicamentos", Activo = true },
                 new { Id = 23, Nombre = "actualizar", Descripcion = "Actualizar medicamentos", Categoria = "medicamentos", Activo = true },
                 new { Id = 24, Nombre = "eliminar", Descripcion = "Eliminar medicamentos", Categoria = "medicamentos", Activo = true },
-                // Permisos para Estudios
-                new { Id = 25, Nombre = "leer", Descripcion = "Leer estudios", Categoria = "estudios", Activo = true },
-                new { Id = 26, Nombre = "agregar", Descripcion = "Agregar estudios", Categoria = "estudios", Activo = true },
-                new { Id = 27, Nombre = "actualizar", Descripcion = "Actualizar estudios", Categoria = "estudios", Activo = true },
-                new { Id = 28, Nombre = "eliminar", Descripcion = "Eliminar estudios", Categoria = "estudios", Activo = true },
                 // Permisos para Turnos
                 new { Id = 29, Nombre = "leer", Descripcion = "Leer turnos", Categoria = "turnos", Activo = true },
                 new { Id = 30, Nombre = "agregar", Descripcion = "Agregar turnos", Categoria = "turnos", Activo = true },
@@ -629,7 +624,7 @@ namespace Data
                             }
                         }
                         var permisosVeterinario = todosLosPermisos.Where(p =>
-                            (p.Categoria == "turnos" && p.Nombre != "actualizar") ||
+                            (p.Categoria == "turnos") ||
                             (p.Categoria == "mascotas" && p.Nombre == "leer") || 
                             (p.Categoria == "estudios" && p.Nombre == "leer") ||
                             (p.Categoria == "medicamentos" && p.Nombre == "leer") ||

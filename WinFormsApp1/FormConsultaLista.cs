@@ -9,12 +9,12 @@ namespace WinFormsApp1
         public FormConsultaLista()
         {
             InitializeComponent();
-            this.Load += FormConsultaLista_Load;
+            this.Activated += FormConsultaLista_Activated;
             IAuthService authService = Program.AuthService;
             ConsultaClient = new ConsultaClient(authService);
         }
 
-        private void FormConsultaLista_Load(object? sender, EventArgs e)
+        private void FormConsultaLista_Activated(object? sender, EventArgs e)
         {
             dataGridView1.AutoGenerateColumns = false;
             CargarGrilla();

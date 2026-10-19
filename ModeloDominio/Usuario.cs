@@ -29,8 +29,6 @@
         }
         public void SetIdUsuario(int idUsuario)
         {
-            if (idUsuario < 0)
-                throw new ArgumentException("El Id debe ser mayor que 0.", nameof(idUsuario));
             IdUsuario = idUsuario;
         }
 

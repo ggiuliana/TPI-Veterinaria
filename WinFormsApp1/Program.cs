@@ -1,4 +1,4 @@
-using API.Clients;
+锘縰sing API.Clients;
 using API.Auth.WindowsForms;
 
 namespace WinFormsApp1
@@ -21,7 +21,7 @@ namespace WinFormsApp1
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error fatal al iniciar la aplicaci髇:\n{ex.Message}", "Error Fatal", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error fatal al iniciar la aplicaci贸n:\n{ex.Message}", "Error Fatal", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         static async Task MainAsync()
@@ -56,7 +56,7 @@ namespace WinFormsApp1
                             homeForm = new DuenioHome();
                             break;
                         default:
-                            MessageBox.Show($"Rol no v醠ido: {rol}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            MessageBox.Show($"Rol no v谩lido: {rol}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             await AuthService.LogoutAsync();
                             continue;
                     }
@@ -66,7 +66,7 @@ namespace WinFormsApp1
                 }
                 catch (UnauthorizedAccessException ex)
                 {
-                    MessageBox.Show(ex.Message, "Sesi髇 Expirada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(ex.Message, "Sesi贸n Expirada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     await AuthService.LogoutAsync();
                 }
             }
@@ -76,7 +76,7 @@ namespace WinFormsApp1
         {
             if (e.Exception is UnauthorizedAccessException)
             {
-                MessageBox.Show("Su sesi髇 ha expirado. Debe volver a autenticarse.", "Sesi髇 Expirada",
+                MessageBox.Show("Su sesi贸n ha expirado. Debe volver a autenticarse.", "Sesi贸n Expirada",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                 Application.Restart();

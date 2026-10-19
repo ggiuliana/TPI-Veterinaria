@@ -18,6 +18,12 @@ namespace WinFormsApp1
 
         private async void FormTurnoDetalle_Load(object? sender, EventArgs e)
         {
+            string rolActual = await Program.AuthService.GetRolAsync();
+            int? idUsuarioActual = await Program.AuthService.GetPersonaIdAsync();
+            bool esAdministrador = rolActual == "Administrador";
+            txtIdVeterinario.Visible = esAdministrador;
+            lblVeterinario.Visible = esAdministrador;
+
             if (_idTurnoActual > 0)
             {
                 this.Text = "Editar Turno";
@@ -57,6 +63,14 @@ namespace WinFormsApp1
                 lblMascota.Visible = false;
                 txtIdMascota.Text = "";
                 txtObservaciones.Text = "";
+            }
+            if (!esAdministrador)
+            {
+                txtIdVeterinario.Text = idUsuarioActual.ToString();
+            }
+            else
+            {
+                txtIdVeterinario.Text = "";
             }
         }
 
@@ -120,5 +134,6 @@ namespace WinFormsApp1
             DialogResult = DialogResult.Cancel;
             Close();
         }
+
     }
 }

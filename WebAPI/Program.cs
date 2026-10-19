@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+ï»¿using Microsoft.EntityFrameworkCore;
 using WebAPI;
 using ServiciosApp;
 using Data;
@@ -15,7 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => {
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "JWT Authorization header. Escribí 'Bearer ' seguido de tu token.",
+        Description = "JWT Authorization header. EscribÃ­ 'Bearer ' seguido de tu token.",
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey,
@@ -63,8 +63,6 @@ builder.Services.AddScoped<IMedicamentoService, MedicamentoService>();
 builder.Services.AddScoped<ITurnoService, TurnoService>();
 builder.Services.AddScoped<IConsultaService, ConsultaService>();
 builder.Services.AddScoped<IMedicamentoConsultaService, MedicamentoConsultaService>();
-
-builder.Services.AddScoped<IAuthService, BlazorServerAuthService>();
 
 builder.Services.AddScoped<AuthService>();
 
@@ -114,61 +112,61 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization(options =>
 {
-    // Políticas para Estudios
+    // PolÃ­ticas para Estudios
     options.AddPolicy("EstudiosLeer", policy => policy.RequireClaim("permission", "estudios.leer"));
     options.AddPolicy("EstudiosAgregar", policy => policy.RequireClaim("permission", "estudios.agregar"));
     options.AddPolicy("EstudiosActualizar", policy => policy.RequireClaim("permission", "estudios.actualizar"));
     options.AddPolicy("EstudiosEliminar", policy => policy.RequireClaim("permission", "estudios.eliminar"));
 
-    // Políticas para Medicamentos
+    // PolÃ­ticas para Medicamentos
     options.AddPolicy("MedicamentosLeer", policy => policy.RequireClaim("permission", "medicamentos.leer"));
     options.AddPolicy("MedicamentosAgregar", policy => policy.RequireClaim("permission", "medicamentos.agregar"));
     options.AddPolicy("MedicamentosActualizar", policy => policy.RequireClaim("permission", "medicamentos.actualizar"));
     options.AddPolicy("MedicamentosEliminar", policy => policy.RequireClaim("permission", "medicamentos.eliminar"));
 
-    // Políticas para Duenios
+    // PolÃ­ticas para Duenios
     options.AddPolicy("DueniosLeer", policy => policy.RequireClaim("permission", "duenios.leer"));
     options.AddPolicy("DueniosAgregar", policy => policy.RequireClaim("permission", "duenios.agregar"));
     options.AddPolicy("DueniosActualizar", policy => policy.RequireClaim("permission", "duenios.actualizar"));
     options.AddPolicy("DueniosEliminar", policy => policy.RequireClaim("permission", "duenios.eliminar"));
 
-    // Políticas para Consultas
+    // PolÃ­ticas para Consultas
     options.AddPolicy("ConsultasLeer", policy => policy.RequireClaim("permission", "consultas.leer"));
     options.AddPolicy("ConsultasAgregar", policy => policy.RequireClaim("permission", "consultas.agregar"));
     options.AddPolicy("ConsultasActualizar", policy => policy.RequireClaim("permission", "consultas.actualizar"));
     options.AddPolicy("ConsultasEliminar", policy => policy.RequireClaim("permission", "consultas.eliminar"));
 
-    // Políticas para Mascotas
+    // PolÃ­ticas para Mascotas
     options.AddPolicy("MascotasLeer", policy => policy.RequireClaim("permission", "mascotas.leer"));
     options.AddPolicy("MascotasAgregar", policy => policy.RequireClaim("permission", "mascotas.agregar"));
     options.AddPolicy("MascotasActualizar", policy => policy.RequireClaim("permission", "mascotas.actualizar"));
     options.AddPolicy("MascotasEliminar", policy => policy.RequireClaim("permission", "mascotas.eliminar"));
 
-    // Políticas para TipoVacunas
+    // PolÃ­ticas para TipoVacunas
     options.AddPolicy("TipoVacunasLeer", policy => policy.RequireClaim("permission", "tipos vacunas.leer"));
     options.AddPolicy("TipoVacunasAgregar", policy => policy.RequireClaim("permission", "tipos vacunas.agregar"));
     options.AddPolicy("TipoVacunasActualizar", policy => policy.RequireClaim("permission", "tipos vacunas.actualizar"));
     options.AddPolicy("TipoVacunasEliminar", policy => policy.RequireClaim("permission", "tipos vacunas.eliminar"));
 
-    // Políticas para Turnos
+    // PolÃ­ticas para Turnos
     options.AddPolicy("TurnosLeer", policy => policy.RequireClaim("permission", "turnos.leer"));
     options.AddPolicy("TurnosAgregar", policy => policy.RequireClaim("permission", "turnos.agregar"));
     options.AddPolicy("TurnosActualizar", policy => policy.RequireClaim("permission", "turnos.actualizar"));
     options.AddPolicy("TurnosEliminar", policy => policy.RequireClaim("permission", "turnos.eliminar"));
 
-    // Políticas para Veterinarios
+    // PolÃ­ticas para Veterinarios
     options.AddPolicy("VeterinariosLeer", policy => policy.RequireClaim("permission", "veterinarios.leer"));
     options.AddPolicy("VeterinariosAgregar", policy => policy.RequireClaim("permission", "veterinarios.agregar"));
     options.AddPolicy("VeterinariosActualizar", policy => policy.RequireClaim("permission", "veterinarios.actualizar"));
     options.AddPolicy("VeterinariosEliminar", policy => policy.RequireClaim("permission", "veterinarios.eliminar"));
 
-    // Políticas para Usuarios
+    // PolÃ­ticas para Usuarios
     options.AddPolicy("UsuariosLeer", policy => policy.RequireClaim("permission", "usuarios.leer"));
     options.AddPolicy("UsuariosAgregar", policy => policy.RequireClaim("permission", "usuarios.agregar"));
     options.AddPolicy("UsuariosActualizar", policy => policy.RequireClaim("permission", "usuarios.actualizar"));
     options.AddPolicy("UsuariosEliminar", policy => policy.RequireClaim("permission", "usuarios.eliminar"));
 
-    // Fallback: Requerir autenticación para endpoints no especificados
+    // Fallback: Requerir autenticaciÃ³n para endpoints no especificados
     options.FallbackPolicy = options.DefaultPolicy;
 });
 

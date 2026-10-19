@@ -63,22 +63,25 @@ namespace WinFormsApp1
         {
             try
             {
+                
+                Guardar.Enabled = false;
+
                 if (_idVeterinarioActual == 0)
                 {
                     var vetDto = new VeterinarioDTO
                     {
-                        NombreVeterinario = nombreVeterinario.Text,
-                        Apellido = apellidoVeterinario.Text,
-                        Telefono = telefonoVeterinario.Text,
-                        Mail = mailVeterinario.Text,
-                        Dni = dniVeterinario.Text,
-                        Direccion = direccionVeterinario.Text,
-                        Matricula = matriculaVeterinario.Text,
-                        Especialidad = especialidadVeterinario.Text
+                        NombreVeterinario = nombreVeterinario.Text.Trim(),
+                        Apellido = apellidoVeterinario.Text.Trim(),
+                        Telefono = telefonoVeterinario.Text.Trim(),
+                        Mail = mailVeterinario.Text.Trim(),
+                        Dni = dniVeterinario.Text.Trim(),
+                        Direccion = direccionVeterinario.Text.Trim(),
+                        Matricula = matriculaVeterinario.Text.Trim(),
+                        Especialidad = especialidadVeterinario.Text.Trim()
                     };
                     var usuDto = new UsuarioCreateDTO
                     {
-                        NombreUsuario = nombreUsuario.Text,
+                        NombreUsuario = nombreUsuario.Text.Trim(),
                         Contrasenia = contraseniaUsuario.Text,
                         IdGrupo = 2
                     };
@@ -87,43 +90,38 @@ namespace WinFormsApp1
                         veterinario = vetDto,
                         usuario = usuDto
                     };
-                    var resultado =  await UsuarioClient.RegisterVetAsync(createDto);
-                    if (resultado.Exito)
-                    {
-                        MessageBox.Show(resultado.Mensaje, "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        this.DialogResult = DialogResult.OK;
-                        this.Close();
-                    }
-                    else
-                    {
-                        MessageBox.Show(resultado.Mensaje, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                    }
+                    await UsuarioClient.RegisterVetAsync(createDto);
                 }
                 else
                 {
                     var updateDto = new VeterinarioDTO
                     {
                         IdVeterinario = _idVeterinarioActual,
-                        NombreVeterinario = nombreVeterinario.Text,
-                        Apellido = apellidoVeterinario.Text,
-                        Telefono = telefonoVeterinario.Text,
-                        Mail = mailVeterinario.Text,
-                        Dni = dniVeterinario.Text,
-                        Direccion = direccionVeterinario.Text,
-                        Matricula = matriculaVeterinario.Text,
-                        Especialidad = especialidadVeterinario.Text
+                        NombreVeterinario = nombreVeterinario.Text.Trim(),
+                        Apellido = apellidoVeterinario.Text.Trim(),
+                        Telefono = telefonoVeterinario.Text.Trim(),
+                        Mail = mailVeterinario.Text.Trim(),
+                        Dni = dniVeterinario.Text.Trim(),
+                        Direccion = direccionVeterinario.Text.Trim(),
+                        Matricula = matriculaVeterinario.Text.Trim(),
+                        Especialidad = especialidadVeterinario.Text.Trim()
                     };
+
                     await VeterinarioClient.UpdateAsync(updateDto);
                 }
 
-                MessageBox.Show("Guardado exitosamente.");
-                DialogResult = DialogResult.OK;
-                Close();
+                MessageBox.Show("Guardado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error: {ex.Message}");
+                MessageBox.Show($"No se pudo guardar:\n\n{ex.Message}", "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Guardar.Enabled = true;
             }
         }
 

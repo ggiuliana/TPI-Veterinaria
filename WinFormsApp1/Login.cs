@@ -1,4 +1,4 @@
-using API.Clients;
+﻿using API.Clients;
 
 namespace WinFormsApp1
 {
@@ -16,13 +16,13 @@ namespace WinFormsApp1
 
                     if (success)
                     {
-                        MessageBox.Show("Inicio de sesi�n exitoso.");
+                        MessageBox.Show("Inicio de sesión exitoso.");
                         this.DialogResult = DialogResult.OK;
                         this.Close();
                     }
                     else
                     {
-                        MessageBox.Show("Usuario o contrase�a incorrectos.", "Error de autenticaci�n",
+                        MessageBox.Show("Usuario o contraseña incorrectos.", "Error de autenticación",
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
                         contrasenia.Clear();
                         contrasenia.Focus();
@@ -30,10 +30,21 @@ namespace WinFormsApp1
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error al iniciar sesi�n: {ex.Message}", "Error",
+                    MessageBox.Show($"Error al iniciar sesión: {ex.Message}", "Error",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+        private async void Registrarse_Click(object sender, EventArgs e)
+        {
+            FormRegistro formRegistro = new FormRegistro();
+
+            this.Hide();
+
+            DialogResult resultado = formRegistro.ShowDialog();
+
+            this.Show();
         }
         private bool ValidateInput()
         {
@@ -50,11 +61,12 @@ namespace WinFormsApp1
 
             if (string.IsNullOrWhiteSpace(contrasenia.Text))
             {
-                errorProvider.SetError(contrasenia, "La contrase�a es requerida");
+                errorProvider.SetError(contrasenia, "La contraseña es requerida");
                 isValid = false;
             }
 
             return isValid;
         }
+
     }
 }

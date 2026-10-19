@@ -99,6 +99,11 @@ namespace ServiciosApp
                 throw new ArgumentException($"Ya existe una persona con el Email '{vet.Mail}'.");
             }
 
+            if (await repo.NombreUsuarioExistsAsync(usu.NombreUsuario))
+            {
+                throw new ArgumentException($"Ya existe un usuario con el nombre de usuario '{usu.NombreUsuario}'.");
+            }
+
             if (await repoVeterinario.MatriculaExistsAsync(vet.Matricula))
             {
                 throw new ArgumentException($"Ya existe un veterinario con la Matrícula '{vet.Matricula}'.");
@@ -139,6 +144,21 @@ namespace ServiciosApp
                 throw new ArgumentException($"Ya existe una persona con el Email '{duenio.Mail}'.");
             }
 
+            if (await repo.NombreUsuarioExistsAsync(usu.NombreUsuario))
+            {
+                throw new ArgumentException($"Ya existe un usuario con el nombre de usuario '{usu.NombreUsuario}'.");
+            }
+
+            if (string.IsNullOrWhiteSpace(usu.NombreUsuario))
+            { 
+                throw new ArgumentException($"El nombre de usuario no puede ser vacío.");
+            }
+
+            if (string.IsNullOrWhiteSpace(usu.Contrasenia) || usu.Contrasenia.Length < 6)
+            {
+                throw new ArgumentException($"La contraseña no puede ser vacía y debe tener al menos 6 caracteres.");
+            }
+
             Duenio duenioNuevo = new Duenio
                 (
                 0,
@@ -154,7 +174,9 @@ namespace ServiciosApp
                 0,
                 usu.NombreUsuario,
                 usu.Contrasenia,
-                "Activo"
+                "Activo",
+                duenioNuevo,
+                await repoGrupo.GetAsync(3)
                 );
 
             return await repo.RegisterAsync(duenioNuevo, usuario);

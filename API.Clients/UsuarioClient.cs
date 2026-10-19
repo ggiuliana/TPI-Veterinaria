@@ -1,11 +1,12 @@
-﻿using System;
+﻿using DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using DTOs;
 using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace API.Clients
 {
@@ -87,34 +88,59 @@ namespace API.Clients
             return true;
         }
 
-        public async Task<(bool Exito, string Mensaje)> RegisterVetAsync(VeterinarioRegisterDTO dto)
+        public async Task<bool> RegisterVetAsync(VeterinarioRegisterDTO dto)
         {
             using var client = await CreateHttpClientAsync();
             var response = await client.PostAsJsonAsync("usuarios/register/vet", dto);
 
-            if (response.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
             {
-                return (true, "Veterinario registrado correctamente");
+                var errorContent = await response.Content.ReadAsStringAsync();
+
+                try
+                {
+                    using var jsonDoc = JsonDocument.Parse(errorContent);
+                    if (jsonDoc.RootElement.TryGetProperty("error", out JsonElement errorElement))
+                    {
+                        throw new Exception(errorElement.GetString());
+                    }
+                }
+                catch (JsonException)
+                {
+                    throw new Exception(errorContent);
+                }
+
+                throw new Exception("Error desconocido al registrar.");
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-            {
-                var errorResult = await response.Content.ReadFromJsonAsync<ErrorResponse>();
-                return (false, errorResult?.Error ?? "Error de validación al registrar.");
-            }
-
-            return (false, "Error inesperado en el servidor.");
+            return true;
         }
 
         public async Task<bool> RegisterDuenioAsync(DuenioRegisterDTO dto)
         {
             using var client = await CreateHttpClientAsync();
             var response = await client.PostAsJsonAsync("usuarios/register/duenio", dto);
-            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+
+            if (!response.IsSuccessStatusCode)
             {
-                return false;
+                var errorContent = await response.Content.ReadAsStringAsync();
+
+                try
+                {
+                    using var jsonDoc = JsonDocument.Parse(errorContent);
+                    if (jsonDoc.RootElement.TryGetProperty("error", out JsonElement errorElement))
+                    {
+                        throw new Exception(errorElement.GetString());
+                    }
+                }
+                catch (JsonException)
+                {
+                    throw new Exception(errorContent);
+                }
+
+                throw new Exception("Error desconocido al registrar.");
             }
-            response.EnsureSuccessStatusCode();
+
             return true;
         }
     }

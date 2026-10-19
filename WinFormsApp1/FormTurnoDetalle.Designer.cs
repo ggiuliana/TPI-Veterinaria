@@ -29,8 +29,8 @@
             Cancelar = new Button();
             Guardar = new Button();
             panel1 = new Panel();
-            lblObservaciones = new Label();
             txtObservaciones = new TextBox();
+            lblObservaciones = new Label();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -160,6 +160,14 @@
             panel1.Size = new Size(400, 315);
             panel1.TabIndex = 41;
             // 
+            // txtObservaciones
+            // 
+            txtObservaciones.Location = new Point(127, 203);
+            txtObservaciones.Multiline = true;
+            txtObservaciones.Name = "txtObservaciones";
+            txtObservaciones.Size = new Size(228, 23);
+            txtObservaciones.TabIndex = 42;
+            // 
             // lblObservaciones
             // 
             lblObservaciones.AutoSize = true;
@@ -168,14 +176,6 @@
             lblObservaciones.Size = new Size(87, 15);
             lblObservaciones.TabIndex = 41;
             lblObservaciones.Text = "Observaciones:";
-            // 
-            // txtObservaciones
-            // 
-            txtObservaciones.Location = new Point(127, 203);
-            txtObservaciones.Multiline = true;
-            txtObservaciones.Name = "txtObservaciones";
-            txtObservaciones.Size = new Size(228, 23);
-            txtObservaciones.TabIndex = 42;
             // 
             // FormTurnoDetalle
             // 

@@ -58,14 +58,14 @@
             // 
             turnosToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { consultasToolStripMenuItem });
             turnosToolStripMenuItem.Name = "turnosToolStripMenuItem";
-            turnosToolStripMenuItem.Size = new Size(180, 22);
+            turnosToolStripMenuItem.Size = new Size(111, 22);
             turnosToolStripMenuItem.Text = "Turnos";
             turnosToolStripMenuItem.Click += TurnosToolStripMenuItem_Click;
             // 
             // consultasToolStripMenuItem
             // 
             consultasToolStripMenuItem.Name = "consultasToolStripMenuItem";
-            consultasToolStripMenuItem.Size = new Size(180, 22);
+            consultasToolStripMenuItem.Size = new Size(126, 22);
             consultasToolStripMenuItem.Text = "Consultas";
             consultasToolStripMenuItem.Click += ConsultasToolStripMenuItem_Click;
             // 
@@ -84,7 +84,7 @@
             Controls.Add(menuStrip1);
             IsMdiContainer = true;
             Name = "VeterinarioHome";
-            Text = "Form1";
+            Text = "VeterinarioForm";
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);
