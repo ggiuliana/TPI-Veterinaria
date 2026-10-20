@@ -29,17 +29,24 @@ namespace Data
 
         public async Task<Mascota?> GetAsync(int id)
         {
-            return await context.Mascotas.FirstOrDefaultAsync(m => m.IdMascota == id);
+            return await context.Mascotas
+                .Include(m => m.Vacunas)
+                        .FirstOrDefaultAsync(m => m.IdMascota == id);
         }
 
         public async Task<IEnumerable<Mascota>> GetAllAsync()
         {
-            return await context.Mascotas.ToListAsync();
+            return await context.Mascotas
+                .Include(m => m.Vacunas)
+                .ToListAsync();
+
         }
 
         public async Task<IEnumerable<Mascota>> GetAllByDuenioAsync(Duenio duenio)
         {
-            return await context.Mascotas.Where(m => m.Duenio == duenio).ToListAsync();
+            return await context.Mascotas
+                .Include(m => m.Vacunas)
+                .Where(m => m.Duenio == duenio).ToListAsync();
         }
 
         public async Task<bool> UpdateAsync(Mascota mascota)

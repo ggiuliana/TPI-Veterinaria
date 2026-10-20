@@ -76,7 +76,13 @@ namespace ServiciosApp
                 Castrado = mascota.Castrado,
                 Sexo = mascota.Sexo,
                 FechaNac = mascota.FechaNac,
-                IdDuenio = mascota.Duenio?.IdPersona ?? 0
+                IdDuenio = mascota.Duenio?.IdPersona ?? 0,
+                Vacunas = mascota.Vacunas?.Select(v => new VacunaDTO
+                {
+                    IdMascota = v.IdMascota,
+                    IdTipoVacuna = v.IdTipoVacuna,
+                    FechaColocacion = v.FechaColocacion
+                }).ToList() ?? new List<VacunaDTO>()
             };
         }
 
@@ -92,7 +98,13 @@ namespace ServiciosApp
                 Castrado = mascota.Castrado,
                 Sexo = mascota.Sexo,
                 FechaNac = mascota.FechaNac,
-                IdDuenio = mascota.Duenio?.IdPersona ?? 0
+                IdDuenio = mascota.Duenio?.IdPersona ?? 0,
+                Vacunas = mascota.Vacunas?.Select(v => new VacunaDTO
+                {
+                    IdMascota = v.IdMascota,
+                    IdTipoVacuna = v.IdTipoVacuna,
+                    FechaColocacion = v.FechaColocacion
+                }).ToList() ?? new List<VacunaDTO>()
             })];
         }
 
@@ -109,24 +121,30 @@ namespace ServiciosApp
                 Castrado = mascota.Castrado,
                 Sexo = mascota.Sexo,
                 FechaNac = mascota.FechaNac,
-                IdDuenio = mascota.Duenio?.IdPersona ?? 0   
+                IdDuenio = mascota.Duenio?.IdPersona ?? 0,
+                Vacunas = mascota.Vacunas?.Select(v => new VacunaDTO
+                {
+                    IdMascota = v.IdMascota,
+                    IdTipoVacuna = v.IdTipoVacuna,
+                    FechaColocacion = v.FechaColocacion
+                }).ToList() ?? new List<VacunaDTO>()
             })];
         }
 
         public async Task<bool> UpdateAsync(MascotaDTO dto)
         {
-
             var duenio = await repoDuenio.GetAsync(dto.IdDuenio) ?? throw new ArgumentException("Dueño no encontrado");
-            Mascota mascota = new Mascota(
-                dto.IdMascota,
-                dto.NombreMascota,
-                dto.Especie,
-                dto.Raza,
-                dto.Castrado,
-                dto.Sexo,
-                dto.FechaNac,
-                duenio);
 
+            var mascota = await repo.GetAsync(dto.IdMascota);
+            if (mascota == null) throw new Exception("Mascota no encontrada");
+
+            mascota.SetNombreMascota(dto.NombreMascota);
+            mascota.SetEspecie(dto.Especie);
+            mascota.SetRaza(dto.Raza);
+            mascota.SetCastrado(dto.Castrado);
+            mascota.SetSexo(dto.Sexo);
+            mascota.SetFechaNac(dto.FechaNac);
+            
             mascota.Vacunas.Clear();
 
             if (dto.Vacunas != null && dto.Vacunas.Any())
@@ -145,11 +163,12 @@ namespace ServiciosApp
                     }
 
                     var vacunaNueva = new Vacuna(vacunaDto.FechaColocacion, tipoVacuna, mascota);
-
                     vacunasParaGuardar.Add(vacunaNueva);
                 }
+
                 mascota.SetVacunas(vacunasParaGuardar);
             }
+
             return await repo.UpdateAsync(mascota);
         }
     }

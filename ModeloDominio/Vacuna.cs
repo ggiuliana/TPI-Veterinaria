@@ -2,6 +2,7 @@
 {
     public class Vacuna
     {
+        public int Id { get; set; }
         public DateOnly FechaColocacion { get; private set; }
         public int IdTipoVacuna { get; private set; }
         public TipoVacuna TipoVacuna { get; private set; } = null!;

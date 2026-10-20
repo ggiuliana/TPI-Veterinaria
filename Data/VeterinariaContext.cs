@@ -584,20 +584,20 @@ namespace Data
             }); 
             modelBuilder.Entity<Vacuna>(entity =>
             {
-                entity.HasKey(v => new { v.IdTipoVacuna, v.IdMascota, v.FechaColocacion });
+                entity.HasKey(v => v.Id);
 
                 entity.Property(v => v.FechaColocacion)
-                .IsRequired();
+                    .IsRequired();
 
                 entity.HasOne(v => v.TipoVacuna)
-                .WithMany()
-                .HasForeignKey(v => v.IdTipoVacuna)
-                .IsRequired();
+                    .WithMany()
+                    .HasForeignKey(v => v.IdTipoVacuna)
+                    .IsRequired();
 
                 entity.HasOne(v => v.Mascota)
-                .WithMany()
-                .HasForeignKey(v => v.IdMascota)
-                .IsRequired();
+                    .WithMany(m => m.Vacunas)
+                    .HasForeignKey(v => v.IdMascota)
+                    .IsRequired();
             }); 
         }
         public void SeedInitialData()
@@ -642,7 +642,8 @@ namespace Data
                         var permisosDuenio = todosLosPermisos.Where(p =>
                             (p.Categoria == "turnos" && (p.Nombre == "actualizar" || p.Nombre == "leer")) ||
                             (p.Categoria == "mascotas") ||
-                            (p.Categoria == "consultas" && p.Nombre == "leer")
+                            (p.Categoria == "consultas" && p.Nombre == "leer") ||
+                            (p.Categoria == "tipos vacunas" && p.Nombre == "leer")
                         ).ToList();
 
                         foreach (var permiso in permisosDuenio)
