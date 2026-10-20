@@ -26,7 +26,6 @@ namespace ServiciosApp
             }
             return false;
         }
-
         public async Task<Usuario?> GetAsync(int id)
         {
             return await context.Usuarios.FirstOrDefaultAsync(u => u.IdUsuario == id);
@@ -78,7 +77,6 @@ namespace ServiciosApp
 
             return await query.AnyAsync();
         }
-
         public async Task<bool> RegisterAsync(Persona persona, Usuario usuario)
         {
             using var transaction = await context.Database.BeginTransactionAsync();

@@ -161,5 +161,14 @@ namespace WinFormsApp1
                 }
             }
         }
+
+        private async void Metricas_Click(object sender, EventArgs e)
+        {
+            FormMetricasTurnos formMetricas = new FormMetricasTurnos();
+
+            formMetricas.MdiParent = this.MdiParent;
+
+            formMetricas.Show();
+        }
     }
 }
