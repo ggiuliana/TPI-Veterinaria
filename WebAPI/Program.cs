@@ -142,11 +142,21 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("MascotasActualizar", policy => policy.RequireClaim("permission", "mascotas.actualizar"));
     options.AddPolicy("MascotasEliminar", policy => policy.RequireClaim("permission", "mascotas.eliminar"));
 
-    // Políticas para TipoVacunas
-    options.AddPolicy("TipoVacunasLeer", policy => policy.RequireClaim("permission", "tipos vacunas.leer"));
-    options.AddPolicy("TipoVacunasAgregar", policy => policy.RequireClaim("permission", "tipos vacunas.agregar"));
-    options.AddPolicy("TipoVacunasActualizar", policy => policy.RequireClaim("permission", "tipos vacunas.actualizar"));
-    options.AddPolicy("TipoVacunasEliminar", policy => policy.RequireClaim("permission", "tipos vacunas.eliminar"));
+    // Políticas para TipoVacunas (acepta con o sin espacio, y ambos nombres de política)
+    string[] permisosLeer = ["tipos vacunas.leer", "tipovacunas.leer", "tipo vacunas.leer"];
+    string[] permisosAgregar = ["tipos vacunas.agregar", "tipovacunas.agregar", "tipo vacunas.agregar"];
+    string[] permisosActualizar = ["tipos vacunas.actualizar", "tipovacunas.actualizar", "tipo vacunas.actualizar"];
+    string[] permisosEliminar = ["tipos vacunas.eliminar", "tipovacunas.eliminar", "tipo vacunas.eliminar"];
+
+    options.AddPolicy("TipoVacunasLeer", policy => policy.RequireClaim("permission", permisosLeer));
+    options.AddPolicy("TipoVacunasAgregar", policy => policy.RequireClaim("permission", permisosAgregar));
+    options.AddPolicy("TipoVacunasActualizar", policy => policy.RequireClaim("permission", permisosActualizar));
+    options.AddPolicy("TipoVacunasEliminar", policy => policy.RequireClaim("permission", permisosEliminar));
+
+    options.AddPolicy("tipovacunas.leer", policy => policy.RequireClaim("permission", permisosLeer));
+    options.AddPolicy("tipovacunas.agregar", policy => policy.RequireClaim("permission", permisosAgregar));
+    options.AddPolicy("tipovacunas.actualizar", policy => policy.RequireClaim("permission", permisosActualizar));
+    options.AddPolicy("tipovacunas.eliminar", policy => policy.RequireClaim("permission", permisosEliminar));
 
     // Políticas para Turnos
     options.AddPolicy("TurnosLeer", policy => policy.RequireClaim("permission", "turnos.leer"));

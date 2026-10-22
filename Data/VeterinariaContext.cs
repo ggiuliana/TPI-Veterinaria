@@ -212,11 +212,11 @@ namespace Data
                 new { Id = 14, Nombre = "agregar", Descripcion = "Agregar usuarios", Categoria = "usuarios", Activo = true },
                 new { Id = 15, Nombre = "actualizar", Descripcion = "Actualizar usuarios", Categoria = "usuarios", Activo = true },
                 new { Id = 16, Nombre = "eliminar", Descripcion = "Eliminar usuarios", Categoria = "usuarios", Activo = true },
-                //Permisos para Tipos Vacunas
-                new { Id = 17, Nombre = "leer", Descripcion = "Leer tipos vacunas", Categoria = "tipos vacunas", Activo = true },
-                new { Id = 18, Nombre = "agregar", Descripcion = "Agregar tipos vacunas", Categoria = "tipos vacunas", Activo = true },
-                new { Id = 19, Nombre = "actualizar", Descripcion = "Actualizar tipos vacunas", Categoria = "tipos vacunas", Activo = true },
-                new { Id = 20, Nombre = "eliminar", Descripcion = "Eliminar tipos vacunas", Categoria = "tipos vacunas", Activo = true },
+                //Permisos para Tipo Vacunas
+                new { Id = 17, Nombre = "leer", Descripcion = "Leer tipo vacunas", Categoria = "tipo vacunas", Activo = true },
+                new { Id = 18, Nombre = "agregar", Descripcion = "Agregar tipo vacunas", Categoria = "tipo vacunas", Activo = true },
+                new { Id = 19, Nombre = "actualizar", Descripcion = "Actualizar tipo vacunas", Categoria = "tipo vacunas", Activo = true },
+                new { Id = 20, Nombre = "eliminar", Descripcion = "Eliminar tipo vacunas", Categoria = "tipo vacunas", Activo = true },
                 // Permisos para Medicamentos
                 new { Id = 21, Nombre = "leer", Descripcion = "Leer medicamentos", Categoria = "medicamentos", Activo = true },
                 new { Id = 22, Nombre = "agregar", Descripcion = "Agregar medicamentos", Categoria = "medicamentos", Activo = true },
@@ -643,7 +643,7 @@ namespace Data
                             (p.Categoria == "turnos" && (p.Nombre == "actualizar" || p.Nombre == "leer")) ||
                             (p.Categoria == "mascotas") ||
                             (p.Categoria == "consultas" && p.Nombre == "leer") ||
-                            (p.Categoria == "tipos vacunas" && p.Nombre == "leer")
+                            (p.Categoria == "tipo vacunas" && p.Nombre == "leer")
                         ).ToList();
 
                         foreach (var permiso in permisosDuenio)

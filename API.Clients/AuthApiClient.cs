@@ -13,7 +13,6 @@ namespace API.Clients
         public AuthApiClient(IAuthService authService) : base(authService)
         {
         }
-
         public async Task<LoginResponse?> LoginAsync(LoginRequest request)
         {
             using var client = await CreateHttpClientAsync();
