@@ -1,13 +1,4 @@
-﻿using System;
-using API.Clients;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using API.Clients;
 
 namespace WinFormsApp1
 {
@@ -94,12 +85,6 @@ namespace WinFormsApp1
             };
             formConsultas.Show();
         }
-
-        private void AdminHome_Load(object sender, EventArgs e)
-        {
-
-        }
-
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             base.OnFormClosing(e);
@@ -108,6 +93,37 @@ namespace WinFormsApp1
             {
                 Program.AuthService.LogoutAsync().GetAwaiter().GetResult();
             }
+        }
+        private void MedicamentosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Application.OpenForms.OfType<FormMedicamentoLista>().Any())
+            {
+                Application.OpenForms.OfType<FormMedicamentoLista>().First().BringToFront();
+                return;
+            }
+            FormMedicamentoLista formMedicamentos = new() 
+            { 
+                MdiParent = this, 
+                FormBorderStyle = FormBorderStyle.None, 
+                Dock = DockStyle.Fill 
+            };
+            formMedicamentos.Show();
+        }
+
+        private void TiposDeVacunaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Application.OpenForms.OfType<FormTipoVacunaLista>().Any())
+            {
+                Application.OpenForms.OfType<FormTipoVacunaLista>().First().BringToFront();
+                return;
+            }
+            FormTipoVacunaLista formTipoVacunas = new() 
+            { 
+                MdiParent = this, 
+                FormBorderStyle = FormBorderStyle.None, 
+                Dock = DockStyle.Fill 
+            };
+            formTipoVacunas.Show();
         }
     }
 }
