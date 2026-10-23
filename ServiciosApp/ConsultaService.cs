@@ -10,13 +10,15 @@ namespace ServiciosApp
         private readonly ITurnoRepository repoTurno;
         private readonly IEstudioRepository repoEstudio;
         private readonly IMedicamentoRepository repoMedicamento;
+        private readonly IMedicamentoConsultaRepository repoMedicamentoConsulta;
 
-        public ConsultaService(IConsultaRepository repo, ITurnoRepository repoTurno, IEstudioRepository repoEstudio, IMedicamentoRepository repoMedicamento)
+        public ConsultaService(IConsultaRepository repo, ITurnoRepository repoTurno, IEstudioRepository repoEstudio, IMedicamentoRepository repoMedicamento, IMedicamentoConsultaRepository repoMedicamentoConsulta)
         {
             this.repo = repo;
             this.repoTurno = repoTurno;
             this.repoEstudio = repoEstudio;
             this.repoMedicamento = repoMedicamento;
+            this.repoMedicamentoConsulta = repoMedicamentoConsulta;
         }
 
         public async Task<ConsultaDTO> AddAsync(ConsultaDTO dto)
@@ -195,6 +197,7 @@ namespace ServiciosApp
                     medDb.SetCantidadRestante(medDb.CantidadRestante + itemEliminar.CantidadUsada);
                 }
                 consulta.MedicamentosConsulta.Remove(itemEliminar);
+                repoMedicamentoConsulta.Remove(itemEliminar);
             }
 
             foreach (var itemDto in medicamentosDto)

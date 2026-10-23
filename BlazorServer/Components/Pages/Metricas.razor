@@ -1,0 +1,162 @@
+﻿@page "/metricas"
+@rendermode InteractiveServer
+
+@using DTOs
+@using API.Clients
+@using Radzen
+@using Radzen.Blazor
+
+@inject TurnoClient TurnoClient
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
+
+<PageTitle>Métricas de Turnos</PageTitle>
+
+<div class="container-fluid mt-3">
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+        <h2 class="fw-normal text-secondary mb-0">Métricas de Turnos</h2>
+        <button type="button" class="btn btn-outline-secondary" @onclick="@(() => Navigation.NavigateTo("/turnos"))">
+            <i class="fas fa-arrow-left"></i> Volver a Turnos
+        </button>
+    </div>
+
+    @if (loading)
+    {
+        <div class="d-flex justify-content-center mt-5">
+            <div class="spinner-border text-info" role="status"></div>
+        </div>
+    }
+    else if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert alert-danger">@errorMessage</div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold mb-4 text-primary">Resumen General</h5>
+
+                        <div class="mb-4">
+                            <span class="fs-5 text-dark fw-bold">Turnos totales: @totalTurnos</span>
+                        </div>
+
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="badge bg-primary p-2 me-2" style="width: 15px; height: 15px;"></span>
+                            <span class="fs-6 text-secondary">Otorgados: <strong>@turnosOtorgados</strong></span>
+                        </div>
+
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="badge bg-warning p-2 me-2" style="width: 15px; height: 15px;"></span>
+                            <span class="fs-6 text-secondary">Pendientes: <strong>@turnosPendientes</strong></span>
+                        </div>
+
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="badge bg-success p-2 me-2" style="width: 15px; height: 15px;"></span>
+                            <span class="fs-6 text-secondary">Resueltos: <strong>@turnosResueltos</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body">
+                        <h6 class="text-center text-secondary mb-3">Proporción de Estados</h6>
+                        <div style="height: 300px;">
+                            <RadzenChart>
+                                <RadzenPieSeries Data="@datosMetricas" CategoryProperty="Estado" ValueProperty="Cantidad" />
+                            </RadzenChart>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <h6 class="text-center text-secondary mb-3">Cantidad de Turnos por Estado</h6>
+                        <div style="height: 300px;">
+                            <RadzenChart>
+                                <RadzenColumnSeries Data="@datosMetricas" CategoryProperty="Estado" ValueProperty="Cantidad" Title="Turnos" />
+                                <RadzenColumnOptions Radius="5" />
+                                <RadzenValueAxis>
+                                    <RadzenGridLines Visible="true" />
+                                </RadzenValueAxis>
+                            </RadzenChart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private bool loading = true;
+    private string errorMessage = string.Empty;
+
+    private int totalTurnos = 0;
+    private int turnosOtorgados = 0;
+    private int turnosPendientes = 0;
+    private int turnosResueltos = 0;
+
+    public class DatoMetrica
+    {
+        public string Estado { get; set; } = string.Empty;
+        public int Cantidad { get; set; }
+    }
+
+    private List<DatoMetrica> datosMetricas = new List<DatoMetrica>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+        if (!isAuthenticated)
+        {
+            Navigation.NavigateTo("/login");
+            return;
+        }
+
+        var rol = await AuthService.GetRolAsync();
+        var rolNormalizado = rol?.Trim().ToUpper();
+        if (rolNormalizado != "ADMINISTRADOR" && rolNormalizado != "VETERINARIO")
+        {
+            Navigation.NavigateTo("/");
+            return;
+        }
+
+        await CargarMetricasAsync();
+    }
+
+    private async Task CargarMetricasAsync()
+    {
+        try
+        {
+            loading = true;
+
+            var turnos = await TurnoClient.GetAllAsync();
+            if (turnos != null)
+            {
+                totalTurnos = turnos.Count();
+                turnosOtorgados = turnos.Count(t => t.EstadoTurno?.ToLower() == "otorgado");
+                turnosPendientes = turnos.Count(t => t.EstadoTurno?.ToLower() == "pendiente");
+                turnosResueltos = turnos.Count(t => t.EstadoTurno?.ToLower() == "resuelto");
+
+                datosMetricas = new List<DatoMetrica>
+                {
+                    new DatoMetrica { Estado = "Otorgado", Cantidad = turnosOtorgados },
+                    new DatoMetrica { Estado = "Pendiente", Cantidad = turnosPendientes },
+                    new DatoMetrica { Estado = "Resuelto", Cantidad = turnosResueltos }
+                };
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error al cargar las métricas: {ex.Message}";
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+}

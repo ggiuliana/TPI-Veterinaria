@@ -36,6 +36,15 @@
                 </NavLink>
             </div>
         }
+
+        @if (canReadTurnos)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="turnos">
+                    <span class="oi oi-calendar" aria-hidden="true"></span> Turnos
+                </NavLink>
+            </div>
+        }
     </nav>
 </div>
 
@@ -43,6 +52,7 @@
     private bool collapseNavMenu = true;
     private bool canReadVeterinarios = false;
     private bool canReadEstudios = false;
+    private bool canReadTurnos = false;
 
     private string homeRoute = "";
 
@@ -62,11 +72,18 @@
         {
             canReadVeterinarios = await AuthService.HasPermissionAsync("veterinarios.leer");
             canReadEstudios = await AuthService.HasPermissionAsync("estudios.leer");
+            canReadTurnos = await AuthService.HasPermissionAsync("turnos.leer");
 
             var rol = await AuthService.GetRolAsync();
-            if (rol?.Trim().ToUpper() == "ADMINISTRADOR")
+            var rolNormalizado = rol?.Trim().ToUpper();
+
+            if (rolNormalizado == "ADMINISTRADOR")
             {
                 homeRoute = "admin";
+            }
+            else if (rolNormalizado == "VETERINARIO")
+            {
+                homeRoute = "veterinario";
             }
             else
             {
@@ -77,6 +94,7 @@
         {
             canReadVeterinarios = false;
             canReadEstudios = false;
+            canReadTurnos = false;
             homeRoute = "";
         }
         StateHasChanged();

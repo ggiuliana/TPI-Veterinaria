@@ -33,5 +33,10 @@ namespace Data
                 await context.SaveChangesAsync();
             }
         }
+
+        public async Task Remove(MedicamentoConsulta medcon)
+        {
+            context.MedicamentoConsulta.Remove(medcon);
+        }
     }
 }

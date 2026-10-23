@@ -1,6 +1,74 @@
 ﻿@page "/vet"
 
-<h1>Página veterinario</h1>
+<PageTitle>Panel del Veterinario</PageTitle>
+
+<div class="container-fluid mt-3">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="fw-normal text-secondary border-bottom pb-2">Panel del Veterinario</h2>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="alert alert-info border-0 shadow-sm d-flex align-items-center" role="alert">
+                <i class="fas fa-stethoscope fs-4 me-3 text-info"></i>
+                <div>
+                    <h5 class="alert-heading mb-1 fw-bold">Área Médica y Atención</h5>
+                    <p class="mb-0 text-dark">
+                        Bienvenido a su panel de control. Desde aquí, y utilizando el menú lateral, podrá <strong>gestionar su agenda de turnos y registrar las consultas clínicas</strong> de sus pacientes.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-primary bg-opacity-10 p-3 rounded">
+                            <i class="fas fa-calendar-alt text-primary fs-4"></i>
+                        </div>
+                        <h5 class="card-title ms-3 mb-0 fw-bold">Gestión de Turnos</h5>
+                    </div>
+                    <p class="card-text text-muted">
+                        Visualice su agenda diaria y administre sus citas. Permite modificar el estado de los turnos (pendientes, en curso, finalizados), reprogramarlos o cancelarlos según su disponibilidad.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-success bg-opacity-10 p-3 rounded">
+                            <i class="fas fa-notes-medical text-success fs-4"></i>
+                        </div>
+                        <h5 class="card-title ms-3 mb-0 fw-bold">Registro de Consultas</h5>
+                    </div>
+                    <p class="card-text text-muted">
+                        Lleve el control del historial clínico. Permite crear y modificar los detalles de cada consulta, registrar síntomas, diagnósticos, indicar tratamientos y cargar resultados de estudios médicos.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm border-0 bg-light">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
+                    <i class="fas fa-user-shield text-secondary fs-2 mb-3"></i>
+                    <h6 class="text-secondary fw-bold">Acceso Profesional</h6>
+                    <p class="text-muted small mb-0">
+                        Sesión iniciada con privilegios de Veterinario. Sus registros médicos y modificaciones se guardan de forma segura bajo su número de matrícula y perfil profesional.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
 
