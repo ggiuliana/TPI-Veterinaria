@@ -70,7 +70,7 @@
             Controls.Add(label1);
             Controls.Add(mascotasComboBox);
             Name = "FormSacarTurno";
-            Text = "Form1";
+            Text = "Seleccionar mascota";
             Load += FormSacarTurno_Load;
             ResumeLayout(false);
             PerformLayout();

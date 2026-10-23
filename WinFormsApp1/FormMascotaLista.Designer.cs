@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             label1 = new Label();
             Create = new Button();
             Modificar = new Button();
@@ -157,7 +158,6 @@
             NombreMascota.MinimumWidth = 6;
             NombreMascota.Name = "NombreMascota";
             NombreMascota.ReadOnly = true;
-            NombreMascota.Width = 76;
             // 
             // Especie
             // 
@@ -167,7 +167,6 @@
             Especie.MinimumWidth = 6;
             Especie.Name = "Especie";
             Especie.ReadOnly = true;
-            Especie.Width = 71;
             // 
             // Raza
             // 
@@ -177,7 +176,6 @@
             Raza.MinimumWidth = 6;
             Raza.Name = "Raza";
             Raza.ReadOnly = true;
-            Raza.Width = 56;
             // 
             // Castrado
             // 
@@ -187,7 +185,6 @@
             Castrado.MinimumWidth = 6;
             Castrado.Name = "Castrado";
             Castrado.ReadOnly = true;
-            Castrado.Width = 56;
             // 
             // Sexo
             // 
@@ -197,17 +194,17 @@
             Sexo.MinimumWidth = 6;
             Sexo.Name = "Sexo";
             Sexo.ReadOnly = true;
-            Sexo.Width = 56;
             // 
             // FechaNac
             // 
             FechaNac.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             FechaNac.DataPropertyName = "FechaNac";
+            dataGridViewCellStyle1.Format = "d";
+            FechaNac.DefaultCellStyle = dataGridViewCellStyle1;
             FechaNac.HeaderText = "Fecha de Nacimiento";
             FechaNac.MinimumWidth = 6;
             FechaNac.Name = "FechaNac";
             FechaNac.ReadOnly = true;
-            FechaNac.Width = 56;
             // 
             // FormMascotaLista
             // 

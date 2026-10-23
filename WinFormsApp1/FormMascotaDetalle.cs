@@ -47,9 +47,10 @@ namespace WinFormsApp1
                     {
                         nombreMascota.Text = mascota.NombreMascota;
                         especieMascota.Text = mascota.Especie;
-                        razaMascota.Text = mascota.Especie;
+                        razaMascota.Text = mascota.Raza;
                         castradoMascota.Checked = mascota.Castrado;
                         sexoMascota.Text = mascota.Sexo == 'M' ? "Macho" : "Hembra";
+                        fechaNacimientoMascota.Value = mascota.FechaNac;
                     }
 
                     var diccionarioTipos = _tiposVacuna.ToDictionary(t => t.IdTipoVacuna, t => t.NombreTipoVacuna);

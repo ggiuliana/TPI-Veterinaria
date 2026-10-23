@@ -29,6 +29,14 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            Vacunas = new GroupBox();
+            vacunasLista = new DataGridView();
+            label7 = new Label();
+            label6 = new Label();
+            Eliminar = new Button();
+            Agregar = new Button();
+            fechaVacuna = new DateTimePicker();
+            tipoVacuna = new ComboBox();
             labelTit = new Label();
             fechaNacimientoMascota = new DateTimePicker();
             label5 = new Label();
@@ -44,14 +52,6 @@
             especieMascota = new TextBox();
             label3 = new Label();
             nombreMascota = new TextBox();
-            Vacunas = new GroupBox();
-            tipoVacuna = new ComboBox();
-            fechaVacuna = new DateTimePicker();
-            Agregar = new Button();
-            Eliminar = new Button();
-            label6 = new Label();
-            label7 = new Label();
-            vacunasLista = new DataGridView();
             panel1.SuspendLayout();
             Vacunas.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)vacunasLista).BeginInit();
@@ -81,6 +81,85 @@
             panel1.Size = new Size(492, 528);
             panel1.TabIndex = 42;
             // 
+            // Vacunas
+            // 
+            Vacunas.Controls.Add(vacunasLista);
+            Vacunas.Controls.Add(label7);
+            Vacunas.Controls.Add(label6);
+            Vacunas.Controls.Add(Eliminar);
+            Vacunas.Controls.Add(Agregar);
+            Vacunas.Controls.Add(fechaVacuna);
+            Vacunas.Controls.Add(tipoVacuna);
+            Vacunas.Location = new Point(20, 281);
+            Vacunas.Name = "Vacunas";
+            Vacunas.Size = new Size(453, 178);
+            Vacunas.TabIndex = 50;
+            Vacunas.TabStop = false;
+            Vacunas.Text = "Vacunas";
+            // 
+            // vacunasLista
+            // 
+            vacunasLista.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            vacunasLista.Location = new Point(152, 18);
+            vacunasLista.Name = "vacunasLista";
+            vacunasLista.Size = new Size(294, 150);
+            vacunasLista.TabIndex = 53;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(22, 73);
+            label7.Name = "label7";
+            label7.Size = new Size(118, 15);
+            label7.TabIndex = 52;
+            label7.Text = "Fecha de colocación:";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(22, 21);
+            label6.Name = "label6";
+            label6.Size = new Size(90, 15);
+            label6.TabIndex = 51;
+            label6.Text = "Tipo de vacuna:";
+            // 
+            // Eliminar
+            // 
+            Eliminar.BackColor = SystemColors.ActiveCaption;
+            Eliminar.Location = new Point(81, 134);
+            Eliminar.Name = "Eliminar";
+            Eliminar.Size = new Size(64, 23);
+            Eliminar.TabIndex = 3;
+            Eliminar.Text = "Eliminar";
+            Eliminar.UseVisualStyleBackColor = false;
+            Eliminar.Click += Eliminar_Click;
+            // 
+            // Agregar
+            // 
+            Agregar.Location = new Point(20, 134);
+            Agregar.Name = "Agregar";
+            Agregar.Size = new Size(64, 23);
+            Agregar.TabIndex = 2;
+            Agregar.Text = "Agregar";
+            Agregar.UseVisualStyleBackColor = true;
+            Agregar.Click += Agregar_Click;
+            // 
+            // fechaVacuna
+            // 
+            fechaVacuna.Format = DateTimePickerFormat.Short;
+            fechaVacuna.Location = new Point(22, 91);
+            fechaVacuna.Name = "fechaVacuna";
+            fechaVacuna.Size = new Size(121, 23);
+            fechaVacuna.TabIndex = 1;
+            // 
+            // tipoVacuna
+            // 
+            tipoVacuna.FormattingEnabled = true;
+            tipoVacuna.Location = new Point(22, 41);
+            tipoVacuna.Name = "tipoVacuna";
+            tipoVacuna.Size = new Size(121, 23);
+            tipoVacuna.TabIndex = 0;
+            // 
             // labelTit
             // 
             labelTit.AutoSize = true;
@@ -92,6 +171,7 @@
             // 
             // fechaNacimientoMascota
             // 
+            fechaNacimientoMascota.Format = DateTimePickerFormat.Short;
             fechaNacimientoMascota.Location = new Point(209, 244);
             fechaNacimientoMascota.Name = "fechaNacimientoMascota";
             fechaNacimientoMascota.Size = new Size(197, 23);
@@ -120,7 +200,7 @@
             label4.AutoSize = true;
             label4.Location = new Point(213, 205);
             label4.Name = "label4";
-            label4.Size = new Size(34, 15);
+            label4.Size = new Size(35, 15);
             label4.TabIndex = 45;
             label4.Text = "Sexo:";
             // 
@@ -217,84 +297,6 @@
             nombreMascota.Name = "nombreMascota";
             nombreMascota.Size = new Size(228, 23);
             nombreMascota.TabIndex = 18;
-            // 
-            // Vacunas
-            // 
-            Vacunas.Controls.Add(vacunasLista);
-            Vacunas.Controls.Add(label7);
-            Vacunas.Controls.Add(label6);
-            Vacunas.Controls.Add(Eliminar);
-            Vacunas.Controls.Add(Agregar);
-            Vacunas.Controls.Add(fechaVacuna);
-            Vacunas.Controls.Add(tipoVacuna);
-            Vacunas.Location = new Point(20, 281);
-            Vacunas.Name = "Vacunas";
-            Vacunas.Size = new Size(453, 178);
-            Vacunas.TabIndex = 50;
-            Vacunas.TabStop = false;
-            Vacunas.Text = "Vacunas";
-            // 
-            // tipoVacuna
-            // 
-            tipoVacuna.FormattingEnabled = true;
-            tipoVacuna.Location = new Point(22, 41);
-            tipoVacuna.Name = "tipoVacuna";
-            tipoVacuna.Size = new Size(121, 23);
-            tipoVacuna.TabIndex = 0;
-            // 
-            // fechaVacuna
-            // 
-            fechaVacuna.Location = new Point(22, 91);
-            fechaVacuna.Name = "fechaVacuna";
-            fechaVacuna.Size = new Size(121, 23);
-            fechaVacuna.TabIndex = 1;
-            // 
-            // Agregar
-            // 
-            Agregar.Location = new Point(20, 134);
-            Agregar.Name = "Agregar";
-            Agregar.Size = new Size(64, 23);
-            Agregar.TabIndex = 2;
-            Agregar.Text = "Agregar";
-            Agregar.UseVisualStyleBackColor = true;
-            Agregar.Click += Agregar_Click;
-            // 
-            // Eliminar
-            // 
-            Eliminar.BackColor = SystemColors.ActiveCaption;
-            Eliminar.Location = new Point(81, 134);
-            Eliminar.Name = "Eliminar";
-            Eliminar.Size = new Size(64, 23);
-            Eliminar.TabIndex = 3;
-            Eliminar.Text = "Eliminar";
-            Eliminar.UseVisualStyleBackColor = false;
-            Eliminar.Click += Eliminar_Click;
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Location = new Point(22, 21);
-            label6.Name = "label6";
-            label6.Size = new Size(91, 15);
-            label6.TabIndex = 51;
-            label6.Text = "Tipo de vacuna:";
-            // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.Location = new Point(22, 73);
-            label7.Name = "label7";
-            label7.Size = new Size(118, 15);
-            label7.TabIndex = 52;
-            label7.Text = "Fecha de colocación:";
-            // 
-            // vacunasLista
-            // 
-            vacunasLista.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            vacunasLista.Location = new Point(152, 18);
-            vacunasLista.Name = "vacunasLista";
-            vacunasLista.Size = new Size(294, 150);
-            vacunasLista.TabIndex = 53;
             // 
             // FormMascotaDetalle
             // 

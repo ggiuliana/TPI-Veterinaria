@@ -7,6 +7,7 @@ namespace WinFormsApp1
     {
         private readonly int _idTurnoActual;
         private readonly TurnoClient TurnoClient;
+        private string _estadoActual = "Pendiente";
         public FormTurnoDetalle(int idTurno = 0)
         {
             InitializeComponent();
@@ -31,12 +32,15 @@ namespace WinFormsApp1
 
                 txtIdMascota.Visible = true;
                 lblMascota.Visible = true;
+                txtIdMascota.ReadOnly = true;
 
                 try
                 {
                     var turno = await TurnoClient.GetAsync(_idTurnoActual);
                     if (turno != null)
                     {
+                        _estadoActual = turno.EstadoTurno;
+
                         dtpFecha.Value = turno.FechaTurno.ToDateTime(TimeOnly.MinValue);
                         dtpHora.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day,
                                                      turno.HoraTurno.Hour, turno.HoraTurno.Minute, 0);
@@ -44,6 +48,11 @@ namespace WinFormsApp1
                         txtIdMascota.Text = turno.IdMascota.ToString();
                         txtIdVeterinario.Text = turno.IdVeterinario.ToString();
                         txtObservaciones.Text = turno.Observaciones ?? "";
+                        if (turno.EstadoTurno == "Otorgado" || turno.EstadoTurno == "Resuelto")
+                        {
+                            dtpFecha.Enabled = false;
+                            dtpHora.Enabled = false;
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -105,7 +114,7 @@ namespace WinFormsApp1
                     IdVeterinario = idVeterinario,
                     IdMascota = idMascota,
 
-                    EstadoTurno = idMascota.HasValue ? "Otorgado" : "Pendiente",
+                    EstadoTurno = (_estadoActual == "Resuelto") ? "Resuelto" : (idMascota.HasValue ? "Otorgado" : "Pendiente"),
                     Observaciones = string.IsNullOrWhiteSpace(txtObservaciones.Text) ? null : txtObservaciones.Text
                 };
 
