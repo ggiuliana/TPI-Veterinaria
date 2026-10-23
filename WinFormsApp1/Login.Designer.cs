@@ -38,7 +38,9 @@
             errorProvider = new ErrorProvider(components);
             Registrarse = new Button();
             label3 = new Label();
+            flowLayoutPanel1 = new FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
+            flowLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // Título
@@ -106,7 +108,8 @@
             // 
             Registrarse.Cursor = Cursors.Hand;
             Registrarse.Font = new Font("Segoe UI", 12F);
-            Registrarse.Location = new Point(233, 384);
+            Registrarse.Location = new Point(227, 3);
+            Registrarse.Margin = new Padding(10, 3, 3, 3);
             Registrarse.Name = "Registrarse";
             Registrarse.Size = new Size(130, 37);
             Registrarse.TabIndex = 6;
@@ -116,13 +119,26 @@
             // 
             // label3
             // 
-            label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(23, 392);
+            label3.Location = new Point(3, 3);
+            label3.Margin = new Padding(3, 3, 10, 3);
             label3.Name = "label3";
-            label3.Size = new Size(204, 21);
+            label3.Size = new Size(204, 37);
             label3.TabIndex = 7;
             label3.Text = "Eres nuevo? Registrate aqui:";
+            label3.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // flowLayoutPanel1
+            // 
+            flowLayoutPanel1.Anchor = AnchorStyles.Top;
+            flowLayoutPanel1.AutoSize = true;
+            flowLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel1.Controls.Add(label3);
+            flowLayoutPanel1.Controls.Add(Registrarse);
+            flowLayoutPanel1.Location = new Point(20, 368);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new Size(360, 43);
+            flowLayoutPanel1.TabIndex = 8;
             // 
             // Login
             // 
@@ -130,8 +146,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(401, 450);
-            Controls.Add(label3);
-            Controls.Add(Registrarse);
+            Controls.Add(flowLayoutPanel1);
             Controls.Add(ingreso);
             Controls.Add(contrasenia);
             Controls.Add(nombreusuario);
@@ -141,6 +156,7 @@
             Name = "Login";
             Text = "Login";
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
+            flowLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -155,5 +171,6 @@
         private ErrorProvider errorProvider;
         private Label label3;
         private Button Registrarse;
+        private FlowLayoutPanel flowLayoutPanel1;
     }
 }

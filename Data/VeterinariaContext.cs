@@ -477,7 +477,7 @@ namespace Data
                         IdTurno = 1,
                         FechaTurno = new DateOnly(2026, 10, 15),
                         HoraTurno = new TimeOnly(10, 0, 0),
-                        EstadoTurno = "Otorgado",
+                        EstadoTurno = "Resuelto",
                         IdMascota = 1,
                         IdVeterinario = 1
                     },
@@ -486,7 +486,7 @@ namespace Data
                         IdTurno = 2,
                         FechaTurno = new DateOnly(2026, 10, 16),
                         HoraTurno = new TimeOnly(11, 0, 0),
-                        EstadoTurno = "Otorgado",
+                        EstadoTurno = "Resuelto",
                         IdMascota = 1,
                         IdVeterinario = 2
                     },

@@ -73,7 +73,7 @@ namespace WinFormsApp1
                     turno.EstadoTurno = "Otorgado";
                     var response = await TurnoClient.UpdateAsync(turno);
                 }
-                MessageBox.Show("Estudio guardado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Turno reservado con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 DialogResult = DialogResult.OK;
                 Close();
             }

@@ -74,7 +74,7 @@
             label3.AutoSize = true;
             label3.Location = new Point(63, 165);
             label3.Name = "label3";
-            label3.Size = new Size(56, 15);
+            label3.Size = new Size(55, 15);
             label3.TabIndex = 2;
             label3.Text = "Telefono:";
             // 
@@ -185,6 +185,7 @@
             // 
             contraseniaDuenio.Location = new Point(181, 383);
             contraseniaDuenio.Name = "contraseniaDuenio";
+            contraseniaDuenio.PasswordChar = '*';
             contraseniaDuenio.Size = new Size(183, 23);
             contraseniaDuenio.TabIndex = 15;
             // 
@@ -228,6 +229,7 @@
             Cancelar.TabIndex = 19;
             Cancelar.Text = "Cancelar";
             Cancelar.UseVisualStyleBackColor = false;
+            Cancelar.Click += btnCancelar_Click;
             // 
             // FormRegistro
             // 
