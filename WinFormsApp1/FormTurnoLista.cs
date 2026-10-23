@@ -153,6 +153,7 @@ namespace WinFormsApp1
                         await TurnoClient.UpdateAsync(turnoSeleccionado);
 
                         MessageBox.Show("Consulta guardada y turno marcado como Resuelto.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        CargarGrilla();
                     }
                     catch (Exception ex)
                     {
