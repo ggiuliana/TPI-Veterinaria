@@ -1,0 +1,261 @@
+﻿@using DTOs
+@using API.Clients
+@inject IJSRuntime JSRuntime
+@inject TurnoClient TurnoClient
+@inject IAuthService AuthService
+
+@if (showModal)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        @if (mode == FormMode.Add)
+                        {
+                            <text>Nuevo Turno</text>
+                        }
+                        else
+                        {
+                            <text>Gestionar Turno</text>
+                        }
+                    </h5>
+                    <button type="button" class="btn-close" @onclick="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="currentTurno" OnValidSubmit="HandleValidSubmit">
+                        <DataAnnotationsValidator />
+
+                        @if (mode == FormMode.Update)
+                        {
+                            <div class="mb-3">
+                                <label class="form-label">Id Turno</label>
+                                <input type="text" class="form-control" value="@currentTurno.IdTurno" readonly />
+                            </div>
+                        }
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Fecha *</label>
+                                <input type="date" class="form-control" @bind="currentTurno.FechaTurno" />
+                                @if (validationErrors.ContainsKey("FechaTurno"))
+                                {
+                                    <div class="text-danger small">@validationErrors["FechaTurno"]</div>
+                                }
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Hora *</label>
+                                <input type="time" class="form-control" @bind="currentTurno.HoraTurno" />
+                                @if (validationErrors.ContainsKey("HoraTurno"))
+                                {
+                                    <div class="text-danger small">@validationErrors["HoraTurno"]</div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-@(isVeterinario ? "6" : "4") mb-3">
+                                <label class="form-label">Estado *</label>
+
+                                @if (mode == FormMode.Add)
+                                {
+                                    <input type="text" class="form-control bg-light" value="Pendiente" disabled />
+                                }
+                                else
+                                {
+                                    <select class="form-select" @bind="currentTurno.EstadoTurno">
+                                        <option value="">Seleccione un estado...</option>
+                                        <option value="Pendiente">Pendiente</option>
+                                        <option value="Otorgado">Otorgado</option>
+                                        <option value="Resuelto">Resuelto</option>
+                                        <option value="Cancelado">Cancelado</option>
+                                    </select>
+                                }
+
+                                @if (validationErrors.ContainsKey("EstadoTurno"))
+                                {
+                                    <div class="text-danger small">@validationErrors["EstadoTurno"]</div>
+                                }
+                            </div>
+
+                            @if (!isVeterinario)
+                            {
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">ID Veterinario *</label>
+                                    <InputNumber @bind-Value="currentTurno.IdVeterinario" class="form-control" />
+                                    @if (validationErrors.ContainsKey("IdVeterinario"))
+                                    {
+                                        <div class="text-danger small">@validationErrors["IdVeterinario"]</div>
+                                    }
+                                </div>
+                            }
+
+                            <div class="col-md-@(isVeterinario ? "6" : "4") mb-3">
+                                <label class="form-label">ID Mascota</label>
+                                <InputNumber @bind-Value="currentTurno.IdMascota" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Observaciones / Detalles de la Consulta</label>
+                            <InputTextArea @bind-Value="currentTurno.Observaciones" class="form-control" rows="3" />
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            <div class="alert alert-danger">
+                                @errorMessage
+                            </div>
+                        }
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" @onclick="Close">Cancelar</button>
+                            <button type="submit" class="btn btn-primary" disabled="@saving">
+                                @if (saving)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
+                                }
+                                @(mode == FormMode.Add ? "Guardar Turno" : "Actualizar Turno")
+                            </button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public EventCallback OnTurnoChanged { get; set; }
+
+    private bool showModal = false;
+    private FormMode mode = FormMode.Add;
+    private TurnoDTO currentTurno = new TurnoDTO();
+    private bool saving = false;
+    private string errorMessage = string.Empty;
+    private Dictionary<string, string> validationErrors = new Dictionary<string, string>();
+
+    private bool isVeterinario = false;
+    private int idVeterinarioSesion = 0;
+
+    public enum FormMode
+    {
+        Add,
+        Update
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var rol = await AuthService.GetRolAsync();
+        isVeterinario = (rol?.Trim().ToUpper() == "VETERINARIO");
+
+        if (isVeterinario)
+        {
+            var idPersona = await AuthService.GetPersonaIdAsync();
+            if (idPersona != null)
+            {
+                idVeterinarioSesion = idPersona.Value;
+            }
+        }
+    }
+
+    public void ShowAddModal()
+    {
+        mode = FormMode.Add;
+        currentTurno = new TurnoDTO
+        {
+            FechaTurno = DateOnly.FromDateTime(DateTime.Today),
+            HoraTurno = TimeOnly.FromDateTime(DateTime.Now),
+            EstadoTurno = "Pendiente",
+            Observaciones = string.Empty,
+            IdVeterinario = isVeterinario ? idVeterinarioSesion : 0
+        };
+        ClearValidationErrors();
+        showModal = true;
+        StateHasChanged();
+    }
+
+    public void ShowEditModal(TurnoDTO turno)
+    {
+        mode = FormMode.Update;
+        currentTurno = new TurnoDTO
+        {
+            IdTurno = turno.IdTurno,
+            FechaTurno = turno.FechaTurno,
+            HoraTurno = turno.HoraTurno,
+            EstadoTurno = turno.EstadoTurno,
+            Observaciones = turno.Observaciones,
+            IdVeterinario = turno.IdVeterinario,
+            IdMascota = turno.IdMascota
+        };
+        ClearValidationErrors();
+        showModal = true;
+        StateHasChanged();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (!ValidateTurno())
+            return;
+
+        try
+        {
+            saving = true;
+            errorMessage = string.Empty;
+
+            if (mode == FormMode.Add)
+            {
+                await TurnoClient.AddAsync(currentTurno);
+            }
+            else
+            {
+                await TurnoClient.UpdateAsync(currentTurno);
+            }
+
+            await OnTurnoChanged.InvokeAsync();
+            Close();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            saving = false;
+        }
+    }
+
+    private bool ValidateTurno()
+    {
+        ClearValidationErrors();
+        bool isValid = true;
+
+        if (string.IsNullOrWhiteSpace(currentTurno.EstadoTurno))
+        {
+            validationErrors["EstadoTurno"] = "Debe seleccionar un estado.";
+            isValid = false;
+        }
+
+        if (currentTurno.IdVeterinario <= 0)
+        {
+            validationErrors["IdVeterinario"] = "El ID del veterinario es requerido y debe ser válido.";
+            isValid = false;
+        }
+
+        StateHasChanged();
+        return isValid;
+    }
+
+    private void ClearValidationErrors()
+    {
+        validationErrors.Clear();
+        errorMessage = string.Empty;
+    }
+
+    private void Close()
+    {
+        showModal = false;
+        ClearValidationErrors();
+        StateHasChanged();
+    }
+}

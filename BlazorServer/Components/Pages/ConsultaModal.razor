@@ -1,0 +1,323 @@
+﻿@using DTOs
+@using API.Clients
+@inject ConsultaClient ConsultaClient
+@inject EstudioClient EstudioClient
+@inject MedicamentoClient MedicamentoClient
+
+@if (showModal)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5); overflow-y: auto;">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title">
+                        <i class="fas fa-notes-medical me-2"></i>Consulta del Turno #@currentConsulta.IdTurno
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" @onclick="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @if (loadingDatos)
+                    {
+                        <div class="d-flex justify-content-center p-4">
+                            <div class="spinner-border text-info" role="status"></div>
+                        </div>
+                    }
+                    else
+                    {
+                        <EditForm Model="currentConsulta" OnValidSubmit="HandleValidSubmit">
+                            <DataAnnotationsValidator />
+
+                            <div class="row">
+                                <div class="col-md-6 border-end">
+                                    <h6 class="text-secondary fw-bold border-bottom pb-2 mb-3">Datos Clínicos</h6>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Diagnóstico *</label>
+                                        <InputText @bind-Value="currentConsulta.Diagnostico" class="form-control" />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Tratamiento *</label>
+                                        <InputTextArea @bind-Value="currentConsulta.Tratamiento" class="form-control" rows="3" />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Peso (kg) *</label>
+                                        <InputNumber @bind-Value="currentConsulta.Peso" class="form-control" step="0.1" />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Observaciones</label>
+                                        <InputTextArea @bind-Value="currentConsulta.Observaciones" class="form-control" rows="2" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <h6 class="text-secondary fw-bold border-bottom pb-2 mb-3">Estudios Complementarios</h6>
+                                    <div class="mb-4" style="max-height: 150px; overflow-y: auto;">
+                                        @if (estudiosDisponibles != null && estudiosDisponibles.Any())
+                                        {
+                                            @foreach (var estudio in estudiosDisponibles)
+                                            {
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox"
+                                                           id="estudio_@estudio.IdEstudio"
+                                                           checked="@currentConsulta.IdEstudios!.Contains(estudio.IdEstudio)"
+                                                           @onchange="(e) => ToggleEstudio(estudio.IdEstudio, e.Value)" />
+                                                    <label class="form-check-label" for="estudio_@estudio.IdEstudio" title="@estudio.DescripcionEstudio">
+                                                        @estudio.NombreEstudio
+                                                    </label>
+                                                </div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted small">No hay estudios disponibles.</span>
+                                        }
+                                    </div>
+
+                                    <h6 class="text-secondary fw-bold border-bottom pb-2 mb-3">Medicamentos Recetados</h6>
+
+                                    <div class="row g-2 mb-3 align-items-end">
+       
+                                        <div class="col-6">
+                                            <label class="form-label small">Medicamento</label>
+                                            <select class="form-select form-select-sm" @bind="medSeleccionadoId">
+                                                <option value="0">Seleccione...</option>
+                                                @if (medicamentosDisponibles != null)
+                                                {
+                                                    @foreach (var med in medicamentosDisponibles)
+                                                    {
+                                                        <option value="@med.IdMedicamento">@med.NombreMedicamento (Stock: @med.CantidadRestante)</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="col-3">
+                                            <label class="form-label small">Cantidad</label>
+                                            <input type="number" class="form-control form-control-sm" @bind="medSeleccionadoCantidad" min="1" />
+                                        </div>
+                                        <div class="col-3">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary w-100" @onclick="AgregarMedicamento">
+                                                <i class="fas fa-plus"></i> Agregar
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="table-responsive" style="max-height: 150px; overflow-y: auto;">
+                                        <table class="table table-sm table-bordered">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Medicamento</th>
+                                                    <th>Cant.</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (currentConsulta.MedicamentoConsulta != null && currentConsulta.MedicamentoConsulta.Any())
+                                                {
+                                                    @foreach (var mc in currentConsulta.MedicamentoConsulta)
+                                                    {
+                                                        var nombreMostrar = string.IsNullOrWhiteSpace(mc.NombreMedicamento)
+                                                        ? medicamentosTotales?.FirstOrDefault(m => m.IdMedicamento == mc.IdMedicamento)?.NombreMedicamento
+                                                        : mc.NombreMedicamento;
+
+                                                        <tr>
+                                                            <td class="align-middle">@nombreMostrar</td>
+                                                            <td class="align-middle">@mc.CantidadUsada</td>
+                                                            <td class="text-center align-middle">
+                                                                <button type="button" class="btn btn-sm btn-link text-danger py-0 px-1" title="Quitar" @onclick="() => QuitarMedicamento(mc.IdMedicamento)">
+                                                                    <i class="fas fa-trash"></i> Quitar
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr><td colspan="3" class="text-center text-muted small">Ninguno asignado</td></tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @if (!string.IsNullOrEmpty(errorMessage))
+                            {
+                                <div class="alert alert-danger mt-3">@errorMessage</div>
+                            }
+
+                            <div class="modal-footer mt-4 pb-0 pe-0">
+                                <button type="button" class="btn btn-secondary" @onclick="Close">Cerrar</button>
+                                <button type="submit" class="btn btn-info text-white" disabled="@saving">
+                                    @if (saving)
+                                    {
+                                        <span class="spinner-border spinner-border-sm me-2"></span>
+                                    }
+                                    Guardar Consulta
+                                </button>
+                            </div>
+                        </EditForm>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public EventCallback OnConsultaGuardada { get; set; }
+
+    private bool showModal = false;
+    private bool loadingDatos = false;
+    private bool saving = false;
+    private string errorMessage = string.Empty;
+
+    private ConsultaDTO currentConsulta = new ConsultaDTO();
+
+    private List<EstudioDTO>? estudiosDisponibles = new();
+    private List<MedicamentoDTO>? medicamentosTotales = new();
+    private List<MedicamentoDTO>? medicamentosDisponibles = new();
+
+    private int medSeleccionadoId = 0;
+    private int medSeleccionadoCantidad = 1;
+
+    public async Task ShowModal(int idTurno)
+    {
+        errorMessage = string.Empty;
+        showModal = true;
+        loadingDatos = true;
+        StateHasChanged();
+
+        try
+        {
+            estudiosDisponibles = (await EstudioClient.GetAllAsync())?.ToList() ?? new List<EstudioDTO>();
+            medicamentosTotales = (await MedicamentoClient.GetAllAsync())?.ToList() ?? new List<MedicamentoDTO>();
+
+            medicamentosDisponibles = medicamentosTotales.Where(m => m.CantidadRestante > 0).ToList();
+
+            var consultaExistente = await ConsultaClient.GetByIdTurnoAsync(idTurno);
+
+            if (consultaExistente != null)
+            {
+                currentConsulta = consultaExistente;
+            }
+            else
+            {
+                currentConsulta = new ConsultaDTO
+                {
+                    IdTurno = idTurno,
+                    Diagnostico = string.Empty,
+                    Tratamiento = string.Empty,
+                    Observaciones = string.Empty,
+                    Peso = 0,
+                    IdEstudios = new List<int>(),
+                    MedicamentoConsulta = new List<MedicamentoConsultaDTO>()
+                };
+            }
+
+            currentConsulta.IdEstudios ??= new List<int>();
+            currentConsulta.MedicamentoConsulta ??= new List<MedicamentoConsultaDTO>();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Error al cargar los datos: " + ex.Message;
+        }
+        finally
+        {
+            loadingDatos = false;
+            StateHasChanged();
+        }
+    }
+
+    private void ToggleEstudio(int idEstudio, object? checkedValue)
+    {
+        if (checkedValue is bool isChecked)
+        {
+            if (isChecked && !currentConsulta.IdEstudios!.Contains(idEstudio))
+            {
+                currentConsulta.IdEstudios.Add(idEstudio);
+            }
+            else if (!isChecked && currentConsulta.IdEstudios!.Contains(idEstudio))
+            {
+                currentConsulta.IdEstudios.Remove(idEstudio);
+            }
+        }
+    }
+
+    private void AgregarMedicamento()
+    {
+        if (medSeleccionadoId > 0 && medSeleccionadoCantidad > 0)
+        {
+            if (currentConsulta.MedicamentoConsulta!.Any(m => m.IdMedicamento == medSeleccionadoId))
+            {
+                errorMessage = "El medicamento ya está en la lista.";
+                return;
+            }
+
+            var med = medicamentosDisponibles?.FirstOrDefault(m => m.IdMedicamento == medSeleccionadoId);
+            if (med != null && medSeleccionadoCantidad > med.CantidadRestante)
+            {
+                errorMessage = $"La cantidad supera el stock disponible ({med.CantidadRestante}).";
+                return;
+            }
+
+            currentConsulta.MedicamentoConsulta!.Add(new MedicamentoConsultaDTO
+            {
+                IdConsulta = currentConsulta.IdConsulta,
+                IdMedicamento = medSeleccionadoId,
+                CantidadUsada = medSeleccionadoCantidad,
+                NombreMedicamento = med?.NombreMedicamento ?? string.Empty
+            });
+
+            medSeleccionadoId = 0;
+            medSeleccionadoCantidad = 1;
+            errorMessage = string.Empty;
+        }
+    }
+
+    private void QuitarMedicamento(int idMedicamento)
+    {
+        var item = currentConsulta.MedicamentoConsulta!.FirstOrDefault(m => m.IdMedicamento == idMedicamento);
+        if (item != null)
+        {
+            currentConsulta.MedicamentoConsulta!.Remove(item);
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            saving = true;
+            errorMessage = string.Empty;
+
+            if (currentConsulta.IdConsulta == 0)
+            {
+                await ConsultaClient.AddAsync(currentConsulta);
+            }
+            else
+            {
+                await ConsultaClient.UpdateAsync(currentConsulta);
+            }
+
+            await OnConsultaGuardada.InvokeAsync();
+            Close();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Error al guardar: " + ex.Message;
+        }
+        finally
+        {
+            saving = false;
+        }
+    }
+
+    private void Close()
+    {
+        showModal = false;
+        StateHasChanged();
+    }
+}
