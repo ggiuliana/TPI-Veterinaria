@@ -1,4 +1,5 @@
 ﻿using API.Clients;
+using DTOs;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using System;
@@ -15,19 +16,34 @@ namespace WinFormsApp1
     public partial class FormMetricasTurnos : Form
     {
         private readonly TurnoClient TurnoClient;
+        private readonly IAuthService AuthService;
         private FlowLayoutPanel panelMetricas;
+
+        private string rolUsuario = string.Empty;
+        private int idPersona = 0;
 
         public FormMetricasTurnos()
         {
             InitializeComponent();
-            IAuthService authService = Program.AuthService;
-            TurnoClient = new TurnoClient(authService);
+
+            AuthService = Program.AuthService;
+            TurnoClient = new TurnoClient(AuthService);
+
             ConfigurarPantalla();
             this.Load += FormMetricasTurnos_Load;
         }
 
         private async void FormMetricasTurnos_Load(object? sender, EventArgs e)
         {
+            var rol = await AuthService.GetRolAsync();
+            rolUsuario = rol?.Trim().ToUpper() ?? string.Empty;
+
+            if (rolUsuario == "VETERINARIO")
+            {
+                var id = await AuthService.GetPersonaIdAsync();
+                idPersona = id ?? 0;
+            }
+
             await CargarGraficosAsync();
         }
 
@@ -74,7 +90,7 @@ namespace WinFormsApp1
             panelMetricas = new FlowLayoutPanel
             {
                 Dock = DockStyle.Fill,
-                FlowDirection = FlowDirection.TopDown, 
+                FlowDirection = FlowDirection.TopDown,
                 AutoScroll = true,
                 Padding = new Padding(20, 30, 20, 20),
                 WrapContents = false
@@ -96,8 +112,8 @@ namespace WinFormsApp1
             cartesianChart1.Dock = DockStyle.Fill;
             cartesianChart1.Margin = new Padding(15);
 
-            tablaGraficos.Controls.Add(pieChart1, 0, 0);  
-            tablaGraficos.Controls.Add(cartesianChart1, 0, 1); 
+            tablaGraficos.Controls.Add(pieChart1, 0, 0);
+            tablaGraficos.Controls.Add(cartesianChart1, 0, 1);
 
             tablaPrincipal.Controls.Add(panelMetricas, 0, 0);
             tablaPrincipal.Controls.Add(tablaGraficos, 1, 0);
@@ -118,7 +134,16 @@ namespace WinFormsApp1
         {
             try
             {
-                var turnos = await TurnoClient.GetAllAsync();
+                IEnumerable<TurnoDTO> turnos;
+
+                if (rolUsuario == "VETERINARIO")
+                {
+                    turnos = await TurnoClient.GetByVeterinarioIdAsync(idPersona);
+                }
+                else
+                {
+                    turnos = await TurnoClient.GetAllAsync();
+                }
 
                 int totalTurnos = turnos.Count();
 

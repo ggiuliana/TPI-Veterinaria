@@ -7,6 +7,7 @@ namespace ServiciosApp
         Task<TurnoDTO> AddAsync(TurnoDTO dto);
         Task<bool> DeleteAsync(int id);
         Task<TurnoDTO?> GetAsync(int id);
+        Task<IEnumerable<TurnoDTO>?> GetByVeterinarioIdAsync(int idVeterinario);
         Task<IEnumerable<TurnoDTO>> GetAllAsync();
         Task<bool> UpdateAsync(TurnoDTO dto);
     }

@@ -127,7 +127,8 @@ namespace API.Auth.Blazor.Server
                     Token = response.Token,
                     Username = response.Username,
                     Expiration = response.ExpiresAt,
-                    Rol = response.Rol
+                    Rol = response.Rol,
+                    PersonaId = response.IdPersona
                 };
 
                 AuthenticationStateChanged?.Invoke(true);
