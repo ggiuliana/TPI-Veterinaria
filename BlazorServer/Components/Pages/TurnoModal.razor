@@ -59,13 +59,13 @@
 
                                 @if (mode == FormMode.Add)
                                 {
-                                    <input type="text" class="form-control bg-light" value="Pendiente" disabled />
+                                    <input type="text" class="form-control bg-light" value="Disponible" disabled />
                                 }
                                 else
                                 {
                                     <select class="form-select" @bind="currentTurno.EstadoTurno">
                                         <option value="">Seleccione un estado...</option>
-                                        <option value="Pendiente">Pendiente</option>
+                                        <option value="Disponible">Disponible</option>
                                         <option value="Otorgado">Otorgado</option>
                                         <option value="Resuelto">Resuelto</option>
                                         <option value="Cancelado">Cancelado</option>
@@ -166,7 +166,7 @@
         {
             FechaTurno = DateOnly.FromDateTime(DateTime.Today),
             HoraTurno = TimeOnly.FromDateTime(DateTime.Now),
-            EstadoTurno = "Pendiente",
+            EstadoTurno = "Disponible",
             Observaciones = string.Empty,
             IdVeterinario = isVeterinario ? idVeterinarioSesion : 0
         };

@@ -121,7 +121,7 @@ namespace ServiciosApp
                 Castrado = mascota.Castrado,
                 Sexo = mascota.Sexo,
                 FechaNac = mascota.FechaNac,
-                IdDuenio = mascota.Duenio?.IdPersona ?? 0,
+                IdDuenio = idDuenio,
                 Vacunas = mascota.Vacunas?.Select(v => new VacunaDTO
                 {
                     IdMascota = v.IdMascota,

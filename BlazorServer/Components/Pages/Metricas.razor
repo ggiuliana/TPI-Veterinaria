@@ -49,7 +49,7 @@
 
                         <div class="d-flex align-items-center mb-3">
                             <span class="badge bg-warning p-2 me-2" style="width: 15px; height: 15px;"></span>
-                            <span class="fs-6 text-secondary">Pendientes: <strong>@turnosPendientes</strong></span>
+                            <span class="fs-6 text-secondary">Disponibles: <strong>@turnosDisponibles</strong></span>
                         </div>
 
                         <div class="d-flex align-items-center mb-3">
@@ -97,7 +97,7 @@
 
     private int totalTurnos = 0;
     private int turnosOtorgados = 0;
-    private int turnosPendientes = 0;
+    private int turnosDisponibles = 0;
     private int turnosResueltos = 0;
 
     public class DatoMetrica
@@ -158,13 +158,13 @@
             {
                 totalTurnos = turnos.Count();
                 turnosOtorgados = turnos.Count(t => t.EstadoTurno?.ToLower() == "otorgado");
-                turnosPendientes = turnos.Count(t => t.EstadoTurno?.ToLower() == "pendiente");
+                turnosDisponibles = turnos.Count(t => t.EstadoTurno?.ToLower() == "disponible");
                 turnosResueltos = turnos.Count(t => t.EstadoTurno?.ToLower() == "resuelto");
 
                 datosMetricas = new List<DatoMetrica>
                 {
                     new DatoMetrica { Estado = "Otorgado", Cantidad = turnosOtorgados },
-                    new DatoMetrica { Estado = "Pendiente", Cantidad = turnosPendientes },
+                    new DatoMetrica { Estado = "Disponible", Cantidad = turnosDisponibles },
                     new DatoMetrica { Estado = "Resuelto", Cantidad = turnosResueltos }
                 };
             }

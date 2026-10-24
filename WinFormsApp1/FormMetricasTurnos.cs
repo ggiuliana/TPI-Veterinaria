@@ -148,7 +148,7 @@ namespace WinFormsApp1
                 int totalTurnos = turnos.Count();
 
                 int turnosOtorgados = turnos.Count(t => t.EstadoTurno != null && t.EstadoTurno.ToLower() == "otorgado");
-                int turnosPendientes = turnos.Count(t => t.EstadoTurno != null && t.EstadoTurno.ToLower() == "pendiente");
+                int turnosDisponibles = turnos.Count(t => t.EstadoTurno != null && t.EstadoTurno.ToLower() == "disponible");
                 int turnosResueltos = turnos.Count(t => t.EstadoTurno != null && t.EstadoTurno.ToLower() == "resuelto");
 
                 panelMetricas.Controls.Clear();
@@ -171,7 +171,7 @@ namespace WinFormsApp1
 
                 Label lblPendiente = new Label
                 {
-                    Text = $"Turnos en estado Pendiente: {turnosPendientes}",
+                    Text = $"Turnos en estado Disponible: {turnosDisponibles}",
                     AutoSize = true,
                     Font = new Font("Segoe UI", 11F),
                     Margin = new Padding(0, 0, 0, 10)

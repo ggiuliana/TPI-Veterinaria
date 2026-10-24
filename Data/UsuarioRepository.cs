@@ -37,6 +37,7 @@ namespace ServiciosApp
         public async Task<Usuario?> GetByUsernameAsync(string nombreUsuario)
         {
             return await context.Usuarios
+                .Include(u => u.Persona)
                 .Include(u => u.Grupo)
                     .ThenInclude(g => g.Permisos.Where(p => p.Activo))
                 .FirstOrDefaultAsync(u => u.NombreUsuario == nombreUsuario && u.EstadoUsuario == "Activo");

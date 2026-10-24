@@ -30,6 +30,7 @@ namespace Data
         public async Task<Mascota?> GetAsync(int id)
         {
             return await context.Mascotas
+                .Include(m => m.Duenio)
                 .Include(m => m.Vacunas)
                         .FirstOrDefaultAsync(m => m.IdMascota == id);
         }
@@ -37,6 +38,7 @@ namespace Data
         public async Task<IEnumerable<Mascota>> GetAllAsync()
         {
             return await context.Mascotas
+                .Include(m => m.Duenio)
                 .Include(m => m.Vacunas)
                 .ToListAsync();
 
@@ -45,8 +47,10 @@ namespace Data
         public async Task<IEnumerable<Mascota>> GetAllByDuenioAsync(Duenio duenio)
         {
             return await context.Mascotas
+                .Include(m => m.Duenio)
                 .Include(m => m.Vacunas)
-                .Where(m => m.Duenio == duenio).ToListAsync();
+                .Where(m => m.Duenio != null && m.Duenio.IdPersona == duenio.IdPersona)
+                .ToListAsync();
         }
 
         public async Task<bool> UpdateAsync(Mascota mascota)
