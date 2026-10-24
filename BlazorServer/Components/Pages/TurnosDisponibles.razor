@@ -55,7 +55,7 @@
     else
     {
         <div class="alert alert-info shadow-sm">
-            <i class="fas fa-info-circle me-2"></i> No hay turnos pendientes o disponibles en este momento.
+            <i class="fas fa-info-circle me-2"></i> No hay turnos disponibles en este momento.
         </div>
     }
 </div>
@@ -89,7 +89,7 @@
             var todosLosTurnos = await TurnoClient.GetAllAsync();
 
             turnosDisponibles = todosLosTurnos
-                .Where(t => t.EstadoTurno == "Pendiente")
+                .Where(t => t.EstadoTurno == "Disponible")
                 .ToList();
         }
         catch (Exception ex)
