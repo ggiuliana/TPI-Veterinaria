@@ -159,7 +159,7 @@ namespace WinFormsApp1
             {
                 var turnoSeleccionado = (TurnoDTO)dataGridView1.Rows[e.RowIndex].DataBoundItem;
 
-                if (turnoSeleccionado.EstadoTurno == "Pendiente")
+                if (turnoSeleccionado.EstadoTurno == "Disponible")
                 {
                     MessageBox.Show("Solo se puede agregar o modificar una consulta en turnos con estado 'Otorgado'/'Resuelto'.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;

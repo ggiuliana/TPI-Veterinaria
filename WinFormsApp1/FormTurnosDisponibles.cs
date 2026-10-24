@@ -32,7 +32,7 @@ namespace WinFormsApp1
             {
                 var todosLosTurnos = await TurnoClient.GetAllAsync();
                 var turnosDisponibles = todosLosTurnos
-                    .Where(t => t.EstadoTurno == "Pendiente")
+                    .Where(t => t.EstadoTurno == "Disponible")   
                     .ToList();
 
                 dataGridView1.AutoGenerateColumns = false;
