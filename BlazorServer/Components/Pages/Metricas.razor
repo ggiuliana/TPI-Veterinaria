@@ -108,6 +108,9 @@
 
     private List<DatoMetrica> datosMetricas = new List<DatoMetrica>();
 
+    private string rolUsuario = string.Empty;
+    private int? idPersona = 0;
+
     protected override async Task OnInitializedAsync()
     {
         var isAuthenticated = await AuthService.IsAuthenticatedAsync();
@@ -118,11 +121,17 @@
         }
 
         var rol = await AuthService.GetRolAsync();
-        var rolNormalizado = rol?.Trim().ToUpper();
-        if (rolNormalizado != "ADMINISTRADOR" && rolNormalizado != "VETERINARIO")
+        rolUsuario = rol?.Trim().ToUpper() ?? string.Empty;
+
+        if (rolUsuario != "ADMINISTRADOR" && rolUsuario != "VETERINARIO")
         {
             Navigation.NavigateTo("/");
             return;
+        }
+
+        if (rolUsuario == "VETERINARIO")
+        {
+            idPersona = await AuthService.GetPersonaIdAsync();
         }
 
         await CargarMetricasAsync();
@@ -134,7 +143,17 @@
         {
             loading = true;
 
-            var turnos = await TurnoClient.GetAllAsync();
+            IEnumerable<TurnoDTO>? turnos;
+
+            if (rolUsuario == "VETERINARIO")
+            {
+                turnos = await TurnoClient.GetByVeterinarioIdAsync(idPersona.Value);
+            }
+            else
+            {
+                turnos = await TurnoClient.GetAllAsync();
+            }
+
             if (turnos != null)
             {
                 totalTurnos = turnos.Count();

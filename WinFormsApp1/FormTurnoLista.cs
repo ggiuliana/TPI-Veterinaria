@@ -6,17 +6,32 @@ namespace WinFormsApp1
     public partial class FormTurnoLista : Form
     {
         private readonly TurnoClient TurnoClient;
+        private readonly IAuthService AuthService;
+
+        private string rolUsuario = string.Empty;
+        private int idPersona = 0;
+
         public FormTurnoLista()
         {
             InitializeComponent();
             this.Load += FormTurnoLista_Load;
-            IAuthService authService = Program.AuthService;
-            TurnoClient = new TurnoClient(authService);
+            AuthService = Program.AuthService;
+            TurnoClient = new TurnoClient(AuthService);
         }
 
-        private void FormTurnoLista_Load(object? sender, EventArgs e)
+        private async void FormTurnoLista_Load(object? sender, EventArgs e)
         {
             dataGridView1.AutoGenerateColumns = false;
+
+            var rol = await AuthService.GetRolAsync();
+            rolUsuario = rol?.Trim().ToUpper() ?? string.Empty;
+
+            if (rolUsuario == "VETERINARIO")
+            {
+                var id = await AuthService.GetPersonaIdAsync();
+                idPersona = id ?? 0;
+            }
+
             CargarGrilla();
         }
 
@@ -24,9 +39,18 @@ namespace WinFormsApp1
         {
             try
             {
-                var turnos = await TurnoClient.GetAllAsync();
-                dataGridView1.AutoGenerateColumns = false;
-                dataGridView1.DataSource = turnos;
+                IEnumerable<TurnoDTO> turnos;
+
+                if (rolUsuario == "VETERINARIO")
+                {
+                    turnos = await TurnoClient.GetByVeterinarioIdAsync(idPersona);
+                }
+                else
+                {
+                    turnos = await TurnoClient.GetAllAsync();
+                }
+
+                dataGridView1.DataSource = turnos?.ToList() ?? new List<TurnoDTO>();
             }
             catch (Exception ex)
             {
@@ -49,6 +73,12 @@ namespace WinFormsApp1
                     var turno = await TurnoClient.GetAsync(idBuscado);
                     if (turno != null)
                     {
+                        if (rolUsuario == "VETERINARIO" && turno.IdVeterinario != idPersona)
+                        {
+                            MessageBox.Show("No tiene permisos para ver este turno.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+
                         dataGridView1.DataSource = new List<TurnoDTO> { turno };
                     }
                     else
@@ -122,14 +152,11 @@ namespace WinFormsApp1
                 MessageBox.Show("Por favor, seleccione un turno de la lista para eliminar.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
         private async void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            var authService = Program.AuthService;
-
-            int? personaId = await authService.GetPersonaIdAsync();
-
             if (e.RowIndex >= 0 && dataGridView1.Columns[e.ColumnIndex].Name == "colConsulta")
-            {                 
+            {
                 var turnoSeleccionado = (TurnoDTO)dataGridView1.Rows[e.RowIndex].DataBoundItem;
 
                 if (turnoSeleccionado.EstadoTurno == "Pendiente")
@@ -138,7 +165,7 @@ namespace WinFormsApp1
                     return;
                 }
 
-                if (turnoSeleccionado.IdVeterinario != personaId)
+                if (turnoSeleccionado.IdVeterinario != idPersona)
                 {
                     MessageBox.Show("Solo el veterinario asignado a este turno puede gestionar su consulta.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
@@ -163,12 +190,10 @@ namespace WinFormsApp1
             }
         }
 
-        private async void Metricas_Click(object sender, EventArgs e)
+        private void Metricas_Click(object sender, EventArgs e)
         {
             FormMetricasTurnos formMetricas = new FormMetricasTurnos();
-
             formMetricas.MdiParent = this.MdiParent;
-
             formMetricas.Show();
         }
     }
