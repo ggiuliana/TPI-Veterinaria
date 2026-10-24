@@ -1,6 +1,4 @@
-﻿using API.Clients;
-
-namespace WinFormsApp1
+﻿namespace WinFormsApp1
 {
     public partial class Login : Form
     {
