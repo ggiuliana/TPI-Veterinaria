@@ -145,6 +145,9 @@
     private bool canUpdate = false;
     private bool canDelete = false;
 
+    private string rolUsuario = string.Empty;
+    private int? idPersona = 0;
+
     protected override async Task OnInitializedAsync()
     {
         var isAuthenticated = await AuthService.IsAuthenticatedAsync();
@@ -155,12 +158,17 @@
         }
 
         var rol = await AuthService.GetRolAsync();
-        var rolNormalizado = rol?.Trim().ToUpper();
-        
-        if (rolNormalizado != "ADMINISTRADOR" && rolNormalizado != "VETERINARIO")
+        rolUsuario = rol?.Trim().ToUpper() ?? string.Empty;
+
+        if (rolUsuario != "ADMINISTRADOR" && rolUsuario != "VETERINARIO")
         {
             Navigation.NavigateTo("/");
             return;
+        }
+
+        if (rolUsuario == "VETERINARIO")
+        {
+            idPersona = await AuthService.GetPersonaIdAsync();
         }
 
         await LoadPermissions();
@@ -190,7 +198,22 @@
         {
             loading = true;
             errorMessage = string.Empty;
-            turnos = (await TurnoClient.GetAllAsync())?.ToList();
+
+            if (rolUsuario == "VETERINARIO")
+            {
+                if (idPersona.HasValue)
+                {
+                    turnos = (await TurnoClient.GetByVeterinarioIdAsync(idPersona.Value))?.ToList();
+                }
+                else
+                {
+                    errorMessage = "Error: No se pudo identificar el ID del veterinario en la sesión activa.";
+                }
+            }
+            else
+            {
+                turnos = (await TurnoClient.GetAllAsync())?.ToList();
+            }
         }
         catch (Exception ex)
         {
@@ -256,7 +279,7 @@
         return estado?.ToLower() switch
         {
             "otorgado" => "bg-primary",
-            "pendiente" => "bg-warning text-dark",
+            "disponible" => "bg-warning text-dark",
             "resuelto" => "bg-success",
             _ => "bg-secondary"
         };

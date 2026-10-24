@@ -10,12 +10,7 @@ namespace WebAPI
             app.MapGet("/consultas/{id}", async (int id, IConsultaService consultaService) =>
             {
                 ConsultaDTO? dto = await consultaService.GetAsync(id);
-
-                if (dto == null)
-                {
-                    return Results.NotFound();
-                }
-
+                if (dto == null) return Results.NotFound();
                 return Results.Ok(dto);
             })
             .WithName("GetConsulta")
@@ -27,7 +22,6 @@ namespace WebAPI
             app.MapGet("/consultas", async (IConsultaService consultaService) =>
             {
                 var dtos = await consultaService.GetAllAsync();
-
                 return Results.Ok(dtos);
             })
             .WithName("GetAllConsultas")
@@ -42,7 +36,7 @@ namespace WebAPI
                     ConsultaDTO consultadto = await consultaService.AddAsync(dto);
                     return Results.Created($"/consultas/{consultadto.IdConsulta}", consultadto);
                 }
-                catch (ArgumentException ex)
+                catch (Exception ex)
                 {
                     return Results.BadRequest(new { error = ex.Message });
                 }
@@ -58,15 +52,10 @@ namespace WebAPI
                 try
                 {
                     var found = await consultaService.UpdateAsync(dto);
-
-                    if (!found)
-                    {
-                        return Results.NotFound();
-                    }
-
+                    if (!found) return Results.NotFound();
                     return Results.NoContent();
                 }
-                catch (ArgumentException ex)
+                catch (Exception ex) 
                 {
                     return Results.BadRequest(new { error = ex.Message });
                 }
@@ -80,12 +69,7 @@ namespace WebAPI
             app.MapDelete("/consultas/{id}", async (int id, IConsultaService consultaService) =>
             {
                 var deleted = await consultaService.DeleteAsync(id);
-
-                if (!deleted)
-                {
-                    return Results.NotFound();
-                }
-
+                if (!deleted) return Results.NotFound();
                 return Results.NoContent();
             })
             .WithName("DeleteConsultas")
@@ -97,10 +81,7 @@ namespace WebAPI
             app.MapGet("/consultas/turno/{idTurno}", async (int idTurno, IConsultaService service) =>
             {
                 var consulta = await service.GetByIdTurnoAsync(idTurno);
-
-                if (consulta == null)
-                    return Results.NotFound();
-
+                if (consulta == null) return Results.NotFound();
                 return Results.Ok(consulta);
             })
             .WithName("GetConsultaByTurno")
@@ -109,6 +90,5 @@ namespace WebAPI
             .WithOpenApi()
             .RequireAuthorization("ConsultasLeer");
         }
-
     }
 }

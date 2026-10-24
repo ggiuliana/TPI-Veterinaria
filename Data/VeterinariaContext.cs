@@ -333,12 +333,14 @@ namespace Data
                 .IsRequired();
 
                 entity.HasOne(m => m.Duenio)
-                .WithMany();
+                .WithMany()
+                .HasForeignKey("IdDuenio");
 
                 entity.HasMany(m => m.Vacunas)
                 .WithOne(v => v.Mascota)
                 .HasForeignKey(v => v.IdMascota)
                 .IsRequired(false);
+               
                 entity.HasData(
                 new
                 {
@@ -350,6 +352,28 @@ namespace Data
                     Sexo = 'M',
                     FechaNac = new DateTime(2019, 2, 22),
                     IdDuenio = 3
+                },
+                new
+                {
+                    IdMascota = 2,
+                    NombreMascota = "Luna",
+                    Especie = "Gato",
+                    Raza = "Siamés",
+                    Castrado = true,
+                    Sexo = 'H',
+                    FechaNac = new DateTime(2021, 5, 10),
+                    IdDuenio = 3 
+                },
+                new
+                {
+                    IdMascota = 3,
+                    NombreMascota = "Rex",
+                    Especie = "Perro",
+                    Raza = "Ovejero Alemán",
+                    Castrado = true,
+                    Sexo = 'M',
+                    FechaNac = new DateTime(2018, 11, 5),
+                    IdDuenio = 3 
                 });
             });
             modelBuilder.Entity<Estudio>(entity =>
@@ -428,7 +452,7 @@ namespace Data
                     {
                         IdMedicamento = 1,
                         NombreMedicamento = "Albendazol",
-                        CantidadRestante = 8
+                        CantidadRestante = 12
                     },
                     new
                     {
@@ -441,6 +465,24 @@ namespace Data
                         IdMedicamento = 3,
                         NombreMedicamento = "Ibuprofeno",
                         CantidadRestante = 15
+                    },
+                    new 
+                    { 
+                        IdMedicamento = 4, 
+                        NombreMedicamento = "Pipeta Antipulgas", 
+                        CantidadRestante = 50 
+                    },
+                    new 
+                    { 
+                        IdMedicamento = 5, 
+                        NombreMedicamento = "Gotas Óticas", 
+                        CantidadRestante = 12 
+                    },
+                    new 
+                    { 
+                        IdMedicamento = 6, 
+                        NombreMedicamento = "Crema Cicatrizante", 
+                        CantidadRestante = 20 
                     });
             });
             modelBuilder.Entity<Turno>(entity =>
@@ -498,7 +540,67 @@ namespace Data
                         EstadoTurno = "Otorgado",
                         IdMascota = 1,
                         IdVeterinario = 2
-                    });
+                    },
+                    new 
+                    { 
+                        IdTurno = 4, 
+                        FechaTurno = new DateOnly(2026, 10, 30),
+                        HoraTurno = new TimeOnly(14, 30, 0), 
+                        EstadoTurno = "Otorgado", 
+                        IdMascota = 2, 
+                        IdVeterinario = 1 },
+                    new 
+                    { 
+                        IdTurno = 5, 
+                        FechaTurno = new DateOnly(2026, 10, 27),
+                        HoraTurno = new TimeOnly(09, 0, 0), 
+                        EstadoTurno = "Otorgado", 
+                        IdMascota = 3, 
+                        IdVeterinario = 1 },
+                    new 
+                    { 
+                        IdTurno = 6, 
+                        FechaTurno = new DateOnly(2026, 10, 28),
+                        HoraTurno = new TimeOnly(16, 0, 0), 
+                        EstadoTurno = "Otorgado", 
+                        IdMascota = 1, 
+                        IdVeterinario = 1 },
+                    new 
+                    { 
+                        IdTurno = 7, 
+                        FechaTurno = new DateOnly(2026, 10, 29),
+                        HoraTurno = new TimeOnly(10, 30, 0), 
+                        EstadoTurno = "Otorgado", 
+                        IdMascota = 2, 
+                        IdVeterinario = 1 
+                    },
+                    new 
+                    { 
+                        IdTurno = 8, 
+                        FechaTurno = new DateOnly(2026, 10, 27), 
+                        HoraTurno = new TimeOnly(17, 0, 0), 
+                        EstadoTurno = "Disponible", 
+                        IdMascota = (int?)null, 
+                        IdVeterinario = 1 },
+                    new 
+                    { 
+                        IdTurno = 9,
+                        FechaTurno = new DateOnly(2026, 10, 28), 
+                        HoraTurno = new TimeOnly(15, 0, 0), 
+                        EstadoTurno = "Disponible", 
+                        IdMascota = (int?)null, 
+                        IdVeterinario = 2 },
+                    new 
+                    { 
+                        IdTurno = 10, 
+                        FechaTurno = new DateOnly(2026, 10, 29), 
+                        HoraTurno = new TimeOnly(11, 0, 0), 
+                        EstadoTurno = "Disponible", 
+                        IdMascota = (int?)null, 
+                        IdVeterinario = 1 
+                    }
+                );
+                    
             });
             modelBuilder.Entity<Consulta>(entity =>
             {

@@ -71,22 +71,32 @@ namespace WinFormsApp1
                 this.Close();
             }
         }
-
         private void btnAgregarMedicamento_Click(object sender, EventArgs e)
         {
             if (cmbMedicamentos.SelectedValue != null && numCantidadMedicamento.Value > 0)
             {
                 int idMedSeleccionado = (int)cmbMedicamentos.SelectedValue;
+                int cantidadIngresada = (int)numCantidadMedicamento.Value;
+
+                var listaMedicamentos = cmbMedicamentos.DataSource as IEnumerable<MedicamentoDTO>;
+                var infoMed = listaMedicamentos?.FirstOrDefault(m => m.IdMedicamento == idMedSeleccionado);
+
+                if (infoMed != null && cantidadIngresada > infoMed.CantidadRestante)
+                {
+                    MessageBox.Show($"Stock insuficiente. Solo quedan {infoMed.CantidadRestante} unidades de {infoMed.NombreMedicamento}.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
                 if (_medicamentosTemporales.Any(m => m.IdMedicamento == idMedSeleccionado))
                 {
                     MessageBox.Show("Este medicamento ya está en la lista. Si desea modificar la cantidad, elimínelo primero y vuelva a agregarlo.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return; 
+                    return;
                 }
+
                 var nuevoMed = new MedicamentoConsultaDTO
                 {
                     IdMedicamento = idMedSeleccionado,
-                    CantidadUsada = (int)numCantidadMedicamento.Value,
+                    CantidadUsada = cantidadIngresada,
                     NombreMedicamento = cmbMedicamentos.Text
                 };
 

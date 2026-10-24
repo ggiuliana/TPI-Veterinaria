@@ -41,7 +41,6 @@ namespace ServiciosApp
             if (dto.MedicamentoConsulta != null && dto.MedicamentoConsulta.Any())
             {
                 var idsMedicamentos = dto.MedicamentoConsulta.Select(m => m.IdMedicamento).ToList();
-
                 var medicamentosDb = await repoMedicamento.GetByIdsAsync(idsMedicamentos);
 
                 foreach (var itemDto in dto.MedicamentoConsulta)
@@ -53,7 +52,11 @@ namespace ServiciosApp
                     {
                         throw new ArgumentException($"Stock insuficiente para el medicamento ID {medicamento.IdMedicamento}");
                     }
+                }
 
+                foreach (var itemDto in dto.MedicamentoConsulta)
+                {
+                    var medicamento = medicamentosDb.First(m => m.IdMedicamento == itemDto.IdMedicamento);
                     medicamento.DescontarStock(itemDto.CantidadUsada);
                 }
 
@@ -140,7 +143,6 @@ namespace ServiciosApp
 
                 consulta.MedicamentosConsulta.Clear();
 
-                await repo.UpdateAsync(consulta);
             }
             return await repo.DeleteAsync(id);
         }

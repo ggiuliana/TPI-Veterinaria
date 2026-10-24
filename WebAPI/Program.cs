@@ -142,7 +142,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("MascotasActualizar", policy => policy.RequireClaim("permission", "mascotas.actualizar"));
     options.AddPolicy("MascotasEliminar", policy => policy.RequireClaim("permission", "mascotas.eliminar"));
 
-    // Políticas para TipoVacunas (acepta con o sin espacio, y ambos nombres de política)
+    // Políticas para TipoVacunas
     string[] permisosLeer = ["tipos vacunas.leer", "tipovacunas.leer", "tipo vacunas.leer"];
     string[] permisosAgregar = ["tipos vacunas.agregar", "tipovacunas.agregar", "tipo vacunas.agregar"];
     string[] permisosActualizar = ["tipos vacunas.actualizar", "tipovacunas.actualizar", "tipo vacunas.actualizar"];

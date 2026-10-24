@@ -1,4 +1,4 @@
-﻿@using API.Clients
+@using API.Clients
 @inject IAuthService AuthService
 @implements IDisposable
 
@@ -29,11 +29,21 @@
 
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="duenio/turnos">
-                    <span class="oi oi-calendar" aria-hidden="true"></span> Sacar Turnos
+                    <span class="oi oi-calendar" aria-hidden="true"></span> Turnos Disponibles
                 </NavLink>
             </div>
         }
-        else
+
+        @if (esAdmin)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="medicamentos">
+                    <span class="oi oi-document" aria-hidden="true"></span> Medicamentos
+                </NavLink>
+            </div>
+        }
+
+        @if (esAdmin || esVeterinario)
         {
             @if (canReadVeterinarios)
             {
@@ -73,6 +83,8 @@
     private bool canReadTurnos = false;
 
     private bool isDuenio = false;
+    private bool esAdmin = false;
+    private bool esVeterinario = false;
 
     private string homeRoute = "";
 
@@ -90,10 +102,16 @@
         var isAuthenticated = await AuthService.IsAuthenticatedAsync();
         if (isAuthenticated)
         {
+            canReadVeterinarios = await AuthService.HasPermissionAsync("veterinarios.leer");
+            canReadEstudios = await AuthService.HasPermissionAsync("estudios.leer");
+            canReadTurnos = await AuthService.HasPermissionAsync("turnos.leer");
+
             var rol = await AuthService.GetRolAsync();
             var rolNormalizado = rol?.Trim().ToUpper();
 
             isDuenio = (rolNormalizado == "DUEÑO" || rolNormalizado == "DUENIO" || rolNormalizado == "DUENO");
+            esAdmin = (rolNormalizado == "ADMINISTRADOR");
+            esVeterinario = (rolNormalizado == "VETERINARIO");
 
             if (isDuenio)
             {
@@ -102,25 +120,20 @@
                 canReadTurnos = false;
                 homeRoute = "duenio";
             }
-            else
+            else if (esAdmin)
             {
-                canReadVeterinarios = await AuthService.HasPermissionAsync("veterinarios.leer");
-                canReadEstudios = await AuthService.HasPermissionAsync("estudios.leer");
-                canReadTurnos = await AuthService.HasPermissionAsync("turnos.leer");
-
-                if (rolNormalizado == "ADMINISTRADOR")
-                {
-                    homeRoute = "admin";
-                }
-                else if (rolNormalizado == "VETERINARIO")
-                {
-                    homeRoute = "vet";
-                }
+                homeRoute = "admin";
+            }
+            else if (esVeterinario)
+            {
+                homeRoute = "vet";
             }
         }
         else
         {
             isDuenio = false;
+            esAdmin = false;
+            esVeterinario = false;
             canReadVeterinarios = false;
             canReadEstudios = false;
             canReadTurnos = false;

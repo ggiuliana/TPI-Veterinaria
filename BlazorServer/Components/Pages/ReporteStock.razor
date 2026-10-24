@@ -1,0 +1,159 @@
+﻿@page "/stock"
+
+@using DTOs
+@using API.Clients
+@inject MedicamentoClient MedicamentoClient
+@inject NavigationManager Navigation
+
+<PageTitle>Reporte de Stock</PageTitle>
+
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3>Reporte de Stock de Medicamentos</h3>
+        <button class="btn btn-outline-secondary" @onclick="Volver">
+            <i class="fas fa-arrow-left"></i> Volver
+        </button>
+    </div>
+
+    @if (loading)
+    {
+        <div class="d-flex justify-content-center mt-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+        </div>
+    }
+    else if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert alert-danger">@errorMessage</div>
+    }
+    else
+    {
+        <div class="row align-items-start">
+
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-lg border-0 bg-danger text-white">
+                    <div class="card-header text-center fw-bold fs-5">
+                        Sin stock, reposición inmediata (@sinStock.Count)
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush">
+                            @if (sinStock.Any())
+                            {
+                                @foreach (var med in sinStock)
+                                {
+                                    <li class="list-group-item bg-transparent text-white d-flex justify-content-between">
+                                        <span>@med.NombreMedicamento</span>
+                                        <span class="badge bg-light text-danger rounded-pill">0</span>
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                <li class="list-group-item bg-transparent text-white text-center fst-italic">Ninguno</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-lg border-0 bg-warning text-dark">
+                    <div class="card-header text-center fw-bold fs-5">
+                        Bajo stock, pronta reposición (@pocoStock.Count)
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush">
+                            @if (pocoStock.Any())
+                            {
+                                @foreach (var med in pocoStock)
+                                {
+                                    <li class="list-group-item bg-transparent text-dark d-flex justify-content-between border-dark border-opacity-25">
+                                        <span>@med.NombreMedicamento</span>
+                                        <span class="badge bg-dark text-warning rounded-pill">@med.CantidadRestante</span>
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                <li class="list-group-item bg-transparent text-dark text-center fst-italic border-dark border-opacity-25">Ninguno</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-lg border-0 bg-success text-white">
+                    <div class="card-header text-center fw-bold fs-5">
+                        En stock (@enStock.Count)
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush">
+                            @if (enStock.Any())
+                            {
+                                @foreach (var med in enStock)
+                                {
+                                    <li class="list-group-item bg-transparent text-white d-flex justify-content-between border-light border-opacity-25">
+                                        <span>@med.NombreMedicamento</span>
+                                        <span class="badge bg-light text-success rounded-pill">@med.CantidadRestante</span>
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                <li class="list-group-item bg-transparent text-white text-center fst-italic border-light border-opacity-25">Ninguno</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+</div>
+
+@code {
+    private bool loading = true;
+    private string errorMessage = string.Empty;
+
+    private List<MedicamentoDTO> sinStock = new();
+    private List<MedicamentoDTO> pocoStock = new();
+    private List<MedicamentoDTO> enStock = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarStockAsync();
+    }
+
+    private async Task CargarStockAsync()
+    {
+        try
+        {
+            loading = true;
+            errorMessage = string.Empty;
+
+            var todosLosMedicamentos = await MedicamentoClient.GetAllAsync();
+
+            if (todosLosMedicamentos != null)
+            {
+                sinStock = todosLosMedicamentos.Where(m => m.CantidadRestante == 0).ToList();
+                pocoStock = todosLosMedicamentos.Where(m => m.CantidadRestante > 0 && m.CantidadRestante <= 5).ToList();
+                enStock = todosLosMedicamentos.Where(m => m.CantidadRestante > 5).ToList();
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error al cargar el reporte: {ex.Message}";
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+    private void Volver()
+    {
+        Navigation.NavigateTo("/medicamentos");
+    }
+}

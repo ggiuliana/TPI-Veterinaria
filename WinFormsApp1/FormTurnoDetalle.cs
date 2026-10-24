@@ -7,7 +7,7 @@ namespace WinFormsApp1
     {
         private readonly int _idTurnoActual;
         private readonly TurnoClient TurnoClient;
-        private string _estadoActual = "Pendiente";
+        private string _estadoActual = "Disponible";
         public FormTurnoDetalle(int idTurno = 0)
         {
             InitializeComponent();
@@ -114,7 +114,7 @@ namespace WinFormsApp1
                     IdVeterinario = idVeterinario,
                     IdMascota = idMascota,
 
-                    EstadoTurno = (_estadoActual == "Resuelto") ? "Resuelto" : (idMascota.HasValue ? "Otorgado" : "Pendiente"),
+                    EstadoTurno = (_estadoActual == "Resuelto") ? "Resuelto" : (idMascota.HasValue ? "Otorgado" : "Disponible"),
                     Observaciones = string.IsNullOrWhiteSpace(txtObservaciones.Text) ? null : txtObservaciones.Text
                 };
 
