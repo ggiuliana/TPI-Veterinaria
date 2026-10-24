@@ -113,6 +113,7 @@
             Volver.TabIndex = 7;
             Volver.Text = "Volver";
             Volver.UseVisualStyleBackColor = true;
+            Volver.Click += Volver_Click;
             // 
             // Form1
             // 

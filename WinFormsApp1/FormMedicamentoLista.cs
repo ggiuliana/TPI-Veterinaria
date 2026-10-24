@@ -122,6 +122,8 @@ namespace WinFormsApp1
 
             formReporte.MdiParent = this.MdiParent;
 
+            formReporte.WindowState = FormWindowState.Maximized;
+
             formReporte.Show();
         }
 

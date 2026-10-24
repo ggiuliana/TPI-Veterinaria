@@ -138,8 +138,8 @@
             if (todosLosMedicamentos != null)
             {
                 sinStock = todosLosMedicamentos.Where(m => m.CantidadRestante == 0).ToList();
-                pocoStock = todosLosMedicamentos.Where(m => m.CantidadRestante > 0 && m.CantidadRestante < 5).ToList();
-                enStock = todosLosMedicamentos.Where(m => m.CantidadRestante >= 5).ToList();
+                pocoStock = todosLosMedicamentos.Where(m => m.CantidadRestante > 0 && m.CantidadRestante <= 5).ToList();
+                enStock = todosLosMedicamentos.Where(m => m.CantidadRestante > 5).ToList();
             }
         }
         catch (Exception ex)
