@@ -22,13 +22,13 @@ namespace Data
         public DbSet<GrupoPermiso> GruposPermisos { get; set; } = null!;
         public VeterinariaContext(DbContextOptions<VeterinariaContext> options) : base(options)
         {
-            this.Database.EnsureDeleted();
+            //this.Database.EnsureDeleted();
             this.Database.EnsureCreated();
             SeedInitialData();
         }
         internal VeterinariaContext()
         {
-            this.Database.EnsureDeleted();
+            //this.Database.EnsureDeleted();
             this.Database.EnsureCreated();
             SeedInitialData();
         }

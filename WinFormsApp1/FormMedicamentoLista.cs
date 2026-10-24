@@ -116,6 +116,15 @@ namespace WinFormsApp1
             }
         }
 
+        private void Reporte_Click(object sender, EventArgs e)
+        {
+            FormReporteStock formReporte = new FormReporteStock();
+
+            formReporte.MdiParent = this.MdiParent;
+
+            formReporte.Show();
+        }
+
         private async Task ConfigureButtonPermissions()
         {
             var authService = Program.AuthService;

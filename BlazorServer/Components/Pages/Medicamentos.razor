@@ -1,0 +1,229 @@
+﻿@page "/medicamentos"
+
+@using DTOs
+@using API.Clients
+@inject IJSRuntime JSRuntime
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
+@inject MedicamentoClient MedicamentoClient
+
+<PageTitle>Gestión de Medicamentos</PageTitle>
+
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-12">
+            <h3 class="mb-4">Medicamentos</h3>
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @errorMessage
+                    <button type="button" class="btn-close" @onclick="() => errorMessage = string.Empty"></button>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(successMessage))
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @successMessage
+                    <button type="button" class="btn-close" @onclick="() => successMessage = string.Empty"></button>
+                </div>
+            }
+
+            @if (canAdd)
+            {
+                <div class="mb-3 d-flex gap-2">
+                    <button type="button" class="btn btn-primary" @onclick="OpenAddModal">
+                        <i class="fas fa-plus"></i> Agregar
+                    </button>
+
+                    <button type="button" class="btn btn-secondary" @onclick="NavigateToStock">
+                        <i class="fas fa-box"></i> Reporte de Stock
+                    </button>
+                </div>
+            }
+            else
+            {
+                <div class="mb-3">
+                    <button type="button" class="btn btn-secondary" @onclick="NavigateToStock">
+                        <i class="fas fa-box"></i> Reporte de Stock
+                    </button>
+                </div>
+            }
+
+            @if (loading)
+            {
+                <div class="d-flex justify-content-center mt-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                </div>
+            }
+            else if (canRead)
+            {
+                <div class="table-responsive shadow-sm rounded">
+                    <table class="table table-striped table-hover mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Id</th>
+                                <th>Nombre</th>
+                                <th>Cantidad Restante</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (medicamentos != null && medicamentos.Any())
+                            {
+                                @foreach (var med in medicamentos)
+                                {
+                                    <tr>
+                                        <td class="align-middle">@med.IdMedicamento</td>
+                                        <td class="align-middle">@med.NombreMedicamento</td>
+                                        <td class="align-middle">@med.CantidadRestante</td>
+                                        <td class="align-middle text-nowrap">
+                                            @if (canUpdate)
+                                            {
+                                                <button type="button" class="btn btn-sm btn-outline-primary me-1" @onclick="() => OpenEditModal(med)">
+                                                    <i class="fas fa-edit"></i> Editar
+                                                </button>
+                                            }
+                                            @if (canDelete)
+                                            {
+                                                <button type="button" class="btn btn-sm btn-outline-danger" @onclick="() => ConfirmDelete(med)">
+                                                    <i class="fas fa-trash"></i> Eliminar
+                                                </button>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-center py-4 text-muted">No hay medicamentos registrados.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<MedicamentoModal @ref="medicamentoModal" OnMedicamentoChanged="LoadMedicamentos" />
+
+@code {
+    private List<MedicamentoDTO>? medicamentos;
+    private bool loading = true;
+    private string errorMessage = string.Empty;
+    private string successMessage = string.Empty;
+
+    private MedicamentoModal medicamentoModal = default!;
+
+    private bool canRead = false;
+    private bool canAdd = false;
+    private bool canUpdate = false;
+    private bool canDelete = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+        if (!isAuthenticated)
+        {
+            Navigation.NavigateTo("/login");
+            return;
+        }
+
+        var rol = await AuthService.GetRolAsync();
+        if (rol?.Trim().ToUpper() != "ADMINISTRADOR")
+        {
+            Navigation.NavigateTo("/");
+            return;
+        }
+
+        await LoadPermissions();
+
+        if (canRead)
+        {
+            await LoadMedicamentos();
+        }
+        else
+        {
+            loading = false;
+            errorMessage = "No tiene permisos para ver medicamentos.";
+        }
+    }
+
+    private async Task LoadPermissions()
+    {
+        canRead = await AuthService.HasPermissionAsync("medicamentos.leer");
+        canAdd = await AuthService.HasPermissionAsync("medicamentos.agregar");
+        canUpdate = await AuthService.HasPermissionAsync("medicamentos.actualizar");
+        canDelete = await AuthService.HasPermissionAsync("medicamentos.eliminar");
+    }
+
+    private async Task LoadMedicamentos()
+    {
+        try
+        {
+            loading = true;
+            errorMessage = string.Empty;
+            medicamentos = (await MedicamentoClient.GetAllAsync())?.ToList();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error al cargar medicamentos: {ex.Message}";
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+    private async Task OpenAddModal()
+    {
+        if (medicamentoModal != null)
+        {
+            await medicamentoModal.ShowAddModal();
+        }
+    }
+
+    private void NavigateToStock()
+    {
+        Navigation.NavigateTo("/stock");
+    }
+
+    private async Task OpenEditModal(MedicamentoDTO med)
+    {
+        if (medicamentoModal != null)
+        {
+            await medicamentoModal.ShowEditModal(med);
+        }
+    }
+
+    private async Task ConfirmDelete(MedicamentoDTO med)
+    {
+        var confirm = await JSRuntime.InvokeAsync<bool>("confirm",
+            $"¿Está seguro que desea eliminar el medicamento {med.NombreMedicamento}?");
+
+        if (confirm)
+        {
+            await DeleteMedicamento(med.IdMedicamento);
+        }
+    }
+
+    private async Task DeleteMedicamento(int id)
+    {
+        try
+        {
+            await MedicamentoClient.DeleteAsync(id);
+            successMessage = "Medicamento eliminado exitosamente.";
+            await LoadMedicamentos();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error al eliminar medicamento: {ex.Message}";
+        }
+    }
+}
