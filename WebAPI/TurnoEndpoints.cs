@@ -24,6 +24,23 @@ namespace WebAPI
             .WithOpenApi()
             .RequireAuthorization("TurnosLeer");
 
+            app.MapGet("/turnos/vet/{id}", async (int id, ITurnoService turnoService) =>
+            {
+                var dtos = await turnoService.GetByVeterinarioIdAsync(id);
+
+                if (dtos == null)
+                {
+                    return Results.NotFound();
+                }
+
+                return Results.Ok(dtos);
+            })
+            .WithName("GetTurnoByVeterinario")
+            .Produces<TurnoDTO>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status404NotFound)
+            .WithOpenApi()
+            .RequireAuthorization("TurnosLeer");
+
             app.MapGet("/turnos", async (ITurnoService turnoService) =>
             {
                 var dtos = await turnoService.GetAllAsync();

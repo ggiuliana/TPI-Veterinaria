@@ -34,6 +34,7 @@ namespace ServiciosApp
         {
             return await repo.DeleteAsync(id);
         }
+
         public async Task<TurnoDTO?> GetAsync(int id)
         {
             Turno? turno = await repo.GetAsync(id);
@@ -53,6 +54,22 @@ namespace ServiciosApp
                 IdMascota = turno.Mascota?.IdMascota
             };
         }
+
+        public async Task<IEnumerable<TurnoDTO>?> GetByVeterinarioIdAsync(int idVeterinario)
+        {
+            IEnumerable<Turno> turnos = await repo.GetByVeterinarioIdAsync(idVeterinario);
+            return [.. turnos.Select(turno => new TurnoDTO
+            {
+                IdTurno = turno.IdTurno,
+                FechaTurno = turno.FechaTurno,
+                HoraTurno = turno.HoraTurno,
+                EstadoTurno = turno.EstadoTurno,
+                Observaciones = turno.Observaciones,
+                IdVeterinario = turno.Veterinario?.IdPersona ?? 0,
+                IdMascota = turno.Mascota?.IdMascota
+            })];
+        }
+
         public async Task<IEnumerable<TurnoDTO>> GetAllAsync()
         {
             IEnumerable<Turno> turnos = await repo.GetAllAsync();

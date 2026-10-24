@@ -32,6 +32,14 @@ namespace Data
                 .Include(t => t.Mascota)    
                 .FirstOrDefaultAsync(t => t.IdTurno == id);
         }
+        public async Task<IEnumerable<Turno>> GetByVeterinarioIdAsync(int idVeterinario)
+        {
+            return await context.Turnos
+                .Include(t => t.Veterinario)
+                .Include(t => t.Mascota)
+                .Where(t => t.IdVeterinario == idVeterinario)
+                .ToListAsync();
+        }
         public async Task<IEnumerable<Turno>> GetAllAsync()
         {
             return await context.Turnos

@@ -1,0 +1,96 @@
+﻿@page "/register"
+@using API.Clients
+@inject NavigationManager NavigationManager
+@inject UsuarioClient UsuarioClient
+@using DTOs
+
+<div class="container mt-4">
+    <h2>Registro de Nuevo Dueño</h2>
+    <hr />
+
+    <EditForm Model="@registroModel" OnValidSubmit="HandleRegistro" FormName="registroForm" class="row g-3">
+        <DataAnnotationsValidator />
+
+        <h4 class="mt-4">Datos Personales</h4>
+
+        <div class="col-md-6">
+            <label for="nombre" class="form-label">Nombre:</label>
+            <InputText id="nombre" class="form-control" @bind-Value="registroModel.duenio.NombreDuenio" />
+        </div>
+
+        <div class="col-md-6">
+            <label for="apellido" class="form-label">Apellido:</label>
+            <InputText id="apellido" class="form-control" @bind-Value="registroModel.duenio.Apellido" />
+        </div>
+
+        <div class="col-md-6">
+            <label for="dni" class="form-label">DNI:</label>
+            <InputText id="dni" class="form-control" @bind-Value="registroModel.duenio.Dni" />
+        </div>
+
+        <div class="col-md-6">
+            <label for="telefono" class="form-label">Teléfono:</label>
+            <InputText id="telefono" class="form-control" @bind-Value="registroModel.duenio.Telefono" />
+        </div>
+
+        <div class="col-md-6">
+            <label for="mail" class="form-label">Correo Electrónico:</label>
+            <InputText id="mail" class="form-control" @bind-Value="registroModel.duenio.Mail" />
+        </div>
+
+        <div class="col-md-6">
+            <label for="direccion" class="form-label">Dirección:</label>
+            <InputText id="direccion" class="form-control" @bind-Value="registroModel.duenio.Direccion" />
+        </div>
+
+        <h4 class="mt-4">Datos de Usuario</h4>
+
+        <div class="col-md-6">
+            <label for="username" class="form-label">Nombre de Usuario:</label>
+            <InputText id="username" class="form-control" @bind-Value="registroModel.usuario.NombreUsuario" />
+        </div>
+
+        <div class="col-md-6">
+            <label for="password" class="form-label">Contraseña:</label>
+            <InputText id="password" type="password" class="form-control" @bind-Value="registroModel.usuario.Contrasenia" />
+        </div>
+
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <div class="col-12">
+                <span class="text-danger fw-bold">@errorMessage</span>
+            </div>
+        }
+
+        <div class="col-12 mt-4">
+            <button type="submit" class="btn btn-success me-2">Registrarse</button>
+            <button type="button" class="btn btn-secondary" @onclick='() => NavigationManager.NavigateTo("/login")'>Cancelar</button>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    private DuenioRegisterDTO registroModel { get; set; } = new DuenioRegisterDTO();
+
+    private string? errorMessage;
+
+    protected override void OnInitialized()
+    {
+        registroModel.usuario.IdGrupo = 3;
+    }
+
+    private async Task HandleRegistro()
+    {
+        try
+        {
+            await UsuarioClient.RegisterDuenioAsync(registroModel);
+
+            NavigationManager.NavigateTo("/login");
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error al registrar el usuario: {ex.Message}";
+        }
+    }
+}
