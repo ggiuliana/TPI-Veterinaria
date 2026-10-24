@@ -1,0 +1,135 @@
+﻿@using DTOs
+@using API.Clients
+@inject MascotaClient MascotaClient
+@inject TurnoClient TurnoClient
+@inject IAuthService AuthService
+
+@if (showModal)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title"><i class="fas fa-calendar-check me-2"></i>Confirmar Turno</h5>
+                    <button type="button" class="btn-close btn-close-white" @onclick="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info mb-4">
+                        Está a punto de reservar este turno. Por favor, seleccione para qué mascota es la consulta.
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Seleccionar Mascota *</label>
+                        <select class="form-select" @bind="idMascotaSeleccionada">
+                            <option value="0">-- Elija una mascota --</option>
+                            @if (misMascotas != null)
+                            {
+                                foreach (var mascota in misMascotas)
+                                {
+                                    <option value="@mascota.IdMascota">@mascota.NombreMascota (@mascota.Especie)</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Motivo de la consulta / Observaciones (Opcional)</label>
+                        <textarea class="form-control" rows="3" @bind="observaciones" placeholder="Ej: Control general, vacunas, o describir síntomas..."></textarea>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        <div class="alert alert-danger p-2 small">@errorMessage</div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="Cerrar" disabled="@saving">Cancelar</button>
+                    <button type="button" class="btn btn-primary" @onclick="ConfirmarTurno" disabled="@saving">
+                        @if (saving)
+                        {
+                            <span class="spinner-border spinner-border-sm me-2"></span>
+                        }
+                        Confirmar Reserva
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public EventCallback OnTurnoGuardado { get; set; }
+
+    private bool showModal = false;
+    private int idTurnoActual;
+    private List<MascotaDTO>? misMascotas;
+    private int idMascotaSeleccionada = 0;
+    private string observaciones = string.Empty;
+
+    private bool saving = false;
+    private string errorMessage = string.Empty;
+
+    public async Task ShowModal(int idTurno)
+    {
+        idTurnoActual = idTurno;
+        idMascotaSeleccionada = 0;
+        observaciones = string.Empty;
+        errorMessage = string.Empty;
+        showModal = true;
+
+        var personaId = await AuthService.GetPersonaIdAsync();
+        if (personaId.HasValue)
+        {
+            misMascotas = await MascotaClient.GetAllByDuenioAsync(personaId.Value);
+        }
+
+        StateHasChanged();
+    }
+
+    private async Task ConfirmarTurno()
+    {
+        if (idMascotaSeleccionada == 0)
+        {
+            errorMessage = "Debe seleccionar una mascota para reservar el turno.";
+            return;
+        }
+
+        try
+        {
+            saving = true;
+            errorMessage = string.Empty;
+
+            var turno = await TurnoClient.GetAsync(idTurnoActual);
+
+            if (turno != null)
+            {
+                turno.IdMascota = idMascotaSeleccionada;
+                turno.EstadoTurno = "Otorgado";
+                turno.Observaciones = observaciones;
+
+                await TurnoClient.UpdateAsync(turno);
+
+                await OnTurnoGuardado.InvokeAsync();
+                Cerrar();
+            }
+            else
+            {
+                errorMessage = "El turno ya no se encuentra disponible.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error al procesar la reserva: {ex.Message}";
+        }
+        finally
+        {
+            saving = false;
+        }
+    }
+
+    private void Cerrar()
+    {
+        showModal = false;
+        StateHasChanged();
+    }
+}

@@ -1,0 +1,113 @@
+﻿@page "/duenio/turnos"
+@rendermode InteractiveServer
+
+@using DTOs
+@using API.Clients
+@inject TurnoClient TurnoClient
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
+
+<PageTitle>Turnos Disponibles</PageTitle>
+
+<div class="container-fluid mt-3">
+    <h3 class="mb-4">Turnos Disponibles</h3>
+
+    @if (loading)
+    {
+        <div class="d-flex justify-content-center mt-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+        </div>
+    }
+    else if (turnosDisponibles != null && turnosDisponibles.Any())
+    {
+        <div class="table-responsive shadow-sm rounded">
+            <table class="table table-striped table-hover mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Veterinario</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var turno in turnosDisponibles)
+                    {
+                        <tr>
+                            <td class="align-middle fw-bold">@turno.FechaTurno.ToString("dd/MM/yyyy")</td>
+                            <td class="align-middle">@turno.HoraTurno.ToString(@"HH\:mm")</td>
+                            <td class="align-middle fw-semibold">
+                                @($"{turno.NombreVeterinario} {turno.ApellidoVeterinario} - {turno.EspecialidadVeterinario}")
+                            </td>
+                            <td class="align-middle text-nowrap">
+                                <button type="button" class="btn btn-sm btn-primary" @onclick="() => AbrirModalSacarTurno(turno.IdTurno)">
+                                    <i class="fas fa-calendar-plus"></i> Sacar Turno
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info shadow-sm">
+            <i class="fas fa-info-circle me-2"></i> No hay turnos pendientes o disponibles en este momento.
+        </div>
+    }
+</div>
+
+<SacarTurnoModal @ref="modalSacarTurno" OnTurnoGuardado="CargarTurnosAsync" />
+
+@code {
+    private List<TurnoDTO>? turnosDisponibles;
+    private bool loading = true;
+
+    private SacarTurnoModal modalSacarTurno = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+        if (!isAuthenticated)
+        {
+            Navigation.NavigateTo("/login");
+            return;
+        }
+
+        await CargarTurnosAsync();
+    }
+
+    private async Task CargarTurnosAsync()
+    {
+        try
+        {
+            loading = true;
+
+            var todosLosTurnos = await TurnoClient.GetAllAsync();
+
+            turnosDisponibles = todosLosTurnos
+                .Where(t => t.EstadoTurno == "Pendiente")
+                .ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar los turnos: {ex.Message}");
+        }
+        finally
+        {
+            loading = false;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private async Task AbrirModalSacarTurno(int idTurnoSeleccionado)
+    {
+         if (modalSacarTurno != null)
+         {
+             await modalSacarTurno.ShowModal(idTurnoSeleccionado);
+         }
+    }
+}

@@ -1,0 +1,377 @@
+﻿@using DTOs
+@using API.Clients
+@inject IJSRuntime JSRuntime
+@inject MascotaClient MascotaClient
+@inject IAuthService AuthService
+@inject TipoVacunaClient TipoVacunaClient
+
+@if (showModal)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        @(mode == FormMode.Add ? "Agregar Mascota" : "Editar Mascota")
+                    </h5>
+                    <button type="button" class="btn-close" @onclick="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="currentMascota" OnValidSubmit="HandleValidSubmit">
+                        <DataAnnotationsValidator />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="fw-bold border-bottom pb-2">Datos Básicos</h6>
+
+                                @if (mode == FormMode.Update)
+                                {
+                                    <div class="mb-2">
+                                        <label class="form-label small">Id</label>
+                                        <input type="text" class="form-control form-control-sm" value="@currentMascota.IdMascota" readonly />
+                                    </div>
+                                }
+
+                                <div class="mb-2">
+                                    <label class="form-label small">Nombre *</label>
+                                    <InputText @bind-Value="currentMascota.NombreMascota" class="form-control form-control-sm" />
+                                    @if (validationErrors.ContainsKey("NombreMascota"))
+                                    {
+                                        <div class="text-danger small">@validationErrors["NombreMascota"]</div>
+                                    }
+                                </div>
+
+                                <div class="mb-2">
+                                    <label class="form-label small">Especie *</label>
+                                    <InputText @bind-Value="currentMascota.Especie" class="form-control form-control-sm" />
+                                    @if (validationErrors.ContainsKey("Especie"))
+                                    {
+                                        <div class="text-danger small">@validationErrors["Especie"]</div>
+                                    }
+                                </div>
+
+                                <div class="mb-2">
+                                    <label class="form-label small">Raza *</label>
+                                    <InputText @bind-Value="currentMascota.Raza" class="form-control form-control-sm" />
+                                    @if (validationErrors.ContainsKey("Raza"))
+                                    {
+                                        <div class="text-danger small">@validationErrors["Raza"]</div>
+                                    }
+                                </div>
+
+                                <div class="row mb-2">
+                                    <div class="col-6">
+                                        <label class="form-label small">Sexo *</label>
+                                        <InputSelect @bind-Value="currentMascota.Sexo" class="form-select form-select-sm">
+                                            <option value="">Seleccione...</option>
+                                            <option value="M">Macho</option>
+                                            <option value="H">Hembra</option>
+                                        </InputSelect>
+                                        @if (validationErrors.ContainsKey("Sexo"))
+                                        {
+                                            <div class="text-danger small">@validationErrors["Sexo"]</div>
+                                        }
+                                    </div>
+                                    <div class="col-6 d-flex align-items-end mb-1">
+                                        <div class="form-check">
+                                            <InputCheckbox @bind-Value="currentMascota.Castrado" class="form-check-input" id="castradoCheck" />
+                                            <label class="form-check-label small" for="castradoCheck">Castrado</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label small">Fecha de Nacimiento *</label>
+                                    <InputDate @bind-Value="currentMascota.FechaNac" class="form-control form-control-sm" />
+                                    @if (validationErrors.ContainsKey("FechaNac"))
+                                    {
+                                        <div class="text-danger small">@validationErrors["FechaNac"]</div>
+                                    }
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6">
+                                <h6 class="fw-bold border-bottom pb-2">Vacunas</h6>
+
+                                <div class="card bg-light border-0 shadow-sm mb-2">
+                                    <div class="card-body p-2">
+                                        <div class="mb-2">
+                                            <label class="form-label small mb-0">Tipo de vacuna:</label>
+                                            <select class="form-select form-select-sm" @bind="nuevaVacunaIdTipo">
+                                                <option value="0">Seleccione...</option>
+                                                @if (tiposVacunasList != null)
+                                                {
+                                                    @foreach (var tipo in tiposVacunasList)
+                                                    {
+                                                        <option value="@tipo.IdTipoVacuna">@tipo.NombreTipoVacuna</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="mb-2">
+                                            <label class="form-label small mb-0">Fecha de colocación:</label>
+                                            <input type="date" class="form-control form-control-sm" @bind="nuevaVacunaFecha" />
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-outline-primary w-100" @onclick="AgregarVacunaTemporal">
+                                            <i class="fas fa-plus"></i> Agregar Vacuna
+                                        </button>
+                                        @if (!string.IsNullOrEmpty(vacunaErrorMessage))
+                                        {
+                                            <div class="text-danger small mt-1">@vacunaErrorMessage</div>
+                                        }
+                                    </div>
+                                </div>
+
+
+                                <div class="table-responsive bg-white border" style="height: 150px; overflow-y: auto;">
+                                    <table class="table table-sm table-hover mb-0">
+                                        <thead class="table-secondary" style="position: sticky; top: 0;">
+                                            <tr>
+                                                <th class="small">Vacuna</th>
+                                                <th class="small">Fecha</th>
+                                                <th style="width: 40px;"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (currentMascota.Vacunas != null && currentMascota.Vacunas.Any())
+                                            {
+                                                @foreach (var vacuna in currentMascota.Vacunas)
+                                                {
+                                                    <tr>
+                                                        <td class="small align-middle">@ObtenerNombreVacuna(vacuna.IdTipoVacuna)</td>
+                                                        <td class="small align-middle">@vacuna.FechaColocacion.ToString("dd/MM/yyyy")</td>
+                                                        <td class="text-center">
+                                                            <button type="button" class="btn btn-sm btn-danger py-0 px-1" title="Eliminar" @onclick="() => EliminarVacunaTemporal(vacuna)">
+                                                                <i class="fas fa-times"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td colspan="3" class="text-center text-muted small py-3">Sin vacunas registradas</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            <div class="alert alert-danger mt-3 mb-0">
+                                @errorMessage
+                            </div>
+                        }
+
+                        <div class="modal-footer mt-3 px-0 pb-0">
+                            <button type="button" class="btn btn-secondary" @onclick="Close">Cancelar</button>
+                            <button type="submit" class="btn btn-primary" disabled="@saving">
+                                @if (saving)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
+                                }
+                                Guardar
+                            </button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public EventCallback OnMascotaChanged { get; set; }
+
+    private bool showModal = false;
+    private FormMode mode = FormMode.Add;
+    private MascotaDTO currentMascota = new MascotaDTO();
+    private bool saving = false;
+    private string errorMessage = string.Empty;
+    private string vacunaErrorMessage = string.Empty;
+    private Dictionary<string, string> validationErrors = new Dictionary<string, string>();
+
+    private List<TipoVacunaDTO>? tiposVacunasList;
+    private int nuevaVacunaIdTipo = 0;
+    private DateTime nuevaVacunaFecha = DateTime.Today;
+
+    public enum FormMode
+    {
+        Add,
+        Update
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            tiposVacunasList = (await TipoVacunaClient.GetAllAsync())?.ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"No se pudieron cargar los tipos de vacuna: {ex.Message}");
+        }
+    }
+
+    public async Task ShowAddModal()
+    {
+        mode = FormMode.Add;
+        currentMascota = new MascotaDTO
+        {
+            FechaNac = DateTime.Today,
+            IdDuenio = (await AuthService.GetPersonaIdAsync()) ?? 0,
+            Vacunas = new List<VacunaDTO>()
+        };
+
+        ResetVacunaInputs();
+        ClearValidationErrors();
+        showModal = true;
+        StateHasChanged();
+    }
+
+    public async Task ShowEditModal(MascotaDTO mascota)
+    {
+        mode = FormMode.Update;
+        currentMascota = new MascotaDTO
+        {
+            IdMascota = mascota.IdMascota,
+            NombreMascota = mascota.NombreMascota,
+            Especie = mascota.Especie,
+            Raza = mascota.Raza,
+            Sexo = mascota.Sexo,
+            Castrado = mascota.Castrado,
+            FechaNac = mascota.FechaNac,
+            IdDuenio = mascota.IdDuenio,
+
+            Vacunas = mascota.Vacunas != null ? new List<VacunaDTO>(mascota.Vacunas) : new List<VacunaDTO>()
+        };
+
+        ResetVacunaInputs();
+        ClearValidationErrors();
+        showModal = true;
+        StateHasChanged();
+    }
+
+    private void AgregarVacunaTemporal()
+    {
+        vacunaErrorMessage = string.Empty;
+
+        if (nuevaVacunaIdTipo == 0)
+        {
+            vacunaErrorMessage = "Seleccione un tipo de vacuna.";
+            return;
+        }
+
+        if (nuevaVacunaFecha > DateTime.Today)
+        {
+            vacunaErrorMessage = "La fecha no puede ser futura.";
+            return;
+        }
+
+
+        currentMascota.Vacunas!.Add(new VacunaDTO
+        {
+            IdTipoVacuna = nuevaVacunaIdTipo,
+            FechaColocacion = DateOnly.FromDateTime(nuevaVacunaFecha)
+        });
+
+        ResetVacunaInputs();
+    }
+
+    private void EliminarVacunaTemporal(VacunaDTO vacuna)
+    {
+        currentMascota.Vacunas?.Remove(vacuna);
+    }
+
+    private void ResetVacunaInputs()
+    {
+        nuevaVacunaIdTipo = 0;
+        nuevaVacunaFecha = DateTime.Today;
+        vacunaErrorMessage = string.Empty;
+    }
+
+    private string ObtenerNombreVacuna(int idTipoVacuna)
+    {
+        var tipo = tiposVacunasList?.FirstOrDefault(t => t.IdTipoVacuna == idTipoVacuna);
+        return tipo?.NombreTipoVacuna ?? "Desconocida";
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (!ValidateMascota()) return;
+
+        try
+        {
+            saving = true;
+            errorMessage = string.Empty;
+
+            if (mode == FormMode.Add)
+            {
+                await MascotaClient.AddAsync(currentMascota);
+            }
+            else
+            {
+                await MascotaClient.UpdateAsync(currentMascota);
+            }
+
+            await OnMascotaChanged.InvokeAsync();
+            Close();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            saving = false;
+        }
+    }
+
+    private bool ValidateMascota()
+    {
+        ClearValidationErrors();
+        bool isValid = true;
+
+        if (string.IsNullOrWhiteSpace(currentMascota.NombreMascota))
+        {
+            validationErrors["NombreMascota"] = "Requerido";
+            isValid = false;
+        }
+        if (string.IsNullOrWhiteSpace(currentMascota.Especie))
+        {
+            validationErrors["Especie"] = "Requerido";
+            isValid = false;
+        }
+        if (string.IsNullOrWhiteSpace(currentMascota.Raza))
+        {
+            validationErrors["Raza"] = "Requerido";
+            isValid = false;
+        }
+        if (currentMascota.Sexo != 'M' && currentMascota.Sexo != 'H')
+        {
+            validationErrors["Sexo"] = "Requerido";
+            isValid = false;
+        }
+
+        StateHasChanged();
+        return isValid;
+    }
+
+    private void ClearValidationErrors()
+    {
+        validationErrors.Clear();
+        errorMessage = string.Empty;
+    }
+
+    private void Close()
+    {
+        showModal = false;
+        ClearValidationErrors();
+        StateHasChanged();
+    }
+}

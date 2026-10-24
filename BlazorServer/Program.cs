@@ -22,7 +22,8 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<AuthenticationStateProvider, BlazorServerAuthService>();
 
-builder.Services.AddScoped<IAuthService, BlazorServerAuthService>();
+//borrar
+//builder.Services.AddScoped<IAuthService, BlazorServerAuthService>();
 
 builder.Services.AddScoped<IAuthService>(sp =>
     (IAuthService)sp.GetRequiredService<AuthenticationStateProvider>());
@@ -36,6 +37,8 @@ builder.Services.AddScoped<EstudioClient>();
 builder.Services.AddScoped<TurnoClient>();
 builder.Services.AddScoped<ConsultaClient>();
 builder.Services.AddScoped<MedicamentoClient>();
+builder.Services.AddScoped<MascotaClient>();
+builder.Services.AddScoped<TipoVacunaClient>();
 builder.Services.AddScoped<Radzen.DialogService>();
 builder.Services.AddScoped<Radzen.NotificationService>();
 builder.Services.AddScoped<Radzen.TooltipService>();
@@ -56,7 +59,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseAntiforgery();
 
-app.UseAntiforgery();
+//borrar
+//app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
