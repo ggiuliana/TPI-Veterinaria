@@ -49,8 +49,14 @@ namespace ServiciosApp
                 HoraTurno = turno.HoraTurno,
                 EstadoTurno = turno.EstadoTurno,
                 Observaciones = turno.Observaciones,
+
                 IdVeterinario = turno.Veterinario?.IdPersona ?? 0,
-                IdMascota = turno.Mascota?.IdMascota
+                NombreVeterinario = turno.Veterinario?.NombrePersona ?? "Sin asignar",
+                ApellidoVeterinario = turno.Veterinario?.Apellido ?? "",
+                EspecialidadVeterinario = turno.Veterinario?.Especialidad ?? "",
+
+                IdMascota = turno.Mascota?.IdMascota,
+                NombreMascota = turno.Mascota?.NombreMascota ?? "Sin mascota"
             };
         }
         public async Task<IEnumerable<TurnoDTO>> GetAllAsync()
@@ -63,8 +69,14 @@ namespace ServiciosApp
                 HoraTurno = turno.HoraTurno,
                 EstadoTurno = turno.EstadoTurno,
                 Observaciones = turno.Observaciones,
+
                 IdVeterinario = turno.Veterinario?.IdPersona ?? 0,
-                IdMascota = turno.Mascota?.IdMascota
+                NombreVeterinario = turno.Veterinario?.NombrePersona ?? "Sin asignar",
+                ApellidoVeterinario = turno.Veterinario?.Apellido ?? "",
+                EspecialidadVeterinario = turno.Veterinario?.Especialidad ?? "",
+
+                IdMascota = turno.Mascota?.IdMascota,
+                NombreMascota = turno.Mascota?.NombreMascota ?? "Sin mascota"
             })];
         }
         public async Task<bool> UpdateAsync(TurnoDTO dto)
