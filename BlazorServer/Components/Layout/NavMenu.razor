@@ -19,40 +19,60 @@
             </NavLink>
         </div>
 
-        @if (canReadVeterinarios)
+        @if (isDuenio)
         {
             <div class="nav-item px-3">
-                <NavLink class="nav-link" href="veterinarios">
-                    <span class="oi oi-people" aria-hidden="true"></span> Veterinarios
+                <NavLink class="nav-link" href="duenio/mascotas">
+                    <span class="oi oi-heart" aria-hidden="true"></span> Mis Mascotas
+                </NavLink>
+            </div>
+
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="duenio/turnos">
+                    <span class="oi oi-calendar" aria-hidden="true"></span> Mis Turnos
                 </NavLink>
             </div>
         }
-
-        @if (canReadEstudios)
+        else
         {
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="estudios">
-                    <span class="oi oi-document" aria-hidden="true"></span> Estudios
-                </NavLink>
-            </div>
-        }
+            @if (canReadVeterinarios)
+            {
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="veterinarios">
+                        <span class="oi oi-people" aria-hidden="true"></span> Veterinarios
+                    </NavLink>
+                </div>
+            }
 
-        @if (canReadTurnos)
-        {
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="turnos">
-                    <span class="oi oi-calendar" aria-hidden="true"></span> Turnos
-                </NavLink>
-            </div>
+            @if (canReadEstudios)
+            {
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="estudios">
+                        <span class="oi oi-document" aria-hidden="true"></span> Estudios
+                    </NavLink>
+                </div>
+            }
+
+            @if (canReadTurnos)
+            {
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="turnos">
+                        <span class="oi oi-calendar" aria-hidden="true"></span> Turnos
+                    </NavLink>
+                </div>
+            }
         }
     </nav>
 </div>
 
 @code {
     private bool collapseNavMenu = true;
+
     private bool canReadVeterinarios = false;
     private bool canReadEstudios = false;
     private bool canReadTurnos = false;
+
+    private bool isDuenio = false;
 
     private string homeRoute = "";
 
@@ -70,28 +90,37 @@
         var isAuthenticated = await AuthService.IsAuthenticatedAsync();
         if (isAuthenticated)
         {
-            canReadVeterinarios = await AuthService.HasPermissionAsync("veterinarios.leer");
-            canReadEstudios = await AuthService.HasPermissionAsync("estudios.leer");
-            canReadTurnos = await AuthService.HasPermissionAsync("turnos.leer");
-
             var rol = await AuthService.GetRolAsync();
             var rolNormalizado = rol?.Trim().ToUpper();
 
-            if (rolNormalizado == "ADMINISTRADOR")
+            isDuenio = (rolNormalizado == "DUEÑO" || rolNormalizado == "DUENIO" || rolNormalizado == "DUENO");
+
+            if (isDuenio)
             {
-                homeRoute = "admin";
-            }
-            else if (rolNormalizado == "VETERINARIO")
-            {
-                homeRoute = "veterinario";
+                canReadVeterinarios = false;
+                canReadEstudios = false;
+                canReadTurnos = false;
+                homeRoute = "duenio";
             }
             else
             {
-                homeRoute = "";
+                canReadVeterinarios = await AuthService.HasPermissionAsync("veterinarios.leer");
+                canReadEstudios = await AuthService.HasPermissionAsync("estudios.leer");
+                canReadTurnos = await AuthService.HasPermissionAsync("turnos.leer");
+
+                if (rolNormalizado == "ADMINISTRADOR")
+                {
+                    homeRoute = "admin";
+                }
+                else if (rolNormalizado == "VETERINARIO")
+                {
+                    homeRoute = "vet";
+                }
             }
         }
         else
         {
+            isDuenio = false;
             canReadVeterinarios = false;
             canReadEstudios = false;
             canReadTurnos = false;

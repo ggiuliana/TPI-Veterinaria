@@ -1,7 +1,62 @@
 ﻿@page "/duenio"
 
-<h3>Página Duenio</h3>
+<PageTitle>Panel del Dueño</PageTitle>
+
+<div class="container-fluid mt-3">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="fw-normal text-secondary border-bottom pb-2">Panel del Dueño</h2>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="alert alert-info border-0 shadow-sm d-flex align-items-center" role="alert" style="background-color: #e0f2f1;">
+                <i class="fas fa-paw fs-4 me-3 text-info"></i>
+                <div>
+                    <h5 class="alert-heading mb-1 fw-bold" style="color: #00695c;">Portal de Mascotas</h5>
+                    <p class="mb-0 text-dark">
+                        Bienvenido a su panel personal. Desde aquí, y utilizando el menú lateral, podrá <strong>gestionar el perfil de sus mascotas y solicitar nuevos turnos</strong> para atención clínica.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="p-3 rounded" style="background-color: #e3f2fd;">
+                            <i class="fas fa-heart text-primary fs-4"></i>
+                        </div>
+                        <h5 class="card-title ms-3 mb-0 fw-bold">Mis Mascotas</h5>
+                    </div>
+                    <p class="card-text text-muted">
+                        Administre la información de sus animales. Podrá dar de alta nuevas mascotas, editar sus perfiles y acceder a su historial de vacunas para mantener los controles al día.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="p-3 rounded" style="background-color: #e8f5e9;">
+                            <i class="fas fa-calendar-check text-success fs-4"></i>
+                        </div>
+                        <h5 class="card-title ms-3 mb-0 fw-bold">Mis Turnos</h5>
+                    </div>
+                    <p class="card-text text-muted">
+                        Programe visitas a la clínica. Consulte su agenda de turnos pendientes, revise el estado de solicitudes pasadas y reserve nuevos horarios de atención con nuestros veterinarios.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
-
 }
