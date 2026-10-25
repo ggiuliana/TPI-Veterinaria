@@ -37,7 +37,7 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Fecha *</label>
-                                <input type="date" class="form-control" @bind="currentTurno.FechaTurno" />
+                                <input type="date" class="form-control" @bind="currentTurno.FechaTurno" disabled="@(currentTurno.EstadoTurno != "Disponible")" />
                                 @if (validationErrors.ContainsKey("FechaTurno"))
                                 {
                                     <div class="text-danger small">@validationErrors["FechaTurno"]</div>
@@ -45,7 +45,7 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Hora *</label>
-                                <input type="time" class="form-control" @bind="currentTurno.HoraTurno" />
+                                <input type="time" class="form-control" @bind="currentTurno.HoraTurno" disabled="@(currentTurno.EstadoTurno != "Disponible")" />
                                 @if (validationErrors.ContainsKey("HoraTurno"))
                                 {
                                     <div class="text-danger small">@validationErrors["HoraTurno"]</div>
@@ -92,7 +92,7 @@
 
                             <div class="col-md-@(isVeterinario ? "6" : "4") mb-3">
                                 <label class="form-label">ID Mascota</label>
-                                <InputNumber @bind-Value="currentTurno.IdMascota" class="form-control" />
+                                <InputNumber @bind-Value="currentTurno.IdMascota" class="form-control" disabled />
                             </div>
                         </div>
 
