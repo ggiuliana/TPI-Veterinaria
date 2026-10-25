@@ -38,42 +38,43 @@
             // menuStrip1
             // 
             menuStrip1.ImageScalingSize = new Size(20, 20);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { sacarTurnoToolStripMenuItem, mascotaToolStripMenuItem, cerrarSesiónToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { mascotaToolStripMenuItem, sacarTurnoToolStripMenuItem, cerrarSesiónToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Padding = new Padding(5, 2, 0, 2);
-            menuStrip1.Size = new Size(800, 24);
+            menuStrip1.Padding = new Padding(6, 3, 0, 3);
+            menuStrip1.Size = new Size(914, 30);
             menuStrip1.TabIndex = 11;
             menuStrip1.Text = "menuStrip1";
             // 
             // sacarTurnoToolStripMenuItem
             // 
             sacarTurnoToolStripMenuItem.Name = "sacarTurnoToolStripMenuItem";
-            sacarTurnoToolStripMenuItem.Size = new Size(79, 20);
+            sacarTurnoToolStripMenuItem.Size = new Size(98, 24);
             sacarTurnoToolStripMenuItem.Text = "Sacar turno";
             sacarTurnoToolStripMenuItem.Click += SacarTurnoToolStripMenuItem_Click;
             // 
             // mascotaToolStripMenuItem
             // 
             mascotaToolStripMenuItem.Name = "mascotaToolStripMenuItem";
-            mascotaToolStripMenuItem.Size = new Size(69, 20);
+            mascotaToolStripMenuItem.Size = new Size(85, 24);
             mascotaToolStripMenuItem.Text = "Mascotas";
             mascotaToolStripMenuItem.Click += MascotasToolStripMenuItem_Click;
             // 
             // cerrarSesiónToolStripMenuItem
             // 
             cerrarSesiónToolStripMenuItem.Name = "cerrarSesiónToolStripMenuItem";
-            cerrarSesiónToolStripMenuItem.Size = new Size(88, 20);
+            cerrarSesiónToolStripMenuItem.Size = new Size(110, 24);
             cerrarSesiónToolStripMenuItem.Text = "Cerrar Sesión";
             cerrarSesiónToolStripMenuItem.Click += LogOut_Click;
             // 
             // DuenioHome
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(914, 600);
             Controls.Add(menuStrip1);
             IsMdiContainer = true;
+            Margin = new Padding(3, 4, 3, 4);
             Name = "DuenioHome";
             Text = "DuenioHome";
             menuStrip1.ResumeLayout(false);

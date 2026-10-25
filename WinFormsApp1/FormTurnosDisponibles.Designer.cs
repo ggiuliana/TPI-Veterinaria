@@ -34,7 +34,8 @@
             colIdTurno = new DataGridViewTextBoxColumn();
             colFechaTurno = new DataGridViewTextBoxColumn();
             colHoraTurno = new DataGridViewTextBoxColumn();
-            colIdVeterinario = new DataGridViewTextBoxColumn();
+            colVeterinario = new DataGridViewTextBoxColumn();
+            EspecialidadVeterinario = new DataGridViewTextBoxColumn();
             colEstadoTurno = new DataGridViewTextBoxColumn();
             colObservaciones = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
@@ -45,9 +46,9 @@
             label1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(616, 34);
+            label1.Location = new Point(704, 45);
             label1.Name = "label1";
-            label1.Size = new Size(159, 20);
+            label1.Size = new Size(201, 25);
             label1.TabIndex = 41;
             label1.Text = "TURNOS DISPONIBLES";
             label1.TextAlign = ContentAlignment.MiddleCenter;
@@ -56,9 +57,10 @@
             // 
             SacarTurno.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             SacarTurno.Cursor = Cursors.Hand;
-            SacarTurno.Location = new Point(705, 398);
+            SacarTurno.Location = new Point(806, 531);
+            SacarTurno.Margin = new Padding(3, 4, 3, 4);
             SacarTurno.Name = "SacarTurno";
-            SacarTurno.Size = new Size(75, 23);
+            SacarTurno.Size = new Size(86, 31);
             SacarTurno.TabIndex = 47;
             SacarTurno.Text = "Sacar turno";
             SacarTurno.UseVisualStyleBackColor = true;
@@ -72,15 +74,16 @@
             dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { colIdTurno, colFechaTurno, colHoraTurno, colIdVeterinario, colEstadoTurno, colObservaciones });
-            dataGridView1.Location = new Point(21, 76);
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { colIdTurno, colFechaTurno, colHoraTurno, colVeterinario, EspecialidadVeterinario, colEstadoTurno, colObservaciones });
+            dataGridView1.Location = new Point(24, 101);
+            dataGridView1.Margin = new Padding(3, 4, 3, 4);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(760, 316);
+            dataGridView1.Size = new Size(869, 421);
             dataGridView1.TabIndex = 40;
             // 
-            // idTurno
+            // colIdTurno
             // 
             colIdTurno.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             colIdTurno.DataPropertyName = "IdTurno";
@@ -88,7 +91,7 @@
             colIdTurno.MinimumWidth = 6;
             colIdTurno.Name = "colIdTurno";
             colIdTurno.ReadOnly = true;
-            colIdTurno.Width = 63;
+            colIdTurno.Width = 53;
             // 
             // colFechaTurno
             // 
@@ -98,7 +101,7 @@
             colFechaTurno.MinimumWidth = 6;
             colFechaTurno.Name = "colFechaTurno";
             colFechaTurno.ReadOnly = true;
-            colFechaTurno.Width = 63;
+            colFechaTurno.Width = 76;
             // 
             // colHoraTurno
             // 
@@ -108,17 +111,25 @@
             colHoraTurno.MinimumWidth = 6;
             colHoraTurno.Name = "colHoraTurno";
             colHoraTurno.ReadOnly = true;
-            colHoraTurno.Width = 58;
+            colHoraTurno.Width = 71;
             // 
-            // colIdVeterinario
+            // colVeterinario
             // 
-            colIdVeterinario.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            colIdVeterinario.DataPropertyName = "IdVeterinario";
-            colIdVeterinario.HeaderText = "ID Veterinario";
-            colIdVeterinario.MinimumWidth = 6;
-            colIdVeterinario.Name = "colIdVeterinario";
-            colIdVeterinario.ReadOnly = true;
-            colIdVeterinario.Width = 102;
+            colVeterinario.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            colVeterinario.DataPropertyName = "NombreCompletoVeterinario";
+            colVeterinario.HeaderText = "Veterinario";
+            colVeterinario.MinimumWidth = 6;
+            colVeterinario.Name = "colVeterinario";
+            colVeterinario.ReadOnly = true;
+            colVeterinario.Width = 110;
+            // 
+            // EspecialidadVeterinario
+            // 
+            EspecialidadVeterinario.DataPropertyName = "EspecialidadVeterinario";
+            EspecialidadVeterinario.HeaderText = "Especialidad ";
+            EspecialidadVeterinario.MinimumWidth = 6;
+            EspecialidadVeterinario.Name = "EspecialidadVeterinario";
+            EspecialidadVeterinario.ReadOnly = true;
             // 
             // colEstadoTurno
             // 
@@ -128,7 +139,7 @@
             colEstadoTurno.MinimumWidth = 6;
             colEstadoTurno.Name = "colEstadoTurno";
             colEstadoTurno.ReadOnly = true;
-            colEstadoTurno.Width = 67;
+            colEstadoTurno.Width = 83;
             // 
             // colObservaciones
             // 
@@ -141,12 +152,13 @@
             // 
             // FormTurnosDisponibles
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(914, 600);
             Controls.Add(label1);
             Controls.Add(SacarTurno);
             Controls.Add(dataGridView1);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "FormTurnosDisponibles";
             Text = "Form1";
             Load += FormTurnosDisponibles_Load;
@@ -163,7 +175,8 @@
         private DataGridViewTextBoxColumn colIdTurno;
         private DataGridViewTextBoxColumn colFechaTurno;
         private DataGridViewTextBoxColumn colHoraTurno;
-        private DataGridViewTextBoxColumn colIdVeterinario;
+        private DataGridViewTextBoxColumn colVeterinario;
+        private DataGridViewTextBoxColumn EspecialidadVeterinario;
         private DataGridViewTextBoxColumn colEstadoTurno;
         private DataGridViewTextBoxColumn colObservaciones;
     }

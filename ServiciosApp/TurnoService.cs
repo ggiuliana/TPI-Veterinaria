@@ -55,9 +55,10 @@ namespace ServiciosApp
                 NombreVeterinario = turno.Veterinario?.NombrePersona ?? "Sin asignar",
                 ApellidoVeterinario = turno.Veterinario?.Apellido ?? "",
                 EspecialidadVeterinario = turno.Veterinario?.Especialidad ?? "",
+                NombreCompletoVeterinario = turno.Veterinario != null ? $"{turno.Veterinario.NombrePersona} {turno.Veterinario.Apellido}" : "Sin asignar",
 
                 IdMascota = turno.Mascota?.IdMascota,
-                NombreMascota = turno.Mascota?.NombreMascota ?? "Sin mascota"
+                NombreMascota = turno.Mascota != null ? turno.Mascota.NombreMascota : "Sin mascota",
             };
         }
 
@@ -71,8 +72,15 @@ namespace ServiciosApp
                 HoraTurno = turno.HoraTurno,
                 EstadoTurno = turno.EstadoTurno,
                 Observaciones = turno.Observaciones,
+
+                NombreVeterinario = turno.Veterinario?.NombrePersona ?? "Sin asignar",
+                ApellidoVeterinario = turno.Veterinario?.Apellido ?? "",
+                EspecialidadVeterinario = turno.Veterinario?.Especialidad ?? "",
+                NombreCompletoVeterinario = turno.Veterinario != null ? $"{turno.Veterinario.NombrePersona} {turno.Veterinario.Apellido}" : "Sin asignar",
+
                 IdVeterinario = turno.Veterinario?.IdPersona ?? 0,
-                IdMascota = turno.Mascota?.IdMascota
+                IdMascota = turno.Mascota?.IdMascota,
+                NombreMascota = turno.Mascota != null ? turno.Mascota.NombreMascota : "Sin mascota"
             })];
         }
 
@@ -91,9 +99,10 @@ namespace ServiciosApp
                 NombreVeterinario = turno.Veterinario?.NombrePersona ?? "Sin asignar",
                 ApellidoVeterinario = turno.Veterinario?.Apellido ?? "",
                 EspecialidadVeterinario = turno.Veterinario?.Especialidad ?? "",
+                NombreCompletoVeterinario = turno.Veterinario != null ? $"{turno.Veterinario.NombrePersona} {turno.Veterinario.Apellido}" : "Sin asignar",
 
                 IdMascota = turno.Mascota?.IdMascota,
-                NombreMascota = turno.Mascota?.NombreMascota ?? "Sin mascota"
+                NombreMascota = turno.Mascota != null ? turno.Mascota.NombreMascota : "Sin mascota"
             })];
         }
         public async Task<bool> UpdateAsync(TurnoDTO dto)
