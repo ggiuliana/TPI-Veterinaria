@@ -221,6 +221,23 @@ namespace ServiciosApp
                     consulta.MedicamentosConsulta.Add(nuevaRelacion);
                 }
             }
+            if (consulta.Estudios != null)
+            {
+                consulta.Estudios.Clear();
+            }
+            else
+            {
+                consulta.SetEstudios(new List<Estudio>());
+            }
+
+            if (dto.IdEstudios != null && dto.IdEstudios.Any())
+            {
+                var estudiosDb = await repoEstudio.GetByIdListAsync(dto.IdEstudios);
+                foreach (var estudio in estudiosDb)
+                {
+                    consulta.Estudios.Add(estudio);
+                }
+            }
             return await repo.UpdateAsync(consulta);
         }
         public async Task<ConsultaDTO?> GetByIdTurnoAsync(int idTurno)
