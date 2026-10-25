@@ -1,0 +1,202 @@
+﻿@page "/vacunas"
+
+@using DTOs
+@using API.Clients
+@inject IJSRuntime JSRuntime
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
+@inject TipoVacunaClient VacunaClient
+
+<PageTitle>Gestión de Vacunas</PageTitle>
+
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-12">
+            <h3 class="mb-4">Vacunas</h3>
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @errorMessage
+                    <button type="button" class="btn-close" @onclick="() => errorMessage = string.Empty"></button>
+                </div>
+            }
+            @if (!string.IsNullOrEmpty(successMessage))
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @successMessage
+                    <button type="button" class="btn-close" @onclick="() => successMessage = string.Empty"></button>
+                </div>
+            }
+
+            @if (canAdd)
+            {
+                <div class="mb-3">
+                    <button type="button" class="btn btn-primary" @onclick="OpenAddModal">
+                        <i class="fas fa-plus"></i> Agregar Vacuna
+                    </button>
+                </div>
+            }
+
+            @if (loading)
+            {
+                <div class="d-flex justify-content-center mt-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                </div>
+            }
+            else if (canRead)
+            {
+                <div class="table-responsive shadow-sm rounded">
+                    <table class="table table-striped table-hover mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Id</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (vacunas != null && vacunas.Any())
+                            {
+                                @foreach (var vac in vacunas)
+                                {
+                                    <tr>
+                                        <td class="align-middle">@vac.IdTipoVacuna</td>
+                                        <td class="align-middle fw-bold">@vac.NombreTipoVacuna</td>
+                                        <td class="align-middle">@vac.DescripcionTipoVacuna</td>
+                                        <td class="align-middle text-nowrap">
+                                            @if (canUpdate)
+                                            {
+                                                <button type="button" class="btn btn-sm btn-outline-primary me-1" @onclick="() => OpenEditModal(vac)">
+                                                    <i class="fas fa-edit"></i> Editar
+                                                </button>
+                                            }
+                                            @if (canDelete)
+                                            {
+                                                <button type="button" class="btn btn-sm btn-outline-danger" @onclick="() => ConfirmDelete(vac)">
+                                                    <i class="fas fa-trash"></i> Eliminar
+                                                </button>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-center py-4 text-muted">No hay vacunas registradas.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<VacunaModal @ref="vacunaModal" OnVacunaChanged="LoadVacunas" />
+
+@code {
+    private List<TipoVacunaDTO>? vacunas;
+    private bool loading = true;
+    private string errorMessage = string.Empty;
+    private string successMessage = string.Empty;
+
+    private VacunaModal vacunaModal = default!;
+
+    private bool canRead = false;
+    private bool canAdd = false;
+    private bool canUpdate = false;
+    private bool canDelete = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+        if (!isAuthenticated)
+        {
+            Navigation.NavigateTo("/login");
+            return;
+        }
+
+        var rol = await AuthService.GetRolAsync();
+        if (rol?.Trim().ToUpper() != "ADMINISTRADOR")
+        {
+            Navigation.NavigateTo("/");
+            return;
+        }
+
+        await LoadPermissions();
+
+        if (canRead)
+        {
+            await LoadVacunas();
+        }
+        else
+        {
+            loading = false;
+            errorMessage = "No tiene permisos para ver las vacunas.";
+        }
+    }
+
+    private async Task LoadPermissions()
+    {
+        canRead = await AuthService.HasPermissionAsync("tipo vacunas.leer");
+        canAdd = await AuthService.HasPermissionAsync("tipo vacunas.agregar");
+        canUpdate = await AuthService.HasPermissionAsync("tipo vacunas.actualizar");
+        canDelete = await AuthService.HasPermissionAsync("tipo vacunas.eliminar");
+    }
+
+    private async Task LoadVacunas()
+    {
+        try
+        {
+            loading = true;
+            errorMessage = string.Empty;
+            vacunas = (await VacunaClient.GetAllAsync())?.ToList();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error al cargar vacunas: {ex.Message}";
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+    private async Task OpenAddModal()
+    {
+        if (vacunaModal != null) await vacunaModal.ShowAddModal();
+    }
+
+    private async Task OpenEditModal(TipoVacunaDTO vac)
+    {
+        if (vacunaModal != null) await vacunaModal.ShowEditModal(vac);
+    }
+
+    private async Task ConfirmDelete(TipoVacunaDTO vac)
+    {
+        var confirm = await JSRuntime.InvokeAsync<bool>("confirm",
+            $"¿Está seguro que desea eliminar la vacuna {vac.NombreTipoVacuna}?");
+
+        if (confirm) await DeleteVacuna(vac.IdTipoVacuna);
+    }
+
+    private async Task DeleteVacuna(int id)
+    {
+        try
+        {
+            await VacunaClient.DeleteAsync(id);
+            successMessage = "Vacuna eliminada exitosamente.";
+            await LoadVacunas();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error al eliminar vacuna: {ex.Message}";
+        }
+    }
+}

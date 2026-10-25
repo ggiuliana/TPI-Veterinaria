@@ -26,19 +26,9 @@
                     <span class="oi oi-heart" aria-hidden="true"></span> Mis Mascotas
                 </NavLink>
             </div>
-
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="duenio/turnos">
                     <span class="oi oi-calendar" aria-hidden="true"></span> Turnos Disponibles
-                </NavLink>
-            </div>
-        }
-
-        @if (esAdmin)
-        {
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="medicamentos">
-                    <span class="oi oi-document" aria-hidden="true"></span> Medicamentos
                 </NavLink>
             </div>
         }
@@ -53,16 +43,6 @@
                     </NavLink>
                 </div>
             }
-
-            @if (canReadEstudios)
-            {
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="estudios">
-                        <span class="oi oi-document" aria-hidden="true"></span> Estudios
-                    </NavLink>
-                </div>
-            }
-
             @if (canReadTurnos)
             {
                 <div class="nav-item px-3">
@@ -71,6 +51,28 @@
                     </NavLink>
                 </div>
             }
+            @if (canReadEstudios)
+            {
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="estudios">
+                        <span class="oi oi-document" aria-hidden="true"></span> Estudios
+                    </NavLink>
+                </div>
+            }
+        }
+
+        @if (esAdmin)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="medicamentos">
+                    <span class="oi oi-medical-cross" aria-hidden="true"></span> Medicamentos
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="vacunas">
+                    <span class="oi oi-eyedropper" aria-hidden="true"></span> Vacunas
+                </NavLink>
+            </div>
         }
     </nav>
 </div>

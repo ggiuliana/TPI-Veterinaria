@@ -91,17 +91,11 @@ namespace WinFormsApp1
         {
             var authService = Program.AuthService;
 
-            Create.Visible = await authService.HasPermissionAsync("tipovacunas.agregar")
-                          || await authService.HasPermissionAsync("tipos vacunas.agregar")
-                          || await authService.HasPermissionAsync("tipo vacunas.agregar");
+            Create.Visible = await authService.HasPermissionAsync("tipo vacunas.agregar");
 
-            Modificar.Visible = await authService.HasPermissionAsync("tipovacunas.actualizar")
-                             || await authService.HasPermissionAsync("tipos vacunas.actualizar")
-                             || await authService.HasPermissionAsync("tipo vacunas.actualizar");
+            Modificar.Visible = await authService.HasPermissionAsync("tipo vacunas.actualizar");
 
-            Delete.Visible = await authService.HasPermissionAsync("tipovacunas.eliminar")
-                          || await authService.HasPermissionAsync("tipos vacunas.eliminar")
-                          || await authService.HasPermissionAsync("tipo vacunas.eliminar");
+            Delete.Visible = await authService.HasPermissionAsync("tipo vacunas.eliminar");
         }
     }
 }
