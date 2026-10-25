@@ -13,6 +13,6 @@
         public string EspecialidadVeterinario { get; set; } = string.Empty;
         public int? IdMascota { get; set; }
         public string NombreMascota { get; set; } = string.Empty;
-
+        public string? NombreCompletoVeterinario { get; set; }
     }
 }

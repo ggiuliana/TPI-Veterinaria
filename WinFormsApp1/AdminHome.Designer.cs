@@ -29,21 +29,20 @@
         private void InitializeComponent()
         {
             menuStrip1 = new MenuStrip();
-            vistaToolStripMenuItem = new ToolStripMenuItem();
-            veterinariosToolStripMenuItem = new ToolStripMenuItem();
-            estudiosToolStripMenuItem = new ToolStripMenuItem();
-            turnosToolStripMenuItem = new ToolStripMenuItem();
-            consultasToolStripMenuItem = new ToolStripMenuItem();
-            medicamentosToolStripMenuItem = new ToolStripMenuItem();
-            vacunasToolStripMenuItem = new ToolStripMenuItem();
             cerrarSesiónToolStripMenuItem = new ToolStripMenuItem();
+            veterinarioToolStripMenuItem = new ToolStripMenuItem();
+            turnosToolStripMenuItem1 = new ToolStripMenuItem();
+            consultasToolStripMenuItem1 = new ToolStripMenuItem();
+            estudiosToolStripMenuItem1 = new ToolStripMenuItem();
+            medicamentosToolStripMenuItem1 = new ToolStripMenuItem();
+            vacunasToolStripMenuItem1 = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
             // 
             menuStrip1.ImageScalingSize = new Size(20, 20);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { vistaToolStripMenuItem, cerrarSesiónToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { veterinarioToolStripMenuItem, turnosToolStripMenuItem1, estudiosToolStripMenuItem1, medicamentosToolStripMenuItem1, vacunasToolStripMenuItem1, cerrarSesiónToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new Padding(6, 3, 0, 3);
@@ -51,62 +50,55 @@
             menuStrip1.TabIndex = 10;
             menuStrip1.Text = "menuStrip1";
             // 
-            // vistaToolStripMenuItem
-            // 
-            vistaToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { veterinariosToolStripMenuItem, estudiosToolStripMenuItem, turnosToolStripMenuItem, medicamentosToolStripMenuItem, vacunasToolStripMenuItem });
-            vistaToolStripMenuItem.Name = "vistaToolStripMenuItem";
-            vistaToolStripMenuItem.Size = new Size(73, 24);
-            vistaToolStripMenuItem.Text = "Gestión";
-            // 
-            // veterinariosToolStripMenuItem
-            // 
-            veterinariosToolStripMenuItem.Name = "veterinariosToolStripMenuItem";
-            veterinariosToolStripMenuItem.Size = new Size(224, 26);
-            veterinariosToolStripMenuItem.Text = "Veterinarios";
-            veterinariosToolStripMenuItem.Click += VeterinariosToolStripMenuItem_Click;
-            // 
-            // estudiosToolStripMenuItem
-            // 
-            estudiosToolStripMenuItem.Name = "estudiosToolStripMenuItem";
-            estudiosToolStripMenuItem.Size = new Size(224, 26);
-            estudiosToolStripMenuItem.Text = "Estudios";
-            estudiosToolStripMenuItem.Click += EstudiosToolStripMenuItem_Click;
-            // 
-            // turnosToolStripMenuItem
-            // 
-            turnosToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { consultasToolStripMenuItem });
-            turnosToolStripMenuItem.Name = "turnosToolStripMenuItem";
-            turnosToolStripMenuItem.Size = new Size(224, 26);
-            turnosToolStripMenuItem.Text = "Turnos";
-            turnosToolStripMenuItem.Click += TurnosToolStripMenuItem_Click;
-            // 
-            // consultasToolStripMenuItem
-            // 
-            consultasToolStripMenuItem.Name = "consultasToolStripMenuItem";
-            consultasToolStripMenuItem.Size = new Size(155, 26);
-            consultasToolStripMenuItem.Text = "Consultas";
-            consultasToolStripMenuItem.Click += ConsultasToolStripMenuItem_Click;
-            // 
-            // medicamentosToolStripMenuItem
-            // 
-            medicamentosToolStripMenuItem.Name = "medicamentosToolStripMenuItem";
-            medicamentosToolStripMenuItem.Size = new Size(224, 26);
-            medicamentosToolStripMenuItem.Text = "Medicamentos";
-            medicamentosToolStripMenuItem.Click += MedicamentosToolStripMenuItem_Click;
-            // 
-            // vacunasToolStripMenuItem
-            // 
-            vacunasToolStripMenuItem.Name = "vacunasToolStripMenuItem";
-            vacunasToolStripMenuItem.Size = new Size(224, 26);
-            vacunasToolStripMenuItem.Text = "Vacunas";
-            vacunasToolStripMenuItem.Click += TiposDeVacunaToolStripMenuItem_Click;
-            // 
             // cerrarSesiónToolStripMenuItem
             // 
             cerrarSesiónToolStripMenuItem.Name = "cerrarSesiónToolStripMenuItem";
             cerrarSesiónToolStripMenuItem.Size = new Size(110, 24);
             cerrarSesiónToolStripMenuItem.Text = "Cerrar Sesión";
             cerrarSesiónToolStripMenuItem.Click += LogOut_Click;
+            // 
+            // veterinarioToolStripMenuItem
+            // 
+            veterinarioToolStripMenuItem.Name = "veterinarioToolStripMenuItem";
+            veterinarioToolStripMenuItem.Size = new Size(101, 24);
+            veterinarioToolStripMenuItem.Text = "Veterinarios";
+            veterinarioToolStripMenuItem.Click += VeterinariosToolStripMenuItem_Click;
+            // 
+            // turnosToolStripMenuItem1
+            // 
+            turnosToolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { consultasToolStripMenuItem1 });
+            turnosToolStripMenuItem1.Name = "turnosToolStripMenuItem1";
+            turnosToolStripMenuItem1.Size = new Size(67, 24);
+            turnosToolStripMenuItem1.Text = "Turnos";
+            turnosToolStripMenuItem1.Click += TurnosToolStripMenuItem_Click;
+            // 
+            // consultasToolStripMenuItem1
+            // 
+            consultasToolStripMenuItem1.Name = "consultasToolStripMenuItem1";
+            consultasToolStripMenuItem1.Size = new Size(224, 26);
+            consultasToolStripMenuItem1.Text = "Consultas";
+            consultasToolStripMenuItem1.Click += ConsultasToolStripMenuItem_Click;
+            // 
+            // estudiosToolStripMenuItem1
+            // 
+            estudiosToolStripMenuItem1.Name = "estudiosToolStripMenuItem1";
+            estudiosToolStripMenuItem1.Size = new Size(78, 24);
+            estudiosToolStripMenuItem1.Text = "Estudios";
+            estudiosToolStripMenuItem1.Click += EstudiosToolStripMenuItem_Click;
+            // 
+            // medicamentosToolStripMenuItem1
+            // 
+            medicamentosToolStripMenuItem1.Name = "medicamentosToolStripMenuItem1";
+            medicamentosToolStripMenuItem1.Size = new Size(121, 24);
+            medicamentosToolStripMenuItem1.Text = "Medicamentos";
+            medicamentosToolStripMenuItem1.Click += MedicamentosToolStripMenuItem_Click;
+            // 
+            // vacunasToolStripMenuItem1
+            // 
+            vacunasToolStripMenuItem1.Name = "vacunasToolStripMenuItem1";
+            vacunasToolStripMenuItem1.Size = new Size(76, 24);
+            vacunasToolStripMenuItem1.Text = "Vacunas";
+            vacunasToolStripMenuItem1.Click += TiposDeVacunaToolStripMenuItem_Click;
             // 
             // AdminHome
             // 
@@ -128,13 +120,12 @@
 
         #endregion
         private MenuStrip menuStrip1;
-        private ToolStripMenuItem vistaToolStripMenuItem;
         private ToolStripMenuItem cerrarSesiónToolStripMenuItem;
-        private ToolStripMenuItem turnosToolStripMenuItem;
-        private ToolStripMenuItem consultasToolStripMenuItem;
-        private ToolStripMenuItem veterinariosToolStripMenuItem;
-        private ToolStripMenuItem estudiosToolStripMenuItem;
-        private ToolStripMenuItem medicamentosToolStripMenuItem;
-        private ToolStripMenuItem vacunasToolStripMenuItem;
+        private ToolStripMenuItem veterinarioToolStripMenuItem;
+        private ToolStripMenuItem turnosToolStripMenuItem1;
+        private ToolStripMenuItem consultasToolStripMenuItem1;
+        private ToolStripMenuItem estudiosToolStripMenuItem1;
+        private ToolStripMenuItem medicamentosToolStripMenuItem1;
+        private ToolStripMenuItem vacunasToolStripMenuItem1;
     }
 }

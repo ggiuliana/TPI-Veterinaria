@@ -1,7 +1,6 @@
 ﻿using API.Clients;
 using API.Auth.WindowsForms;
 
-
 namespace WinFormsApp1
 {
     internal static class Program
@@ -13,30 +12,33 @@ namespace WinFormsApp1
         {
             ApplicationConfiguration.Initialize();
 
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+            Application.ThreadException += Application_ThreadException;
+
             AuthService = new WindowsFormsAuthService();
 
-            Application.Run(new Login());
             try
             {
-                MainAsync().GetAwaiter().GetResult();
+                RunApplicationLoop().GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error fatal al iniciar la aplicación:\n{ex.Message}", "Error Fatal", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        static async Task MainAsync()
-        {
-            AuthService = new WindowsFormsAuthService();
 
+        static async Task RunApplicationLoop()
+        {
             while (true)
             {
                 if (!await AuthService.IsAuthenticatedAsync())
                 {
-                    var loginForm = new Login();
-                    if (loginForm.ShowDialog() != DialogResult.OK)
+                    using (var loginForm = new Login())
                     {
-                        return;
+                        if (loginForm.ShowDialog() != DialogResult.OK)
+                        {
+                            return;
+                        }
                     }
                 }
 
@@ -63,7 +65,13 @@ namespace WinFormsApp1
                     }
 
                     homeForm.WindowState = FormWindowState.Maximized;
+
                     Application.Run(homeForm);
+
+                    if (await AuthService.IsAuthenticatedAsync())
+                    {
+                        break;
+                    }
                 }
                 catch (UnauthorizedAccessException ex)
                 {
@@ -77,15 +85,12 @@ namespace WinFormsApp1
         {
             if (e.Exception is UnauthorizedAccessException)
             {
-                MessageBox.Show("Su sesión ha expirado. Debe volver a autenticarse.", "Sesión Expirada",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
+                MessageBox.Show("Su sesión ha expirado. Debe volver a autenticarse.", "Sesión Expirada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 Application.Restart();
             }
             else
             {
-                MessageBox.Show($"Error inesperado: {e.Exception.Message}", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error inesperado: {e.Exception.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

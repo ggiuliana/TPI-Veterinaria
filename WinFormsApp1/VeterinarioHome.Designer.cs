@@ -30,59 +30,51 @@
         {
             menuStrip1 = new MenuStrip();
             vistaToolStripMenuItem = new ToolStripMenuItem();
-            turnosToolStripMenuItem = new ToolStripMenuItem();
-            consultasToolStripMenuItem = new ToolStripMenuItem();
             cerrarSesiónToolStripMenuItem = new ToolStripMenuItem();
+            consultasToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
             // 
             menuStrip1.ImageScalingSize = new Size(20, 20);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { vistaToolStripMenuItem, cerrarSesiónToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { vistaToolStripMenuItem, consultasToolStripMenuItem, cerrarSesiónToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Padding = new Padding(5, 2, 0, 2);
-            menuStrip1.Size = new Size(800, 24);
+            menuStrip1.Padding = new Padding(6, 3, 0, 3);
+            menuStrip1.Size = new Size(914, 30);
             menuStrip1.TabIndex = 11;
             menuStrip1.Text = "menuStrip1";
             // 
             // vistaToolStripMenuItem
             // 
-            vistaToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { turnosToolStripMenuItem });
             vistaToolStripMenuItem.Name = "vistaToolStripMenuItem";
-            vistaToolStripMenuItem.Size = new Size(59, 20);
-            vistaToolStripMenuItem.Text = "Gestión";
-            // 
-            // turnosToolStripMenuItem
-            // 
-            turnosToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { consultasToolStripMenuItem });
-            turnosToolStripMenuItem.Name = "turnosToolStripMenuItem";
-            turnosToolStripMenuItem.Size = new Size(111, 22);
-            turnosToolStripMenuItem.Text = "Turnos";
-            turnosToolStripMenuItem.Click += TurnosToolStripMenuItem_Click;
-            // 
-            // consultasToolStripMenuItem
-            // 
-            consultasToolStripMenuItem.Name = "consultasToolStripMenuItem";
-            consultasToolStripMenuItem.Size = new Size(126, 22);
-            consultasToolStripMenuItem.Text = "Consultas";
-            consultasToolStripMenuItem.Click += ConsultasToolStripMenuItem_Click;
+            vistaToolStripMenuItem.Size = new Size(67, 24);
+            vistaToolStripMenuItem.Text = "Turnos";
+            vistaToolStripMenuItem.Click += TurnosToolStripMenuItem_Click;
             // 
             // cerrarSesiónToolStripMenuItem
             // 
             cerrarSesiónToolStripMenuItem.Name = "cerrarSesiónToolStripMenuItem";
-            cerrarSesiónToolStripMenuItem.Size = new Size(88, 20);
+            cerrarSesiónToolStripMenuItem.Size = new Size(110, 24);
             cerrarSesiónToolStripMenuItem.Text = "Cerrar Sesión";
             cerrarSesiónToolStripMenuItem.Click += LogOut_Click;
             // 
+            // consultasToolStripMenuItem
+            // 
+            consultasToolStripMenuItem.Name = "consultasToolStripMenuItem";
+            consultasToolStripMenuItem.Size = new Size(86, 24);
+            consultasToolStripMenuItem.Text = "Consultas";
+            consultasToolStripMenuItem.Click += ConsultasToolStripMenuItem_Click;
+            // 
             // VeterinarioHome
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(914, 600);
             Controls.Add(menuStrip1);
             IsMdiContainer = true;
+            Margin = new Padding(3, 4, 3, 4);
             Name = "VeterinarioHome";
             Text = "VeterinarioForm";
             menuStrip1.ResumeLayout(false);
@@ -95,8 +87,7 @@
 
         private MenuStrip menuStrip1;
         private ToolStripMenuItem vistaToolStripMenuItem;
-        private ToolStripMenuItem turnosToolStripMenuItem;
-        private ToolStripMenuItem consultasToolStripMenuItem;
         private ToolStripMenuItem cerrarSesiónToolStripMenuItem;
+        private ToolStripMenuItem consultasToolStripMenuItem;
     }
 }

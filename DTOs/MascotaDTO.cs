@@ -11,5 +11,7 @@
         public DateTime FechaNac { get; set; }
         public int IdDuenio { get; set; }
         public ICollection<VacunaDTO>? Vacunas { get; set; }
+        public string CastradoTexto => Castrado ? "Sí" : "No";
+        public string SexoTexto => Sexo == 'M' ? "Macho" : "Hembra";
     }
 }
