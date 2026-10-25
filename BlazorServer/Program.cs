@@ -22,9 +22,6 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<AuthenticationStateProvider, BlazorServerAuthService>();
 
-//borrar
-//builder.Services.AddScoped<IAuthService, BlazorServerAuthService>();
-
 builder.Services.AddScoped<IAuthService>(sp =>
     (IAuthService)sp.GetRequiredService<AuthenticationStateProvider>());
 
@@ -58,9 +55,6 @@ app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseAntiforgery();
-
-//borrar
-//app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();

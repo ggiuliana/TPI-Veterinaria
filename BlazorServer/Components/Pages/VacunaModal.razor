@@ -1,0 +1,157 @@
+﻿@using DTOs
+@using API.Clients
+@inject TipoVacunaClient VacunaClient
+
+@if (showModal)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@(mode == FormMode.Add ? "Agregar Vacuna" : "Editar Vacuna")</h5>
+                    <button type="button" class="btn-close" @onclick="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="currentVacuna" OnValidSubmit="HandleValidSubmit">
+                        <DataAnnotationsValidator />
+
+                        @if (mode == FormMode.Update)
+                        {
+                            <div class="mb-3">
+                                <label class="form-label">Id</label>
+                                <input type="text" class="form-control" value="@currentVacuna.IdTipoVacuna" readonly />
+                            </div>
+                        }
+
+                        <div class="mb-3">
+                            <label class="form-label">Nombre *</label>
+                            <InputText @bind-Value="currentVacuna.NombreTipoVacuna" class="form-control" />
+                            @if (validationErrors.ContainsKey("NombreTipoVacuna"))
+                            {
+                                <div class="text-danger small">@validationErrors["NombreTipoVacuna"]</div>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Descripción *</label>
+                            <InputTextArea @bind-Value="currentVacuna.DescripcionTipoVacuna" class="form-control" rows="3" />
+                            @if (validationErrors.ContainsKey("DescripcionTipoVacuna"))
+                            {
+                                <div class="text-danger small">@validationErrors["DescripcionTipoVacuna"]</div>
+                            }
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            <div class="alert alert-danger">@errorMessage</div>
+                        }
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" @onclick="Close">Cancelar</button>
+                            <button type="submit" class="btn btn-primary" disabled="@saving">
+                                @if (saving)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
+                                }
+                                @(mode == FormMode.Add ? "Agregar" : "Actualizar")
+                            </button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public EventCallback OnVacunaChanged { get; set; }
+
+    private bool showModal = false;
+    private FormMode mode = FormMode.Add;
+    private TipoVacunaDTO currentVacuna = new TipoVacunaDTO();
+    private bool saving = false;
+    private string errorMessage = string.Empty;
+    private Dictionary<string, string> validationErrors = new Dictionary<string, string>();
+
+    public enum FormMode { Add, Update }
+
+    public async Task ShowAddModal()
+    {
+        mode = FormMode.Add;
+        currentVacuna = new TipoVacunaDTO { NombreTipoVacuna = string.Empty, DescripcionTipoVacuna = string.Empty };
+        ClearValidationErrors();
+        showModal = true;
+        StateHasChanged();
+    }
+
+    public async Task ShowEditModal(TipoVacunaDTO vacuna)
+    {
+        mode = FormMode.Update;
+        currentVacuna = new TipoVacunaDTO
+        {
+            IdTipoVacuna = vacuna.IdTipoVacuna,
+            NombreTipoVacuna = vacuna.NombreTipoVacuna,
+            DescripcionTipoVacuna = vacuna.DescripcionTipoVacuna
+        };
+        ClearValidationErrors();
+        showModal = true;
+        StateHasChanged();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (!ValidateVacuna()) return;
+
+        try
+        {
+            saving = true;
+            errorMessage = string.Empty;
+
+            if (mode == FormMode.Add) await VacunaClient.AddAsync(currentVacuna);
+            else await VacunaClient.UpdateAsync(currentVacuna);
+
+            await OnVacunaChanged.InvokeAsync();
+            Close();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            saving = false;
+        }
+    }
+
+    private bool ValidateVacuna()
+    {
+        ClearValidationErrors();
+        bool isValid = true;
+
+        if (string.IsNullOrWhiteSpace(currentVacuna.NombreTipoVacuna))
+        {
+            validationErrors["NombreTipoVacuna"] = "El Nombre es requerido";
+            isValid = false;
+        }
+        if (string.IsNullOrWhiteSpace(currentVacuna.DescripcionTipoVacuna))
+        {
+            validationErrors["DescripcionTipoVacuna"] = "La Descripción es requerida";
+            isValid = false;
+        }
+
+        StateHasChanged();
+        return isValid;
+    }
+
+    private void ClearValidationErrors()
+    {
+        validationErrors.Clear();
+        errorMessage = string.Empty;
+    }
+    private void Close()
+    {
+        showModal = false;
+        ClearValidationErrors();
+        StateHasChanged();
+    }
+}

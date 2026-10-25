@@ -142,7 +142,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("MascotasActualizar", policy => policy.RequireClaim("permission", "mascotas.actualizar"));
     options.AddPolicy("MascotasEliminar", policy => policy.RequireClaim("permission", "mascotas.eliminar"));
 
-    // Políticas para TipoVacunas
+    /*// Políticas para TipoVacunas
     string[] permisosLeer = ["tipos vacunas.leer", "tipovacunas.leer", "tipo vacunas.leer"];
     string[] permisosAgregar = ["tipos vacunas.agregar", "tipovacunas.agregar", "tipo vacunas.agregar"];
     string[] permisosActualizar = ["tipos vacunas.actualizar", "tipovacunas.actualizar", "tipo vacunas.actualizar"];
@@ -156,7 +156,13 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("tipovacunas.leer", policy => policy.RequireClaim("permission", permisosLeer));
     options.AddPolicy("tipovacunas.agregar", policy => policy.RequireClaim("permission", permisosAgregar));
     options.AddPolicy("tipovacunas.actualizar", policy => policy.RequireClaim("permission", permisosActualizar));
-    options.AddPolicy("tipovacunas.eliminar", policy => policy.RequireClaim("permission", permisosEliminar));
+    options.AddPolicy("tipovacunas.eliminar", policy => policy.RequireClaim("permission", permisosEliminar));*/
+    
+    // Políticas para TipoVacunas
+    options.AddPolicy("TipoVacunasLeer", policy => policy.RequireClaim("permission", "tipo vacunas.leer"));
+    options.AddPolicy("TipoVacunasAgregar", policy => policy.RequireClaim("permission", "tipo vacunas.agregar"));
+    options.AddPolicy("TipoVacunasActualizar", policy => policy.RequireClaim("permission", "tipo vacunas.actualizar"));
+    options.AddPolicy("TipoVacunasEliminar", policy => policy.RequireClaim("permission", "tipo vacunas.eliminar"));
 
     // Políticas para Turnos
     options.AddPolicy("TurnosLeer", policy => policy.RequireClaim("permission", "turnos.leer"));
