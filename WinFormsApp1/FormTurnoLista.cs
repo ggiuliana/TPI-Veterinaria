@@ -165,7 +165,7 @@ namespace WinFormsApp1
                     return;
                 }
 
-                if (turnoSeleccionado.IdVeterinario != idPersona)
+                if (rolUsuario != "ADMINISTRADOR" && turnoSeleccionado.IdVeterinario != idPersona)
                 {
                     MessageBox.Show("Solo el veterinario asignado a este turno puede gestionar su consulta.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;

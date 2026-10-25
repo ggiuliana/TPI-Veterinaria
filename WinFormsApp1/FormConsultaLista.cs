@@ -6,17 +6,39 @@ namespace WinFormsApp1
     public partial class FormConsultaLista : Form
     {
         private readonly ConsultaClient ConsultaClient;
+        private readonly TurnoClient TurnoClient;
+        private readonly IAuthService AuthService;
+
+        private string rolUsuario = string.Empty;
+        private int idPersona = 0;
+
         public FormConsultaLista()
         {
             InitializeComponent();
+            this.Load += FormConsultaLista_Load;
             this.Activated += FormConsultaLista_Activated;
-            IAuthService authService = Program.AuthService;
-            ConsultaClient = new ConsultaClient(authService);
+
+            AuthService = Program.AuthService;
+            ConsultaClient = new ConsultaClient(AuthService);
+            TurnoClient = new TurnoClient(AuthService);
+        }
+
+        private async void FormConsultaLista_Load(object? sender, EventArgs e)
+        {
+            dataGridView1.AutoGenerateColumns = false;
+
+            var rol = await AuthService.GetRolAsync();
+            rolUsuario = rol?.Trim().ToUpper() ?? string.Empty;
+
+            if (rolUsuario == "VETERINARIO")
+            {
+                var id = await AuthService.GetPersonaIdAsync();
+                idPersona = id ?? 0;
+            }
         }
 
         private void FormConsultaLista_Activated(object? sender, EventArgs e)
         {
-            dataGridView1.AutoGenerateColumns = false;
             CargarGrilla();
         }
 
@@ -25,6 +47,15 @@ namespace WinFormsApp1
             try
             {
                 var consultas = await ConsultaClient.GetAllAsync();
+
+                if (rolUsuario == "VETERINARIO")
+                {
+                    var misTurnos = await TurnoClient.GetByVeterinarioIdAsync(idPersona);
+                    var misIdsTurnos = misTurnos.Select(t => t.IdTurno).ToList();
+
+                    consultas = consultas.Where(c => misIdsTurnos.Contains(c.IdTurno)).ToList();
+                }
+
                 dataGridView1.DataSource = consultas;
             }
             catch (Exception ex)
@@ -48,6 +79,16 @@ namespace WinFormsApp1
                     var consulta = await ConsultaClient.GetAsync(idBuscado);
                     if (consulta != null)
                     {
+                        if (rolUsuario == "VETERINARIO")
+                        {
+                            var turno = await TurnoClient.GetAsync(consulta.IdTurno);
+                            if (turno == null || turno.IdVeterinario != idPersona)
+                            {
+                                MessageBox.Show("No tiene permisos para ver esta consulta.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                return;
+                            }
+                        }
+
                         dataGridView1.DataSource = new List<ConsultaDTO> { consulta };
                     }
                     else
@@ -71,7 +112,7 @@ namespace WinFormsApp1
         {
             if (dataGridView1.CurrentRow != null)
             {
-               int idTurno = Convert.ToInt32(dataGridView1.CurrentRow.Cells["colIdTurno"].Value);
+                int idTurno = Convert.ToInt32(dataGridView1.CurrentRow.Cells["colIdTurno"].Value);
 
                 FormConsultaDetalle formDetalle = new FormConsultaDetalle(idTurno);
                 if (formDetalle.ShowDialog() == DialogResult.OK)
@@ -98,7 +139,6 @@ namespace WinFormsApp1
                     try
                     {
                         await ConsultaClient.DeleteAsync(idConsulta);
-
                         MessageBox.Show("Consulta eliminada con éxito.", "Eliminado", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         CargarGrilla();
                     }

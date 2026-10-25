@@ -30,6 +30,7 @@ namespace Data
         {
             return await context.Consultas
                 .Include(c => c.MedicamentosConsulta)
+                .Include(c => c.Estudios)
                 .FirstOrDefaultAsync(t => t.IdConsulta == id);
         }
         public async Task<IEnumerable<Consulta>> GetAllAsync()
@@ -40,6 +41,7 @@ namespace Data
         {
             var existingConsulta = await context.Consultas
                 .Include(c => c.MedicamentosConsulta)
+                .Include(c => c.Estudios)   
                 .FirstOrDefaultAsync(t => t.IdConsulta == consulta.IdConsulta);
 
             if (existingConsulta == null)

@@ -393,12 +393,48 @@ namespace Data
                 .HasMaxLength(200);
 
                 entity.HasData(
-                    new
-                    {
-                        IdEstudio = 1,
-                        NombreEstudio = "Resonancia Magnética",
-                        DescripcionEstudio = "Se introduce el animal en un cilindro para visualizar su interior."
-                    });
+                        new
+                        {
+                            IdEstudio = 1,
+                            NombreEstudio = "Resonancia Magnética",
+                            DescripcionEstudio = "Se introduce el animal en un cilindro para visualizar su interior mediante campos magnéticos de alta resolución."
+                        },
+                        new
+                        {
+                            IdEstudio = 2,
+                            NombreEstudio = "Radiografía (Rayos X)",
+                            DescripcionEstudio = "Toma de imágenes mediante radiación electromagnética para detectar fracturas óseas, problemas articulares o cuerpos extraños."
+                        },
+                        new
+                        {
+                            IdEstudio = 3,
+                            NombreEstudio = "Ecografía Abdominal",
+                            DescripcionEstudio = "Uso de ultrasonido para observar en tiempo real los órganos internos como el hígado, riñones y tracto intestinal."
+                        },
+                        new
+                        {
+                            IdEstudio = 4,
+                            NombreEstudio = "Análisis de Sangre (Hemograma)",
+                            DescripcionEstudio = "Extracción y evaluación de sangre para medir glóbulos rojos, blancos, plaquetas y detectar posibles infecciones o anemias."
+                        },
+                        new
+                        {
+                            IdEstudio = 5,
+                            NombreEstudio = "Electrocardiograma (ECG)",
+                            DescripcionEstudio = "Registro no invasivo de la actividad eléctrica del corazón para evaluar el ritmo cardíaco y detectar arritmias."
+                        },
+                        new
+                        {
+                            IdEstudio = 6,
+                            NombreEstudio = "Análisis de Orina",
+                            DescripcionEstudio = "Evaluación de una muestra de orina para revisar la función renal, niveles de glucosa y descartar infecciones del tracto urinario."
+                        },
+                        new
+                        {
+                            IdEstudio = 7,
+                            NombreEstudio = "Endoscopia",
+                            DescripcionEstudio = "Exploración visual mínimamente invasiva del tracto digestivo o respiratorio utilizando un tubo flexible con una cámara en la punta."
+                        });
             });
             modelBuilder.Entity<TipoVacuna>(entity =>
             {
@@ -414,20 +450,56 @@ namespace Data
 
                 entity.Property(t => t.DescripcionTipoVacuna)
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(500);
 
                 entity.HasData(
                         new
                         {
                             IdTipoVacuna = 1,
-                            NombreTipoVacuna = "Antitetanica",
-                            DescripcionTipoVacuna = "Vacuna contra la bacteria del tetanos."
+                            NombreTipoVacuna = "Antirrábica",
+                            DescripcionTipoVacuna = "Vacuna obligatoria anual contra el virus de la rabia, aplicable tanto en perros como en gatos."
                         },
                         new
                         {
                             IdTipoVacuna = 2,
-                            NombreTipoVacuna = "Antiviral",
-                            DescripcionTipoVacuna = "Vacuna contra multiples viruses."
+                            NombreTipoVacuna = "Séxtuple Canina",
+                            DescripcionTipoVacuna = "Protege a los perros contra Moquillo, Parvovirus, Hepatitis infecciosa, Parainfluenza y Leptospirosis."
+                        },
+                        new
+                        {
+                            IdTipoVacuna = 3,
+                            NombreTipoVacuna = "Triple Felina",
+                            DescripcionTipoVacuna = "Inmuniza a los gatos contra las enfermedades más comunes: Panleucopenia, Rinotraqueítis y Calicivirus felino."
+                        },
+                        new
+                        {
+                            IdTipoVacuna = 4,
+                            NombreTipoVacuna = "Tos de las Perreras",
+                            DescripcionTipoVacuna = "Previene la traqueobronquitis infecciosa canina (Bordetella). Muy recomendada para perros que asisten a guarderías."
+                        },
+                        new
+                        {
+                            IdTipoVacuna = 5,
+                            NombreTipoVacuna = "Leucemia Felina (ViLeF)",
+                            DescripcionTipoVacuna = "Vacuna preventiva para gatos contra el virus de la leucemia felina. Requiere test previo negativo."
+                        },
+                        new
+                        {
+                            IdTipoVacuna = 6,
+                            NombreTipoVacuna = "Antitetánica",
+                            DescripcionTipoVacuna = "Vacuna contra la bacteria del tétanos. Fundamental tras heridas profundas, mordeduras o cirugías con riesgo."
+                        },
+                        new
+                        {
+                            IdTipoVacuna = 7,
+                            NombreTipoVacuna = "Puppy DP (Desmame)",
+                            DescripcionTipoVacuna = "Primera vacuna para cachorros (a los 45 días) que los protege específicamente contra Parvovirus y Moquillo."
+                        },
+                        new
+                        {
+                            IdTipoVacuna = 8,
+                            NombreTipoVacuna = "Giardia Canina",
+                            DescripcionTipoVacuna = "Reduce significativamente la severidad de la enfermedad y la eliminación de quistes del parásito intestinal."
                         }
                     );
 

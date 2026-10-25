@@ -12,8 +12,10 @@ namespace WinFormsApp1
         private ConsultaDTO? _consultaExistente;
         private readonly ConsultaClient ConsultaClient;
         private readonly MedicamentoClient MedicamentoClient;
+        private readonly EstudioClient EstudioClient;
 
         private BindingList<MedicamentoConsultaDTO> _medicamentosTemporales = new BindingList<MedicamentoConsultaDTO>();
+        private BindingList<EstudioDTO> _estudiosTemporales = new BindingList<EstudioDTO>();
 
         public FormConsultaDetalle(int idTurno)
         {
@@ -23,12 +25,15 @@ namespace WinFormsApp1
             IAuthService authService = Program.AuthService;
             ConsultaClient = new ConsultaClient(authService);
             MedicamentoClient = new MedicamentoClient(authService);
+            EstudioClient = new EstudioClient(authService); 
         }
 
         private async void FormConsultaDetalle_Load(object? sender, EventArgs e)
         {
             dgvMedicamentos.AutoGenerateColumns = false;
             dgvMedicamentos.DataSource = _medicamentosTemporales;
+            dgvEstudios.AutoGenerateColumns = false;
+            dgvEstudios.DataSource = _estudiosTemporales;
 
             try
             {
@@ -36,6 +41,11 @@ namespace WinFormsApp1
                 cmbMedicamentos.DataSource = medicamentosDb;
                 cmbMedicamentos.DisplayMember = "NombreMedicamento";
                 cmbMedicamentos.ValueMember = "IdMedicamento";
+
+                var estudiosDb = await EstudioClient.GetAllAsync();
+                cmbEstudios.DataSource = estudiosDb;
+                cmbEstudios.DisplayMember = "NombreEstudio";
+                cmbEstudios.ValueMember = "IdEstudio";
 
                 _consultaExistente = await ConsultaClient.GetByIdTurnoAsync(_idTurnoActual);
 
@@ -61,6 +71,15 @@ namespace WinFormsApp1
                             }
 
                             _medicamentosTemporales.Add(med);
+                        }
+                        var listaEstudios = (IEnumerable<EstudioDTO>)cmbEstudios.DataSource;
+                        foreach (var idEstudio in _consultaExistente.IdEstudios)
+                        {
+                            var infoEst = listaEstudios.FirstOrDefault(e => e.IdEstudio == idEstudio);
+                            if (infoEst != null)
+                            {
+                                _estudiosTemporales.Add(infoEst);
+                            }
                         }
                     }
                 }
@@ -124,7 +143,8 @@ namespace WinFormsApp1
                 Tratamiento = txtTratamiento.Text,
                 Peso = (float)numPeso.Value,
                 Observaciones = string.IsNullOrWhiteSpace(txtObservaciones.Text) ? null : txtObservaciones.Text,
-                MedicamentoConsulta = _medicamentosTemporales.ToList()
+                MedicamentoConsulta = _medicamentosTemporales.ToList(),
+                IdEstudios = _estudiosTemporales.Select(e => e.IdEstudio).ToList()
             };
 
             try
@@ -167,6 +187,34 @@ namespace WinFormsApp1
                 {
                     _medicamentosTemporales.Remove(filaSeleccionada);
                 }
+            }
+        }
+        private void btnAgregarEstudio_Click(object sender, EventArgs e)
+        {
+            if (cmbEstudios.SelectedValue != null)
+            {
+                int idSeleccionado = (int)cmbEstudios.SelectedValue;
+                var listaEstudios = cmbEstudios.DataSource as IEnumerable<EstudioDTO>;
+                var infoEst = listaEstudios?.FirstOrDefault(es => es.IdEstudio == idSeleccionado);
+
+                if (_estudiosTemporales.Any(es => es.IdEstudio == idSeleccionado))
+                {
+                    MessageBox.Show("Este estudio ya está en la lista.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (infoEst != null)
+                {
+                    _estudiosTemporales.Add(infoEst);
+                }
+            }
+        }
+        private void btnQuitarEstudio_Click(object sender, EventArgs e)
+        {
+            if (dgvEstudios.CurrentRow != null)
+            {
+                var fila = (EstudioDTO)dgvEstudios.CurrentRow.DataBoundItem;
+                if (fila != null) _estudiosTemporales.Remove(fila);
             }
         }
     }
