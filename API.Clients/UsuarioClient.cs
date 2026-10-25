@@ -16,7 +16,7 @@ namespace API.Clients
         {
         }
 
-        public class ErrorResponse { public string Error { get; set; } }
+        public class ErrorResponse { public string Error { get; set; } = string.Empty; }
         public async Task<UsuarioDTO?> GetAsync(int id)
         {
             using var client = await CreateHttpClientAsync();

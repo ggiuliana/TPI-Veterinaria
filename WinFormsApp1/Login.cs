@@ -34,9 +34,9 @@
             }
         }
 
-        private async void Registrarse_Click(object sender, EventArgs e)
+        private void Registrarse_Click(object sender, EventArgs e)
         {
-            FormRegistro formRegistro = new FormRegistro();
+            FormRegistro formRegistro = new();
 
             this.Hide();
 

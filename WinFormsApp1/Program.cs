@@ -5,7 +5,7 @@ namespace WinFormsApp1
 {
     internal static class Program
     {
-        public static IAuthService AuthService { get; private set; }
+        public static IAuthService AuthService { get; private set; } = null!;
 
         [STAThread]
         static void Main()
@@ -33,12 +33,10 @@ namespace WinFormsApp1
             {
                 if (!await AuthService.IsAuthenticatedAsync())
                 {
-                    using (var loginForm = new Login())
+                    using var loginForm = new Login();
+                    if (loginForm.ShowDialog() != DialogResult.OK)
                     {
-                        if (loginForm.ShowDialog() != DialogResult.OK)
-                        {
-                            return;
-                        }
+                        return;
                     }
                 }
 

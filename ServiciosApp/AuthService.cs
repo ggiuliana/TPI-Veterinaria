@@ -38,8 +38,8 @@ namespace ServiciosApp
                 Token = token,
                 ExpiresAt = expiresAt,
                 Username = usuario.NombreUsuario,
-                Rol = usuario.Grupo.Nombre,
-                IdPersona = usuario.IdPersona
+                Rol = usuario?.Grupo?.Nombre,
+                IdPersona = usuario?.IdPersona
             };
         }
         private string GenerateJwtToken(Usuario usuario)
@@ -54,9 +54,9 @@ namespace ServiciosApp
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, usuario.IdUsuario.ToString()),
-                new Claim(ClaimTypes.Name, usuario.NombreUsuario),
-                new Claim("jti", Guid.NewGuid().ToString())
+                new (ClaimTypes.NameIdentifier, usuario.IdUsuario.ToString()),
+                new (ClaimTypes.Name, usuario.NombreUsuario),
+                new ("jti", Guid.NewGuid().ToString())
             };
 
             var permisos = usuario.ObtenerTodosLosPermisos();

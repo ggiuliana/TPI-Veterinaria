@@ -20,7 +20,7 @@ namespace ServiciosApp
         public async Task<MascotaDTO> AddAsync(MascotaDTO dto)
         {
             var duenio = await repoDuenio.GetAsync(dto.IdDuenio) ?? throw new ArgumentException("Dueño no encontrado");
-            Mascota mascota = new Mascota(
+            Mascota mascota = new(
                 0,
                 dto.NombreMascota,
                 dto.Especie,
@@ -145,7 +145,7 @@ namespace ServiciosApp
             mascota.SetSexo(dto.Sexo);
             mascota.SetFechaNac(dto.FechaNac);
             
-            mascota.Vacunas.Clear();
+            mascota?.Vacunas?.Clear();
 
             if (dto.Vacunas != null && dto.Vacunas.Any())
             {
@@ -162,14 +162,14 @@ namespace ServiciosApp
                         throw new Exception($"Tipo de vacuna con ID {vacunaDto.IdTipoVacuna} no encontrado");
                     }
 
-                    var vacunaNueva = new Vacuna(vacunaDto.FechaColocacion, tipoVacuna, mascota);
+                    var vacunaNueva = new Vacuna(vacunaDto.FechaColocacion, tipoVacuna, mascota!);
                     vacunasParaGuardar.Add(vacunaNueva);
                 }
 
-                mascota.SetVacunas(vacunasParaGuardar);
+                mascota?.SetVacunas(vacunasParaGuardar);
             }
 
-            return await repo.UpdateAsync(mascota);
+            return await repo.UpdateAsync(mascota!);
         }
     }
 }

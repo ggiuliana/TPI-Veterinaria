@@ -39,7 +39,7 @@ namespace ServiciosApp
             return await context.Usuarios
                 .Include(u => u.Persona)
                 .Include(u => u.Grupo)
-                    .ThenInclude(g => g.Permisos.Where(p => p.Activo))
+                    .ThenInclude(g => g!.Permisos.Where(p => p.Activo))
                 .FirstOrDefaultAsync(u => u.NombreUsuario == nombreUsuario && u.EstadoUsuario == "Activo");
         }
         public async Task<bool> UpdateAsync(Usuario usuario)
@@ -97,7 +97,7 @@ namespace ServiciosApp
 
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 await transaction.RollbackAsync();
 

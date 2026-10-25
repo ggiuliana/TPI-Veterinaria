@@ -55,7 +55,7 @@ namespace WinFormsApp1
 
                     var diccionarioTipos = _tiposVacuna.ToDictionary(t => t.IdTipoVacuna, t => t.NombreTipoVacuna);
 
-                    if (mascota.Vacunas != null && mascota.Vacunas.Any())
+                    if (mascota!.Vacunas != null && mascota.Vacunas.Any())
                     {
                         _vacunasPendientes = mascota.Vacunas.ToList();
 

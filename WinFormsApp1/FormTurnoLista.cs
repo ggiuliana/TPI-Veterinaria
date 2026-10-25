@@ -100,7 +100,7 @@ namespace WinFormsApp1
 
         private void Create_Click(object sender, EventArgs e)
         {
-            FormTurnoDetalle formDetalle = new FormTurnoDetalle(0);
+            FormTurnoDetalle formDetalle = new(0);
             if (formDetalle.ShowDialog() == DialogResult.OK)
             {
                 CargarGrilla();
@@ -113,7 +113,7 @@ namespace WinFormsApp1
             {
                 int idTurno = Convert.ToInt32(dataGridView1.CurrentRow.Cells["colIdTurno"].Value);
 
-                FormTurnoDetalle formDetalle = new FormTurnoDetalle(idTurno);
+                FormTurnoDetalle formDetalle = new(idTurno);
                 if (formDetalle.ShowDialog() == DialogResult.OK)
                 {
                     CargarGrilla();
@@ -171,7 +171,7 @@ namespace WinFormsApp1
                     return;
                 }
 
-                FormConsultaDetalle formConsulta = new FormConsultaDetalle(turnoSeleccionado.IdTurno);
+                FormConsultaDetalle formConsulta = new(turnoSeleccionado.IdTurno);
                 if (formConsulta.ShowDialog() == DialogResult.OK)
                 {
                     try
@@ -192,7 +192,7 @@ namespace WinFormsApp1
 
         private void Metricas_Click(object sender, EventArgs e)
         {
-            FormMetricasTurnos formMetricas = new FormMetricasTurnos();
+            FormMetricasTurnos formMetricas = new();
             formMetricas.MdiParent = this.MdiParent;
             formMetricas.Show();
         }

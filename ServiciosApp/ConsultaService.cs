@@ -25,7 +25,7 @@ namespace ServiciosApp
         {
             var turno = await repoTurno.GetAsync(dto.IdTurno) ?? throw new ArgumentException($"No se encontró el turno con ID {dto.IdTurno}");
 
-            Consulta consulta = new Consulta(0, dto.Diagnostico, dto.Tratamiento, dto.Peso, turno);
+            Consulta consulta = new (0, dto.Diagnostico, dto.Tratamiento, dto.Peso, turno);
 
             if (dto.Observaciones != null)
             {
@@ -198,8 +198,8 @@ namespace ServiciosApp
                 {
                     medDb.SetCantidadRestante(medDb.CantidadRestante + itemEliminar.CantidadUsada);
                 }
-                consulta.MedicamentosConsulta.Remove(itemEliminar);
-                repoMedicamentoConsulta.Remove(itemEliminar);
+                consulta.MedicamentosConsulta?.Remove(itemEliminar);
+                repoMedicamentoConsulta?.Remove(itemEliminar);
             }
 
             foreach (var itemDto in medicamentosDto)
@@ -218,7 +218,7 @@ namespace ServiciosApp
                 {
                     medDb.SetCantidadRestante(medDb.CantidadRestante - itemDto.CantidadUsada);
                     var nuevaRelacion = new MedicamentoConsulta(consulta.IdConsulta, itemDto.IdMedicamento, itemDto.CantidadUsada);
-                    consulta.MedicamentosConsulta.Add(nuevaRelacion);
+                    consulta.MedicamentosConsulta?.Add(nuevaRelacion);
                 }
             }
             if (consulta.Estudios != null)
@@ -235,10 +235,10 @@ namespace ServiciosApp
                 var estudiosDb = await repoEstudio.GetByIdListAsync(dto.IdEstudios);
                 foreach (var estudio in estudiosDb)
                 {
-                    consulta.Estudios.Add(estudio);
+                    consulta?.Estudios?.Add(estudio);
                 }
             }
-            return await repo.UpdateAsync(consulta);
+            return await repo.UpdateAsync(consulta!);
         }
         public async Task<ConsultaDTO?> GetByIdTurnoAsync(int idTurno)
         {

@@ -147,7 +147,7 @@
 
             if (rolUsuario == "VETERINARIO")
             {
-                turnos = await TurnoClient.GetByVeterinarioIdAsync(idPersona.Value);
+                turnos = await TurnoClient.GetByVeterinarioIdAsync(idPersona!.Value);
             }
             else
             {

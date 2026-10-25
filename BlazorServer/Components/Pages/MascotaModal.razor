@@ -234,7 +234,7 @@
         StateHasChanged();
     }
 
-    public async Task ShowEditModal(MascotaDTO mascota)
+    public Task ShowEditModal(MascotaDTO mascota)
     {
         mode = FormMode.Update;
         currentMascota = new MascotaDTO
@@ -255,6 +255,8 @@
         ClearValidationErrors();
         showModal = true;
         StateHasChanged();
+
+        return Task.CompletedTask;
     }
 
     private void AgregarVacunaTemporal()

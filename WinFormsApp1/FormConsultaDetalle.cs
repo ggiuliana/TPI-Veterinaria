@@ -14,8 +14,8 @@ namespace WinFormsApp1
         private readonly MedicamentoClient MedicamentoClient;
         private readonly EstudioClient EstudioClient;
 
-        private BindingList<MedicamentoConsultaDTO> _medicamentosTemporales = new BindingList<MedicamentoConsultaDTO>();
-        private BindingList<EstudioDTO> _estudiosTemporales = new BindingList<EstudioDTO>();
+        private BindingList<MedicamentoConsultaDTO> _medicamentosTemporales = new();
+        private BindingList<EstudioDTO> _estudiosTemporales = new();
 
         public FormConsultaDetalle(int idTurno)
         {
@@ -73,7 +73,7 @@ namespace WinFormsApp1
                             _medicamentosTemporales.Add(med);
                         }
                         var listaEstudios = (IEnumerable<EstudioDTO>)cmbEstudios.DataSource;
-                        foreach (var idEstudio in _consultaExistente.IdEstudios)
+                        foreach (var idEstudio in _consultaExistente?.IdEstudios ?? Enumerable.Empty<int>())
                         {
                             var infoEst = listaEstudios.FirstOrDefault(e => e.IdEstudio == idEstudio);
                             if (infoEst != null)

@@ -75,16 +75,18 @@
 
     public enum FormMode { Add, Update }
 
-    public async Task ShowAddModal()
+    public Task ShowAddModal()
     {
         mode = FormMode.Add;
         currentVacuna = new TipoVacunaDTO { NombreTipoVacuna = string.Empty, DescripcionTipoVacuna = string.Empty };
         ClearValidationErrors();
         showModal = true;
         StateHasChanged();
+
+        return Task.CompletedTask;
     }
 
-    public async Task ShowEditModal(TipoVacunaDTO vacuna)
+    public Task ShowEditModal(TipoVacunaDTO vacuna)
     {
         mode = FormMode.Update;
         currentVacuna = new TipoVacunaDTO
@@ -96,6 +98,8 @@
         ClearValidationErrors();
         showModal = true;
         StateHasChanged();
+        
+        return Task.CompletedTask;  
     }
 
     private async Task HandleValidSubmit()
