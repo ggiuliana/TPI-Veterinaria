@@ -170,7 +170,7 @@
         Update
     }
 
-    public async Task ShowAddModal()
+    public void ShowAddModal()
     {
         mode = FormMode.Add;
         currentRegister = new VeterinarioRegisterDTO
@@ -185,7 +185,7 @@
         StateHasChanged();
     }
 
-    public async Task ShowEditModal(VeterinarioDTO veterinario)
+    public void ShowEditModal(VeterinarioDTO veterinario)
     {
         mode = FormMode.Update;
         currentVeterinario = new VeterinarioDTO

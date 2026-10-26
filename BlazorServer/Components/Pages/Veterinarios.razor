@@ -182,19 +182,19 @@
         }
     }
 
-    private async Task OpenAddModal()
+    private void OpenAddModal()
     {
         if (veterinarioModal != null)
         {
-            await veterinarioModal.ShowAddModal();
+            veterinarioModal.ShowAddModal();
         }
     }
 
-    private async Task OpenEditModal(VeterinarioDTO vet)
+    private void OpenEditModal(VeterinarioDTO vet)
     {
         if (veterinarioModal != null)
         {
-            await veterinarioModal.ShowEditModal(vet);
+            veterinarioModal.ShowEditModal(vet);
         }
     }
 

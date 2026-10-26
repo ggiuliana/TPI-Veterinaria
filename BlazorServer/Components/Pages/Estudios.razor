@@ -169,19 +169,19 @@
         }
     }
 
-    private async Task OpenAddModal()
+    private void OpenAddModal()
     {
         if (estudioModal != null)
         {
-            await estudioModal.ShowAddModal();
+            estudioModal.ShowAddModal();
         }
     }
 
-    private async Task OpenEditModal(EstudioDTO est)
+    private void OpenEditModal(EstudioDTO est)
     {
         if (estudioModal != null)
         {
-            await estudioModal.ShowEditModal(est);
+            estudioModal.ShowEditModal(est);
         }
     }
 

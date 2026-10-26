@@ -81,7 +81,7 @@
                                         <td class="align-middle">@turno.FechaTurno.ToString("dd/MM/yyyy")</td>
                                         <td class="align-middle">@turno.HoraTurno.ToString("HH:mm")</td>
                                         <td class="align-middle">
-                                            <span class="badge @GetBadgeClass(turno.EstadoTurno)">
+                                            <span class="badge @GetBadgeClass(turno.EstadoTurno ?? string.Empty)">
                                                 @turno.EstadoTurno
                                             </span>
                                         </td>
@@ -225,7 +225,7 @@
         }
     }
 
-    private async Task OpenAddModal()
+    private void OpenAddModal()
     {
         if (turnoModal != null)
         {
@@ -233,7 +233,7 @@
         }
     }
 
-    private async Task OpenEditModal(TurnoDTO turno)
+    private void OpenEditModal(TurnoDTO turno)
     {
         if (turnoModal != null)
         {

@@ -17,7 +17,7 @@ namespace WinFormsApp1
     {
         private readonly TurnoClient TurnoClient;
         private readonly IAuthService AuthService;
-        private FlowLayoutPanel panelMetricas;
+        private FlowLayoutPanel? panelMetricas;
 
         private string rolUsuario = string.Empty;
         private int idPersona = 0;
@@ -125,7 +125,7 @@ namespace WinFormsApp1
             tablaPrincipal.BringToFront();
         }
 
-        private void btnRetroceso_Click(object sender, EventArgs e)
+        private void btnRetroceso_Click(object? sender, EventArgs e)
         {
             this.Close();
         }
@@ -138,7 +138,9 @@ namespace WinFormsApp1
 
                 if (rolUsuario == "VETERINARIO")
                 {
-                    turnos = await TurnoClient.GetByVeterinarioIdAsync(idPersona);
+                    var id = await AuthService.GetPersonaIdAsync();
+                    idPersona = id ?? 0;
+                    turnos = await TurnoClient.GetByVeterinarioIdAsync(idPersona) ?? new List<TurnoDTO>();
                 }
                 else
                 {
@@ -151,44 +153,47 @@ namespace WinFormsApp1
                 int turnosDisponibles = turnos.Count(t => t.EstadoTurno != null && t.EstadoTurno.ToLower() == "disponible");
                 int turnosResueltos = turnos.Count(t => t.EstadoTurno != null && t.EstadoTurno.ToLower() == "resuelto");
 
-                panelMetricas.Controls.Clear();
-
-                Label lblTotal = new Label
+                if (panelMetricas != null)
                 {
-                    Text = $"Turnos totales: {totalTurnos}",
-                    AutoSize = true,
-                    Font = new Font("Segoe UI", 12F, FontStyle.Bold),
-                    Margin = new Padding(0, 0, 0, 20)
-                };
+                    panelMetricas.Controls.Clear();
 
-                Label lblOtorgado = new Label
-                {
-                    Text = $"Turnos en estado Otorgado: {turnosOtorgados}",
-                    AutoSize = true,
-                    Font = new Font("Segoe UI", 11F),
-                    Margin = new Padding(0, 0, 0, 10)
-                };
+                    Label lblTotal = new Label
+                    {
+                        Text = $"Turnos totales: {totalTurnos}",
+                        AutoSize = true,
+                        Font = new Font("Segoe UI", 12F, FontStyle.Bold),
+                        Margin = new Padding(0, 0, 0, 20)
+                    };
 
-                Label lblPendiente = new Label
-                {
-                    Text = $"Turnos en estado Disponible: {turnosDisponibles}",
-                    AutoSize = true,
-                    Font = new Font("Segoe UI", 11F),
-                    Margin = new Padding(0, 0, 0, 10)
-                };
+                    Label lblOtorgado = new Label
+                    {
+                        Text = $"Turnos en estado Otorgado: {turnosOtorgados}",
+                        AutoSize = true,
+                        Font = new Font("Segoe UI", 11F),
+                        Margin = new Padding(0, 0, 0, 10)
+                    };
 
-                Label lblResuelto = new Label
-                {
-                    Text = $"Turnos en estado Resuelto: {turnosResueltos}",
-                    AutoSize = true,
-                    Font = new Font("Segoe UI", 11F),
-                    Margin = new Padding(0, 0, 0, 10)
-                };
+                    Label lblPendiente = new Label
+                    {
+                        Text = $"Turnos en estado Disponible: {turnosDisponibles}",
+                        AutoSize = true,
+                        Font = new Font("Segoe UI", 11F),
+                        Margin = new Padding(0, 0, 0, 10)
+                    };
 
-                panelMetricas.Controls.Add(lblTotal);
-                panelMetricas.Controls.Add(lblOtorgado);
-                panelMetricas.Controls.Add(lblPendiente);
-                panelMetricas.Controls.Add(lblResuelto);
+                    Label lblResuelto = new Label
+                    {
+                        Text = $"Turnos en estado Resuelto: {turnosResueltos}",
+                        AutoSize = true,
+                        Font = new Font("Segoe UI", 11F),
+                        Margin = new Padding(0, 0, 0, 10)
+                    };
+
+                    panelMetricas.Controls.Add(lblTotal);
+                    panelMetricas.Controls.Add(lblOtorgado);
+                    panelMetricas.Controls.Add(lblPendiente);
+                    panelMetricas.Controls.Add(lblResuelto);
+                }
 
                 var turnosAgrupados = turnos
                     .GroupBy(t => t.EstadoTurno ?? "Sin Estado")

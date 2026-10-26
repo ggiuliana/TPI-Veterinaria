@@ -118,7 +118,7 @@
             skDefaultTooltip2.X = 0F;
             skDefaultTooltip2.Y = 0F;
             cartesianChart1.Tooltip = skDefaultTooltip2;
-            cartesianChart1.TooltipFindingStrategy = LiveChartsCore.Measure.TooltipFindingStrategy.Automatic;
+            cartesianChart1.FindingStrategy = LiveChartsCore.Measure.FindingStrategy.Automatic;
             cartesianChart1.UpdaterThrottler = TimeSpan.Parse("00:00:00.0500000");
             // 
             // FormMetricasTurnos
@@ -126,7 +126,6 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(Volver);
             Controls.Add(cartesianChart1);
             Controls.Add(pieChart1);
             Name = "FormMetricasTurnos";
@@ -137,10 +136,6 @@
         #endregion
 
         private LiveChartsCore.SkiaSharpView.WinForms.PieChart pieChart1;
-        private LiveChartsCore.SkiaSharpView.WinForms.PolarChart polarChart1;
         private LiveChartsCore.SkiaSharpView.WinForms.CartesianChart cartesianChart1;
-        private LiveChartsCore.SkiaSharpView.WinForms.PieChart pieChart2;
-        private LiveChartsGeneratedCode.SourceGenPieChart sourceGenPieChart1;
-        private Button Volver;
     }
 }

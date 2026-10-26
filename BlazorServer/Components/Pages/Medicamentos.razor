@@ -181,11 +181,11 @@
         }
     }
 
-    private async Task OpenAddModal()
+    private void OpenAddModal()
     {
         if (medicamentoModal != null)
         {
-            await medicamentoModal.ShowAddModal();
+            medicamentoModal.ShowAddModal();
         }
     }
 
@@ -194,11 +194,11 @@
         Navigation.NavigateTo("/stock");
     }
 
-    private async Task OpenEditModal(MedicamentoDTO med)
+    private void OpenEditModal(MedicamentoDTO med)
     {
         if (medicamentoModal != null)
         {
-            await medicamentoModal.ShowEditModal(med);
+            medicamentoModal.ShowEditModal(med);
         }
     }
 

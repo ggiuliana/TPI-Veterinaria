@@ -34,7 +34,7 @@ namespace Data
             }
         }
 
-        public async Task Remove(MedicamentoConsulta medcon)
+        public void Remove(MedicamentoConsulta medcon)
         {
             context.MedicamentoConsulta.Remove(medcon);
         }

@@ -7,6 +7,6 @@ namespace Data
         Task<List<MedicamentoConsulta>> GetByConsultaIdAsync(int idConsulta);
         Task AddAsync(MedicamentoConsulta detalle);
         Task DeleteAsync(int idConsulta, int idMedicamento);
-        Task Remove(MedicamentoConsulta medcon);
+        void Remove(MedicamentoConsulta medcon);
     }
 }

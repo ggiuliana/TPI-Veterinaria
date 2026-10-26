@@ -91,7 +91,7 @@
         Update
     }
 
-    public async Task ShowAddModal()
+    public void ShowAddModal()
     {
         mode = FormMode.Add;
         currentMedicamento = new MedicamentoDTO
@@ -104,7 +104,7 @@
         StateHasChanged();
     }
 
-    public async Task ShowEditModal(MedicamentoDTO medicamento)
+    public void ShowEditModal(MedicamentoDTO medicamento)
     {
         mode = FormMode.Update;
         currentMedicamento = new MedicamentoDTO

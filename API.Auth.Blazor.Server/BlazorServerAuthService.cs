@@ -11,7 +11,7 @@ namespace API.Auth.Blazor.Server
     {
         private SessionData? _currentSession;
 
-        public event Action<bool>? AuthenticationStateChanged;
+        public new event Action<bool>? AuthenticationStateChanged;
 
         private readonly IServiceProvider _serviceProvider;
 

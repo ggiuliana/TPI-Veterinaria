@@ -92,7 +92,7 @@
         Update
     }
 
-    public async Task ShowAddModal()
+    public void ShowAddModal()
     {
         mode = FormMode.Add;
         currentEstudio = new EstudioDTO
@@ -105,7 +105,7 @@
         StateHasChanged();
     }
 
-    public async Task ShowEditModal(EstudioDTO estudio)
+    public void ShowEditModal(EstudioDTO estudio)
     {
         mode = FormMode.Update;
         currentEstudio = new EstudioDTO
