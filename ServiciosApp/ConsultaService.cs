@@ -11,14 +11,22 @@ namespace ServiciosApp
         private readonly IEstudioRepository repoEstudio;
         private readonly IMedicamentoRepository repoMedicamento;
         private readonly IMedicamentoConsultaRepository repoMedicamentoConsulta;
+        private readonly IUserContextService userContext;
 
-        public ConsultaService(IConsultaRepository repo, ITurnoRepository repoTurno, IEstudioRepository repoEstudio, IMedicamentoRepository repoMedicamento, IMedicamentoConsultaRepository repoMedicamentoConsulta)
+        public ConsultaService(
+            IConsultaRepository repo,
+            ITurnoRepository repoTurno,
+            IEstudioRepository repoEstudio,
+            IMedicamentoRepository repoMedicamento,
+            IMedicamentoConsultaRepository repoMedicamentoConsulta,
+            IUserContextService userContext)
         {
             this.repo = repo;
             this.repoTurno = repoTurno;
             this.repoEstudio = repoEstudio;
             this.repoMedicamento = repoMedicamento;
             this.repoMedicamentoConsulta = repoMedicamentoConsulta;
+            this.userContext = userContext;
         }
 
         private void ValidarDominioConsulta(ConsultaDTO dto)
@@ -33,8 +41,23 @@ namespace ServiciosApp
                 throw new ArgumentException("El peso de la mascota debe ser mayor a cero.");
         }
 
+        private void VerificarPermisosLectura(Consulta consulta, int currentUserId, string rol)
+        {
+            if (rol == "Duenio" && consulta.Turno?.Mascota?.Duenio?.IdPersona != currentUserId)
+            {
+                throw new UnauthorizedAccessException("No tiene permiso para ver el historial clínico de esta mascota.");
+            }
+            if (rol == "Veterinario" && consulta.Turno?.Veterinario?.IdPersona != currentUserId)
+            {
+                throw new UnauthorizedAccessException("Solo puede ver las consultas de los turnos que usted atendió.");
+            }
+        }
+
         public async Task<ConsultaDTO> AddAsync(ConsultaDTO dto)
         {
+            string rol = userContext.GetCurrentRole();
+            int currentUserId = userContext.GetCurrentUserId();
+
             ValidarDominioConsulta(dto);
 
             var consultaExistente = await repo.GetByIdTurnoAsync(dto.IdTurno);
@@ -44,6 +67,9 @@ namespace ServiciosApp
             }
 
             var turno = await repoTurno.GetAsync(dto.IdTurno) ?? throw new ArgumentException($"No se encontró el turno con ID {dto.IdTurno}");
+
+            if (rol == "Veterinario" && turno.Veterinario?.IdPersona != currentUserId)
+                throw new UnauthorizedAccessException("No puede registrar una consulta para un turno asignado a otro veterinario.");
 
             turno.SetEstadoTurno("Resuelto");
 
@@ -100,9 +126,15 @@ namespace ServiciosApp
 
         public async Task<bool> UpdateAsync(ConsultaDTO dto)
         {
+            string rol = userContext.GetCurrentRole();
+            int currentUserId = userContext.GetCurrentUserId();
+
             ValidarDominioConsulta(dto);
 
             var consulta = await repo.GetAsync(dto.IdConsulta) ?? throw new Exception("Consulta no encontrada");
+
+            if (rol == "Veterinario" && consulta.Turno?.Veterinario?.IdPersona != currentUserId)
+                throw new UnauthorizedAccessException("No puede modificar una consulta atendida por otro veterinario.");
 
             if (consulta.IdTurno != dto.IdTurno)
             {
@@ -212,52 +244,44 @@ namespace ServiciosApp
             {
                 return null;
             }
-            return new ConsultaDTO
-            {
-                IdConsulta = consulta.IdConsulta,
-                Diagnostico = consulta.Diagnostico,
-                Tratamiento = consulta.Tratamiento,
-                Peso = consulta.Peso,
-                Observaciones = consulta.Observaciones,
-                IdTurno = consulta.IdTurno,
-                IdEstudios = consulta.Estudios?.Select(e => e.IdEstudio).ToList() ?? null,
-                MedicamentoConsulta = consulta.MedicamentosConsulta?.Select(mu => new MedicamentoConsultaDTO
-                {
-                    IdConsulta = mu.IdConsulta,
-                    IdMedicamento = mu.IdMedicamento,
-                    CantidadUsada = mu.CantidadUsada
-                }).ToList() ?? null
-            };
+
+            VerificarPermisosLectura(consulta, userContext.GetCurrentUserId(), userContext.GetCurrentRole());
+
+            return MapToDTO(consulta);
         }
 
         public async Task<IEnumerable<ConsultaDTO>> GetAllAsync()
         {
             IEnumerable<Consulta> consultas = await repo.GetAllAsync();
-            return [.. consultas.Select(consulta => new ConsultaDTO
+            int currentUserId = userContext.GetCurrentUserId();
+            string rol = userContext.GetCurrentRole();
+
+            if (rol == "Duenio")
             {
-                IdConsulta = consulta.IdConsulta,
-                Diagnostico = consulta.Diagnostico,
-                Tratamiento = consulta.Tratamiento,
-                Peso = consulta.Peso,
-                Observaciones = consulta.Observaciones,
-                IdTurno = consulta.IdTurno,
-                IdEstudios = consulta.Estudios?.Select(e => e.IdEstudio).ToList() ?? null,
-                MedicamentoConsulta = consulta.MedicamentosConsulta?.Select(mu => new MedicamentoConsultaDTO
-                {
-                    IdConsulta = mu.IdConsulta,
-                    IdMedicamento = mu.IdMedicamento,
-                    CantidadUsada = mu.CantidadUsada
-                }).ToList() ?? null
-            })];
+                consultas = consultas.Where(c => c.Turno?.Mascota?.Duenio?.IdPersona == currentUserId);
+            }
+            else if (rol == "Veterinario")
+            {
+                consultas = consultas.Where(c => c.Turno?.Veterinario?.IdPersona == currentUserId);
+            }
+
+            return [.. consultas.Select(MapToDTO)];
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
+            string rol = userContext.GetCurrentRole();
+            int currentUserId = userContext.GetCurrentUserId();
+
             var consulta = await repo.GetAsync(id);
             if (consulta == null)
             {
                 return false;
             }
+
+            if (rol == "Veterinario" && consulta.Turno?.Veterinario?.IdPersona != currentUserId)
+                throw new UnauthorizedAccessException("No puede eliminar una consulta atendida por otro veterinario.");
+
             if (consulta.MedicamentosConsulta != null && consulta.MedicamentosConsulta.Any())
             {
                 var idsMedicamentos = consulta.MedicamentosConsulta.Select(m => m.IdMedicamento).ToList();
@@ -273,7 +297,6 @@ namespace ServiciosApp
                 }
 
                 consulta.MedicamentosConsulta.Clear();
-
             }
             return await repo.DeleteAsync(id);
         }
@@ -287,6 +310,13 @@ namespace ServiciosApp
                 return null;
             }
 
+            VerificarPermisosLectura(consulta, userContext.GetCurrentUserId(), userContext.GetCurrentRole());
+
+            return MapToDTO(consulta);
+        }
+
+        private ConsultaDTO MapToDTO(Consulta consulta)
+        {
             return new ConsultaDTO
             {
                 IdConsulta = consulta.IdConsulta,

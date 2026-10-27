@@ -64,6 +64,9 @@ builder.Services.AddScoped<ITurnoService, TurnoService>();
 builder.Services.AddScoped<IConsultaService, ConsultaService>();
 builder.Services.AddScoped<IMedicamentoConsultaService, MedicamentoConsultaService>();
 
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IUserContextService, UserContextService>();
+
 builder.Services.AddScoped<AuthService>();
 
 builder.Services.AddEndpointsApiExplorer();

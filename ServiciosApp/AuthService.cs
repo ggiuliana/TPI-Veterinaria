@@ -59,6 +59,11 @@ namespace ServiciosApp
                 new ("jti", Guid.NewGuid().ToString())
             };
 
+            if (usuario.IdPersona != null)
+            {
+                claims.Add(new Claim("PersonaId", usuario.IdPersona.ToString()!));
+            }
+
             var permisos = usuario.ObtenerTodosLosPermisos();
             foreach (var permiso in permisos)
             {
@@ -68,6 +73,8 @@ namespace ServiciosApp
             var grupo = usuario.ObtenerNombreGrupo();
             if (!string.IsNullOrEmpty(grupo))
             {
+                claims.Add(new Claim(ClaimTypes.Role, grupo));
+
                 claims.Add(new Claim("group", grupo));
             }
 
