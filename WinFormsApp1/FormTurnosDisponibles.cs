@@ -30,13 +30,10 @@ namespace WinFormsApp1
         {
             try
             {
-                var todosLosTurnos = await TurnoClient.GetAllAsync();
-                var turnosDisponibles = todosLosTurnos
-                    .Where(t => t.EstadoTurno == "Disponible")   
-                    .ToList();
+                var turnosDisponibles = await TurnoClient.GetDisponiblesAsync();
 
                 dataGridView1.AutoGenerateColumns = false;
-                dataGridView1.DataSource = turnosDisponibles;
+                dataGridView1.DataSource = turnosDisponibles?.ToList();
             }
             catch (Exception ex)
             {

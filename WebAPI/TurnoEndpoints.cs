@@ -52,6 +52,17 @@ namespace WebAPI
             .WithOpenApi()
             .RequireAuthorization("TurnosLeer");
 
+            app.MapGet("/turnos/disponibles", async (ITurnoService turnoService) =>
+            {
+                var dtos = await turnoService.GetDisponiblesAsync();
+
+                return Results.Ok(dtos);
+            })
+            .WithName("GetAllTurnosDisponibles")
+            .Produces<List<TurnoDTO>>(StatusCodes.Status200OK)
+            .WithOpenApi()
+            .RequireAuthorization("TurnosLeer");
+
             app.MapPost("/turnos", async (TurnoDTO dto, ITurnoService turnoService) =>
             {
                 try

@@ -21,11 +21,33 @@ namespace ServiciosApp
             this.repoMedicamentoConsulta = repoMedicamentoConsulta;
         }
 
+        private void ValidarDominioConsulta(ConsultaDTO dto)
+        {
+            if (string.IsNullOrWhiteSpace(dto.Diagnostico))
+                throw new ArgumentException("El diagnóstico es obligatorio.");
+
+            if (string.IsNullOrWhiteSpace(dto.Tratamiento))
+                throw new ArgumentException("El tratamiento es obligatorio.");
+
+            if (dto.Peso <= 0)
+                throw new ArgumentException("El peso de la mascota debe ser mayor a cero.");
+        }
+
         public async Task<ConsultaDTO> AddAsync(ConsultaDTO dto)
         {
+            ValidarDominioConsulta(dto);
+
+            var consultaExistente = await repo.GetByIdTurnoAsync(dto.IdTurno);
+            if (consultaExistente != null)
+            {
+                throw new InvalidOperationException($"Ya existe una consulta registrada para el turno con ID {dto.IdTurno}. No se puede registrar más de una.");
+            }
+
             var turno = await repoTurno.GetAsync(dto.IdTurno) ?? throw new ArgumentException($"No se encontró el turno con ID {dto.IdTurno}");
 
-            Consulta consulta = new (0, dto.Diagnostico, dto.Tratamiento, dto.Peso, turno);
+            turno.SetEstadoTurno("Resuelto");
+
+            Consulta consulta = new(0, dto.Diagnostico, dto.Tratamiento, dto.Peso, turno);
 
             if (dto.Observaciones != null)
             {
@@ -76,79 +98,21 @@ namespace ServiciosApp
             return dto;
         }
 
-        public async Task<ConsultaDTO?> GetAsync(int id)
-        {
-            Consulta? consulta = await repo.GetAsync(id);
-            if (consulta == null)
-            {
-                return null;
-            }
-            return new ConsultaDTO
-            {
-                IdConsulta = consulta.IdConsulta,
-                Diagnostico = consulta.Diagnostico,
-                Tratamiento = consulta.Tratamiento,
-                Peso = consulta.Peso,
-                Observaciones = consulta.Observaciones,
-                IdTurno = consulta.IdTurno,
-                IdEstudios = consulta.Estudios?.Select(e => e.IdEstudio).ToList()??null,
-                MedicamentoConsulta = consulta.MedicamentosConsulta?.Select(mu => new MedicamentoConsultaDTO
-                {
-                    IdConsulta = mu.IdConsulta,
-                    IdMedicamento = mu.IdMedicamento,
-                    CantidadUsada = mu.CantidadUsada
-                }).ToList()?? null
-            };
-        }
-        public async Task<IEnumerable<ConsultaDTO>> GetAllAsync()
-        {
-            IEnumerable<Consulta> consultas = await repo.GetAllAsync();
-            return [.. consultas.Select(consulta => new ConsultaDTO
-            {
-                IdConsulta = consulta.IdConsulta,
-                Diagnostico = consulta.Diagnostico,
-                Tratamiento = consulta.Tratamiento,
-                Peso = consulta.Peso,
-                Observaciones = consulta.Observaciones,
-                IdTurno = consulta.IdTurno,
-                IdEstudios = consulta.Estudios?.Select(e => e.IdEstudio).ToList()??null,
-                MedicamentoConsulta = consulta.MedicamentosConsulta?.Select(mu => new MedicamentoConsultaDTO
-                {
-                    IdConsulta = mu.IdConsulta,
-                    IdMedicamento = mu.IdMedicamento,
-                    CantidadUsada = mu.CantidadUsada
-                }).ToList()?? null
-            })];
-        }
-        public async Task<bool> DeleteAsync(int id)
-        {
-            var consulta = await repo.GetAsync(id);
-            if (consulta == null)
-            {
-                return false;
-            }
-            if (consulta.MedicamentosConsulta != null && consulta.MedicamentosConsulta.Any())
-            {
-                var idsMedicamentos = consulta.MedicamentosConsulta.Select(m => m.IdMedicamento).ToList();
-                var medicamentosDb = await repoMedicamento.GetByIdsAsync(idsMedicamentos);
-
-                foreach (var relacion in consulta.MedicamentosConsulta)
-                {
-                    var medDb = medicamentosDb.FirstOrDefault(m => m.IdMedicamento == relacion.IdMedicamento);
-                    if (medDb != null)
-                    {
-                        medDb.SetCantidadRestante(medDb.CantidadRestante + relacion.CantidadUsada);
-                    }
-                }
-
-                consulta.MedicamentosConsulta.Clear();
-
-            }
-            return await repo.DeleteAsync(id);
-        }
         public async Task<bool> UpdateAsync(ConsultaDTO dto)
         {
+            ValidarDominioConsulta(dto);
+
             var consulta = await repo.GetAsync(dto.IdConsulta) ?? throw new Exception("Consulta no encontrada");
+
+            if (consulta.IdTurno != dto.IdTurno)
+            {
+                var consultaOtroTurno = await repo.GetByIdTurnoAsync(dto.IdTurno);
+                if (consultaOtroTurno != null)
+                {
+                    throw new InvalidOperationException($"El turno destino (ID {dto.IdTurno}) ya tiene otra consulta asociada.");
+                }
+            }
+
             var turno = await repoTurno.GetAsync(dto.IdTurno) ?? throw new ArgumentException("No se encontró el turno");
 
             consulta.SetTurno(turno);
@@ -240,6 +204,80 @@ namespace ServiciosApp
             }
             return await repo.UpdateAsync(consulta!);
         }
+
+        public async Task<ConsultaDTO?> GetAsync(int id)
+        {
+            Consulta? consulta = await repo.GetAsync(id);
+            if (consulta == null)
+            {
+                return null;
+            }
+            return new ConsultaDTO
+            {
+                IdConsulta = consulta.IdConsulta,
+                Diagnostico = consulta.Diagnostico,
+                Tratamiento = consulta.Tratamiento,
+                Peso = consulta.Peso,
+                Observaciones = consulta.Observaciones,
+                IdTurno = consulta.IdTurno,
+                IdEstudios = consulta.Estudios?.Select(e => e.IdEstudio).ToList() ?? null,
+                MedicamentoConsulta = consulta.MedicamentosConsulta?.Select(mu => new MedicamentoConsultaDTO
+                {
+                    IdConsulta = mu.IdConsulta,
+                    IdMedicamento = mu.IdMedicamento,
+                    CantidadUsada = mu.CantidadUsada
+                }).ToList() ?? null
+            };
+        }
+
+        public async Task<IEnumerable<ConsultaDTO>> GetAllAsync()
+        {
+            IEnumerable<Consulta> consultas = await repo.GetAllAsync();
+            return [.. consultas.Select(consulta => new ConsultaDTO
+            {
+                IdConsulta = consulta.IdConsulta,
+                Diagnostico = consulta.Diagnostico,
+                Tratamiento = consulta.Tratamiento,
+                Peso = consulta.Peso,
+                Observaciones = consulta.Observaciones,
+                IdTurno = consulta.IdTurno,
+                IdEstudios = consulta.Estudios?.Select(e => e.IdEstudio).ToList() ?? null,
+                MedicamentoConsulta = consulta.MedicamentosConsulta?.Select(mu => new MedicamentoConsultaDTO
+                {
+                    IdConsulta = mu.IdConsulta,
+                    IdMedicamento = mu.IdMedicamento,
+                    CantidadUsada = mu.CantidadUsada
+                }).ToList() ?? null
+            })];
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var consulta = await repo.GetAsync(id);
+            if (consulta == null)
+            {
+                return false;
+            }
+            if (consulta.MedicamentosConsulta != null && consulta.MedicamentosConsulta.Any())
+            {
+                var idsMedicamentos = consulta.MedicamentosConsulta.Select(m => m.IdMedicamento).ToList();
+                var medicamentosDb = await repoMedicamento.GetByIdsAsync(idsMedicamentos);
+
+                foreach (var relacion in consulta.MedicamentosConsulta)
+                {
+                    var medDb = medicamentosDb.FirstOrDefault(m => m.IdMedicamento == relacion.IdMedicamento);
+                    if (medDb != null)
+                    {
+                        medDb.SetCantidadRestante(medDb.CantidadRestante + relacion.CantidadUsada);
+                    }
+                }
+
+                consulta.MedicamentosConsulta.Clear();
+
+            }
+            return await repo.DeleteAsync(id);
+        }
+
         public async Task<ConsultaDTO?> GetByIdTurnoAsync(int idTurno)
         {
             Consulta? consulta = await repo.GetByIdTurnoAsync(idTurno);

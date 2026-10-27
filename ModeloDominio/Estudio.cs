@@ -18,10 +18,16 @@
         }
 
         public void SetNombre(string nombreEstudio) {
+            if (string.IsNullOrWhiteSpace(nombreEstudio)) {
+                throw new ArgumentException("El nombre del estudio no puede estar vacío.");
+            }
             NombreEstudio = nombreEstudio;
         }
 
         public void SetDescripcion(string descripcionEstudio) { 
+            if (string.IsNullOrWhiteSpace(descripcionEstudio)) {
+                throw new ArgumentException("La descripción del estudio no puede estar vacía.");
+            }
             DescripcionEstudio = descripcionEstudio;
         }
     }

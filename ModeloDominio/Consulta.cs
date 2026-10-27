@@ -29,18 +29,34 @@
         }
         public void SetDiagnostico(string diagnostico)
         {
+            if (string.IsNullOrWhiteSpace(diagnostico))
+            {
+                throw new ArgumentException("El diagnóstico no puede estar vacío.");
+            }
             Diagnostico = diagnostico;
         }
         public void SetTratamiento(string tratamiento)
         {
+            if (string.IsNullOrWhiteSpace(tratamiento))
+            {
+                throw new ArgumentException("El tratamiento no puede estar vacío.");
+            }
             Tratamiento = tratamiento;
         }
         public void SetPeso(float peso)
         {
+            if (peso <= 0)
+            {
+                throw new ArgumentException("El peso debe ser un valor positivo.");
+            }
             Peso = peso;
         }
         public void SetTurno(Turno turno)
         {
+            if (turno == null)
+            {
+                throw new ArgumentException("El turno no puede ser nulo.");
+            }
             Turno = turno;
         }
         public void SetObservaciones(string? observaciones)

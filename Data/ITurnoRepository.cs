@@ -9,6 +9,7 @@ namespace Data
         Task<IEnumerable<Turno>> GetByVeterinarioIdAsync(int idVeterinario);
         Task<bool> DeleteAsync(int id);
         Task<IEnumerable<Turno>> GetAllAsync();
+        Task<IEnumerable<Turno>> GetDisponiblesAsync();
         Task<bool> UpdateAsync(Turno turno);
     }
 }

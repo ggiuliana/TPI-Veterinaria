@@ -34,6 +34,7 @@ namespace WinFormsApp1
                 if (!await AuthService.IsAuthenticatedAsync())
                 {
                     using var loginForm = new Login();
+                    loginForm.StartPosition = FormStartPosition.CenterScreen;
                     if (loginForm.ShowDialog() != DialogResult.OK)
                     {
                         return;

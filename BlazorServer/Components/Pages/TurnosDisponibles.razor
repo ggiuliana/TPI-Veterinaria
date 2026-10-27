@@ -85,12 +85,9 @@
         try
         {
             loading = true;
+            var turnos = await TurnoClient.GetDisponiblesAsync();
 
-            var todosLosTurnos = await TurnoClient.GetAllAsync();
-
-            turnosDisponibles = todosLosTurnos
-                .Where(t => t.EstadoTurno == "Disponible")
-                .ToList();
+            turnosDisponibles = turnos?.ToList() ?? new List<TurnoDTO>();
         }
         catch (Exception ex)
         {

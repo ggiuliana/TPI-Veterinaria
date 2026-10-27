@@ -40,6 +40,16 @@ namespace Data
                 .Where(t => t.IdVeterinario == idVeterinario)
                 .ToListAsync();
         }
+        public async Task<IEnumerable<Turno>> GetDisponiblesAsync()
+        {
+            return await context.Turnos
+                .Include(t => t.Veterinario)
+                .Include(t => t.Mascota)
+                .Where(t => t.EstadoTurno == "Disponible" && t.FechaTurno >= DateOnly.FromDateTime(DateTime.Today))
+                .OrderBy(t => t.FechaTurno)
+                .ThenBy(t => t.HoraTurno)
+                .ToListAsync();
+        }
         public async Task<IEnumerable<Turno>> GetAllAsync()
         {
             return await context.Turnos

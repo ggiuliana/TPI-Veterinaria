@@ -174,18 +174,8 @@ namespace WinFormsApp1
                 FormConsultaDetalle formConsulta = new(turnoSeleccionado.IdTurno);
                 if (formConsulta.ShowDialog() == DialogResult.OK)
                 {
-                    try
-                    {
-                        turnoSeleccionado.EstadoTurno = "Resuelto";
-                        await TurnoClient.UpdateAsync(turnoSeleccionado);
-
-                        MessageBox.Show("Consulta guardada y turno marcado como Resuelto.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        CargarGrilla();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"La consulta se creó, pero hubo un error al actualizar el estado del turno: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                    MessageBox.Show("Consulta guardada con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    CargarGrilla();
                 }
             }
         }

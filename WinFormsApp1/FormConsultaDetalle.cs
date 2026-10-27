@@ -158,13 +158,11 @@ namespace WinFormsApp1
                 if (_consultaExistente == null)
                 {
                     await ConsultaClient.AddAsync(consultaDto);
-                    MessageBox.Show("Consulta registrada con éxito.");
                 }
                 else
                 {
                     consultaDto.IdConsulta = _consultaExistente.IdConsulta;
                     await ConsultaClient.UpdateAsync(consultaDto);
-                    MessageBox.Show("Consulta modificada con éxito.");
                 }
 
                 this.DialogResult = DialogResult.OK;

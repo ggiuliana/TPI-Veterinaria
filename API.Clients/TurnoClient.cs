@@ -44,6 +44,21 @@ namespace API.Clients
             return await response.Content.ReadFromJsonAsync<List<TurnoDTO>>();
         }
 
+        public async Task<List<TurnoDTO>?> GetDisponiblesAsync()
+        {
+            using var client = await CreateHttpClientAsync();
+            var response = await client.GetAsync($"turnos/disponibles");
+
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<List<TurnoDTO>>();
+        }
+
         public async Task<List<TurnoDTO>> GetAllAsync()
         {
             using var client = await CreateHttpClientAsync();

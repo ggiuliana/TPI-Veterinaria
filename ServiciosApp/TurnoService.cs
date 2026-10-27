@@ -84,6 +84,29 @@ namespace ServiciosApp
             })];
         }
 
+        public async Task<IEnumerable<TurnoDTO>?> GetDisponiblesAsync()
+        {
+            IEnumerable<Turno> turnos = await repo.GetDisponiblesAsync();
+
+            return [.. turnos.Select(turno => new TurnoDTO
+            {
+                IdTurno = turno.IdTurno,
+                FechaTurno = turno.FechaTurno,
+                HoraTurno = turno.HoraTurno,
+                EstadoTurno = turno.EstadoTurno,
+                Observaciones = turno.Observaciones,
+
+                NombreVeterinario = turno.Veterinario?.NombrePersona ?? "Sin asignar",
+                ApellidoVeterinario = turno.Veterinario?.Apellido ?? "",
+                EspecialidadVeterinario = turno.Veterinario?.Especialidad ?? "",
+                NombreCompletoVeterinario = turno.Veterinario != null ? $"{turno.Veterinario.NombrePersona} {turno.Veterinario.Apellido}" : "Sin asignar",
+
+                IdVeterinario = turno.Veterinario?.IdPersona ?? 0,
+                IdMascota = turno.Mascota?.IdMascota,
+                NombreMascota = turno.Mascota != null ? turno.Mascota.NombreMascota : "Sin mascota"
+            })];
+                }
+
         public async Task<IEnumerable<TurnoDTO>> GetAllAsync()
         {
             IEnumerable<Turno> turnos = await repo.GetAllAsync();
