@@ -136,6 +136,12 @@ namespace WinFormsApp1
                 return;
             }
 
+            if (numPeso.Value <= 0)
+            {
+                MessageBox.Show("El peso del animal debe ser mayor a cero.", "Datos inválidos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             var consultaDto = new ConsultaDTO
             {
                 IdTurno = _idTurnoActual,

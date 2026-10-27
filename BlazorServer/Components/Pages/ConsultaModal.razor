@@ -43,7 +43,7 @@
 
                                     <div class="mb-3">
                                         <label class="form-label">Peso (kg) *</label>
-                                        <InputNumber @bind-Value="currentConsulta.Peso" class="form-control" step="0.1" />
+                                        <InputNumber @bind-Value="currentConsulta.Peso" class="form-control" step="0.1" min="0.1" />
                                     </div>
 
                                     <div class="mb-3">
@@ -288,6 +288,11 @@
 
     private async Task HandleValidSubmit()
     {
+        if (currentConsulta.Peso <= 0)
+        {
+            errorMessage = "El peso del animal debe ser mayor a cero.";
+            return;
+        }
         try
         {
             saving = true;
