@@ -1,4 +1,5 @@
 ﻿using API.Clients;
+using DTOs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -46,11 +47,11 @@ namespace WinFormsApp1
         {
             if (dataGridView1.CurrentRow != null)
             {
-                int idTurnoSeleccionado = (int)dataGridView1.CurrentRow.Cells["colIdTurno"].Value;
+                var turnoActual = (TurnoDTO)dataGridView1.CurrentRow.Cells[0].OwningRow.DataBoundItem;
 
-                var formSacarTurno = new FormSacarTurno(idTurnoSeleccionado);
+                FormSacarTurno formDetalle = new(turnoActual);
 
-                if (formSacarTurno.ShowDialog() == DialogResult.OK)
+                if (formDetalle.ShowDialog() == DialogResult.OK)
                 {
                     await CargarTurnosAsync();
                 }

@@ -56,13 +56,13 @@ namespace WinFormsApp1
         }
         private void TurnosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Application.OpenForms.OfType<FormTurnoLista>().Any())
+            if (Application.OpenForms.OfType<FormTurnoAdminListado>().Any())
             {
-                Application.OpenForms.OfType<FormTurnoLista>().First().BringToFront();
+                Application.OpenForms.OfType<FormTurnoAdminListado>().First().BringToFront();
                 return;
             }
 
-            FormTurnoLista formTurnos = new()
+            FormTurnoAdminListado formTurnos = new()
             {
                 MdiParent = this,
                 FormBorderStyle = FormBorderStyle.None,

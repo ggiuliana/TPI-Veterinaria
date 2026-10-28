@@ -28,7 +28,7 @@ namespace ServiciosApp
             string rol = userContext.GetCurrentRole();
 
             var vet = await repoVeterinario.GetAsync(dto.IdVeterinario) ?? throw new ArgumentException($"No se encontró el veterinario con ID {dto.IdVeterinario}");
-            Turno turno = new Turno(0, dto.FechaTurno, dto.HoraTurno, dto.EstadoTurno, vet);
+            Turno turno = new Turno(0, dto.FechaTurno, dto.HoraTurno, "Disponible", vet);
             if (dto.Observaciones != null)
             {
                 turno.SetObservaciones(dto.Observaciones);
@@ -78,6 +78,33 @@ namespace ServiciosApp
             return [.. turnos.Select(MapToDTO)];
         }
 
+        public async Task<IEnumerable<TurnoDTO>> GetTurnosFiltradosAsync(int? idVeterinario, string? estado, DateOnly? fechaDesde, DateOnly? fechaHasta)
+        {
+            string rol = userContext.GetCurrentRole();
+
+            if (rol == "Duenio" || rol == "Veterinario")
+            {
+                throw new UnauthorizedAccessException("Los dueños y veterinarios no tienen permiso para usar este filtro.");
+            }
+
+            if (fechaDesde.HasValue && fechaHasta.HasValue)
+            {
+                if (fechaDesde.Value > fechaHasta.Value)
+                {
+                    throw new ArgumentException("La fecha 'Desde' no puede ser posterior a la fecha 'Hasta'.");
+                }
+            }
+
+            if (estado != null && string.IsNullOrWhiteSpace(estado))
+            {
+                throw new ArgumentException("El estado proporcionado no es válido.");
+            }
+
+            IEnumerable<Turno> turnosFiltrados = await repo.GetTurnosFiltradosAsync(idVeterinario, estado, fechaDesde, fechaHasta);
+
+            return [.. turnosFiltrados.Select(MapToDTO)];
+        }
+
         public async Task<IEnumerable<TurnoDTO>> GetAllAsync()
         {
             string rol = userContext.GetCurrentRole();
@@ -93,15 +120,25 @@ namespace ServiciosApp
         public async Task<bool> UpdateAsync(TurnoDTO dto)
         {
             string rol = userContext.GetCurrentRole();
-            int currentUserId = userContext.GetCurrentUserId();
 
             var turnoDb = await repo.GetAsync(dto.IdTurno) ?? throw new KeyNotFoundException("Turno no encontrado.");
 
+            if (dto.EstadoTurno != "Disponible" && dto.EstadoTurno != "Otorgado" && dto.EstadoTurno != "Resuelto")
+            {
+                throw new ArgumentException("Estado de turno inválido.");
+            }
+
+            if (dto.IdMascota.HasValue && dto.IdMascota.Value <= 0)
+            {
+                dto.IdMascota = null;
+            }
+
             if (rol == "Duenio")
             {
+                int currentUserId = userContext.GetCurrentUserId();
+
                 if (turnoDb.EstadoTurno == "Disponible")
                 {
-
                     if (!dto.IdMascota.HasValue)
                     {
                         throw new ArgumentException("Debe seleccionar una mascota para reservar el turno.");
@@ -126,7 +163,13 @@ namespace ServiciosApp
                 }
             }
 
+            if (dto.IdMascota.HasValue && dto.EstadoTurno == "Disponible")
+            {
+                throw new ArgumentException("Un turno no puede estar 'Disponible' si ya tiene una mascota asignada. Cambie el estado a 'Otorgado' o 'Resuelto'.");
+            }
+
             var vet = await repoVeterinario.GetAsync(dto.IdVeterinario) ?? throw new ArgumentException($"No se encontró el veterinario con ID {dto.IdVeterinario}");
+
             var mascota = dto.IdMascota.HasValue ? await repoMascota.GetAsync(dto.IdMascota.Value) : null;
 
             turnoDb.SetFechaTurno(dto.FechaTurno);
@@ -134,8 +177,12 @@ namespace ServiciosApp
             turnoDb.SetEstadoTurno(dto.EstadoTurno);
             turnoDb.SetVeterinario(vet);
 
-            if (dto.Observaciones != null) turnoDb.SetObservaciones(dto.Observaciones);
-            if (mascota != null) turnoDb.SetMascota(mascota);
+            if (dto.Observaciones != null)
+            {
+                turnoDb.SetObservaciones(dto.Observaciones);
+            }
+
+            turnoDb.SetMascota(mascota!);
 
             return await repo.UpdateAsync(turnoDb);
         }

@@ -10,6 +10,7 @@ namespace ServiciosApp
         Task<IEnumerable<TurnoDTO>?> GetDisponiblesAsync();
         Task<IEnumerable<TurnoDTO>?> GetByVeterinarioIdAsync(int idVeterinario);
         Task<IEnumerable<TurnoDTO>> GetAllAsync();
+        Task<IEnumerable<TurnoDTO>> GetTurnosFiltradosAsync(int? idVeterinario, string? estado, DateOnly? fechaDesde, DateOnly? fechaHasta);
         Task<bool> UpdateAsync(TurnoDTO dto);
     }
 }

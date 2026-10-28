@@ -41,11 +41,9 @@
                             <td class="align-middle fw-semibold">
                                 @($"{turno.NombreVeterinario} {turno.ApellidoVeterinario} - {turno.EspecialidadVeterinario}")
                             </td>
-                            <td class="align-middle text-nowrap">
-                                <button type="button" class="btn btn-sm btn-primary" @onclick="() => AbrirModalSacarTurno(turno.IdTurno)">
-                                    <i class="fas fa-calendar-plus"></i> Sacar Turno
-                                </button>
-                            </td>
+                            <button type="button" class="btn btn-sm btn-primary" @onclick="() => AbrirModalSacarTurno(turno)">
+                                <i class="fas fa-calendar-plus"></i> Sacar Turno
+                            </button>
                         </tr>
                     }
                 </tbody>
@@ -64,6 +62,7 @@
 
 @code {
     private List<TurnoDTO>? turnosDisponibles;
+    private TurnoDTO currentTurno = new();
     private bool loading = true;
 
     private SacarTurnoModal modalSacarTurno = default!;
@@ -100,11 +99,11 @@
         }
     }
 
-    private async Task AbrirModalSacarTurno(int idTurnoSeleccionado)
+    private async Task AbrirModalSacarTurno(TurnoDTO turnoSeleccionado)
     {
-         if (modalSacarTurno != null)
-         {
-             await modalSacarTurno.ShowModal(idTurnoSeleccionado);
-         }
+        if (modalSacarTurno != null)
+        {
+            await modalSacarTurno.ShowModal(turnoSeleccionado);
+        }
     }
 }

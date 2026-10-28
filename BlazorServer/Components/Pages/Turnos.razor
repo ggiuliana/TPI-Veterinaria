@@ -7,6 +7,7 @@
 @inject IAuthService AuthService
 @inject NavigationManager Navigation
 @inject TurnoClient TurnoClient
+@inject VeterinarioClient VeterinarioClient
 
 <PageTitle>Gestión de Turnos y Consultas</PageTitle>
 
@@ -34,16 +35,63 @@
             @if (canAdd)
             {
                 <div class="mb-3 d-flex gap-2">
-                    @if (canAdd)
-                    {
-                        <button type="button" class="btn btn-primary" @onclick="OpenAddModal">
-                            <i class="fas fa-plus"></i> Nuevo Turno
-                        </button>
-                    }
-
+                    <button type="button" class="btn btn-primary" @onclick="OpenAddModal">
+                        <i class="fas fa-plus"></i> Nuevo Turno
+                    </button>
                     <button type="button" class="btn btn-outline-info" @onclick="@(() => Navigation.NavigateTo("/metricas"))">
                         <i class="fas fa-chart-pie"></i> Ver Métricas
                     </button>
+                </div>
+            }
+
+            @if (rolUsuario == "ADMINISTRADOR")
+            {
+                <div class="card mb-4 shadow-sm border-0 bg-light">
+                    <div class="card-body">
+                        <h6 class="card-title text-secondary mb-3"><i class="fas fa-filter"></i> Filtrar Turnos</h6>
+                        <div class="row g-3">
+                            <div class="col-md-2">
+                                <label class="form-label fw-bold">Estado</label>
+                                <select class="form-select" @bind="filtroEstado">
+                                    <option value="">Todos</option>
+                                    <option value="Pendiente">Pendiente</option>
+                                    <option value="Otorgado">Otorgado</option>
+                                    <option value="Resuelto">Resuelto</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold">Veterinario</label>
+                                <select class="form-select" @bind="filtroIdVeterinario">
+                                    <option value="">Todos los veterinarios</option>
+                                    @if (veterinariosCombo != null)
+                                    {
+                                        @foreach (var vet in veterinariosCombo)
+                                        {
+                                            <option value="@vet.IdVeterinario">@vet.NombreVeterinario @vet.Apellido</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="col-md-2">
+                                <label class="form-label fw-bold">Fecha Desde</label>
+                                <input type="date" class="form-control" @bind="filtroFechaDesde" />
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label fw-bold">Fecha Hasta</label>
+                                <input type="date" class="form-control" @bind="filtroFechaHasta" />
+                            </div>
+                            <div class="col-md-3 d-flex align-items-end gap-2">
+                                <button class="btn btn-secondary flex-grow-1" title="Limpiar filtros" @onclick="LimpiarFiltros">
+                                    <i class="fas fa-eraser"></i> Limpiar
+                                </button>
+                                <button class="btn btn-primary flex-grow-1" title="Buscar" @onclick="AplicarFiltros">
+                                    <i class="fas fa-search"></i> Buscar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             }
 
@@ -66,8 +114,8 @@
                                 <th>Hora</th>
                                 <th>Estado</th>
                                 <th>Observaciones / Consulta</th>
-                                <th>ID Vet</th>
-                                <th>ID Mascota</th>
+                                <th>Veterinario</th>
+                                <th>Mascota</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -88,8 +136,10 @@
                                         <td class="align-middle text-truncate" style="max-width: 200px;" title="@turno.Observaciones">
                                             @(string.IsNullOrWhiteSpace(turno.Observaciones) ? "-" : turno.Observaciones)
                                         </td>
-                                        <td class="align-middle">@turno.IdVeterinario</td>
-                                        <td class="align-middle">@(turno.IdMascota?.ToString() ?? "-")</td>
+
+                                        <td class="align-middle">@turno.NombreCompletoVeterinario</td>
+                                        <td class="align-middle">@turno.NombreMascota</td>
+
                                         <td class="align-middle text-nowrap">
                                             @if (turno.EstadoTurno?.ToLower() == "otorgado" || turno.EstadoTurno?.ToLower() == "resuelto")
                                             {
@@ -133,6 +183,8 @@
 
 @code {
     private List<TurnoDTO>? turnos;
+    private List<VeterinarioDTO>? veterinariosCombo;
+
     private bool loading = true;
     private string errorMessage = string.Empty;
     private string successMessage = string.Empty;
@@ -147,6 +199,11 @@
 
     private string rolUsuario = string.Empty;
     private int? idPersona = 0;
+
+    private string? filtroEstado;
+    private int? filtroIdVeterinario;
+    private DateOnly? filtroFechaDesde;
+    private DateOnly? filtroFechaHasta;
 
     protected override async Task OnInitializedAsync()
     {
@@ -173,6 +230,11 @@
 
         await LoadPermissions();
 
+        if (rolUsuario == "ADMINISTRADOR")
+        {
+            await CargarVeterinariosCombo();
+        }
+
         if (canRead)
         {
             await LoadTurnos();
@@ -181,6 +243,18 @@
         {
             loading = false;
             errorMessage = "No tiene permisos para ver los turnos.";
+        }
+    }
+
+    private async Task CargarVeterinariosCombo()
+    {
+        try
+        {
+            veterinariosCombo = (await VeterinarioClient.GetAllAsync())?.ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar veterinarios para el filtro: {ex.Message}");
         }
     }
 
@@ -210,6 +284,14 @@
                     errorMessage = "Error: No se pudo identificar el ID del veterinario en la sesión activa.";
                 }
             }
+            else if (rolUsuario == "ADMINISTRADOR")
+            {
+                turnos = (await TurnoClient.GetTurnosFiltradosAsync(
+                    filtroIdVeterinario,
+                    filtroEstado,
+                    filtroFechaDesde,
+                    filtroFechaHasta))?.ToList();
+            }
             else
             {
                 turnos = (await TurnoClient.GetAllAsync())?.ToList();
@@ -223,6 +305,21 @@
         {
             loading = false;
         }
+    }
+
+    private async Task AplicarFiltros()
+    {
+        await LoadTurnos();
+    }
+
+    private async Task LimpiarFiltros()
+    {
+        filtroEstado = null;
+        filtroIdVeterinario = null;
+        filtroFechaDesde = null;
+        filtroFechaHasta = null;
+
+        await LoadTurnos();
     }
 
     private void OpenAddModal()
@@ -279,7 +376,7 @@
         return estado?.ToLower() switch
         {
             "otorgado" => "bg-primary",
-            "disponible" => "bg-warning text-dark",
+            "pendiente" => "bg-warning text-dark",
             "resuelto" => "bg-success",
             _ => "bg-secondary"
         };

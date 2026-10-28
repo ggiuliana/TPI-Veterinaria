@@ -1,4 +1,5 @@
 ﻿using API.Clients;
+using DTOs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,10 +17,11 @@ namespace WinFormsApp1
         private readonly int _idTurno;
         private readonly TurnoClient TurnoClient;
         private readonly MascotaClient MascotaClient;
-        public FormSacarTurno(int idTurno)
+        private TurnoDTO _turnoSeleccionado; 
+        public FormSacarTurno(TurnoDTO turnoSeleccionado)
         {
             InitializeComponent();
-            this._idTurno = idTurno;
+            _turnoSeleccionado = turnoSeleccionado;
             IAuthService authService = Program.AuthService;
             TurnoClient = new TurnoClient(authService);
             MascotaClient = new MascotaClient(authService);
@@ -60,22 +62,25 @@ namespace WinFormsApp1
 
         private async void Confirmar_Click(object sender, EventArgs e)
         {
-            try { 
-                var turno = await TurnoClient.GetAsync(_idTurno);
-                if (turno != null)
+            try
+            {
+                if (_turnoSeleccionado != null)
                 {
                     if (mascotasComboBox.SelectedValue == null)
                     {
-                        MessageBox.Show("Por favor, seleccione una mascota.");
+                        MessageBox.Show("Por favor, seleccione una mascota.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
-                    turno.IdMascota = (int)mascotasComboBox.SelectedValue;
-                    turno.EstadoTurno = "Otorgado";
-                    var response = await TurnoClient.UpdateAsync(turno);
+
+                    _turnoSeleccionado.IdMascota = (int)mascotasComboBox.SelectedValue;
+                    _turnoSeleccionado.EstadoTurno = "Otorgado";
+
+                    var response = await TurnoClient.UpdateAsync(_turnoSeleccionado);
+
+                    MessageBox.Show("Turno reservado con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    DialogResult = DialogResult.OK;
+                    Close();
                 }
-                MessageBox.Show("Turno reservado con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                DialogResult = DialogResult.OK;
-                Close();
             }
             catch (Exception ex)
             {

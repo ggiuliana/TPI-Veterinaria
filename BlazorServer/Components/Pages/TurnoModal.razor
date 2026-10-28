@@ -2,6 +2,7 @@
 @using API.Clients
 @inject IJSRuntime JSRuntime
 @inject TurnoClient TurnoClient
+@inject VeterinarioClient VeterinarioClient
 @inject IAuthService AuthService
 
 @if (showModal)
@@ -68,7 +69,6 @@
                                         <option value="Disponible">Disponible</option>
                                         <option value="Otorgado">Otorgado</option>
                                         <option value="Resuelto">Resuelto</option>
-                                        <option value="Cancelado">Cancelado</option>
                                     </select>
                                 }
 
@@ -81,8 +81,17 @@
                             @if (!isVeterinario)
                             {
                                 <div class="col-md-4 mb-3">
-                                    <label class="form-label">ID Veterinario *</label>
-                                    <InputNumber @bind-Value="currentTurno.IdVeterinario" class="form-control" />
+                                    <label class="form-label">Veterinario *</label>
+                                    <select class="form-select" @bind="currentTurno.IdVeterinario">
+                                        <option value="0">Seleccione un veterinario...</option>
+                                        @if (veterinariosCombo != null)
+                                        {
+                                            @foreach (var vet in veterinariosCombo)
+                                            {
+                                                <option value="@vet.IdVeterinario">@vet.NombreVeterinario @vet.Apellido</option>
+                                            }
+                                        }
+                                    </select>
                                     @if (validationErrors.ContainsKey("IdVeterinario"))
                                     {
                                         <div class="text-danger small">@validationErrors["IdVeterinario"]</div>
@@ -92,7 +101,7 @@
 
                             <div class="col-md-@(isVeterinario ? "6" : "4") mb-3">
                                 <label class="form-label">ID Mascota</label>
-                                <InputNumber @bind-Value="currentTurno.IdMascota" class="form-control" disabled />
+                                <InputNumber @bind-Value="currentTurno.IdMascota" class="form-control" disabled="@(mode == FormMode.Add)" />
                             </div>
                         </div>
 
@@ -131,6 +140,7 @@
     private bool showModal = false;
     private FormMode mode = FormMode.Add;
     private TurnoDTO currentTurno = new TurnoDTO();
+    private List<VeterinarioDTO>? veterinariosCombo;
     private bool saving = false;
     private string errorMessage = string.Empty;
     private Dictionary<string, string> validationErrors = new Dictionary<string, string>();
@@ -156,6 +166,22 @@
             {
                 idVeterinarioSesion = idPersona.Value;
             }
+        }
+        else
+        {
+            await CargarVeterinarios();
+        }
+    }
+
+    private async Task CargarVeterinarios()
+    {
+        try
+        {
+            veterinariosCombo = (await VeterinarioClient.GetAllAsync())?.ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar lista de veterinarios: {ex.Message}");
         }
     }
 
@@ -238,7 +264,13 @@
 
         if (currentTurno.IdVeterinario <= 0)
         {
-            validationErrors["IdVeterinario"] = "El ID del veterinario es requerido y debe ser válido.";
+            validationErrors["IdVeterinario"] = "Debe seleccionar un veterinario válido.";
+            isValid = false;
+        }
+
+        if (currentTurno.IdMascota.HasValue && currentTurno.IdMascota.Value > 0 && currentTurno.EstadoTurno == "Disponible")
+        {
+            validationErrors["EstadoTurno"] = "Un turno con mascota asignada debe estar 'Otorgado' o 'Resuelto'.";
             isValid = false;
         }
 

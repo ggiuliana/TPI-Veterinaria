@@ -288,11 +288,24 @@
 
     private async Task HandleValidSubmit()
     {
+        if (string.IsNullOrWhiteSpace(currentConsulta.Diagnostico))
+        {
+            errorMessage = "El campo 'Diagnóstico' es obligatorio y no puede estar vacío.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(currentConsulta.Tratamiento))
+        {
+            errorMessage = "El campo 'Tratamiento' es obligatorio y no puede estar vacío.";
+            return;
+        }
+
         if (currentConsulta.Peso <= 0)
         {
             errorMessage = "El peso del animal debe ser mayor a cero.";
             return;
         }
+
         try
         {
             saving = true;

@@ -8,7 +8,6 @@ namespace WinFormsApp1
         private readonly TurnoClient TurnoClient;
         private readonly IAuthService AuthService;
 
-        private string rolUsuario = string.Empty;
         private int idPersona = 0;
 
         public FormTurnoLista()
@@ -24,13 +23,16 @@ namespace WinFormsApp1
             dataGridView1.AutoGenerateColumns = false;
 
             var rol = await AuthService.GetRolAsync();
-            rolUsuario = rol?.Trim().ToUpper() ?? string.Empty;
 
-            if (rolUsuario == "VETERINARIO")
+            if (rol?.Trim().ToUpper() != "VETERINARIO")
             {
-                var id = await AuthService.GetPersonaIdAsync();
-                idPersona = id ?? 0;
+                MessageBox.Show("Acceso denegado. Este módulo es exclusivo para veterinarios.", "Acceso Denegado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+                return;
             }
+
+            var id = await AuthService.GetPersonaIdAsync();
+            idPersona = id ?? 0;
 
             CargarGrilla();
         }
@@ -39,22 +41,12 @@ namespace WinFormsApp1
         {
             try
             {
-                IEnumerable<TurnoDTO> turnos;
-
-                if (rolUsuario == "VETERINARIO")
-                {
-                    turnos = await TurnoClient.GetByVeterinarioIdAsync(idPersona);
-                }
-                else
-                {
-                    turnos = await TurnoClient.GetAllAsync();
-                }
-
+                var turnos = await TurnoClient.GetByVeterinarioIdAsync(idPersona);
                 dataGridView1.DataSource = turnos?.ToList() ?? new List<TurnoDTO>();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar los turnos: {ex.Message}");
+                MessageBox.Show($"Error al cargar los turnos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -73,7 +65,7 @@ namespace WinFormsApp1
                     var turno = await TurnoClient.GetAsync(idBuscado);
                     if (turno != null)
                     {
-                        if (rolUsuario == "VETERINARIO" && turno.IdVeterinario != idPersona)
+                        if (turno.IdVeterinario != idPersona)
                         {
                             MessageBox.Show("No tiene permisos para ver este turno.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             return;
@@ -153,7 +145,7 @@ namespace WinFormsApp1
             }
         }
 
-        private async void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && dataGridView1.Columns[e.ColumnIndex].Name == "colConsulta")
             {
@@ -165,7 +157,7 @@ namespace WinFormsApp1
                     return;
                 }
 
-                if (rolUsuario != "ADMINISTRADOR" && turnoSeleccionado.IdVeterinario != idPersona)
+                if (turnoSeleccionado.IdVeterinario != idPersona)
                 {
                     MessageBox.Show("Solo el veterinario asignado a este turno puede gestionar su consulta.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;

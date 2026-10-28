@@ -70,6 +70,56 @@ namespace API.Clients
                    ?? new List<TurnoDTO>();
         }
 
+        public async Task<List<TurnoDTO>> GetTurnosFiltradosAsync(int? idVeterinario, string? estado, DateOnly? fechaDesde, DateOnly? fechaHasta)
+        {
+            using var client = await CreateHttpClientAsync();
+
+            var queryParams = new List<string>();
+
+            if (idVeterinario.HasValue)
+            {
+                queryParams.Add($"idVeterinario={idVeterinario.Value}");
+            }
+
+            if (!string.IsNullOrWhiteSpace(estado))
+            {
+                queryParams.Add($"estado={Uri.EscapeDataString(estado)}");
+            }
+
+            if (fechaDesde.HasValue)
+            {
+                queryParams.Add($"fechaDesde={fechaDesde.Value:yyyy-MM-dd}");
+            }
+
+            if (fechaHasta.HasValue)
+            {
+                queryParams.Add($"fechaHasta={fechaHasta.Value:yyyy-MM-dd}");
+            }
+
+            string url = "turnos/filtrar";
+
+            if (queryParams.Count > 0)
+            {
+                url += "?" + string.Join("&", queryParams);
+            }
+
+            var response = await client.GetAsync(url);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+            {
+                throw new UnauthorizedAccessException("Los dueños y veterinarios no tienen permiso para usar este filtro.");
+            }
+
+            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                string errorDetalle = await response.Content.ReadAsStringAsync();
+                throw new ArgumentException($"Error de validación: {errorDetalle}");
+            }
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<List<TurnoDTO>>() ?? new List<TurnoDTO>();
+        }
         public async Task<TurnoDTO?> AddAsync(TurnoDTO dto)
         {
             using var client = await CreateHttpClientAsync();

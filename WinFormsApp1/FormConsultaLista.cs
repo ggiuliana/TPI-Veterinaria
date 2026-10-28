@@ -48,15 +48,7 @@ namespace WinFormsApp1
             {
                 var consultas = await ConsultaClient.GetAllAsync();
 
-                if (rolUsuario == "VETERINARIO")
-                {
-                    var misTurnos = await TurnoClient.GetByVeterinarioIdAsync(idPersona);
-                    var misIdsTurnos = misTurnos.Select(t => t.IdTurno).ToList();
-
-                    consultas = consultas.Where(c => misIdsTurnos.Contains(c.IdTurno)).ToList();
-                }
-
-                dataGridView1.DataSource = consultas;
+                dataGridView1.DataSource = consultas?.ToList() ?? new List<ConsultaDTO>();
             }
             catch (Exception ex)
             {

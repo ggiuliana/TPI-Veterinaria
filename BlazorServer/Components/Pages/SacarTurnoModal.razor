@@ -56,16 +56,16 @@
     [Parameter] public EventCallback OnTurnoGuardado { get; set; }
 
     private bool showModal = false;
-    private int idTurnoActual;
+    private TurnoDTO? turnoActual;
     private List<MascotaDTO>? misMascotas;
     private int idMascotaSeleccionada = 0;
 
     private bool saving = false;
     private string errorMessage = string.Empty;
 
-    public async Task ShowModal(int idTurno)
+    public async Task ShowModal(TurnoDTO turno)
     {
-        idTurnoActual = idTurno;
+        turnoActual = turno;
         idMascotaSeleccionada = 0;
         errorMessage = string.Empty;
         showModal = true;
@@ -87,27 +87,24 @@
             return;
         }
 
+        if (turnoActual == null)
+        {
+            errorMessage = "No se ha seleccionado ningún turno válido.";
+            return;
+        }
+
         try
         {
             saving = true;
             errorMessage = string.Empty;
 
-            var turno = await TurnoClient.GetAsync(idTurnoActual);
+            turnoActual.IdMascota = idMascotaSeleccionada;
+            turnoActual.EstadoTurno = "Otorgado";
 
-            if (turno != null)
-            {
-                turno.IdMascota = idMascotaSeleccionada;
-                turno.EstadoTurno = "Otorgado";
+            await TurnoClient.UpdateAsync(turnoActual);
 
-                await TurnoClient.UpdateAsync(turno);
-
-                await OnTurnoGuardado.InvokeAsync();
-                Cerrar();
-            }
-            else
-            {
-                errorMessage = "El turno ya no se encuentra disponible.";
-            }
+            await OnTurnoGuardado.InvokeAsync();
+            Cerrar();
         }
         catch (Exception ex)
         {

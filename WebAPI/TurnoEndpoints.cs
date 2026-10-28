@@ -63,6 +63,29 @@ namespace WebAPI
             .WithOpenApi()
             .RequireAuthorization("TurnosLeer");
 
+            app.MapGet("/turnos/filtrar", async (int? idVeterinario, string? estado, DateOnly? fechaDesde, DateOnly? fechaHasta, ITurnoService turnoService) =>
+            {
+                try
+                {
+                    var dtos = await turnoService.GetTurnosFiltradosAsync(idVeterinario, estado, fechaDesde, fechaHasta);
+                    return Results.Ok(dtos);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    return Results.Forbid();
+                }
+                catch (ArgumentException ex)
+                {
+                    return Results.BadRequest(new { error = ex.Message });
+                }
+            })
+            .WithName("GetTurnosFiltrados")
+            .Produces<List<TurnoDTO>>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status403Forbidden)
+            .WithOpenApi()
+            .RequireAuthorization("TurnosLeer");
+
             app.MapPost("/turnos", async (TurnoDTO dto, ITurnoService turnoService) =>
             {
                 try

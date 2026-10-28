@@ -29,13 +29,26 @@ namespace Data
         public async Task<Consulta?> GetAsync(int id)
         {
             return await context.Consultas
-                .Include(c => c.MedicamentosConsulta)
+                .Include(c => c.Turno)
+                    .ThenInclude(t => t.Veterinario)
+                .Include(c => c.Turno)
+                    .ThenInclude(t => t.Mascota)
+                        .ThenInclude(m => m.Duenio)
                 .Include(c => c.Estudios)
-                .FirstOrDefaultAsync(t => t.IdConsulta == id);
+                .Include(c => c.MedicamentosConsulta)
+                .FirstOrDefaultAsync(c => c.IdConsulta == id);
         }
         public async Task<IEnumerable<Consulta>> GetAllAsync()
         {
-            return await context.Consultas.ToListAsync();
+            return await context.Consultas
+                .Include(c => c.Turno)
+                    .ThenInclude(t => t.Veterinario)
+                .Include(c => c.Turno)
+                    .ThenInclude(t => t.Mascota)
+                        .ThenInclude(m => m.Duenio)
+                .Include(c => c.Estudios)
+                .Include(c => c.MedicamentosConsulta)
+                .ToListAsync();
         }
         public async Task<bool> UpdateAsync(Consulta consulta)
         {
@@ -91,9 +104,14 @@ namespace Data
         public async Task<Consulta?> GetByIdTurnoAsync(int idTurno)
         {
             return await context.Consultas
-                .Include(c => c.MedicamentosConsulta) 
-                .Include(c => c.Estudios)           
-                .FirstOrDefaultAsync(t => t.IdTurno == idTurno);
+                .Include(c => c.Turno)
+                    .ThenInclude(t => t.Veterinario)
+                .Include(c => c.Turno)
+                    .ThenInclude(t => t.Mascota)
+                        .ThenInclude(m => m.Duenio)
+                .Include(c => c.Estudios)
+                .Include(c => c.MedicamentosConsulta)
+                .FirstOrDefaultAsync(c => c.IdTurno == idTurno);
         }
     }
 }
