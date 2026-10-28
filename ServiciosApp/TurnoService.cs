@@ -27,19 +27,48 @@ namespace ServiciosApp
         {
             string rol = userContext.GetCurrentRole();
 
+
+            if (rol == "Veterinario")
+            {
+                int currentUserId = userContext.GetCurrentUserId();
+                dto.IdVeterinario = currentUserId;
+            }
+
             var vet = await repoVeterinario.GetAsync(dto.IdVeterinario) ?? throw new ArgumentException($"No se encontró el veterinario con ID {dto.IdVeterinario}");
+
             Turno turno = new Turno(0, dto.FechaTurno, dto.HoraTurno, "Disponible", vet);
+
             if (dto.Observaciones != null)
             {
                 turno.SetObservaciones(dto.Observaciones);
             }
+
             await repo.AddAsync(turno);
+
             dto.IdTurno = turno.IdTurno;
+            dto.IdVeterinario = vet.IdPersona;
             return dto;
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
+            string rol = userContext.GetCurrentRole();
+
+            var turno = await repo.GetAsync(id);
+            if (turno == null)
+            {
+                return false;
+            }
+
+            if (rol == "Veterinario")
+            {
+                int currentUserId = userContext.GetCurrentUserId();
+                if (turno.Veterinario?.IdPersona != currentUserId)
+                {
+                    throw new UnauthorizedAccessException("No puede eliminar un turno asignado a otro veterinario.");
+                }
+            }
+
             return await repo.DeleteAsync(id);
         }
 
@@ -56,6 +85,14 @@ namespace ServiciosApp
             {
                 return null;
             }
+            if (rol == "Veterinario")
+            {
+                int currentUserId = userContext.GetCurrentUserId();
+                if (turno.Veterinario?.IdPersona != currentUserId)
+                {
+                   throw new UnauthorizedAccessException("No puede ver un turno asignado a otro veterinario.");
+                }
+            }
 
             return MapToDTO(turno);
         }
@@ -67,6 +104,14 @@ namespace ServiciosApp
             if (rol == "Duenio")
             {
                 throw new UnauthorizedAccessException("Los dueños no tienen permiso.");
+            }
+            if (rol == "Veterinario")
+            {
+                int currentUserId = userContext.GetCurrentUserId();
+                if (idVeterinario != currentUserId)
+                {
+                    throw new UnauthorizedAccessException("No puede ver los turnos de otro veterinario.");
+                }
             }
             IEnumerable<Turno> turnos = await repo.GetByVeterinarioIdAsync(idVeterinario);
             return [.. turnos.Select(MapToDTO)];
@@ -112,6 +157,10 @@ namespace ServiciosApp
             if (rol == "Duenio")
             {
                 return await GetDisponiblesAsync() ?? Enumerable.Empty<TurnoDTO>();
+            }
+            if (rol == "Veterinario")
+            { 
+                return await GetByVeterinarioIdAsync(userContext.GetCurrentUserId()) ?? Enumerable.Empty<TurnoDTO>();
             }
             IEnumerable<Turno> turnos = await repo.GetAllAsync();
             return [.. turnos.Select(MapToDTO)];
@@ -160,6 +209,15 @@ namespace ServiciosApp
                 else
                 {
                     throw new UnauthorizedAccessException("No tiene permiso para modificar este turno.");
+                }
+            }
+
+            if (rol == "Veterinario")
+            {
+                int currentUserId = userContext.GetCurrentUserId();
+                if (turnoDb.Veterinario?.IdPersona != currentUserId)
+                {
+                    throw new UnauthorizedAccessException("No puede modificar los turnos de otro veterinario.");
                 }
             }
 

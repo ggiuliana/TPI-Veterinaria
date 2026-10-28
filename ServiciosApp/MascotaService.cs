@@ -79,12 +79,15 @@ namespace ServiciosApp
                 return null;
             }
 
-            int currentUserId = userContext.GetCurrentUserId();
             string rol = userContext.GetCurrentRole();
 
-            if (rol == "Duenio" && mascota.Duenio?.IdPersona != currentUserId)
+            if (rol == "Duenio" )
             {
-                throw new UnauthorizedAccessException("No tiene permiso para acceder a esta mascota.");
+                int currentUserId = userContext.GetCurrentUserId();
+                if (mascota.Duenio?.IdPersona != currentUserId)
+                {
+                    throw new UnauthorizedAccessException("No tiene permiso para acceder a esta mascota.");
+                }
             }
 
             return new MascotaDTO
@@ -138,12 +141,15 @@ namespace ServiciosApp
 
         public async Task<IEnumerable<MascotaDTO>> GetAllByDuenioAsync(int idDuenio)
         {
-            int currentUserId = userContext.GetCurrentUserId();
             string rol = userContext.GetCurrentRole();
 
-            if (rol == "Duenio" && idDuenio != currentUserId)
+            if (rol == "Duenio")
             {
-                throw new UnauthorizedAccessException("No tiene permiso para ver las mascotas de otro usuario.");
+                int currentUserId = userContext.GetCurrentUserId();
+                if (idDuenio != currentUserId)
+                {
+                    throw new UnauthorizedAccessException("No tiene permiso para acceder a esta mascota.");
+                }
             }
 
             var duenio = await repoDuenio.GetAsync(idDuenio) ?? throw new ArgumentException("Dueño no encontrado");
@@ -173,12 +179,15 @@ namespace ServiciosApp
             var mascota = await repo.GetAsync(dto.IdMascota);
             if (mascota == null) throw new KeyNotFoundException("Mascota no encontrada");
 
-            int currentUserId = userContext.GetCurrentUserId();
             string rol = userContext.GetCurrentRole();
 
-            if (rol == "Duenio" && mascota.Duenio?.IdPersona != currentUserId)
+            if (rol == "Duenio")
             {
-                throw new UnauthorizedAccessException("No tiene permiso para modificar esta mascota.");
+                int currentUserId = userContext.GetCurrentUserId();
+                if (mascota.Duenio?.IdPersona != currentUserId)
+                {
+                    throw new UnauthorizedAccessException("No tiene permiso para acceder a esta mascota.");
+                }
             }
 
             mascota.SetNombreMascota(dto.NombreMascota);
@@ -223,12 +232,15 @@ namespace ServiciosApp
                 return false;
             }
 
-            int currentUserId = userContext.GetCurrentUserId();
             string rol = userContext.GetCurrentRole();
 
-            if (rol == "Duenio" && mascota.Duenio?.IdPersona != currentUserId)
+            if (rol == "Duenio")
             {
-                throw new UnauthorizedAccessException("No tiene permiso para eliminar esta mascota.");
+                int currentUserId = userContext.GetCurrentUserId();
+                if (mascota.Duenio?.IdPersona != currentUserId)
+                {
+                    throw new UnauthorizedAccessException("No tiene permiso para acceder a esta mascota.");
+                }
             }
 
             return await repo.DeleteAsync(id);

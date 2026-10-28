@@ -12,6 +12,13 @@ namespace Data
         {
             return await context.MedicamentoConsulta
                 .Include(mc => mc.Medicamento)
+                .Include(mc => mc.Consulta)
+                    .ThenInclude(c => c.Turno)
+                        .ThenInclude(t => t.Veterinario)
+                .Include(mc => mc.Consulta)
+                    .ThenInclude(c => c.Turno)
+                        .ThenInclude(t => t.Mascota)
+                            .ThenInclude(m => m.Duenio)
                 .Where(mc => mc.IdConsulta == idConsulta)
                 .ToListAsync();
         }

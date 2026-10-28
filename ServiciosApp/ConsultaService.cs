@@ -56,7 +56,6 @@ namespace ServiciosApp
         public async Task<ConsultaDTO> AddAsync(ConsultaDTO dto)
         {
             string rol = userContext.GetCurrentRole();
-            int currentUserId = userContext.GetCurrentUserId();
 
             ValidarDominioConsulta(dto);
 
@@ -68,8 +67,14 @@ namespace ServiciosApp
 
             var turno = await repoTurno.GetAsync(dto.IdTurno) ?? throw new ArgumentException($"No se encontró el turno con ID {dto.IdTurno}");
 
-            if (rol == "Veterinario" && turno.Veterinario?.IdPersona != currentUserId)
-                throw new UnauthorizedAccessException("No puede registrar una consulta para un turno asignado a otro veterinario.");
+            if (rol == "Veterinario")
+            {
+                int currentUserId = userContext.GetCurrentUserId();
+                if (turno.Veterinario?.IdPersona != currentUserId)
+                {
+                    throw new UnauthorizedAccessException("No puede agregar una consulta atendida por otro veterinario.");
+                }
+            }
 
             turno.SetEstadoTurno("Resuelto");
 
@@ -127,14 +132,19 @@ namespace ServiciosApp
         public async Task<bool> UpdateAsync(ConsultaDTO dto)
         {
             string rol = userContext.GetCurrentRole();
-            int currentUserId = userContext.GetCurrentUserId();
 
             ValidarDominioConsulta(dto);
 
             var consulta = await repo.GetAsync(dto.IdConsulta) ?? throw new Exception("Consulta no encontrada");
 
-            if (rol == "Veterinario" && consulta.Turno?.Veterinario?.IdPersona != currentUserId)
-                throw new UnauthorizedAccessException("No puede modificar una consulta atendida por otro veterinario.");
+            if (rol == "Veterinario")
+            {
+                int currentUserId = userContext.GetCurrentUserId();
+                if (consulta.Turno?.Veterinario?.IdPersona != currentUserId)
+                {
+                    throw new UnauthorizedAccessException("No puede modificar una consulta atendida por otro veterinario.");
+                }
+            }
 
             if (consulta.IdTurno != dto.IdTurno)
             {
@@ -249,19 +259,20 @@ namespace ServiciosApp
 
             return MapToDTO(consulta);
         }
-
+        
         public async Task<IEnumerable<ConsultaDTO>> GetAllAsync()
         {
             IEnumerable<Consulta> consultas = await repo.GetAllAsync();
-            int currentUserId = userContext.GetCurrentUserId();
             string rol = userContext.GetCurrentRole();
 
             if (rol == "Duenio")
             {
+                int currentUserId = userContext.GetCurrentUserId();
                 consultas = consultas.Where(c => c.Turno?.Mascota?.Duenio?.IdPersona == currentUserId);
             }
             else if (rol == "Veterinario")
             {
+                int currentUserId = userContext.GetCurrentUserId();
                 consultas = consultas.Where(c => c.Turno?.Veterinario?.IdPersona == currentUserId);
             }
 
@@ -271,7 +282,6 @@ namespace ServiciosApp
         public async Task<bool> DeleteAsync(int id)
         {
             string rol = userContext.GetCurrentRole();
-            int currentUserId = userContext.GetCurrentUserId();
 
             var consulta = await repo.GetAsync(id);
             if (consulta == null)
@@ -279,8 +289,14 @@ namespace ServiciosApp
                 return false;
             }
 
-            if (rol == "Veterinario" && consulta.Turno?.Veterinario?.IdPersona != currentUserId)
-                throw new UnauthorizedAccessException("No puede eliminar una consulta atendida por otro veterinario.");
+            if (rol == "Veterinario")
+            {
+                int currentUserId = userContext.GetCurrentUserId();
+                if (consulta.Turno?.Veterinario?.IdPersona != currentUserId)
+                {
+                    throw new UnauthorizedAccessException("No puede eliminar una consulta atendida por otro veterinario.");
+                }
+            }
 
             if (consulta.MedicamentosConsulta != null && consulta.MedicamentosConsulta.Any())
             {
