@@ -39,6 +39,35 @@ namespace API.Clients
                    ?? new List<MedicamentoDTO>();
         }
 
+        public async Task<ReporteStockMedicamentosDTO?> GetReporteStockAsync()
+        {
+            using var client = await CreateHttpClientAsync();
+            var response = await client.GetAsync("medicamentos/reporte-stock");
+
+            if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+            {
+                string errorContent = await response.Content.ReadAsStringAsync();
+                try
+                {
+                    using var jsonDoc = System.Text.Json.JsonDocument.Parse(errorContent);
+                    if (jsonDoc.RootElement.TryGetProperty("error", out System.Text.Json.JsonElement errorElement))
+                    {
+                        throw new UnauthorizedAccessException(errorElement.GetString());
+                    }
+                }
+                catch (System.Text.Json.JsonException)
+                {
+                    throw new UnauthorizedAccessException(errorContent);
+                }
+
+                throw new UnauthorizedAccessException("No tiene permisos para acceder al reporte de stock de medicamentos.");
+            }
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<ReporteStockMedicamentosDTO>();
+        }
+
         public async Task<MedicamentoDTO?> AddAsync(MedicamentoDTO dto)
         {
             using var client = await CreateHttpClientAsync();

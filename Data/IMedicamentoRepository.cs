@@ -8,6 +8,7 @@ namespace Data
         Task<bool> DeleteAsync(int id);
         Task<Medicamento?> GetAsync(int id);
         Task<IEnumerable<Medicamento>> GetAllAsync();
+        Task<(IEnumerable<Medicamento> Agotados, IEnumerable<Medicamento> StockBajo, IEnumerable<Medicamento> StockSuficiente)> GetMedicamentosClasificadosPorStockAdoAsync();
         Task<bool> UpdateAsync(Medicamento medicamento);
         Task<ICollection<Medicamento>> GetByIdsAsync(IEnumerable<int> ids);
         Task<bool> EstaEnUsoAsync(int id);

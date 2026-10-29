@@ -16,8 +16,11 @@ namespace WinFormsApp1
     public partial class FormMetricasTurnos : Form
     {
         private readonly TurnoClient TurnoClient;
+        private readonly VeterinarioClient VeterinarioClient;
         private readonly IAuthService AuthService;
+
         private FlowLayoutPanel? panelMetricas;
+        private TableLayoutPanel? tablaPrincipal;
 
         private string rolUsuario = string.Empty;
         private int idPersona = 0;
@@ -28,73 +31,37 @@ namespace WinFormsApp1
 
             AuthService = Program.AuthService;
             TurnoClient = new TurnoClient(AuthService);
+            VeterinarioClient = new VeterinarioClient(AuthService);
 
-            ConfigurarPantalla();
+            ConstruirLayoutDinamico();
+
+            if (Buscar != null) Buscar.Click += btnBuscar_Click;
+            if (Limpiar != null) Limpiar.Click += btnLimpiar_Click;
+
             this.Load += FormMetricasTurnos_Load;
         }
 
-        private async void FormMetricasTurnos_Load(object? sender, EventArgs e)
+        private void ConstruirLayoutDinamico()
         {
-            var rol = await AuthService.GetRolAsync();
-            rolUsuario = rol?.Trim().ToUpper() ?? string.Empty;
-
-            if (rolUsuario == "VETERINARIO")
-            {
-                var id = await AuthService.GetPersonaIdAsync();
-                idPersona = id ?? 0;
-            }
-
-            await CargarGraficosAsync();
-        }
-
-        private void ConfigurarPantalla()
-        {
-            Label lblTitulo = new Label
-            {
-                Text = "Proporción de los diferentes estados de turnos",
-                Dock = DockStyle.Top,
-                Height = 50,
-                TextAlign = ContentAlignment.MiddleCenter,
-                Font = new Font("Segoe UI", 14F, FontStyle.Bold),
-                BackColor = Color.Transparent
-            };
-
-            Panel panelInferior = new Panel
-            {
-                Dock = DockStyle.Bottom,
-                Height = 60,
-                BackColor = Color.Transparent
-            };
-
-            Button btnRetroceso = new Button
-            {
-                Text = "Volver",
-                Width = 120,
-                Height = 40,
-                Location = new Point((this.ClientSize.Width - 120) / 2, 10),
-                Anchor = AnchorStyles.None
-            };
-            btnRetroceso.Click += btnRetroceso_Click;
-            panelInferior.Controls.Add(btnRetroceso);
-
-            TableLayoutPanel tablaPrincipal = new TableLayoutPanel
-            {
-                Dock = DockStyle.Fill,
-                ColumnCount = 2,
-                RowCount = 1
-            };
-
-            tablaPrincipal.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
-            tablaPrincipal.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70F));
-
             panelMetricas = new FlowLayoutPanel
             {
                 Dock = DockStyle.Fill,
                 FlowDirection = FlowDirection.TopDown,
                 AutoScroll = true,
-                Padding = new Padding(20, 30, 20, 20),
-                WrapContents = false
+                Padding = new Padding(15),
+                WrapContents = false,
+                BackColor = Color.White
             };
+
+            tablaPrincipal = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 2,
+                RowCount = 1,
+                Padding = new Padding(0, 65, 0, 0)
+            };
+            tablaPrincipal.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tablaPrincipal.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 75F));
 
             TableLayoutPanel tablaGraficos = new TableLayoutPanel
             {
@@ -102,56 +69,157 @@ namespace WinFormsApp1
                 ColumnCount = 1,
                 RowCount = 2
             };
-
             tablaGraficos.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tablaGraficos.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
 
-            pieChart1.Dock = DockStyle.Fill;
-            pieChart1.Margin = new Padding(15);
+            if (pieChart1 != null)
+            {
+                pieChart1.Dock = DockStyle.Fill;
+                pieChart1.Margin = new Padding(10);
+                tablaGraficos.Controls.Add(pieChart1, 0, 0);
+            }
 
-            cartesianChart1.Dock = DockStyle.Fill;
-            cartesianChart1.Margin = new Padding(15);
-
-            tablaGraficos.Controls.Add(pieChart1, 0, 0);
-            tablaGraficos.Controls.Add(cartesianChart1, 0, 1);
+            if (cartesianChart1 != null)
+            {
+                cartesianChart1.Dock = DockStyle.Fill;
+                cartesianChart1.Margin = new Padding(10);
+                tablaGraficos.Controls.Add(cartesianChart1, 0, 1);
+            }
 
             tablaPrincipal.Controls.Add(panelMetricas, 0, 0);
             tablaPrincipal.Controls.Add(tablaGraficos, 1, 0);
 
             this.Controls.Add(tablaPrincipal);
-            this.Controls.Add(lblTitulo);
-            this.Controls.Add(panelInferior);
-
-            tablaPrincipal.BringToFront();
+            tablaPrincipal.SendToBack();
         }
 
-        private void btnRetroceso_Click(object? sender, EventArgs e)
+        private async void FormMetricasTurnos_Load(object? sender, EventArgs e)
         {
-            this.Close();
+            try
+            {
+                var rol = await AuthService.GetRolAsync();
+                rolUsuario = rol?.Trim().ToUpper() ?? string.Empty;
+
+                if (estadoTurno != null)
+                {
+                    estadoTurno.Items.Clear();
+                    estadoTurno.Items.Add("Todos");
+                    estadoTurno.Items.Add("Disponible");
+                    estadoTurno.Items.Add("Otorgado");
+                    estadoTurno.Items.Add("Resuelto");
+                    estadoTurno.SelectedIndex = 0;
+                }
+
+                if (fechaDesde != null) fechaDesde.ShowCheckBox = true;
+                if (fechaHasta != null) fechaHasta.ShowCheckBox = true;
+
+                if (rolUsuario == "VETERINARIO")
+                {
+                    var id = await AuthService.GetPersonaIdAsync();
+                    idPersona = id ?? 0;
+
+                    if (vetTurno != null)
+                    {
+                        vetTurno.Visible = false;
+                        label1.Visible = false;
+                    }
+                }
+                else if (rolUsuario == "ADMINISTRADOR")
+                {
+                    var vets = await VeterinarioClient.GetAllAsync();
+                    if (vets != null && vetTurno != null)
+                    {
+                        var listaVets = vets.Select(v => new
+                        {
+                            IdVeterinario = v.IdVeterinario,
+                            NombreCompleto = $"{v.NombreVeterinario} {v.Apellido}"
+                        }).ToList();
+
+                        vetTurno.DataSource = listaVets;
+                        vetTurno.DisplayMember = "NombreCompleto";
+                        vetTurno.ValueMember = "IdVeterinario";
+                        vetTurno.SelectedIndex = -1;
+                        vetTurno.Text = "Todos los veterinarios";
+                    }
+                }
+
+                await CargarGraficosAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al inicializar la pantalla: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async void btnBuscar_Click(object? sender, EventArgs e)
+        {
+            await CargarGraficosAsync();
+        }
+
+        private async void btnLimpiar_Click(object? sender, EventArgs e)
+        {
+            if (vetTurno != null && vetTurno.Visible && vetTurno.Items.Count > 0)
+            {
+                vetTurno.SelectedIndex = -1;
+                vetTurno.Text = "Todos los veterinarios";
+            }
+
+            if (estadoTurno != null)
+            {
+                estadoTurno.SelectedIndex = 0;
+            }
+
+            if (fechaDesde != null)
+            {
+                fechaDesde.Checked = false;
+            }
+
+            if (fechaHasta != null)
+            {
+                fechaHasta.Checked = false;
+            }
+
+            await CargarGraficosAsync();
         }
 
         private async Task CargarGraficosAsync()
         {
             try
             {
-                IEnumerable<TurnoDTO> turnos;
-
+                int? idVetFiltro = null;
                 if (rolUsuario == "VETERINARIO")
                 {
-                    var id = await AuthService.GetPersonaIdAsync();
-                    idPersona = id ?? 0;
-                    turnos = await TurnoClient.GetByVeterinarioIdAsync(idPersona) ?? new List<TurnoDTO>();
+                    idVetFiltro = idPersona;
                 }
-                else
+                else if (rolUsuario == "ADMINISTRADOR" && vetTurno?.SelectedItem != null)
                 {
-                    turnos = await TurnoClient.GetAllAsync();
+                    if (vetTurno.SelectedValue is int selectedId && selectedId > 0)
+                    {
+                        idVetFiltro = selectedId;
+                    }
                 }
+
+                string? estadoFiltro = null;
+                if (estadoTurno?.SelectedItem != null && estadoTurno.SelectedItem.ToString() != "Todos")
+                {
+                    estadoFiltro = estadoTurno.SelectedItem.ToString();
+                }
+
+                DateOnly? dDesde = (fechaDesde != null && fechaDesde.Checked) ? DateOnly.FromDateTime(fechaDesde.Value) : null;
+                DateOnly? dHasta = (fechaHasta != null && fechaHasta.Checked) ? DateOnly.FromDateTime(fechaHasta.Value) : null;
+
+                if (dDesde.HasValue && dHasta.HasValue && dDesde.Value > dHasta.Value)
+                {
+                    MessageBox.Show("La fecha 'Desde' no puede ser posterior a la fecha 'Hasta'.", "Validación de Filtros", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                IEnumerable<TurnoDTO> turnos = await TurnoClient.GetTurnosFiltradosAsync(idVetFiltro, estadoFiltro, dDesde, dHasta) ?? new List<TurnoDTO>();
 
                 int totalTurnos = turnos.Count();
-
-                int turnosOtorgados = turnos.Count(t => t.EstadoTurno != null && t.EstadoTurno.ToLower() == "otorgado");
-                int turnosDisponibles = turnos.Count(t => t.EstadoTurno != null && t.EstadoTurno.ToLower() == "disponible");
-                int turnosResueltos = turnos.Count(t => t.EstadoTurno != null && t.EstadoTurno.ToLower() == "resuelto");
+                int turnosOtorgados = turnos.Count(t => t.EstadoTurno != null && t.EstadoTurno.Equals("otorgado", StringComparison.OrdinalIgnoreCase));
+                int turnosDisponibles = turnos.Count(t => t.EstadoTurno != null && t.EstadoTurno.Equals("disponible", StringComparison.OrdinalIgnoreCase));
+                int turnosResueltos = turnos.Count(t => t.EstadoTurno != null && t.EstadoTurno.Equals("resuelto", StringComparison.OrdinalIgnoreCase));
 
                 if (panelMetricas != null)
                 {
@@ -161,37 +229,37 @@ namespace WinFormsApp1
                     {
                         Text = $"Turnos totales: {totalTurnos}",
                         AutoSize = true,
-                        Font = new Font("Segoe UI", 12F, FontStyle.Bold),
-                        Margin = new Padding(0, 0, 0, 20)
+                        Font = new Font("Segoe UI", 11F, FontStyle.Bold),
+                        Margin = new Padding(0, 5, 0, 15)
                     };
 
                     Label lblOtorgado = new Label
                     {
-                        Text = $"Turnos en estado Otorgado: {turnosOtorgados}",
+                        Text = $"Otorgados: {turnosOtorgados}",
                         AutoSize = true,
-                        Font = new Font("Segoe UI", 11F),
+                        Font = new Font("Segoe UI", 10F),
                         Margin = new Padding(0, 0, 0, 10)
                     };
 
-                    Label lblPendiente = new Label
+                    Label lblDisponible = new Label
                     {
-                        Text = $"Turnos en estado Disponible: {turnosDisponibles}",
+                        Text = $"Disponibles: {turnosDisponibles}",
                         AutoSize = true,
-                        Font = new Font("Segoe UI", 11F),
+                        Font = new Font("Segoe UI", 10F),
                         Margin = new Padding(0, 0, 0, 10)
                     };
 
                     Label lblResuelto = new Label
                     {
-                        Text = $"Turnos en estado Resuelto: {turnosResueltos}",
+                        Text = $"Resueltos: {turnosResueltos}",
                         AutoSize = true,
-                        Font = new Font("Segoe UI", 11F),
+                        Font = new Font("Segoe UI", 10F),
                         Margin = new Padding(0, 0, 0, 10)
                     };
 
                     panelMetricas.Controls.Add(lblTotal);
                     panelMetricas.Controls.Add(lblOtorgado);
-                    panelMetricas.Controls.Add(lblPendiente);
+                    panelMetricas.Controls.Add(lblDisponible);
                     panelMetricas.Controls.Add(lblResuelto);
                 }
 
@@ -215,32 +283,34 @@ namespace WinFormsApp1
                         DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle
                     });
                 }
-                pieChart1.Series = pieSeries;
+                if (pieChart1 != null) pieChart1.Series = pieSeries;
 
-                var valoresBarras = turnosAgrupados.Select(x => x.Cantidad).ToArray();
                 var etiquetasBarras = turnosAgrupados.Select(x => x.Estado).ToArray();
 
-                cartesianChart1.Series = new ISeries[]
+                if (cartesianChart1 != null)
                 {
-                    new ColumnSeries<int>
+                    cartesianChart1.Series = new ISeries[]
                     {
-                        Values = valoresBarras,
-                        Name = "Cantidad de Turnos"
-                    }
-                };
+                        new ColumnSeries<int>
+                        {
+                            Values = turnosAgrupados.Select(x => x.Cantidad).ToArray(),
+                            Name = "Cantidad de Turnos"
+                        }
+                    };
 
-                cartesianChart1.XAxes = new Axis[]
-                {
-                    new Axis
+                    cartesianChart1.XAxes = new Axis[]
                     {
-                        Labels = etiquetasBarras,
-                        LabelsRotation = 15
-                    }
-                };
+                        new Axis
+                        {
+                            Labels = etiquetasBarras,
+                            LabelsRotation = 15
+                        }
+                    };
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar las métricas: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error al cargar las métricas filtradas: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

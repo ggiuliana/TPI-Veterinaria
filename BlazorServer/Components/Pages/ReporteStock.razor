@@ -135,14 +135,18 @@
             loading = true;
             errorMessage = string.Empty;
 
-            var todosLosMedicamentos = await MedicamentoClient.GetAllAsync();
+            var reporteStock = await MedicamentoClient.GetReporteStockAsync();
 
-            if (todosLosMedicamentos != null)
+            if (reporteStock != null)
             {
-                sinStock = todosLosMedicamentos.Where(m => m.CantidadRestante == 0).ToList();
-                pocoStock = todosLosMedicamentos.Where(m => m.CantidadRestante > 0 && m.CantidadRestante <= 5).ToList();
-                enStock = todosLosMedicamentos.Where(m => m.CantidadRestante > 5).ToList();
+                sinStock = reporteStock.Agotados ?? new List<MedicamentoDTO>();
+                pocoStock = reporteStock.StockBajo ?? new List<MedicamentoDTO>();
+                enStock = reporteStock.StockSuficiente ?? new List<MedicamentoDTO>();
             }
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            errorMessage = $"Acceso denegado: {ex.Message}";
         }
         catch (Exception ex)
         {

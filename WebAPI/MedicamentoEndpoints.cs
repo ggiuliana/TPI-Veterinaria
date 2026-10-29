@@ -35,6 +35,30 @@ namespace WebAPI
             .WithOpenApi()
             .RequireAuthorization("MedicamentosLeer");
 
+            app.MapGet("/medicamentos/reporte-stock", async (IMedicamentoService medicamentoService) =>
+            {
+                try
+                {
+                    var (agotados, stockBajo, stockSuficiente) = await medicamentoService.GetMedicamentosClasificadosPorStockAsync();
+
+                    return Results.Ok(new
+                    {
+                        Agotados = agotados,
+                        StockBajo = stockBajo,
+                        StockSuficiente = stockSuficiente
+                    });
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    return Results.Json(new { error = ex.Message }, statusCode: StatusCodes.Status403Forbidden);
+                }
+            })
+            .WithName("GetReporteStockMedicamentos")
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status403Forbidden)
+            .WithOpenApi()
+            .RequireAuthorization("MedicamentosLeer");
+
             app.MapPost("/medicamentos", async (MedicamentoDTO dto, IMedicamentoService medicamentoService) =>
             {
                 try

@@ -1,4 +1,5 @@
 ﻿@page "/turnos"
+@implements IDisposable
 
 @using DTOs
 @using API.Clients
@@ -53,7 +54,7 @@
                                 <label class="form-label fw-bold">Estado</label>
                                 <select class="form-select" @bind="filtroEstado">
                                     <option value="">Todos</option>
-                                    <option value="Pendiente">Pendiente</option>
+                                    <option value="Disponible">Disponible</option>
                                     <option value="Otorgado">Otorgado</option>
                                     <option value="Resuelto">Resuelto</option>
                                 </select>
@@ -203,10 +204,12 @@
     private int? filtroIdVeterinario;
     private DateOnly? filtroFechaDesde;
     private DateOnly? filtroFechaHasta;
+    private bool disposed;
 
     protected override async Task OnInitializedAsync()
     {
         var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+        if (disposed) return;
         if (!isAuthenticated)
         {
             Navigation.NavigateTo("/login");
@@ -214,6 +217,7 @@
         }
 
         var rol = await AuthService.GetRolAsync();
+        if (disposed) return;
         rolUsuario = rol?.Trim().ToUpper() ?? string.Empty;
 
         if (rolUsuario != "ADMINISTRADOR" && rolUsuario != "VETERINARIO")
@@ -225,13 +229,16 @@
         if (rolUsuario == "VETERINARIO")
         {
             idPersona = await AuthService.GetPersonaIdAsync();
+            if (disposed) return;
         }
 
         await LoadPermissions();
+        if (disposed) return;
 
         if (rolUsuario == "ADMINISTRADOR")
         {
             await CargarVeterinariosCombo();
+            if (disposed) return;
         }
 
         if (canRead)
@@ -249,7 +256,11 @@
     {
         try
         {
-            veterinariosCombo = (await VeterinarioClient.GetAllAsync())?.ToList();
+            var veterinarios = await VeterinarioClient.GetAllAsync();
+            if (!disposed)
+            {
+                veterinariosCombo = veterinarios?.ToList();
+            }
         }
         catch (Exception ex)
         {
@@ -260,8 +271,11 @@
     private async Task LoadPermissions()
     {
         canRead = await AuthService.HasPermissionAsync("turnos.leer");
+        if (disposed) return;
         canAdd = await AuthService.HasPermissionAsync("turnos.agregar");
+        if (disposed) return;
         canUpdate = await AuthService.HasPermissionAsync("turnos.actualizar");
+        if (disposed) return;
         canDelete = await AuthService.HasPermissionAsync("turnos.eliminar");
     }
 
@@ -276,7 +290,9 @@
             {
                 if (idPersona.HasValue)
                 {
-                    turnos = (await TurnoClient.GetByVeterinarioIdAsync(idPersona.Value))?.ToList();
+                    var turnosVeterinario = await TurnoClient.GetByVeterinarioIdAsync(idPersona.Value);
+                    if (disposed) return;
+                    turnos = turnosVeterinario?.ToList();
                 }
                 else
                 {
@@ -285,25 +301,40 @@
             }
             else if (rolUsuario == "ADMINISTRADOR")
             {
-                turnos = (await TurnoClient.GetTurnosFiltradosAsync(
+                var turnosFiltrados = await TurnoClient.GetTurnosFiltradosAsync(
                     filtroIdVeterinario,
                     filtroEstado,
                     filtroFechaDesde,
-                    filtroFechaHasta))?.ToList();
+                    filtroFechaHasta);
+                if (disposed) return;
+                turnos = turnosFiltrados?.ToList();
             }
             else
             {
-                turnos = (await TurnoClient.GetAllAsync())?.ToList();
+                var todosLosTurnos = await TurnoClient.GetAllAsync();
+                if (disposed) return;
+                turnos = todosLosTurnos?.ToList();
             }
         }
         catch (Exception ex)
         {
-            errorMessage = $"Error al cargar los turnos: {ex.Message}";
+            if (!disposed)
+            {
+                errorMessage = $"Error al cargar los turnos: {ex.Message}";
+            }
         }
         finally
         {
-            loading = false;
+            if (!disposed)
+            {
+                loading = false;
+            }
         }
+    }
+
+    public void Dispose()
+    {
+        disposed = true;
     }
 
     private async Task AplicarFiltros()

@@ -132,9 +132,14 @@ namespace ServiciosApp
         {
             string rol = userContext.GetCurrentRole();
 
-            if (rol == "Duenio" || rol == "Veterinario")
+            if (rol == "Duenio")
             {
-                throw new UnauthorizedAccessException("Los dueños y veterinarios no tienen permiso para usar este filtro.");
+                throw new UnauthorizedAccessException("Los dueños no tienen permiso para usar este filtro.");
+            }
+
+            if (rol == "Veterinario")
+            {
+                idVeterinario = userContext.GetCurrentUserId();
             }
 
             if (fechaDesde.HasValue && fechaHasta.HasValue)

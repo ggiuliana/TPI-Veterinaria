@@ -1,40 +1,99 @@
 ﻿@page "/metricas"
+@implements IDisposable
 @using Microsoft.AspNetCore.Authorization
 @attribute [Authorize(Roles = "Administrador, Veterinario")]
 
-@rendermode InteractiveServer
-
 @using DTOs
 @using API.Clients
-@using Radzen
-@using Radzen.Blazor
 
 @inject TurnoClient TurnoClient
+@inject VeterinarioClient VeterinarioClient
 @inject IAuthService AuthService
 @inject NavigationManager Navigation
 
-<PageTitle>Métricas de Turnos</PageTitle>
+<PageTitle>@(rolUsuario == "VETERINARIO" ? "Reporte de mis turnos" : "Métricas de Turnos")</PageTitle>
 
 <div class="container-fluid mt-3">
     <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
-        <h2 class="fw-normal text-secondary mb-0">Métricas de Turnos</h2>
+        <h2 class="fw-normal text-secondary mb-0">
+            @(rolUsuario == "VETERINARIO" ? "Reporte de mis turnos" : "Métricas de Turnos")
+        </h2>
         <button type="button" class="btn btn-outline-secondary" @onclick="@(() => Navigation.NavigateTo("/turnos"))">
             <i class="fas fa-arrow-left"></i> Volver a Turnos
         </button>
     </div>
 
-    @if (loading)
+    @if (!inicializado)
     {
         <div class="d-flex justify-content-center mt-5">
             <div class="spinner-border text-info" role="status"></div>
+            <span class="ms-3 mt-1 text-secondary">Cargando métricas...</span>
         </div>
-    }
-    else if (!string.IsNullOrEmpty(errorMessage))
-    {
-        <div class="alert alert-danger">@errorMessage</div>
     }
     else
     {
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>@errorMessage
+                <button type="button" class="btn-close" @onclick="@(() => errorMessage = string.Empty)" aria-label="Close"></button>
+            </div>
+        }
+
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-3">
+                        <label class="form-label text-secondary small mb-1">Fecha Desde</label>
+                        <InputDate @bind-Value="fechaDesde" class="form-control" max="@(fechaHasta?.ToString("yyyy-MM-dd"))" />
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label text-secondary small mb-1">Fecha Hasta</label>
+                        <InputDate @bind-Value="fechaHasta" class="form-control" min="@(fechaDesde?.ToString("yyyy-MM-dd"))" />
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label text-secondary small mb-1">Estado</label>
+                        <InputSelect @bind-Value="estadoFiltro" class="form-select">
+                            <option value="">Todos los estados</option>
+                            @foreach (var estado in estadosPermitidos)
+                            {
+                                <option value="@estado">@estado</option>
+                            }
+                        </InputSelect>
+                    </div>
+
+                    @if (rolUsuario == "ADMINISTRADOR")
+                    {
+                        <div class="col-md-3">
+                            <label class="form-label text-secondary small mb-1">Veterinario</label>
+                            <InputSelect @bind-Value="veterinarioFiltro" class="form-select">
+                                <option value="">Todos los veterinarios</option>
+                                @foreach (var veterinario in listaVeterinarios)
+                                {
+                                    <option value="@veterinario.IdVeterinario">@veterinario.NombreVeterinario @veterinario.Apellido</option>
+                                }
+                            </InputSelect>
+                        </div>
+                    }
+
+                    <div class="col-md-auto d-flex gap-2">
+                        <button class="btn btn-primary" @onclick="CargarMetricasAsync" disabled="@loading">
+                            @if (loading)
+                            {
+                                <span class="spinner-border spinner-border-sm me-1"></span>
+                            }
+                            <i class="fas fa-filter"></i> Filtrar
+                        </button>
+                        <button class="btn btn-outline-secondary" @onclick="LimpiarFiltros" disabled="@loading">
+                            <i class="fas fa-eraser"></i> Limpiar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-md-4 mb-4">
                 <div class="card border-0 shadow-sm h-100">
@@ -67,10 +126,15 @@
                 <div class="card border-0 shadow-sm mb-4">
                     <div class="card-body">
                         <h6 class="text-center text-secondary mb-3">Proporción de Estados</h6>
-                        <div style="height: 300px;">
-                            <RadzenChart>
-                                <RadzenPieSeries Data="@datosMetricas" CategoryProperty="Estado" ValueProperty="Cantidad" />
-                            </RadzenChart>
+                        <div class="d-flex justify-content-center align-items-center gap-4 flex-wrap py-4">
+                            <div role="img" aria-label="Proporción de turnos por estado"
+                                 style="width: 180px; height: 180px; border-radius: 50%; background: @EstiloGraficoCircular;">
+                            </div>
+                            <div>
+                                <div class="d-flex align-items-center mb-2"><span class="badge bg-primary me-2">&nbsp;</span>Otorgados: @turnosOtorgados</div>
+                                <div class="d-flex align-items-center mb-2"><span class="badge bg-warning me-2">&nbsp;</span>Disponibles: @turnosDisponibles</div>
+                                <div class="d-flex align-items-center"><span class="badge bg-success me-2">&nbsp;</span>Resueltos: @turnosResueltos</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -78,14 +142,18 @@
                 <div class="card border-0 shadow-sm">
                     <div class="card-body">
                         <h6 class="text-center text-secondary mb-3">Cantidad de Turnos por Estado</h6>
-                        <div style="height: 300px;">
-                            <RadzenChart>
-                                <RadzenColumnSeries Data="@datosMetricas" CategoryProperty="Estado" ValueProperty="Cantidad" Title="Turnos" />
-                                <RadzenColumnOptions Radius="5" />
-                                <RadzenValueAxis>
-                                    <RadzenGridLines Visible="true" />
-                                </RadzenValueAxis>
-                            </RadzenChart>
+                        <div class="py-3">
+                            @foreach (var dato in datosMetricas)
+                            {
+                                var porcentaje = Porcentaje(dato.Cantidad);
+                                var color = dato.Estado == "Otorgado" ? "bg-primary" : dato.Estado == "Disponible" ? "bg-warning" : "bg-success";
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between mb-1"><span>@dato.Estado</span><strong>@dato.Cantidad</strong></div>
+                                    <div class="progress" role="progressbar" aria-label="@dato.Estado" aria-valuenow="@dato.Cantidad" aria-valuemin="0" aria-valuemax="@Math.Max(totalTurnos, 1)">
+                                        <div class="progress-bar @color" style="width: @porcentaje.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)%"></div>
+                                    </div>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -95,7 +163,8 @@
 </div>
 
 @code {
-    private bool loading = true;
+    private bool loading = false;
+    private bool inicializado = false;
     private string errorMessage = string.Empty;
 
     private int totalTurnos = 0;
@@ -103,59 +172,141 @@
     private int turnosDisponibles = 0;
     private int turnosResueltos = 0;
 
+    private DateTime? fechaDesde;
+    private DateTime? fechaHasta;
+    private string? estadoFiltro;
+    private int? veterinarioFiltro;
+
+    private bool disposed;
+
+    private readonly List<string> estadosPermitidos = new() { "Disponible", "Otorgado", "Resuelto" };
+    private List<VeterinarioDTO> listaVeterinarios = new();
+
     public class DatoMetrica
     {
         public string Estado { get; set; } = string.Empty;
         public int Cantidad { get; set; }
     }
 
-    private List<DatoMetrica> datosMetricas = new List<DatoMetrica>();
+    private List<DatoMetrica> datosMetricas = new()
+    {
+        new DatoMetrica { Estado = "Otorgado", Cantidad = 0 },
+        new DatoMetrica { Estado = "Disponible", Cantidad = 0 },
+        new DatoMetrica { Estado = "Resuelto", Cantidad = 0 }
+    };
 
     private string rolUsuario = string.Empty;
     private int? idPersona = 0;
 
+    private double Porcentaje(int cantidad) => totalTurnos == 0 ? 0 : cantidad * 100d / totalTurnos;
+
+    private string EstiloGraficoCircular
+    {
+        get
+        {
+            if (totalTurnos == 0)
+            {
+                return "#e9ecef";
+            }
+
+            var otorgados = Porcentaje(turnosOtorgados);
+            var disponibles = otorgados + Porcentaje(turnosDisponibles);
+            return $"conic-gradient(#0d6efd 0% {otorgados.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)}%, #ffc107 {otorgados.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)}% {disponibles.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)}%, #198754 {disponibles.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)}% 100%)";
+        }
+    }
+
     protected override async Task OnInitializedAsync()
     {
-        var isAuthenticated = await AuthService.IsAuthenticatedAsync();
-        if (!isAuthenticated)
+        var redireccionando = false;
+        try
         {
-            Navigation.NavigateTo("/login");
-            return;
+            var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+            if (disposed) return;
+
+            if (!isAuthenticated)
+            {
+                redireccionando = true;
+                Navigation.NavigateTo("/login");
+                return;
+            }
+
+            var rol = await AuthService.GetRolAsync();
+            if (disposed) return;
+
+            rolUsuario = rol?.Trim().ToUpper() ?? string.Empty;
+
+            if (rolUsuario != "ADMINISTRADOR" && rolUsuario != "VETERINARIO")
+            {
+                redireccionando = true;
+                Navigation.NavigateTo("/");
+                return;
+            }
+
+            if (rolUsuario == "VETERINARIO")
+            {
+                idPersona = await AuthService.GetPersonaIdAsync();
+                if (disposed) return;
+                veterinarioFiltro = idPersona;
+            }
+            else if (rolUsuario == "ADMINISTRADOR")
+            {
+                var vets = await VeterinarioClient.GetAllAsync();
+                if (disposed) return;
+                if (vets != null)
+                {
+                    listaVeterinarios = vets.ToList();
+                }
+            }
+
+            await CargarMetricasAsync();
         }
-
-        var rol = await AuthService.GetRolAsync();
-        rolUsuario = rol?.Trim().ToUpper() ?? string.Empty;
-
-        if (rolUsuario != "ADMINISTRADOR" && rolUsuario != "VETERINARIO")
+        catch (Exception ex)
         {
-            Navigation.NavigateTo("/");
-            return;
+            if (!disposed)
+            {
+                errorMessage = $"Error al cargar la página: {ex.Message}";
+            }
         }
-
-        if (rolUsuario == "VETERINARIO")
+        finally
         {
-            idPersona = await AuthService.GetPersonaIdAsync();
+            if (!disposed && !redireccionando)
+            {
+                inicializado = true;
+            }
         }
-
-        await CargarMetricasAsync();
     }
 
     private async Task CargarMetricasAsync()
     {
+        if (loading) return;
+
+        if (fechaDesde.HasValue && fechaHasta.HasValue && fechaDesde.Value > fechaHasta.Value)
+        {
+            errorMessage = "La fecha 'Desde' no puede ser posterior a la fecha 'Hasta'.";
+            return;
+        }
+
         try
         {
             loading = true;
-
-            IEnumerable<TurnoDTO>? turnos;
+            errorMessage = string.Empty;
 
             if (rolUsuario == "VETERINARIO")
             {
-                turnos = await TurnoClient.GetByVeterinarioIdAsync(idPersona!.Value);
+                veterinarioFiltro = idPersona;
             }
-            else
-            {
-                turnos = await TurnoClient.GetAllAsync();
-            }
+
+            DateOnly? dDesde = fechaDesde.HasValue ? DateOnly.FromDateTime(fechaDesde.Value) : null;
+            DateOnly? dHasta = fechaHasta.HasValue ? DateOnly.FromDateTime(fechaHasta.Value) : null;
+
+            var turnos = await TurnoClient.GetTurnosFiltradosAsync(
+                veterinarioFiltro,
+                estadoFiltro,
+                dDesde,
+                dHasta
+            );
+
+            if (disposed) return;
 
             if (turnos != null)
             {
@@ -174,11 +325,41 @@
         }
         catch (Exception ex)
         {
-            errorMessage = $"Error al cargar las métricas: {ex.Message}";
+            if (!disposed)
+            {
+                errorMessage = $"Error al filtrar las métricas: {ex.Message}";
+            }
         }
         finally
         {
-            loading = false;
+            if (!disposed)
+            {
+                loading = false;
+            }
         }
+    }
+
+    private async Task LimpiarFiltros()
+    {
+        fechaDesde = null;
+        fechaHasta = null;
+        estadoFiltro = null;
+        errorMessage = string.Empty;
+
+        if (rolUsuario == "ADMINISTRADOR")
+        {
+            veterinarioFiltro = null;
+        }
+        else if (rolUsuario == "VETERINARIO")
+        {
+            veterinarioFiltro = idPersona;
+        }
+
+        await CargarMetricasAsync();
+    }
+
+    public void Dispose()
+    {
+        disposed = true;
     }
 }

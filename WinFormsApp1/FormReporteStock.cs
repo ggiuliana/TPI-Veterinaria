@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using API.Clients;
@@ -29,19 +29,19 @@ namespace WinFormsApp1
         {
             dgv.AutoGenerateColumns = false;
             dgv.Columns.Clear();
-            dgv.RowHeadersVisible = false; 
+            dgv.RowHeadersVisible = false;
             dgv.AllowUserToAddRows = false;
 
             dgv.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "NombreMedicamento",
                 HeaderText = "Nombre del medicamento",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill 
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
             });
 
             dgv.Columns.Add(new DataGridViewTextBoxColumn
             {
-                DataPropertyName = "CantidadRestante", 
+                DataPropertyName = "CantidadRestante",
                 HeaderText = "Cantidad restante",
                 Width = 120,
                 DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleCenter }
@@ -57,26 +57,27 @@ namespace WinFormsApp1
         {
             try
             {
-                var medicamentos = await MedicamentoClient.GetAllAsync();
+                var reporte = await MedicamentoClient.GetReporteStockAsync();
 
-                if (medicamentos != null && medicamentos.Any())
+                if (reporte != null)
                 {
-                    var sinStock = medicamentos.Where(m => m.CantidadRestante == 0).ToList();
-                    var pocoStock = medicamentos.Where(m => m.CantidadRestante > 0 && m.CantidadRestante <= 5).ToList();
-                    var enStock = medicamentos.Where(m => m.CantidadRestante > 5).ToList();
-
-                    int totalSinStock = sinStock.Count;
-                    int totalPocoStock = pocoStock.Count;
-                    int totalEnStock = enStock.Count;
+                    var sinStock = reporte.Agotados ?? new List<MedicamentoDTO>();
+                    var pocoStock = reporte.StockBajo ?? new List<MedicamentoDTO>();
+                    var enStock = reporte.StockSuficiente ?? new List<MedicamentoDTO>();
 
                     dataGridView1.DataSource = sinStock;
                     dataGridView2.DataSource = pocoStock;
                     dataGridView3.DataSource = enStock;
 
-                    label2.Text = $"Sin stock, reposición inmediata: ({totalSinStock})";
-                    label3.Text = $"Bajo stock, pronta reposición: ({totalPocoStock})";
-                    label4.Text = $"En stock: ({totalEnStock})";
+                    label2.Text = $"Sin stock, reposición inmediata: ({sinStock.Count})";
+                    label3.Text = $"Bajo stock, pronta reposición: ({pocoStock.Count})";
+                    label4.Text = $"En stock: ({enStock.Count})";
                 }
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                MessageBox.Show($"Acceso denegado: {ex.Message}", "Permisos Insuficientes", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.Close();
             }
             catch (Exception ex)
             {

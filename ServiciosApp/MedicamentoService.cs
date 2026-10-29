@@ -8,11 +8,13 @@ namespace ServiciosApp
     {
         private readonly IMedicamentoRepository repo;
         private readonly IMedicamentoConsultaRepository detalleRepo;
+        private readonly IUserContextService userContext;
 
-        public MedicamentoService(IMedicamentoRepository repo, IMedicamentoConsultaRepository detalleRepo)
+        public MedicamentoService(IMedicamentoRepository repo, IMedicamentoConsultaRepository detalleRepo, IUserContextService userContext )
         {
             this.repo = repo;
             this.detalleRepo = detalleRepo;
+            this.userContext = userContext;
         }
 
         public async Task<MedicamentoDTO> AddAsync(MedicamentoDTO dto)
@@ -64,6 +66,38 @@ namespace ServiciosApp
                 NombreMedicamento = t.NombreMedicamento,
                 CantidadRestante = t.CantidadRestante
             })];
+        }
+        public async Task<(IEnumerable<MedicamentoDTO> Agotados, IEnumerable<MedicamentoDTO> StockBajo, IEnumerable<MedicamentoDTO> StockSuficiente)> GetMedicamentosClasificadosPorStockAsync()
+        {
+            string rol = userContext.GetCurrentRole();
+
+            if (!string.Equals(rol, "Administrador", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new UnauthorizedAccessException("Solo el usuario con rol Administrador tiene permiso para consultar este reporte de stock.");
+            }
+
+            var (agotados, stockBajo, stockSuficiente) = await repo.GetMedicamentosClasificadosPorStockAdoAsync();
+
+            return (
+                [.. agotados.Select(t => new MedicamentoDTO
+            {
+                IdMedicamento = t.IdMedicamento,
+                NombreMedicamento = t.NombreMedicamento,
+                CantidadRestante = t.CantidadRestante
+            })],
+                [.. stockBajo.Select(t => new MedicamentoDTO
+            {
+                IdMedicamento = t.IdMedicamento,
+                NombreMedicamento = t.NombreMedicamento,
+                CantidadRestante = t.CantidadRestante
+            })],
+                [.. stockSuficiente.Select(t => new MedicamentoDTO
+            {
+                IdMedicamento = t.IdMedicamento,
+                NombreMedicamento = t.NombreMedicamento,
+                CantidadRestante = t.CantidadRestante
+            })]
+            );
         }
         public async Task<bool> UpdateAsync(MedicamentoDTO dto)
         {

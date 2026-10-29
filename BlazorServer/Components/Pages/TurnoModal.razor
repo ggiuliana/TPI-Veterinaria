@@ -1,5 +1,6 @@
 ﻿@using DTOs
 @using API.Clients
+@implements IDisposable
 @inject IJSRuntime JSRuntime
 @inject TurnoClient TurnoClient
 @inject VeterinarioClient VeterinarioClient
@@ -147,6 +148,7 @@
 
     private bool isVeterinario = false;
     private int idVeterinarioSesion = 0;
+    private bool disposed;
 
     public enum FormMode
     {
@@ -157,11 +159,13 @@
     protected override async Task OnInitializedAsync()
     {
         var rol = await AuthService.GetRolAsync();
+        if (disposed) return;
         isVeterinario = (rol?.Trim().ToUpper() == "VETERINARIO");
 
         if (isVeterinario)
         {
             var idPersona = await AuthService.GetPersonaIdAsync();
+            if (disposed) return;
             if (idPersona != null)
             {
                 idVeterinarioSesion = idPersona.Value;
@@ -177,7 +181,11 @@
     {
         try
         {
-            veterinariosCombo = (await VeterinarioClient.GetAllAsync())?.ToList();
+            var veterinarios = await VeterinarioClient.GetAllAsync();
+            if (!disposed)
+            {
+                veterinariosCombo = veterinarios?.ToList();
+            }
         }
         catch (Exception ex)
         {
@@ -289,5 +297,10 @@
         showModal = false;
         ClearValidationErrors();
         StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        disposed = true;
     }
 }
