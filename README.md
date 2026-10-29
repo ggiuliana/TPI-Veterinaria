@@ -59,7 +59,7 @@ Los usuarios disponibles para probar las diferentes funcionalidades en el sistem
 
 ### Veterinario
 
-- Username: vet
+- Username: veterinario
 - Password: vet123
 
 ### Dueño
