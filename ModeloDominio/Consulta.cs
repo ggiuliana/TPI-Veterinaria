@@ -57,6 +57,10 @@
             {
                 throw new ArgumentException("El turno no puede ser nulo.");
             }
+            if (turno.EstadoTurno == "Disponible" || turno.Mascota == null)
+            {
+                throw new ArgumentException("No se puede registrar una consulta sobre un turno 'Disponible' o sin una mascota asignada.");
+            }
             Turno = turno;
         }
         public void SetObservaciones(string? observaciones)

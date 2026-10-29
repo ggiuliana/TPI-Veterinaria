@@ -7,8 +7,13 @@ namespace ServiciosApp
     public class MedicamentoService : IMedicamentoService
     {
         private readonly IMedicamentoRepository repo;
+        private readonly IMedicamentoConsultaRepository detalleRepo;
 
-        public MedicamentoService(IMedicamentoRepository repo) => this.repo = repo;
+        public MedicamentoService(IMedicamentoRepository repo, IMedicamentoConsultaRepository detalleRepo)
+        {
+            this.repo = repo;
+            this.detalleRepo = detalleRepo;
+        }
 
         public async Task<MedicamentoDTO> AddAsync(MedicamentoDTO dto)
         {
@@ -19,6 +24,12 @@ namespace ServiciosApp
         }
         public async Task<bool> DeleteAsync(int id)
         {
+            bool estaEnUso = await repo.EstaEnUsoAsync(id);
+
+            if (estaEnUso)
+            {
+                throw new ArgumentException("No se puede eliminar este medicamento porque ya forma parte del historial clínico de una o más consultas.");
+            }
             return await repo.DeleteAsync(id);
         }
         public async Task<MedicamentoDTO?> GetAsync(int id)

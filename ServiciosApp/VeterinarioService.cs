@@ -8,11 +8,13 @@ namespace ServiciosApp
     {
         private readonly IVeterinarioRepository repo;
         private readonly IUsuarioRepository usuarioRepo;
+        private readonly ITurnoRepository turnoRepo;
 
-        public VeterinarioService(IVeterinarioRepository repo, IUsuarioRepository usuarioRepo)
+        public VeterinarioService(IVeterinarioRepository repo, IUsuarioRepository usuarioRepo, ITurnoRepository turnoRepo)
         {
             this.repo = repo;
             this.usuarioRepo = usuarioRepo;
+            this.turnoRepo = turnoRepo;
         }
 
         public async Task<VeterinarioDTO> AddAsync(VeterinarioDTO dto)
@@ -42,6 +44,11 @@ namespace ServiciosApp
         }
         public async Task<bool> DeleteAsync(int id)
         {
+            var turnos = await turnoRepo.GetByVeterinarioIdAsync(id);
+            if (turnos != null && turnos.Any())
+            {
+                throw new InvalidOperationException("No se puede eliminar este veterinario porque tiene turnos registrados a su nombre.");
+            }
             return await repo.DeleteAsync(id);
         }
         public async Task<VeterinarioDTO?> GetAsync(int id)

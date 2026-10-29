@@ -240,6 +240,7 @@
             // 
             // fechaDesde
             // 
+            fechaDesde.Format = DateTimePickerFormat.Short;
             fechaDesde.Location = new Point(275, 31);
             fechaDesde.Name = "fechaDesde";
             fechaDesde.Size = new Size(102, 23);
@@ -247,6 +248,7 @@
             // 
             // fechaHasta
             // 
+            fechaHasta.Format = DateTimePickerFormat.Short;
             fechaHasta.Location = new Point(383, 31);
             fechaHasta.Name = "fechaHasta";
             fechaHasta.Size = new Size(103, 23);
@@ -299,7 +301,7 @@
             label5.TabIndex = 58;
             label5.Text = "Fecha hasta:";
             // 
-            // Form1
+            // FormTurnoAdminListado
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -320,8 +322,8 @@
             Controls.Add(Delete);
             Controls.Add(Buscar);
             Controls.Add(dataGridView1);
-            Name = "Form1";
-            Text = "Form1";
+            Name = "FormTurnoAdminListado";
+            Text = "Turnos Admin";
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();
