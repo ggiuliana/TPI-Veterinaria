@@ -26,6 +26,17 @@ namespace ServiciosApp
             }
             return false;
         }
+
+        public async Task<Usuario?> GetByPersonaIdAsync(int id)
+        {
+            var usuario = await context.Usuarios.FirstOrDefaultAsync(u => u.Persona.IdPersona == id);
+            if (usuario != null)
+            {
+                return usuario;
+            }
+            return null;
+        }
+
         public async Task<Usuario?> GetAsync(int id)
         {
             return await context.Usuarios.FirstOrDefaultAsync(u => u.IdUsuario == id);

@@ -262,7 +262,7 @@ namespace Data
                 entity.HasOne(u => u.Persona)
                 .WithOne(p => p.Usuario)
                 .HasForeignKey<Usuario>(u => u.IdPersona)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.SetNull);
 
                 entity.HasOne(u => u.Grupo)
                 .WithMany()

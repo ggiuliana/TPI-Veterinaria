@@ -7,8 +7,13 @@ namespace ServiciosApp
     public class DuenioService : IDuenioService
     {
         private readonly IDuenioRepository repo;
+        private readonly IUsuarioRepository usuarioRepo;
 
-        public DuenioService(IDuenioRepository repo) => this.repo = repo;
+        public DuenioService(IDuenioRepository repo, IUsuarioRepository usuarioRepo)
+        {
+            this.repo = repo;
+            this.usuarioRepo = usuarioRepo;
+        }
         public async Task<DuenioDTO> AddAsync(DuenioDTO dto)
         {
             if (await repo.MailExistsAsync(dto.Mail))
@@ -22,6 +27,13 @@ namespace ServiciosApp
         }
         public async Task<bool> DeleteAsync(int id)
         {
+            var usuario = await usuarioRepo.GetByPersonaIdAsync(id);
+
+            if (usuario != null)
+            {
+                usuario.SetEstadoUsuario("Inactivo");
+            }
+
             return await repo.DeleteAsync(id);
         }
         public async Task<DuenioDTO?> GetAsync(int id)

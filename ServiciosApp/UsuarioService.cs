@@ -103,6 +103,16 @@ namespace ServiciosApp
             var vet = dto.veterinario;
             var usu = dto.usuario;
 
+            if (string.IsNullOrWhiteSpace(usu.NombreUsuario))
+            { 
+                throw new ArgumentException($"El nombre de usuario no puede ser vacío.");
+            }
+
+            if (string.IsNullOrWhiteSpace(usu.Contrasenia) || usu.Contrasenia.Length < 6)
+            {
+                throw new ArgumentException($"La contraseña no puede ser vacía y debe tener al menos 6 caracteres.");
+            }
+
             if (await repoVeterinario.MailExistsAsync(vet.Mail))
             {
                 throw new ArgumentException($"Ya existe una persona con el Email '{vet.Mail}'.");

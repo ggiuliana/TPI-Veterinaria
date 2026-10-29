@@ -49,6 +49,14 @@ namespace ServiciosApp
             {
                 throw new InvalidOperationException("No se puede eliminar este veterinario porque tiene turnos registrados a su nombre.");
             }
+
+            var usuario = await usuarioRepo.GetByPersonaIdAsync(id);
+
+            if (usuario != null)
+            {
+                usuario.SetEstadoUsuario("Inactivo");
+            }
+
             return await repo.DeleteAsync(id);
         }
         public async Task<VeterinarioDTO?> GetAsync(int id)

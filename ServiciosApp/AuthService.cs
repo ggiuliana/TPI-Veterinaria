@@ -41,7 +41,7 @@ namespace ServiciosApp
 
             var usuario = await usuarioRepository.GetByUsernameAsync(request.NombreUsuario);
 
-            if (usuario == null || usuario.Contrasenia != HashPassword(request.Contrasenia.Trim()))
+            if (usuario == null || usuario.EstadoUsuario != "Activo" || usuario.Contrasenia != HashPassword(request.Contrasenia.Trim()))
                 return null;
 
             var token = GenerateJwtToken(usuario);

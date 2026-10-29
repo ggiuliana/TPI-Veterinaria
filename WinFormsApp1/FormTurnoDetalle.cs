@@ -156,6 +156,7 @@ namespace WinFormsApp1
                 }
 
                 int? idMascota = null;
+
                 if (txtMascota.Visible && txtMascota.SelectedValue != null)
                 {
                     if (int.TryParse(txtMascota.SelectedValue.ToString(), out int idParseado))
@@ -164,18 +165,13 @@ namespace WinFormsApp1
                     }
                 }
 
-                if (_idTurnoActual > 0 && (!idMascota.HasValue || idMascota.Value <= 0))
-                {
-                    MessageBox.Show("Debe seleccionar obligatoriamente una mascota válida.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
                 var turnoDto = new TurnoDTO
                 {
                     FechaTurno = DateOnly.FromDateTime(dtpFecha.Value),
                     HoraTurno = TimeOnly.FromDateTime(dtpHora.Value),
                     IdVeterinario = idVeterinario,
                     IdMascota = idMascota,
+                    
                     EstadoTurno = (_estadoActual == "Resuelto") ? "Resuelto" : (idMascota.HasValue ? "Otorgado" : "Disponible"),
                     Observaciones = string.IsNullOrWhiteSpace(txtObservaciones.Text) ? null : txtObservaciones.Text
                 };

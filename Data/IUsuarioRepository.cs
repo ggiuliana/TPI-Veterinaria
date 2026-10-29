@@ -9,6 +9,7 @@ namespace Data
         Task<Usuario?> GetAsync(int id);
         Task<IEnumerable<Usuario>> GetAllAsync();
         Task<Usuario?> GetByUsernameAsync(string nombreUsuario);
+        Task<Usuario?> GetByPersonaIdAsync(int id);
         Task<bool> UpdateAsync(Usuario usuario);
         Task<bool> NombreUsuarioExistsAsync(string nombreUsuario, int? excludeId = null);
         Task<bool> PersonaHasUsuarioAsync(int idPersona, int? excludeIdUsuario = null);

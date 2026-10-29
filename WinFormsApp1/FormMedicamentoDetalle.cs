@@ -49,13 +49,27 @@ namespace WinFormsApp1
 
         private async void Guardar_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(nombreMedicamento.Text))
+            {
+                MessageBox.Show("El nombre del medicamento no puede estar vacío.", "Campo requerido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                nombreMedicamento.Focus();
+                return;
+            }
+
+            if (!int.TryParse(cantidadRestante.Text, out int cant) || cant <= 0)
+            {
+                MessageBox.Show("La cantidad restante debe ser un número entero mayor a cero.", "Valor inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cantidadRestante.Focus();
+                return;
+            }
+
             try
             {
                 var dto = new MedicamentoDTO
                 {
                     IdMedicamento = _idMedicamentoActual,
-                    NombreMedicamento = nombreMedicamento.Text,
-                    CantidadRestante = int.TryParse(cantidadRestante.Text, out int cant) ? cant : 0
+                    NombreMedicamento = nombreMedicamento.Text.Trim(),
+                    CantidadRestante = cant
                 };
 
                 if (_idMedicamentoActual == 0)
