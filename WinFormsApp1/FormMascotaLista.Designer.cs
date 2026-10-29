@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             label1 = new Label();
             Create = new Button();
             Modificar = new Button();
@@ -52,9 +52,9 @@
             label1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(763, 40);
+            label1.Location = new Point(668, 30);
             label1.Name = "label1";
-            label1.Size = new Size(106, 25);
+            label1.Size = new Size(84, 20);
             label1.TabIndex = 41;
             label1.Text = "MASCOTAS";
             label1.TextAlign = ContentAlignment.MiddleCenter;
@@ -63,10 +63,9 @@
             // 
             Create.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             Create.Cursor = Cursors.Hand;
-            Create.Location = new Point(806, 531);
-            Create.Margin = new Padding(3, 4, 3, 4);
+            Create.Location = new Point(705, 398);
             Create.Name = "Create";
-            Create.Size = new Size(86, 31);
+            Create.Size = new Size(75, 23);
             Create.TabIndex = 47;
             Create.Text = "Agregar";
             Create.UseVisualStyleBackColor = true;
@@ -76,10 +75,9 @@
             // 
             Modificar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             Modificar.Cursor = Cursors.Hand;
-            Modificar.Location = new Point(704, 531);
-            Modificar.Margin = new Padding(3, 4, 3, 4);
+            Modificar.Location = new Point(616, 398);
             Modificar.Name = "Modificar";
-            Modificar.Size = new Size(86, 31);
+            Modificar.Size = new Size(75, 23);
             Modificar.TabIndex = 46;
             Modificar.Text = "Modificar";
             Modificar.UseVisualStyleBackColor = true;
@@ -89,10 +87,9 @@
             // 
             Delete.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             Delete.Cursor = Cursors.Hand;
-            Delete.Location = new Point(23, 531);
-            Delete.Margin = new Padding(3, 4, 3, 4);
+            Delete.Location = new Point(20, 398);
             Delete.Name = "Delete";
-            Delete.Size = new Size(86, 31);
+            Delete.Size = new Size(75, 23);
             Delete.TabIndex = 45;
             Delete.Text = "Eliminar";
             Delete.UseVisualStyleBackColor = true;
@@ -101,10 +98,9 @@
             // Buscar
             // 
             Buscar.Cursor = Cursors.Hand;
-            Buscar.Location = new Point(137, 63);
-            Buscar.Margin = new Padding(3, 4, 3, 4);
+            Buscar.Location = new Point(120, 47);
             Buscar.Name = "Buscar";
-            Buscar.Size = new Size(86, 31);
+            Buscar.Size = new Size(75, 23);
             Buscar.TabIndex = 44;
             Buscar.Text = "Buscar";
             Buscar.UseVisualStyleBackColor = true;
@@ -112,19 +108,18 @@
             // 
             // idMascotaBuscar
             // 
-            idMascotaBuscar.Location = new Point(53, 63);
-            idMascotaBuscar.Margin = new Padding(3, 4, 3, 4);
+            idMascotaBuscar.Location = new Point(46, 47);
             idMascotaBuscar.Name = "idMascotaBuscar";
-            idMascotaBuscar.Size = new Size(77, 27);
+            idMascotaBuscar.Size = new Size(68, 23);
             idMascotaBuscar.TabIndex = 43;
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(24, 65);
+            label2.Location = new Point(21, 49);
             label2.Name = "label2";
-            label2.Size = new Size(25, 23);
+            label2.Size = new Size(19, 17);
             label2.TabIndex = 42;
             label2.Text = "Id";
             // 
@@ -137,12 +132,11 @@
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { IdMascota, NombreMascota, Especie, Raza, Castrado, Sexo, FechaNac });
-            dataGridView1.Location = new Point(24, 101);
-            dataGridView1.Margin = new Padding(3, 4, 3, 4);
+            dataGridView1.Location = new Point(21, 76);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(869, 421);
+            dataGridView1.Size = new Size(760, 316);
             dataGridView1.TabIndex = 40;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             // 
@@ -154,7 +148,7 @@
             IdMascota.MinimumWidth = 6;
             IdMascota.Name = "IdMascota";
             IdMascota.ReadOnly = true;
-            IdMascota.Width = 53;
+            IdMascota.Width = 43;
             // 
             // NombreMascota
             // 
@@ -205,8 +199,8 @@
             // 
             FechaNac.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             FechaNac.DataPropertyName = "FechaNac";
-            dataGridViewCellStyle1.Format = "d";
-            FechaNac.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Format = "d";
+            FechaNac.DefaultCellStyle = dataGridViewCellStyle2;
             FechaNac.HeaderText = "Fecha de Nacimiento";
             FechaNac.MinimumWidth = 6;
             FechaNac.Name = "FechaNac";
@@ -214,9 +208,9 @@
             // 
             // FormMascotaLista
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(914, 600);
+            ClientSize = new Size(800, 450);
             Controls.Add(label1);
             Controls.Add(Create);
             Controls.Add(Modificar);
@@ -225,9 +219,8 @@
             Controls.Add(idMascotaBuscar);
             Controls.Add(label2);
             Controls.Add(dataGridView1);
-            Margin = new Padding(3, 4, 3, 4);
             Name = "FormMascotaLista";
-            Text = "Form1";
+            Text = "Mascota Lista";
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();

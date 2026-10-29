@@ -305,7 +305,7 @@
             ClientSize = new Size(556, 565);
             Controls.Add(panel1);
             Name = "FormMascotaDetalle";
-            Text = "Form1";
+            Text = "Mascota Detalle";
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             Vacunas.ResumeLayout(false);

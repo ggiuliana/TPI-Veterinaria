@@ -52,10 +52,9 @@
             // 
             Create.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             Create.Cursor = Cursors.Hand;
-            Create.Location = new Point(815, 436);
-            Create.Margin = new Padding(3, 4, 3, 4);
+            Create.Location = new Point(713, 327);
             Create.Name = "Create";
-            Create.Size = new Size(86, 31);
+            Create.Size = new Size(75, 23);
             Create.TabIndex = 31;
             Create.Text = "Agregar";
             Create.UseVisualStyleBackColor = true;
@@ -65,10 +64,9 @@
             // 
             Modificar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             Modificar.Cursor = Cursors.Hand;
-            Modificar.Location = new Point(722, 436);
-            Modificar.Margin = new Padding(3, 4, 3, 4);
+            Modificar.Location = new Point(632, 327);
             Modificar.Name = "Modificar";
-            Modificar.Size = new Size(86, 31);
+            Modificar.Size = new Size(75, 23);
             Modificar.TabIndex = 30;
             Modificar.Text = "Modificar";
             Modificar.UseVisualStyleBackColor = true;
@@ -78,10 +76,9 @@
             // 
             Delete.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             Delete.Cursor = Cursors.Hand;
-            Delete.Location = new Point(29, 436);
-            Delete.Margin = new Padding(3, 4, 3, 4);
+            Delete.Location = new Point(25, 327);
             Delete.Name = "Delete";
-            Delete.Size = new Size(86, 31);
+            Delete.Size = new Size(75, 23);
             Delete.TabIndex = 29;
             Delete.Text = "Eliminar";
             Delete.UseVisualStyleBackColor = true;
@@ -90,10 +87,9 @@
             // Buscar
             // 
             Buscar.Cursor = Cursors.Hand;
-            Buscar.Location = new Point(142, 27);
-            Buscar.Margin = new Padding(3, 4, 3, 4);
+            Buscar.Location = new Point(124, 20);
             Buscar.Name = "Buscar";
-            Buscar.Size = new Size(86, 31);
+            Buscar.Size = new Size(75, 23);
             Buscar.TabIndex = 28;
             Buscar.Text = "Buscar";
             Buscar.UseVisualStyleBackColor = true;
@@ -101,19 +97,18 @@
             // 
             // idVet
             // 
-            idVet.Location = new Point(57, 27);
-            idVet.Margin = new Padding(3, 4, 3, 4);
+            idVet.Location = new Point(50, 20);
             idVet.Name = "idVet";
-            idVet.Size = new Size(77, 27);
+            idVet.Size = new Size(68, 23);
             idVet.TabIndex = 27;
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(29, 29);
+            label2.Location = new Point(25, 22);
             label2.Name = "label2";
-            label2.Size = new Size(25, 23);
+            label2.Size = new Size(19, 17);
             label2.TabIndex = 26;
             label2.Text = "Id";
             // 
@@ -121,9 +116,9 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(722, 12);
+            label1.Location = new Point(632, 9);
             label1.Name = "label1";
-            label1.Size = new Size(136, 25);
+            label1.Size = new Size(108, 20);
             label1.TabIndex = 25;
             label1.Text = "VETERINARIOS";
             // 
@@ -136,12 +131,11 @@
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { IdVeterinario, NombreVeterinario, Apellido, Especialidad, Dni, Mail, Telefono, Direcccion, Matricula });
-            dataGridView1.Location = new Point(29, 65);
-            dataGridView1.Margin = new Padding(3, 4, 3, 4);
+            dataGridView1.Location = new Point(25, 49);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(872, 349);
+            dataGridView1.Size = new Size(763, 262);
             dataGridView1.TabIndex = 24;
             // 
             // IdVeterinario
@@ -153,7 +147,7 @@
             IdVeterinario.MinimumWidth = 6;
             IdVeterinario.Name = "IdVeterinario";
             IdVeterinario.ReadOnly = true;
-            IdVeterinario.Width = 53;
+            IdVeterinario.Width = 43;
             // 
             // NombreVeterinario
             // 
@@ -229,9 +223,9 @@
             // 
             // FormVeterinarioLista
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(933, 483);
+            ClientSize = new Size(816, 362);
             Controls.Add(Create);
             Controls.Add(Modificar);
             Controls.Add(Delete);
@@ -240,9 +234,8 @@
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(dataGridView1);
-            Margin = new Padding(3, 4, 3, 4);
             Name = "FormVeterinarioLista";
-            Text = "Form1";
+            Text = "Veterinario Lista";
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();

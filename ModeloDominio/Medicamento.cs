@@ -17,10 +17,16 @@
         }
         public void SetNombreMedicamento(string nombreMedicamento)
         {
+            if (string.IsNullOrWhiteSpace(nombreMedicamento))
+                throw new ArgumentException("El nombre del medicamento no puede estar vacío.");
+
             this.NombreMedicamento = nombreMedicamento;
         }
         public void SetCantidadRestante(int cantidadRestante)
         {
+            if (cantidadRestante < 0)
+                throw new ArgumentException("El stock del medicamento no puede ser negativo.");
+
             this.CantidadRestante = cantidadRestante;    
         }
         public void DescontarStock(int cantidadAUsar)

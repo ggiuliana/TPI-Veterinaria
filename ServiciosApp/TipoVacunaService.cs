@@ -11,6 +11,12 @@ namespace ServiciosApp
         public TipoVacunaService(ITipoVacunaRepository repo) => this.repo = repo;
 
         public async Task<TipoVacunaDTO> AddAsync(TipoVacunaDTO dto) {
+
+            if (string.IsNullOrWhiteSpace(dto.NombreTipoVacuna) || string.IsNullOrWhiteSpace(dto.DescripcionTipoVacuna))
+            {
+                throw new ArgumentException("El nombre y la descripción de la vacuna son obligatorios y no pueden estar vacíos.");
+            }
+
             TipoVacuna tipovacuna = new(0, dto.NombreTipoVacuna, dto.DescripcionTipoVacuna);
             await repo.AddAsync(tipovacuna);
             dto.IdTipoVacuna = tipovacuna.IdTipoVacuna;
@@ -42,6 +48,12 @@ namespace ServiciosApp
             })];
         }
         public async Task<bool> UpdateAsync(TipoVacunaDTO dto) {
+
+            if (string.IsNullOrWhiteSpace(dto.NombreTipoVacuna) || string.IsNullOrWhiteSpace(dto.DescripcionTipoVacuna))
+            {
+                throw new ArgumentException("El nombre y la descripción de la vacuna son obligatorios y no pueden estar vacíos.");
+            }
+
             var tipovac = await repo.GetAsync(dto.IdTipoVacuna);
             if (tipovac == null) {
                 return false;

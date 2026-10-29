@@ -90,7 +90,29 @@ namespace API.Clients
                 return false;
             }
 
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                {
+                    throw new Exception("No tiene permiso para eliminar esta mascota.");
+                }
+
+                string errorContent = await response.Content.ReadAsStringAsync();
+                try
+                {
+                    using var jsonDoc = System.Text.Json.JsonDocument.Parse(errorContent);
+                    if (jsonDoc.RootElement.TryGetProperty("error", out System.Text.Json.JsonElement errorElement))
+                    {
+                        throw new Exception(errorElement.GetString());
+                    }
+                }
+                catch (System.Text.Json.JsonException)
+                {
+                    throw new Exception(errorContent);
+                }
+
+                throw new Exception(errorContent);
+            }
 
             return true;
         }

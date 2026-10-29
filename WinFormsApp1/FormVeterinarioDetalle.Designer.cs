@@ -92,7 +92,7 @@
             label4.AutoSize = true;
             label4.Location = new Point(21, 143);
             label4.Name = "label4";
-            label4.Size = new Size(56, 15);
+            label4.Size = new Size(55, 15);
             label4.TabIndex = 3;
             label4.Text = "Telefono:";
             // 
@@ -326,7 +326,7 @@
             Controls.Add(Cancelar);
             Controls.Add(panel1);
             Name = "FormVeterinarioDetalle";
-            Text = "Form1";
+            Text = "Veterinario Detalle";
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             pnlUsuario.ResumeLayout(false);

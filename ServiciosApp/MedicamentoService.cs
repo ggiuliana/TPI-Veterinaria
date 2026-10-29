@@ -17,6 +17,15 @@ namespace ServiciosApp
 
         public async Task<MedicamentoDTO> AddAsync(MedicamentoDTO dto)
         {
+            if (string.IsNullOrWhiteSpace(dto.NombreMedicamento))
+            {
+                throw new ArgumentException("El nombre del medicamento es obligatorio.");
+            }
+            if (dto.CantidadRestante < 0)
+            {
+                throw new ArgumentException("La cantidad de stock inicial no puede ser negativa.");
+            }
+
             Medicamento medicamento = new(0, dto.NombreMedicamento, dto.CantidadRestante);
             await repo.AddAsync(medicamento);
             dto.IdMedicamento = medicamento.IdMedicamento;
@@ -58,6 +67,15 @@ namespace ServiciosApp
         }
         public async Task<bool> UpdateAsync(MedicamentoDTO dto)
         {
+            if (string.IsNullOrWhiteSpace(dto.NombreMedicamento))
+            {
+                throw new ArgumentException("El nombre del medicamento es obligatorio.");
+            }
+            if (dto.CantidadRestante < 0)
+            {
+                throw new ArgumentException("La cantidad de stock no puede ser negativa.");
+            }
+
             var medactual = await repo.GetAsync(dto.IdMedicamento);
             if (medactual == null)
             {

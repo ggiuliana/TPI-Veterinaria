@@ -10,17 +10,20 @@ namespace ServiciosApp
         private readonly IDuenioRepository repoDuenio;
         private readonly ITipoVacunaRepository repoTipoVacuna;
         private readonly IUserContextService userContext;
+        private readonly ITurnoRepository repoTurno;
 
         public MascotaService(
             IMascotaRepository repo,
             IDuenioRepository repoDuenio,
             ITipoVacunaRepository repoTipoVacuna,
-            IUserContextService userContext)
+            IUserContextService userContext,
+            ITurnoRepository repoTurno)
         {
             this.repo = repo;
             this.repoDuenio = repoDuenio;
             this.repoTipoVacuna = repoTipoVacuna;
             this.userContext = userContext;
+            this.repoTurno = repoTurno;
         }
 
         public async Task<MascotaDTO> AddAsync(MascotaDTO dto)
@@ -241,6 +244,12 @@ namespace ServiciosApp
                 {
                     throw new UnauthorizedAccessException("No tiene permiso para acceder a esta mascota.");
                 }
+            }
+
+            var turnos = await repoTurno.GetAllAsync();
+            if (turnos.Any(t => t.IdMascota == id))
+            {
+                throw new InvalidOperationException("No se puede eliminar la mascota porque tiene turnos registrados.");
             }
 
             return await repo.DeleteAsync(id);

@@ -14,10 +14,18 @@
         public void SetIdTipoVacuna(int idTipoVacuna) {
             this.IdTipoVacuna = idTipoVacuna;
         }
-        public void SetNombreTipoVacuna(string nombreTipoVacuna) {
+        public void SetNombreTipoVacuna(string nombreTipoVacuna) 
+        {
+            if (string.IsNullOrWhiteSpace(nombreTipoVacuna))
+                throw new ArgumentException("El nombre de la vacuna no puede estar vacío.");
+
             this.NombreTipoVacuna = nombreTipoVacuna;
         }
-        public void SetDescripcionTipoVacuna(string descripcionTipoVacuna) {
+        public void SetDescripcionTipoVacuna(string descripcionTipoVacuna) 
+        {
+            if (string.IsNullOrWhiteSpace(descripcionTipoVacuna))
+                throw new ArgumentException("La descripción de la vacuna no puede estar vacía.");
+
             this.DescripcionTipoVacuna = descripcionTipoVacuna;
         }
     }

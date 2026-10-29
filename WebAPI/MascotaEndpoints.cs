@@ -36,9 +36,15 @@ namespace WebAPI
 
             app.MapGet("/mascotas/duenio/{id}", async (int id, IMascotaService mascotaService) =>
             {
-                var dtos = await mascotaService.GetAllByDuenioAsync(id);
-
-                return Results.Ok(dtos);
+                try
+                {
+                    var dtos = await mascotaService.GetAllByDuenioAsync(id);
+                    return Results.Ok(dtos);
+                }
+                catch (ArgumentException ex)
+                {
+                    return Results.BadRequest(new { error = ex.Message });
+                }
             })
             .WithName("GetMascotasByDuenio")
             .Produces<List<MascotaDTO>>(StatusCodes.Status200OK)
@@ -89,18 +95,31 @@ namespace WebAPI
 
             app.MapDelete("/mascotas/{id}", async (int id, IMascotaService mascotaService) =>
             {
-                var deleted = await mascotaService.DeleteAsync(id);
-
-                if (!deleted)
+                try
                 {
-                    return Results.NotFound();
-                }
+                    var deleted = await mascotaService.DeleteAsync(id);
 
-                return Results.NoContent();
+                    if (!deleted)
+                    {
+                        return Results.NotFound();
+                    }
+
+                    return Results.NoContent();
+                }
+                catch (InvalidOperationException ex)
+                {
+                    return Results.BadRequest(new { error = ex.Message });
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    return Results.Forbid();
+                }
             })
             .WithName("DeleteMascota")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status403Forbidden)
             .WithOpenApi()
             .RequireAuthorization("MascotasEliminar");
         }

@@ -46,9 +46,9 @@
             label1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(704, 45);
+            label1.Location = new Point(616, 34);
             label1.Name = "label1";
-            label1.Size = new Size(201, 25);
+            label1.Size = new Size(159, 20);
             label1.TabIndex = 41;
             label1.Text = "TURNOS DISPONIBLES";
             label1.TextAlign = ContentAlignment.MiddleCenter;
@@ -57,10 +57,9 @@
             // 
             SacarTurno.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             SacarTurno.Cursor = Cursors.Hand;
-            SacarTurno.Location = new Point(806, 531);
-            SacarTurno.Margin = new Padding(3, 4, 3, 4);
+            SacarTurno.Location = new Point(705, 398);
             SacarTurno.Name = "SacarTurno";
-            SacarTurno.Size = new Size(86, 31);
+            SacarTurno.Size = new Size(75, 23);
             SacarTurno.TabIndex = 47;
             SacarTurno.Text = "Sacar turno";
             SacarTurno.UseVisualStyleBackColor = true;
@@ -75,12 +74,11 @@
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { colIdTurno, colFechaTurno, colHoraTurno, colVeterinario, EspecialidadVeterinario, colEstadoTurno, colObservaciones });
-            dataGridView1.Location = new Point(24, 101);
-            dataGridView1.Margin = new Padding(3, 4, 3, 4);
+            dataGridView1.Location = new Point(21, 76);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(869, 421);
+            dataGridView1.Size = new Size(760, 316);
             dataGridView1.TabIndex = 40;
             // 
             // colIdTurno
@@ -91,7 +89,7 @@
             colIdTurno.MinimumWidth = 6;
             colIdTurno.Name = "colIdTurno";
             colIdTurno.ReadOnly = true;
-            colIdTurno.Width = 53;
+            colIdTurno.Width = 43;
             // 
             // colFechaTurno
             // 
@@ -101,7 +99,7 @@
             colFechaTurno.MinimumWidth = 6;
             colFechaTurno.Name = "colFechaTurno";
             colFechaTurno.ReadOnly = true;
-            colFechaTurno.Width = 76;
+            colFechaTurno.Width = 63;
             // 
             // colHoraTurno
             // 
@@ -111,7 +109,7 @@
             colHoraTurno.MinimumWidth = 6;
             colHoraTurno.Name = "colHoraTurno";
             colHoraTurno.ReadOnly = true;
-            colHoraTurno.Width = 71;
+            colHoraTurno.Width = 58;
             // 
             // colVeterinario
             // 
@@ -121,7 +119,7 @@
             colVeterinario.MinimumWidth = 6;
             colVeterinario.Name = "colVeterinario";
             colVeterinario.ReadOnly = true;
-            colVeterinario.Width = 110;
+            colVeterinario.Width = 88;
             // 
             // EspecialidadVeterinario
             // 
@@ -139,7 +137,7 @@
             colEstadoTurno.MinimumWidth = 6;
             colEstadoTurno.Name = "colEstadoTurno";
             colEstadoTurno.ReadOnly = true;
-            colEstadoTurno.Width = 83;
+            colEstadoTurno.Width = 67;
             // 
             // colObservaciones
             // 
@@ -152,15 +150,14 @@
             // 
             // FormTurnosDisponibles
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(914, 600);
+            ClientSize = new Size(800, 450);
             Controls.Add(label1);
             Controls.Add(SacarTurno);
             Controls.Add(dataGridView1);
-            Margin = new Padding(3, 4, 3, 4);
             Name = "FormTurnosDisponibles";
-            Text = "Form1";
+            Text = "Turnos Disponibles";
             Load += FormTurnosDisponibles_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);

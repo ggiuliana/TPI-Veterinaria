@@ -15,6 +15,14 @@
         <div class="col-12">
             <h3 class="mb-4">Mis Mascotas</h3>
 
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @errorMessage
+                    <button type="button" class="btn-close" @onclick="() => errorMessage = null" aria-label="Close"></button>
+                </div>
+            }
+
             @if (canAdd)
             {
                 <div class="mb-3">
@@ -106,6 +114,8 @@
     private int? currentUserId;
     private MascotaModal mascotaModal = default!;
 
+    private string? errorMessage;
+
     private bool canRead = false;
     private bool canAdd = false;
     private bool canUpdate = false;
@@ -176,6 +186,7 @@
     {
         try
         {
+            errorMessage = null;
             loading = true;
             await MascotaClient.DeleteAsync(id);
 
@@ -183,7 +194,7 @@
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error al eliminar la mascota: {ex.Message}");
+            errorMessage = ex.Message; ;
         }
         finally
         {
