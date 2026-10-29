@@ -1,4 +1,6 @@
 ﻿@page "/vet"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Veterinario")]
 
 <PageTitle>Panel del Veterinario</PageTitle>
 

@@ -1,4 +1,6 @@
 ﻿@page "/duenio"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Duenio")]
 
 <PageTitle>Panel del Dueño</PageTitle>
 

@@ -9,7 +9,7 @@ namespace API.Auth.Blazor.Server
 {
     public class BlazorServerAuthService : AuthenticationStateProvider, IAuthService
     {
-        private SessionData? _currentSession;
+        private static SessionData? _currentSession;
 
         public new event Action<bool>? AuthenticationStateChanged;
 
@@ -54,9 +54,8 @@ namespace API.Auth.Blazor.Server
 
                 if (!string.IsNullOrEmpty(_currentSession.Rol))
                 {
-                    claims.Add(new Claim(ClaimTypes.Role, _currentSession.Rol));
+                    claims.Add(new Claim(ClaimTypes.Role, _currentSession.Rol.Trim()));
                 }
-
                 identity = new ClaimsIdentity(claims, "jwtAuth");
             }
 
@@ -120,7 +119,7 @@ namespace API.Auth.Blazor.Server
             var authClient = _serviceProvider.GetRequiredService<AuthApiClient>();
             var response = await authClient.LoginAsync(request);
 
-            if (response != null)
+            if (response != null && !string.IsNullOrEmpty(response.Token))
             {
                 _currentSession = new SessionData
                 {
@@ -149,7 +148,7 @@ namespace API.Auth.Blazor.Server
 
         public async Task CheckTokenExpirationAsync()
         {
-            if (!await IsAuthenticatedAsync())
+            if (_currentSession != null && !await IsAuthenticatedAsync())
             {
                 await LogoutAsync();
             }

@@ -15,5 +15,7 @@
     <ProjectReference Include="..\API.Clients\API.Clients.csproj" />
     <ProjectReference Include="..\DTOs\DTOs.csproj" />
   </ItemGroup>
-
+    <ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
 </Project>

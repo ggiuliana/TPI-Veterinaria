@@ -1,4 +1,6 @@
 ﻿@page "/stock"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Administrador")]
 
 @using DTOs
 @using API.Clients

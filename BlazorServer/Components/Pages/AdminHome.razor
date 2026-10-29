@@ -1,4 +1,6 @@
 ﻿@page "/admin"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Administrador")]
 
 <PageTitle>Panel de Administración</PageTitle>
 

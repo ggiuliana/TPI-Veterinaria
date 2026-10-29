@@ -129,17 +129,12 @@
     protected override async Task OnInitializedAsync()
     {
         var isAuthenticated = await AuthService.IsAuthenticatedAsync();
-        if (!isAuthenticated)
+        
+        var rol = await AuthService.GetRolAsync();
+
+        if (!isAuthenticated || rol?.Trim().ToUpper() != "ADMINISTRADOR")
         {
             Navigation.NavigateTo("/login");
-            return;
-        }
-
-        // Se verifica si el usuario tiene el rol Administrador (opcional, por doble seguridad)
-        var rol = await AuthService.GetRolAsync();
-        if (rol?.Trim().ToUpper() != "ADMINISTRADOR")
-        {
-            Navigation.NavigateTo("/");
             return;
         }
 

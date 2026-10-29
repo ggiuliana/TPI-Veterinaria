@@ -124,7 +124,9 @@
     protected override async Task OnInitializedAsync()
     {
         var isAuthenticated = await AuthService.IsAuthenticatedAsync();
-        if (!isAuthenticated)
+        var rol = await AuthService.GetRolAsync();
+
+        if (!isAuthenticated || rol?.Trim().ToUpper() != "DUENIO")
         {
             Navigation.NavigateTo("/login");
             return;
