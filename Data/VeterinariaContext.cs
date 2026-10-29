@@ -20,18 +20,8 @@ namespace Data
         public DbSet<Vacuna> Vacunas { get; set; } = null!;
         public DbSet<Permiso> Permisos { get; set; } = null!;
         public DbSet<GrupoPermiso> GruposPermisos { get; set; } = null!;
-        public VeterinariaContext(DbContextOptions<VeterinariaContext> options) : base(options)
-        {
-            this.Database.EnsureDeleted();
-            this.Database.EnsureCreated();
-            SeedInitialData();
-        }
-        internal VeterinariaContext()
-        {
-            this.Database.EnsureDeleted();
-            this.Database.EnsureCreated();
-            SeedInitialData();
-        }
+        public VeterinariaContext(DbContextOptions<VeterinariaContext> options) : base(options) { }
+        internal VeterinariaContext() { }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

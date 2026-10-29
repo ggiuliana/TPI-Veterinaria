@@ -1,18 +1,19 @@
-﻿using System;
-using System.Net;
-using System.Net.Http;
+﻿using System.Net;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace API.Clients
 {
     public abstract class BaseApiClient
     {
         protected readonly IAuthService _authService;
+        private readonly string _baseUrl;
 
-        protected BaseApiClient(IAuthService authService)
+        protected BaseApiClient(IAuthService authService, IConfiguration? configuration = null)
         {
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));
+
+            _baseUrl = configuration?["ApiConfig:BaseUrl"] ?? "http://localhost:5124/";
         }
 
         protected async Task<HttpClient> CreateHttpClientAsync()
@@ -24,7 +25,7 @@ namespace API.Clients
 
         protected async Task ConfigureHttpClientAsync(HttpClient client)
         {
-            client.BaseAddress = new Uri("http://localhost:5124/");
+            client.BaseAddress = new Uri(_baseUrl);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
