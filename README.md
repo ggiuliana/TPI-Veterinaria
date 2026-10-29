@@ -1,54 +1,72 @@
 # Trabajo Práctico Integrador
 
 ## Integrantes:
-* 54280 - Squarzon, Nicolás José
-* 54448 - Grieco, Giuliana
-* 55160 - Corbella, Leonardo Gabriel
 
-## Descripción General del Sistema
-### Sistema de Gestión Veterinaria
+- 54280 - Squarzon, Nicolás José
+- 54448 - Grieco, Giuliana
+- 55160 - Corbella, Leonardo Gabriel
+
+## Sistema de Gestión Veterinaria
+
+Este proyecto es un Sistema de Gestión Integral para una Clínica Veterinaria, desarrollado como Trabajo Práctico Integrador (TPI) para la cátedra Tecnologías de Desarrollo de Software IDE (UTN FRRo).
+El sistema cuenta con una arquitectura en capas, una API REST, y dos interfaces de usuario: Escritorio (WinForms) y Web (Blazor Server).
+
+### Descripción General del Sistema
+
 El **Sistema de Gestión Veterinaria (SGV)** registra y administra las actividades clínicas y operativas de la clínica en torno a las entidades principales de **Dueños, Mascotas, Veterinarios, Turnos y Medicamentos**.
 
-Tanto los **Dueños** como los **Veterinarios** tienen datos en común, tales como **DNI, Nombre, Apellido, Dirección, Teléfono y Email**, entre otros.
+## Requisitos previos
 
-Las **Mascotas** pertenecen a un único **Dueño** y tienen características propias como **Especie, Raza y Fecha de Nacimiento**. Su historial clínico se conforma mediante la aplicación de **Vacunas** (ingresadas por el Dueño al momento de registro de la Mascota) y la realización de **Estudios y Consultas**.
+- [Microsoft Visual Studio 2022](https://visualstudio.microsoft.com/es/) (con la carga de trabajo "Desarrollo de escritorio de .NET" y "Desarrollo de ASP.NET y web").
+- [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0).
+- [Microsoft SQL Server](https://www.microsoft.com/es-es/sql-server/sql-server-downloads) (Express o Developer) corriendo localmente.
 
-El acceso a las distintas funcionalidades está restringido mediante **Roles** (por ejemplo, **Administrador, Recepcionista y Veterinario**).
+## Instrucciones de Ejecución
 
-Cada **Usuario** tiene acceso a diferentes funcionalidades del sistema mediante el **Módulo de Acceso** que le corresponda (dependiendo si es **Administrador/Recepcionista, Dueño o Veterinario**), el cual le da permisos para realizar diferentes acciones en el programa.
+1. Clonar el repositorio
 
-Para la atención, la clínica gestiona **Turnos**, donde se asocia una **Mascota** con un turno, cargado por un **Veterinario** y asociado con él en una fecha y hora específicas. El **Dueño** de la Mascota selecciona un turno de los turnos disponibles previamente cargados por el Veterinario y se le asigna a su Mascota.
+````
+   ```bash
+   git clone https://github.com/ggiuliana/TPI-Veterinaria.git
+````
 
-Al momento de que el **Veterinario** crea sus turnos, los mismos tienen el estado **"Disponible"**. Cuando un turno es asignado a una Mascota su estado se convierte en **"Otorgado"**. Llegado el día y la hora del turno su estado pasa a ser **"Resuelto"** y se crea la **Consulta** si la Mascota asistió. Previo a la fecha del turno el Dueño puede cancelarlo, volviendo al estado **"Disponible"**.
+2. Abrir la solución:
 
-Al concretarse la atención clínica, el **Veterinario** debe registrar la **Consulta** en el sistema. En este acto, el Veterinario detalla el **diagnóstico, el tratamiento, el peso registrado y los medicamentos utilizados o recetados**.
+Abrir el archivo `.sln ` principal con Visual Studio 2022.
 
-En caso de utilizar **Medicamentos**, se actualiza su stock. Para que en una consulta se utilicen cierta cantidad de medicamentos, debe haber stock suficiente.
+3. Ejecutar el proyecto:
 
-El día de la consulta el **Veterinario** puede decidir si es necesario realizar un **Estudio**, asignándolo a la misma. Los estudios son realizados por un Veterinario.
+Para poder usar la aplicación, es necesario ejecutar la API y el Frontend elegido al mismo tiempo. A continuación, los pasos a seguir para levantar ambos proyectos en simultáeo:
 
-Teniendo en cuenta este modelo las funcionalidades a implementar son las siguientes:
+1- Hacer clic derecho en la Solución (en el Explorador de soluciones) -> Configurar proyectos de inicio...
 
+2- Seleccionar Proyectos de inicio múltiples.
 
-## Alcance Funcional y Requerimientos
+3- Elegir la acción Iniciar para el proyecto WebAPI.
 
-### Requerimientos Funcionales Implementados
-Teniendo en cuenta este modelo las funcionalidades a implementar son las siguientes:
+4- Elegir la acción Iniciar para WinFormsApp1 (Escritorio) y/o BlazorServer (Web) según qué interfaz quieras probar.
 
-1. Alta, Baja, Modificaciones y Consulta de Usuarios
-2. Alta, Baja, Modificaciones y Consulta de Veterinarios
-3. Alta, Baja, Modificaciones y Consulta de Dueños
-4. Alta, Baja, Modificaciones y Consulta de Turnos
-5. Alta, Baja, Modificaciones y Consulta de Mascotas
-6. Alta, Baja, Modificaciones y Consulta de Estudios
-7. Alta, Baja, Modificaciones y Consulta de Vacunas
-8. Asignación de turno
-9. Registro de Consultas, Estudios y Medicamentos utilizados
-10. Reporte de Historial clínico (Estudios, vacunas y consultas)
-11. Reporte de Turnos
-12. Reporte de stock de Medicamentos
+5- Aplicar cambios y luego ejecutar con F5.
 
+## Usuarios de prueba
 
-## Modelo del Dominio
+Los usuarios disponibles para probar las diferentes funcionalidades en el sistema son los siguientes:
 
-![ModeloVeterinaria](./docs/ModeloVeterinaria.png)
+### Administrador
+
+- Username: admin
+- Password: admin123
+
+### Veterinario
+
+- Username: vet
+- Password: vet123
+
+### Dueño
+
+- Username: duenio
+- Password: duenio123
+
+---
+
+_Desarrollado por el Grupo T11 (Comisión 3EK02)._
