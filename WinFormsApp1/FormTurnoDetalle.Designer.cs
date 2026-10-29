@@ -19,8 +19,6 @@
         {
             dtpFecha = new DateTimePicker();
             dtpHora = new DateTimePicker();
-            txtIdMascota = new TextBox();
-            txtIdVeterinario = new TextBox();
             lblMascota = new Label();
             lblVeterinario = new Label();
             lblHora = new Label();
@@ -29,6 +27,8 @@
             Cancelar = new Button();
             Guardar = new Button();
             panel1 = new Panel();
+            txtVeterinario = new ComboBox();
+            txtMascota = new ComboBox();
             txtObservaciones = new TextBox();
             lblObservaciones = new Label();
             panel1.SuspendLayout();
@@ -51,37 +51,23 @@
             dtpHora.Size = new Size(228, 23);
             dtpHora.TabIndex = 19;
             // 
-            // txtIdMascota
-            // 
-            txtIdMascota.Location = new Point(127, 133);
-            txtIdMascota.Name = "txtIdMascota";
-            txtIdMascota.Size = new Size(228, 23);
-            txtIdMascota.TabIndex = 20;
-            // 
-            // txtIdVeterinario
-            // 
-            txtIdVeterinario.Location = new Point(127, 168);
-            txtIdVeterinario.Name = "txtIdVeterinario";
-            txtIdVeterinario.Size = new Size(228, 23);
-            txtIdVeterinario.TabIndex = 21;
-            // 
             // lblMascota
             // 
             lblMascota.AutoSize = true;
             lblMascota.Location = new Point(33, 136);
             lblMascota.Name = "lblMascota";
-            lblMascota.Size = new Size(69, 15);
+            lblMascota.Size = new Size(55, 15);
             lblMascota.TabIndex = 17;
-            lblMascota.Text = "ID Mascota:";
+            lblMascota.Text = "Mascota:";
             // 
             // lblVeterinario
             // 
             lblVeterinario.AutoSize = true;
             lblVeterinario.Location = new Point(33, 171);
             lblVeterinario.Name = "lblVeterinario";
-            lblVeterinario.Size = new Size(80, 15);
+            lblVeterinario.Size = new Size(66, 15);
             lblVeterinario.TabIndex = 22;
-            lblVeterinario.Text = "ID Veterinario:";
+            lblVeterinario.Text = "Veterinario:";
             // 
             // lblHora
             // 
@@ -142,6 +128,8 @@
             // panel1
             // 
             panel1.Anchor = AnchorStyles.None;
+            panel1.Controls.Add(txtVeterinario);
+            panel1.Controls.Add(txtMascota);
             panel1.Controls.Add(txtObservaciones);
             panel1.Controls.Add(lblObservaciones);
             panel1.Controls.Add(Guardar);
@@ -152,13 +140,27 @@
             panel1.Controls.Add(lblHora);
             panel1.Controls.Add(dtpHora);
             panel1.Controls.Add(lblMascota);
-            panel1.Controls.Add(txtIdMascota);
             panel1.Controls.Add(lblVeterinario);
-            panel1.Controls.Add(txtIdVeterinario);
             panel1.Location = new Point(20, 32);
             panel1.Name = "panel1";
             panel1.Size = new Size(400, 315);
             panel1.TabIndex = 41;
+            // 
+            // txtVeterinario
+            // 
+            txtVeterinario.FormattingEnabled = true;
+            txtVeterinario.Location = new Point(127, 171);
+            txtVeterinario.Name = "txtVeterinario";
+            txtVeterinario.Size = new Size(228, 23);
+            txtVeterinario.TabIndex = 44;
+            // 
+            // txtMascota
+            // 
+            txtMascota.FormattingEnabled = true;
+            txtMascota.Location = new Point(127, 133);
+            txtMascota.Name = "txtMascota";
+            txtMascota.Size = new Size(228, 23);
+            txtMascota.TabIndex = 43;
             // 
             // txtObservaciones
             // 
@@ -199,12 +201,12 @@
         private Label lblTitulo;
         private DateTimePicker dtpFecha;
         private DateTimePicker dtpHora;
-        private TextBox txtIdMascota;
-        private TextBox txtIdVeterinario;
         private Button Cancelar;
         private Button Guardar;
         private Panel panel1;
         private Label lblObservaciones;
         private TextBox txtObservaciones;
+        private ComboBox txtVeterinario;
+        private ComboBox txtMascota;
     }
 }
