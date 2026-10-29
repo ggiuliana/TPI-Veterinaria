@@ -36,17 +36,17 @@ Abrir el archivo `.sln ` principal con Visual Studio 2022.
 
 3. Ejecutar el proyecto:
 
-Para poder usar la aplicación, es necesario ejecutar la API y el Frontend elegido al mismo tiempo.
+Para poder usar la aplicación, es necesario ejecutar la API y el Frontend elegido al mismo tiempo. A continuación, los pasos a seguir para levantar ambos proyectos en simultáeo:
 
-- Hacé clic derecho en la Solución (en el Explorador de soluciones) -> Configurar proyectos de inicio...
+1- Hacer clic derecho en la Solución (en el Explorador de soluciones) -> Configurar proyectos de inicio...
 
-- Seleccioná Proyectos de inicio múltiples.
+2- Seleccionar Proyectos de inicio múltiples.
 
-- Poné la acción Iniciar para el proyecto WebAPI.
+3- Elegir la acción Iniciar para el proyecto WebAPI.
 
-- Poné la acción Iniciar para WinFormsApp1 (Escritorio) y/o BlazorServer (Web) según qué interfaz quieras probar.
+4- Elegir la acción Iniciar para WinFormsApp1 (Escritorio) y/o BlazorServer (Web) según qué interfaz quieras probar.
 
-- Presioná Aplicar y luego ejecutá con F5.
+5- Aplicar cambios y luego ejecutar con F5.
 
 ## Usuarios de prueba
 
