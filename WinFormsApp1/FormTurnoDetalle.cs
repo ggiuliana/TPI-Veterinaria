@@ -13,7 +13,7 @@ namespace WinFormsApp1
         private readonly int _idTurnoActual;
         private readonly TurnoClient TurnoClient;
         private readonly VeterinarioClient VeterinarioClient;
-        private readonly MascotaClient MascotaClient; // Asegúrate de tener o inyectar este cliente, o ajustarlo según tu proyecto
+        private readonly MascotaClient MascotaClient; 
         private string _estadoActual = "Disponible";
 
         public FormTurnoDetalle(int idTurno = 0)
