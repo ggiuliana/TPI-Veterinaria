@@ -140,7 +140,9 @@ namespace ServiciosApp
             if (rol == "Veterinario")
             {
                 int currentUserId = userContext.GetCurrentUserId();
-                if (consulta.Turno?.Veterinario?.IdPersona != currentUserId)
+                var turnoDeConsulta = await repoTurno.GetAsync(consulta.IdTurno);
+
+                if (turnoDeConsulta != null && turnoDeConsulta.IdVeterinario != currentUserId)
                 {
                     throw new UnauthorizedAccessException("No puede modificar una consulta atendida por otro veterinario.");
                 }
@@ -292,7 +294,9 @@ namespace ServiciosApp
             if (rol == "Veterinario")
             {
                 int currentUserId = userContext.GetCurrentUserId();
-                if (consulta.Turno?.Veterinario?.IdPersona != currentUserId)
+                var turnoDeConsulta = await repoTurno.GetAsync(consulta.IdTurno);
+
+                if (turnoDeConsulta != null && turnoDeConsulta.IdVeterinario != currentUserId)
                 {
                     throw new UnauthorizedAccessException("No puede eliminar una consulta atendida por otro veterinario.");
                 }
@@ -303,16 +307,18 @@ namespace ServiciosApp
                 var idsMedicamentos = consulta.MedicamentosConsulta.Select(m => m.IdMedicamento).ToList();
                 var medicamentosDb = await repoMedicamento.GetByIdsAsync(idsMedicamentos);
 
-                foreach (var relacion in consulta.MedicamentosConsulta)
+                foreach (var relacion in consulta.MedicamentosConsulta.ToList())
                 {
                     var medDb = medicamentosDb.FirstOrDefault(m => m.IdMedicamento == relacion.IdMedicamento);
                     if (medDb != null)
                     {
                         medDb.SetCantidadRestante(medDb.CantidadRestante + relacion.CantidadUsada);
                     }
+
+                repoMedicamentoConsulta.Remove(relacion);
+
                 }
 
-                consulta.MedicamentosConsulta.Clear();
             }
             return await repo.DeleteAsync(id);
         }
