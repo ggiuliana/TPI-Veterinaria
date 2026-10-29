@@ -6,6 +6,7 @@ using ModeloDominio;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Security.Cryptography;
 
 namespace ServiciosApp
 {
@@ -19,6 +20,19 @@ namespace ServiciosApp
             usuarioRepository = usuarioRepo;
             configuration = config;
         }
+        public static string HashPassword(string password)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
+        }
 
         public async Task<LoginResponse?> LoginAsync(LoginRequest request)
         {
@@ -27,7 +41,7 @@ namespace ServiciosApp
 
             var usuario = await usuarioRepository.GetByUsernameAsync(request.NombreUsuario);
 
-            if (usuario == null || usuario.Contrasenia.Trim() != request.Contrasenia.Trim())
+            if (usuario == null || usuario.Contrasenia != HashPassword(request.Contrasenia.Trim()))
                 return null;
 
             var token = GenerateJwtToken(usuario);
@@ -42,6 +56,7 @@ namespace ServiciosApp
                 IdPersona = usuario?.IdPersona
             };
         }
+
         private string GenerateJwtToken(Usuario usuario)
         {
             var jwtSettings = configuration.GetSection("JwtSettings");
@@ -74,7 +89,6 @@ namespace ServiciosApp
             if (!string.IsNullOrEmpty(grupo))
             {
                 claims.Add(new Claim(ClaimTypes.Role, grupo));
-
                 claims.Add(new Claim("group", grupo));
             }
 
@@ -87,59 +101,6 @@ namespace ServiciosApp
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        public bool ValidateToken(string token)
-        {
-            try
-            {
-                var jwtSettings = configuration.GetSection("JwtSettings");
-                var secretKey = jwtSettings["SecretKey"];
-                var issuer = jwtSettings["Issuer"];
-                var audience = jwtSettings["Audience"];
-
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!));
-
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var validationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidIssuer = issuer,
-                    ValidateAudience = true,
-                    ValidAudience = audience,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = key,
-                    ClockSkew = TimeSpan.Zero
-                };
-
-                tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public int? GetUserIdFromToken(string token)
-        {
-            try
-            {
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var jsonToken = tokenHandler.ReadJwtToken(token);
-
-                var userIdClaim = jsonToken.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
-                if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
-                {
-                    return userId;
-                }
-                return null;
-            }
-            catch
-            {
-                return null;
-            }
         }
 
         private int GetExpirationMinutes()

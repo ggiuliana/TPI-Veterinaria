@@ -1,6 +1,7 @@
-﻿using DTOs;
-using Data;
+﻿using Data;
+using DTOs;
 using ModeloDominio;
+using System.Text.RegularExpressions;
 
 namespace ServiciosApp
 {
@@ -41,7 +42,7 @@ namespace ServiciosApp
                 throw new ArgumentException($"La persona ya tiene una cuenta de usuario asignada.");
 
             GrupoPermiso? grupo = await repoGrupo.GetAsync(dto.IdGrupo) ?? throw new ArgumentException($"No existe el grupo asignado.");
-            Usuario usuario = new(0, dto.NombreUsuario, dto.Contrasenia, "Activo", persona, grupo);
+            Usuario usuario = new(0, dto.NombreUsuario, AuthService.HashPassword(dto.Contrasenia), "Activo", persona, grupo);
             await repo.AddAsync(usuario);
 
             dto.IdUsuario = usuario.IdUsuario;
@@ -92,8 +93,8 @@ namespace ServiciosApp
         {
             if (await repo.NombreUsuarioExistsAsync(dto.NombreUsuario))
                 throw new ArgumentException($"Ya existe un usuario con el nombre de usuario '{dto.NombreUsuario}'.");
-            
-            Usuario usuario = new(dto.IdUsuario, dto.NombreUsuario, dto.Contrasenia, "Activo");
+
+            Usuario usuario = new(0, dto.NombreUsuario, AuthService.HashPassword(dto.Contrasenia), "Activo");
             return await repo.UpdateAsync(usuario);
         }
 
@@ -133,7 +134,7 @@ namespace ServiciosApp
                 (
                 0,
                 usu.NombreUsuario,
-                usu.Contrasenia,
+                AuthService.HashPassword(usu.Contrasenia),
                 "Activo",
                 veterinario,
                 await repoGrupo.GetAsync(2)
@@ -181,7 +182,7 @@ namespace ServiciosApp
                 (
                 0,
                 usu.NombreUsuario,
-                usu.Contrasenia,
+                AuthService.HashPassword(usu.Contrasenia),
                 "Activo",
                 duenioNuevo,
                 await repoGrupo.GetAsync(3)

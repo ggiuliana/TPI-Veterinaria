@@ -1,4 +1,5 @@
 ﻿@inherits LayoutComponentBase
+@implements IDisposable
 @using API.Clients
 @using API.Auth.Blazor.Server
 @inject IAuthService AuthService
@@ -32,9 +33,34 @@
 </div>
 
 @code {
+    protected override void OnInitialized()
+    {
+        AuthService.AuthenticationStateChanged += OnAuthenticationStateChanged;
+    }
+
+    private void OnAuthenticationStateChanged(bool isAuthenticated)
+    {
+        if (!isAuthenticated)
+        {
+            InvokeAsync(() =>
+            {
+                var currentPath = new Uri(Navigation.Uri).AbsolutePath.ToLower();
+                if (currentPath != "/login" && currentPath != "/register")
+                {
+                    Navigation.NavigateTo("/login");
+                }
+            });
+        }
+    }
+
     private async Task Logout()
     {
         await AuthService.LogoutAsync();
         Navigation.NavigateTo("/login");
+    }
+
+    public void Dispose()
+    {
+        AuthService.AuthenticationStateChanged -= OnAuthenticationStateChanged;
     }
 }

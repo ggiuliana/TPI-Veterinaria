@@ -22,13 +22,13 @@ namespace Data
         public DbSet<GrupoPermiso> GruposPermisos { get; set; } = null!;
         public VeterinariaContext(DbContextOptions<VeterinariaContext> options) : base(options)
         {
-            //this.Database.EnsureDeleted();
+            this.Database.EnsureDeleted();
             this.Database.EnsureCreated();
             SeedInitialData();
         }
         internal VeterinariaContext()
         {
-            //this.Database.EnsureDeleted();
+            this.Database.EnsureDeleted();
             this.Database.EnsureCreated();
             SeedInitialData();
         }
@@ -260,7 +260,7 @@ namespace Data
 
                 entity.Property(u => u.Contrasenia)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(100);
 
                 entity.Property(u => u.EstadoUsuario)
                 .IsRequired()
@@ -284,14 +284,14 @@ namespace Data
                     {
                         IdUsuario = 1,
                         NombreUsuario = "admin",
-                        Contrasenia = "admin123",
+                        Contrasenia = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9",
                         GrupoPermisoId = 1
                     },
                     new
                     {
                         IdUsuario = 2,
-                        NombreUsuario = "vet",
-                        Contrasenia = "vet123",
+                        NombreUsuario = "veterinario",
+                        Contrasenia = "95668df3d5465c0efe2bddca0ae448bb213dfdcd7ed446039003e693c22284b1",
                         IdPersona = 1,
                         GrupoPermisoId = 2
                     },
@@ -299,7 +299,7 @@ namespace Data
                     {
                         IdUsuario = 3,
                         NombreUsuario = "duenio",
-                        Contrasenia = "duenio123",
+                        Contrasenia = "6b0184ac786a0324c004502c3daef2f400bd9620a46b45aa0e5acb15510f9e12",
                         IdPersona = 3,
                         GrupoPermisoId = 3
                     }

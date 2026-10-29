@@ -43,13 +43,13 @@ namespace API.Clients
                     new AuthenticationHeaderValue("Bearer", token);
             }
         }
-
         protected async Task EnsureAuthenticatedAsync()
         {
             await _authService.CheckTokenExpirationAsync();
 
             if (!await _authService.IsAuthenticatedAsync())
             {
+                await _authService.LogoutAsync();
                 throw new UnauthorizedAccessException("Su sesión ha expirado.");
             }
         }
