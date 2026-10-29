@@ -79,18 +79,26 @@ namespace WebAPI
 
             app.MapDelete("/medicamentos/{id}", async (int id, IMedicamentoService medicamentoService) =>
             {
-                var deleted = await medicamentoService.DeleteAsync(id);
-
-                if (!deleted)
+                try
                 {
-                    return Results.NotFound();
-                }
+                    var deleted = await medicamentoService.DeleteAsync(id);
 
-                return Results.NoContent();
+                    if (!deleted)
+                    {
+                        return Results.NotFound();
+                    }
+
+                    return Results.NoContent();
+                }
+                catch (ArgumentException ex)
+                {
+                    return Results.BadRequest(new { error = ex.Message });
+                }
             })
             .WithName("DeleteMedicamentos")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
+            .Produces(StatusCodes.Status400BadRequest)
             .WithOpenApi()
             .RequireAuthorization("MedicamentosEliminar");
 

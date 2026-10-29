@@ -272,7 +272,7 @@ namespace Data
                 entity.HasOne(u => u.Persona)
                 .WithOne(p => p.Usuario)
                 .HasForeignKey<Usuario>(u => u.IdPersona)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
                 entity.HasOne(u => u.Grupo)
                 .WithMany()
@@ -703,7 +703,7 @@ namespace Data
                 entity.HasMany(c => c.MedicamentosConsulta)
                 .WithOne()
                 .HasForeignKey("IdConsulta")
-                .OnDelete(DeleteBehavior.Cascade)
+                .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired(false);
 
                 entity.HasOne(c => c.Turno)

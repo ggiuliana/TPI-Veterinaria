@@ -50,6 +50,14 @@ namespace ServiciosApp
         }
         public async Task<bool> DeleteAsync(int id)
         {
+            var usuarioABorrar = await repo.GetAsync(id);
+            if (usuarioABorrar == null) return false;
+
+            if (usuarioABorrar.NombreUsuario == "admin")
+            {
+                throw new InvalidOperationException("El usuario administrador principal del sistema no puede ser eliminado.");
+            }
+
             return await repo.DeleteAsync(id);
         }
         public async Task<UsuarioDTO?> GetAsync(int id)

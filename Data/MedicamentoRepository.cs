@@ -50,5 +50,9 @@ namespace Data
         {
             return await context.Medicamentos.Where(m => ids.Contains(m.IdMedicamento)).ToListAsync();
         }
+        public async Task<bool> EstaEnUsoAsync(int id)
+        {
+            return await context.MedicamentoConsulta.AnyAsync(mc => mc.IdMedicamento == id);
+        }
     }
 }

@@ -27,6 +27,11 @@ namespace ServiciosApp
         {
             string rol = userContext.GetCurrentRole();
 
+            var fechaHoy = DateOnly.FromDateTime(DateTime.Now);
+            if (dto.FechaTurno < fechaHoy)
+            {
+                throw new ArgumentException("No se pueden registrar nuevos turnos con fechas pasadas.");
+            }
 
             if (rol == "Veterinario")
             {

@@ -78,18 +78,26 @@ namespace WebAPI
 
             app.MapDelete("/veterinarios/{id}", async (int id, IVeterinarioService veterinarioService) =>
             {
-                var deleted = await veterinarioService.DeleteAsync(id);
-
-                if (!deleted)
+                try
                 {
-                    return Results.NotFound();
-                }
+                    var deleted = await veterinarioService.DeleteAsync(id);
 
-                return Results.NoContent();
+                    if (!deleted)
+                    {
+                        return Results.NotFound();
+                    }
+
+                    return Results.NoContent();
+                }
+                catch (InvalidOperationException ex)
+                {
+                    return Results.BadRequest(new { error = ex.Message });
+                }
             })
             .WithName("DeleteVeterinarios")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
+            .Produces(StatusCodes.Status400BadRequest)
             .WithOpenApi()
             .RequireAuthorization("VeterinariosEliminar");
         }

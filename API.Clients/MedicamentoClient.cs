@@ -74,12 +74,31 @@ namespace API.Clients
             using var client = await CreateHttpClientAsync();
             var response = await client.DeleteAsync($"medicamentos/{id}");
 
+            await HandleUnauthorizedResponseAsync(response);
+
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
                 return false;
             }
 
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                string errorContent = await response.Content.ReadAsStringAsync();
+                try
+                {
+                    using var jsonDoc = System.Text.Json.JsonDocument.Parse(errorContent);
+                    if (jsonDoc.RootElement.TryGetProperty("error", out System.Text.Json.JsonElement errorElement))
+                    {
+                        throw new Exception(errorElement.GetString());
+                    }
+                }
+                catch (System.Text.Json.JsonException)
+                {
+                    throw new Exception(errorContent);
+                }
+
+                throw new Exception(errorContent);
+            }
 
             return true;
         }
