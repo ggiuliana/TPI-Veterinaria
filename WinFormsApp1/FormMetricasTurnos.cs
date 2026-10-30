@@ -30,8 +30,8 @@ namespace WinFormsApp1
             InitializeComponent();
 
             AuthService = Program.AuthService;
-            TurnoClient = new TurnoClient(AuthService);
-            VeterinarioClient = new VeterinarioClient(AuthService);
+            TurnoClient = new TurnoClient(AuthService, Program.Configuration);
+            VeterinarioClient = new VeterinarioClient(AuthService, Program.Configuration);
 
             ConstruirLayoutDinamico();
 

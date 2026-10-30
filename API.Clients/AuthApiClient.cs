@@ -5,12 +5,13 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using DTOs;
+using Microsoft.Extensions.Configuration;
 
 namespace API.Clients
 {
     public class AuthApiClient : BaseApiClient
     {
-        public AuthApiClient(IAuthService authService) : base(authService)
+        public AuthApiClient(IAuthService authService, IConfiguration configuration) : base(authService, configuration)
         {
         }
         public async Task<LoginResponse?> LoginAsync(LoginRequest request)

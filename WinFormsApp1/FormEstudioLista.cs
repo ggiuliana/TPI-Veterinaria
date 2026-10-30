@@ -16,7 +16,7 @@ namespace WinFormsApp1
             InitializeComponent();
             this.Load += FormEstudioLista_Load;
             IAuthService authService = Program.AuthService;
-            EstudioClient = new EstudioClient(authService);
+            EstudioClient = new EstudioClient(authService, Program.Configuration);
         }
 
         private async void FormEstudioLista_Load(object? sender, EventArgs e)
@@ -71,7 +71,7 @@ namespace WinFormsApp1
         {
             FormEstudioDetalle formDetalle = new FormEstudioDetalle(0);
 
-            if (formDetalle.ShowDialog() == DialogResult.OK)
+            if (formDetalle.ShowDialog(this) == DialogResult.OK)
             {
                 await CargarEstudiosSeguroAsync();
             }
@@ -89,7 +89,7 @@ namespace WinFormsApp1
 
             FormEstudioDetalle formDetalle = new FormEstudioDetalle(idSeleccionado);
 
-            if (formDetalle.ShowDialog() == DialogResult.OK)
+            if (formDetalle.ShowDialog(this) == DialogResult.OK)
             {
                 await CargarEstudiosSeguroAsync();
             }

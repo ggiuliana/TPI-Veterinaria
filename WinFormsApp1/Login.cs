@@ -40,7 +40,7 @@
 
             this.Hide();
 
-            DialogResult resultado = formRegistro.ShowDialog();
+            DialogResult resultado = formRegistro.ShowDialog(this);
 
             this.Show();
         }

@@ -20,10 +20,13 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 builder.Services.AddAuthorization();
 
-builder.Services.AddScoped<AuthenticationStateProvider, BlazorServerAuthService>();
+builder.Services.AddScoped<BlazorServerAuthService>();
 
-builder.Services.AddScoped<IAuthService>(sp =>
-    (IAuthService)sp.GetRequiredService<AuthenticationStateProvider>());
+builder.Services.AddScoped<IAuthService>(proveedor =>
+    proveedor.GetRequiredService<BlazorServerAuthService>());
+
+builder.Services.AddScoped<AuthenticationStateProvider>(proveedor =>
+    proveedor.GetRequiredService<BlazorServerAuthService>());
 
 builder.Services.AddRadzenComponents();
 

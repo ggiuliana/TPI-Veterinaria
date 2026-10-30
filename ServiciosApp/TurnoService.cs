@@ -27,6 +27,16 @@ namespace ServiciosApp
         {
             string rol = userContext.GetCurrentRole();
 
+            if (!Turno.EsEstadoPermitido(dto.EstadoTurno))
+            {
+                throw new ArgumentException("Estado de turno inválido. Los estados permitidos son: Disponible, Otorgado y Resuelto.");
+            }
+
+            if (!string.Equals(dto.EstadoTurno, "Disponible", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new ArgumentException("Los turnos nuevos deben crearse con estado 'Disponible'.");
+            }
+
             var fechaHoy = DateOnly.FromDateTime(DateTime.Now);
             if (dto.FechaTurno < fechaHoy)
             {
@@ -52,6 +62,7 @@ namespace ServiciosApp
 
             dto.IdTurno = turno.IdTurno;
             dto.IdVeterinario = vet.IdPersona;
+            dto.EstadoTurno = turno.EstadoTurno;
             return dto;
         }
 
@@ -182,7 +193,7 @@ namespace ServiciosApp
 
             var turnoDb = await repo.GetAsync(dto.IdTurno) ?? throw new KeyNotFoundException("Turno no encontrado.");
 
-            if (dto.EstadoTurno != "Disponible" && dto.EstadoTurno != "Otorgado" && dto.EstadoTurno != "Resuelto")
+            if (!Turno.EsEstadoPermitido(dto.EstadoTurno))
             {
                 throw new ArgumentException("Estado de turno inválido.");
             }

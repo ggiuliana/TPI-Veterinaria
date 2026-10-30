@@ -1,4 +1,5 @@
 ﻿using DTOs;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace API.Clients
 {
     public class UsuarioClient : BaseApiClient
     {
-        public UsuarioClient(IAuthService authService) : base(authService)
+        public UsuarioClient(IAuthService authService, IConfiguration configuration) : base(authService, configuration)
         {
         }
 

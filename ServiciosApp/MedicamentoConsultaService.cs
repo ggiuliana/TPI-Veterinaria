@@ -35,6 +35,16 @@ namespace ServiciosApp
                 }
             }
 
+            if (rol == "Duenio")
+            {
+                int currentUserId = userContext.GetCurrentUserId();
+                var primerDetalle = detalles.First();
+                if (primerDetalle.Consulta?.Turno?.Mascota?.Duenio?.IdPersona != currentUserId)
+                {
+                    throw new UnauthorizedAccessException("No tiene permiso para ver los medicamentos de una consulta que no es suya.");
+                }
+            }
+
             return detalles.Select(d => new MedicamentoConsultaDTO
             {
                 IdConsulta = d.IdConsulta,

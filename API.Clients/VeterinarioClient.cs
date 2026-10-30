@@ -1,17 +1,18 @@
-﻿using System;
+﻿using DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Json; 
 using System.Text;
 using System.Threading.Tasks;
-using DTOs;
-using System.Net.Http.Json; 
+using Microsoft.Extensions.Configuration;
 
 namespace API.Clients
 {
     public class VeterinarioClient : BaseApiClient
     {
-        public VeterinarioClient(IAuthService authService) : base(authService)
+        public VeterinarioClient(IAuthService authService, IConfiguration configuration) : base(authService, configuration)
         {
         }
 

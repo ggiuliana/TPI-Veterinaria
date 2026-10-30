@@ -1,15 +1,16 @@
-﻿using System;
+﻿using DTOs;
+using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using DTOs;
 
 namespace API.Clients
 {
     public class MedicamentoClient : BaseApiClient
     {
-        public MedicamentoClient(IAuthService authService) : base(authService)
+        public MedicamentoClient(IAuthService authService, IConfiguration configuration) : base(authService, configuration)
         {
         }
 

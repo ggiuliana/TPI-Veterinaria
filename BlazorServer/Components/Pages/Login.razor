@@ -52,12 +52,18 @@
     {
         if (firstRender)
         {
+            await ((BlazorServerAuthService)AuthService).InitializeSessionAsync();
+
             bool isAuth = await AuthService.IsAuthenticatedAsync();
 
             if (isAuth)
             {
                 string? userRole = await AuthService.GetRolAsync();
                 RedirigirPorRol(userRole);
+            }
+            else
+            {
+                StateHasChanged();
             }
         }
     }

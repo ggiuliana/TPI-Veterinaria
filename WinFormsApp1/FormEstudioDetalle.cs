@@ -16,7 +16,7 @@ namespace WinFormsApp1
 
             this.Load += FormEstudioDetalle_Load;
             IAuthService authService = Program.AuthService;
-            EstudioClient = new EstudioClient(authService);
+            EstudioClient = new EstudioClient(authService, Program.Configuration);
         }
         private async void FormEstudioDetalle_Load(object? sender, EventArgs e)
         {

@@ -21,7 +21,7 @@ namespace WinFormsApp1
             InitializeComponent();
 
             IAuthService authService = Program.AuthService;
-            _authClient = new UsuarioClient(authService);
+            _authClient = new UsuarioClient(authService, Program.Configuration);
         }
 
         private async void Guardar_Click(object sender, EventArgs e)

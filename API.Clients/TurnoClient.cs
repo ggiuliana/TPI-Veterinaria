@@ -1,16 +1,17 @@
-﻿using System;
+﻿using DTOs;
+using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Net.Http.Json;
+using System.Text;
 using System.Threading.Tasks;
-using DTOs;
 
 namespace API.Clients
 {
     public class TurnoClient : BaseApiClient
     {
-        public TurnoClient(IAuthService authService) : base(authService)
+        public TurnoClient(IAuthService authService, IConfiguration configuration) : base(authService, configuration)
         {
         }
 

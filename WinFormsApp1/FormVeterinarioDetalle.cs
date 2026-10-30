@@ -16,8 +16,8 @@ namespace WinFormsApp1
             _idVeterinarioActual = idVeterinario;
             this.Load += FormVeterinarioDetalle_Load;
             IAuthService authService = Program.AuthService;
-            VeterinarioClient = new VeterinarioClient(authService);
-            UsuarioClient = new UsuarioClient(authService);
+            VeterinarioClient = new VeterinarioClient(authService, Program.Configuration);
+            UsuarioClient = new UsuarioClient(authService, Program.Configuration);
         }
 
         private async void FormVeterinarioDetalle_Load(object? sender, EventArgs e)

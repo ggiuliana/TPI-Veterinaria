@@ -16,7 +16,7 @@ namespace WinFormsApp1
             _idMedicamentoActual = idMedicamento;
             this.Load += FormMedicamentoDetalle_Load;
             IAuthService authService = Program.AuthService;
-            MedicamentoClient = new MedicamentoClient(authService);
+            MedicamentoClient = new MedicamentoClient(authService, Program.Configuration);
         }
 
         private async void FormMedicamentoDetalle_Load(object? sender, EventArgs e)

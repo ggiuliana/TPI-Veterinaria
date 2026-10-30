@@ -16,7 +16,7 @@ namespace WinFormsApp1
             InitializeComponent();
 
             IAuthService authService = Program.AuthService;
-            MedicamentoClient = new MedicamentoClient(authService);
+            MedicamentoClient = new MedicamentoClient(authService, Program.Configuration);
 
             ConfigurarColumnas(dataGridView1);
             ConfigurarColumnas(dataGridView2);

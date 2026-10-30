@@ -13,7 +13,7 @@ namespace WinFormsApp1
             this.Shown += FormTipoVacunaLista_Shown;
 
             IAuthService authService = Program.AuthService;
-            TipoVacunaClient = new TipoVacunaClient(authService);
+            TipoVacunaClient = new TipoVacunaClient(authService, Program.Configuration);
         }
         private void FormTipoVacunaLista_Shown(object? sender, EventArgs e)
         {
@@ -64,7 +64,7 @@ namespace WinFormsApp1
         private async void Create_Click(object sender, EventArgs e)
         {
             FormTipoVacunaDetalle formDetalle = new FormTipoVacunaDetalle(0);
-            if (formDetalle.ShowDialog() == DialogResult.OK) await CargarVacunasSeguroAsync();
+            if (formDetalle.ShowDialog(this) == DialogResult.OK) await CargarVacunasSeguroAsync();
         }
         private async void Update_Click(object sender, EventArgs e)
         {
@@ -72,7 +72,7 @@ namespace WinFormsApp1
             {
                 int idSeleccionado = Convert.ToInt32(dataGridView1.CurrentRow.Cells["IdTipoVacuna"].Value);
                 FormTipoVacunaDetalle formDetalle = new FormTipoVacunaDetalle(idSeleccionado);
-                if (formDetalle.ShowDialog() == DialogResult.OK) await CargarVacunasSeguroAsync();
+                if (formDetalle.ShowDialog(this) == DialogResult.OK) await CargarVacunasSeguroAsync();
             }
         }
         private async void Delete_Click(object? sender, EventArgs e)

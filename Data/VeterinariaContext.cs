@@ -635,31 +635,6 @@ namespace Data
                         EstadoTurno = "Otorgado", 
                         IdMascota = 2, 
                         IdVeterinario = 1 
-                    },
-                    new 
-                    { 
-                        IdTurno = 8, 
-                        FechaTurno = new DateOnly(2026, 10, 27), 
-                        HoraTurno = new TimeOnly(17, 0, 0), 
-                        EstadoTurno = "Disponible", 
-                        IdMascota = (int?)null, 
-                        IdVeterinario = 1 },
-                    new 
-                    { 
-                        IdTurno = 9,
-                        FechaTurno = new DateOnly(2026, 10, 28), 
-                        HoraTurno = new TimeOnly(15, 0, 0), 
-                        EstadoTurno = "Disponible", 
-                        IdMascota = (int?)null, 
-                        IdVeterinario = 2 },
-                    new 
-                    { 
-                        IdTurno = 10, 
-                        FechaTurno = new DateOnly(2026, 10, 29), 
-                        HoraTurno = new TimeOnly(11, 0, 0), 
-                        EstadoTurno = "Disponible", 
-                        IdMascota = (int?)null, 
-                        IdVeterinario = 1 
                     }
                 );
                     
@@ -836,10 +811,94 @@ namespace Data
                         SaveChanges();
                     }
                 }
+
+                EnsureUpcomingAvailableTurnos();
             }
             catch
             {
             }
         }       
+
+        private void EnsureUpcomingAvailableTurnos()
+        {
+            const int minimumUpcomingAvailableTurnos = 6;
+            var today = DateOnly.FromDateTime(DateTime.Today);
+
+            var availableCount = Turnos.Count(turno =>
+                turno.EstadoTurno == "Disponible" && turno.FechaTurno >= today);
+            var missingCount = minimumUpcomingAvailableTurnos - availableCount;
+
+            if (missingCount <= 0)
+            {
+                return;
+            }
+
+            var veterinarios = Veterinarios.OrderBy(veterinario => veterinario.IdPersona).ToList();
+            if (veterinarios.Count == 0)
+            {
+                return;
+            }
+
+            var scheduledSlots = Turnos
+                .AsNoTracking()
+                .Select(turno => new
+                {
+                    turno.FechaTurno,
+                    turno.HoraTurno,
+                    turno.IdVeterinario
+                })
+                .ToList()
+                .Select(turno => (turno.FechaTurno, turno.HoraTurno, turno.IdVeterinario))
+                .ToHashSet();
+
+            var appointmentTimes = new[]
+            {
+                new TimeOnly(9, 0),
+                new TimeOnly(11, 0),
+                new TimeOnly(14, 0),
+                new TimeOnly(16, 0)
+            };
+
+            var initialMissingCount = missingCount;
+            for (var daysAhead = 1; daysAhead <= 30 && missingCount > 0; daysAhead++)
+            {
+                var appointmentDate = today.AddDays(daysAhead);
+
+                foreach (var veterinario in veterinarios)
+                {
+                    foreach (var appointmentTime in appointmentTimes)
+                    {
+                        var slot = (appointmentDate, appointmentTime, veterinario.IdPersona);
+                        if (!scheduledSlots.Add(slot))
+                        {
+                            continue;
+                        }
+
+                        Turnos.Add(new Turno(
+                            0,
+                            appointmentDate,
+                            appointmentTime,
+                            "Disponible",
+                            veterinario));
+
+                        missingCount--;
+                        if (missingCount == 0)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (missingCount == 0)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            if (missingCount < initialMissingCount)
+            {
+                SaveChanges();
+            }
+        }
     }
 }

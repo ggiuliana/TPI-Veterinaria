@@ -257,8 +257,11 @@ namespace ServiciosApp
                 return null;
             }
 
-            VerificarPermisosLectura(consulta, userContext.GetCurrentUserId(), userContext.GetCurrentRole());
-
+            if (userContext.GetCurrentRole() != "Administrador")
+            {
+                VerificarPermisosLectura(consulta, userContext.GetCurrentUserId(), userContext.GetCurrentRole());
+            }
+               
             return MapToDTO(consulta);
         }
         

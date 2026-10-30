@@ -1,15 +1,16 @@
-﻿using System;
+﻿using DTOs;
+using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using DTOs;
 
 namespace API.Clients
 {
     public class TipoVacunaClient : BaseApiClient
     {
-        public TipoVacunaClient(IAuthService authService) : base(authService)
+        public TipoVacunaClient(IAuthService authService, IConfiguration configuration) : base(authService, configuration)
         {
         }
 

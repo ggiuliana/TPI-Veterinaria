@@ -20,8 +20,8 @@ namespace WinFormsApp1
 
             this.Load += FormMascotaDetalle_Load;
             IAuthService authService = Program.AuthService;
-            MascotaClient = new MascotaClient(authService);
-            TipoVacunaClient = new TipoVacunaClient(authService);
+            MascotaClient = new MascotaClient(authService, Program.Configuration);
+            TipoVacunaClient = new TipoVacunaClient(authService, Program.Configuration);
         }
         private async void FormMascotaDetalle_Load(object? sender, EventArgs e)
         {

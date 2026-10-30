@@ -33,6 +33,14 @@
 </div>
 
 @code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await ((BlazorServerAuthService)AuthService).InitializeSessionAsync();
+        }
+    }
+
     protected override void OnInitialized()
     {
         AuthService.AuthenticationStateChanged += OnAuthenticationStateChanged;

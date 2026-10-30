@@ -57,7 +57,8 @@ namespace Data
         {
             var turnos = new List<Turno>();
 
-            string connectionString = "Server=(localdb)\\mssqllocaldb;Database=VeterinariaDB;Trusted_Connection=True;MultipleActiveResultSets=true";
+            string connectionString = context.Database.GetConnectionString()
+                ?? throw new ArgumentException("No hay cadena de conexión.");
 
             await using var connection = new SqlConnection(connectionString);
             await connection.OpenAsync();

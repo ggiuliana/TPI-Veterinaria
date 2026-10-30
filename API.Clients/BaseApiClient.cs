@@ -9,11 +9,22 @@ namespace API.Clients
         protected readonly IAuthService _authService;
         private readonly string _baseUrl;
 
-        protected BaseApiClient(IAuthService authService, IConfiguration? configuration = null)
+        protected BaseApiClient(IAuthService authService, IConfiguration configuration)
         {
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));
 
-            _baseUrl = configuration?["ApiConfig:BaseUrl"] ?? "http://localhost:5124/";
+            var baseUrl = configuration["ApiConfig:BaseUrl"];
+
+            if (!Uri.TryCreate(baseUrl, UriKind.Absolute, out var baseAddress) ||
+                (baseAddress.Scheme != Uri.UriSchemeHttp && baseAddress.Scheme != Uri.UriSchemeHttps))
+            {
+                throw new InvalidOperationException(
+                    "Falta una URL HTTP/HTTPS válida en ApiConfig:BaseUrl.");
+            }
+
+            _baseUrl = baseAddress.AbsoluteUri.EndsWith('/')
+                ? baseAddress.AbsoluteUri
+                : $"{baseAddress.AbsoluteUri}/";
         }
 
         protected async Task<HttpClient> CreateHttpClientAsync()

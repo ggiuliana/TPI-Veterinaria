@@ -64,7 +64,12 @@ namespace ServiciosApp
             var issuer = jwtSettings["Issuer"];
             var audience = jwtSettings["Audience"];
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!));
+            if (string.IsNullOrWhiteSpace(secretKey))
+            {
+                throw new InvalidOperationException("No está configurado JwtSettings:SecretKey.");
+            }
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new List<Claim>

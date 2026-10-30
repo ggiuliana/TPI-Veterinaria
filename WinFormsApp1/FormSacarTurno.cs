@@ -23,8 +23,8 @@ namespace WinFormsApp1
             InitializeComponent();
             _turnoSeleccionado = turnoSeleccionado;
             IAuthService authService = Program.AuthService;
-            TurnoClient = new TurnoClient(authService);
-            MascotaClient = new MascotaClient(authService);
+            TurnoClient = new TurnoClient(authService, Program.Configuration);
+            MascotaClient = new MascotaClient(authService, Program.Configuration);
         }
 
         private async void FormSacarTurno_Load(object sender, EventArgs e)

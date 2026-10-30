@@ -21,7 +21,7 @@ namespace WinFormsApp1
             InitializeComponent();
             this.Load += FormVeterinarioLista_Load;
             IAuthService authService = Program.AuthService;
-            VeterinarioClient = new VeterinarioClient(authService);
+            VeterinarioClient = new VeterinarioClient(authService, Program.Configuration);
         }
 
         private async void FormVeterinarioLista_Load(object? sender, EventArgs e)
@@ -73,7 +73,7 @@ namespace WinFormsApp1
         {
             FormVeterinarioDetalle formDetalle = new FormVeterinarioDetalle(0);
 
-            if (formDetalle.ShowDialog() == DialogResult.OK)
+            if (formDetalle.ShowDialog(this) == DialogResult.OK)
             {
                 await CargarVeterinariosSeguroAsync();
             }
@@ -91,7 +91,7 @@ namespace WinFormsApp1
 
             FormVeterinarioDetalle formDetalle = new FormVeterinarioDetalle(idSeleccionado);
 
-            if (formDetalle.ShowDialog() == DialogResult.OK)
+            if (formDetalle.ShowDialog(this) == DialogResult.OK)
             {
                 await CargarVeterinariosSeguroAsync();
             }

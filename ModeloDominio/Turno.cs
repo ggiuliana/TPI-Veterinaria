@@ -36,7 +36,7 @@
             if (string.IsNullOrWhiteSpace(estadoTurno))
                 throw new ArgumentException("El estado del turno no puede ser nulo o vacío.", nameof(estadoTurno));
 
-            if (!EstadosPermitidos.Contains(estadoTurno, StringComparer.OrdinalIgnoreCase))
+            if (!EsEstadoPermitido(estadoTurno))
             {
                 throw new ArgumentException(
                     $"El estado '{estadoTurno}' no es válido. Los estados permitidos son: {string.Join(", ", EstadosPermitidos)}.",
@@ -45,6 +45,12 @@
             }
 
             EstadoTurno = EstadosPermitidos.First(e => e.Equals(estadoTurno, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public static bool EsEstadoPermitido(string? estadoTurno)
+        {
+            return !string.IsNullOrWhiteSpace(estadoTurno) &&
+                   EstadosPermitidos.Contains(estadoTurno, StringComparer.OrdinalIgnoreCase);
         }
 
         public void SetFechaTurno(DateOnly fechaTurno)

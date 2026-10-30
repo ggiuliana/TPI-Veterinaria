@@ -19,7 +19,7 @@ namespace WinFormsApp1
         {
             InitializeComponent();
             IAuthService authService = Program.AuthService;
-            TurnoClient = new TurnoClient(authService);
+            TurnoClient = new TurnoClient(authService, Program.Configuration);
         }
 
         private async void FormTurnosDisponibles_Load(object sender, EventArgs e)
@@ -51,7 +51,7 @@ namespace WinFormsApp1
 
                 FormSacarTurno formDetalle = new(turnoActual);
 
-                if (formDetalle.ShowDialog() == DialogResult.OK)
+                if (formDetalle.ShowDialog(this) == DialogResult.OK)
                 {
                     await CargarTurnosAsync();
                 }

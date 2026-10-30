@@ -19,8 +19,8 @@ namespace WinFormsApp1
             this.Activated += FormConsultaLista_Activated;
 
             AuthService = Program.AuthService;
-            ConsultaClient = new ConsultaClient(AuthService);
-            TurnoClient = new TurnoClient(AuthService);
+            ConsultaClient = new ConsultaClient(AuthService, Program.Configuration);
+            TurnoClient = new TurnoClient(AuthService, Program.Configuration);
         }
 
         private async void FormConsultaLista_Load(object? sender, EventArgs e)
@@ -107,7 +107,7 @@ namespace WinFormsApp1
                 int idTurno = Convert.ToInt32(dataGridView1.CurrentRow.Cells["colIdTurno"].Value);
 
                 FormConsultaDetalle formDetalle = new FormConsultaDetalle(idTurno);
-                if (formDetalle.ShowDialog() == DialogResult.OK)
+                if (formDetalle.ShowDialog(this) == DialogResult.OK)
                 {
                     CargarGrilla();
                 }

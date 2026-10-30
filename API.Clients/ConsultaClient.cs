@@ -5,12 +5,14 @@ using System.Text;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using DTOs;
+using Microsoft.Extensions.Configuration;
 
 namespace API.Clients
 {
     public class ConsultaClient : BaseApiClient
     {
-        public ConsultaClient(IAuthService authService) : base(authService)
+        public ConsultaClient(IAuthService authService, IConfiguration configuration)
+            : base(authService, configuration)
         {
         }
 

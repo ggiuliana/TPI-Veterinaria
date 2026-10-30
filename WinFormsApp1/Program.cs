@@ -1,11 +1,14 @@
 ﻿using API.Clients;
 using API.Auth.WindowsForms;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 
 namespace WinFormsApp1
 {
     internal static class Program
     {
         public static IAuthService AuthService { get; private set; } = null!;
+        public static IConfiguration Configuration { get; private set; } = null!;
 
         [STAThread]
         static void Main()
@@ -15,7 +18,12 @@ namespace WinFormsApp1
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.ThreadException += Application_ThreadException;
 
-            AuthService = new WindowsFormsAuthService();
+            var builder = Host.CreateApplicationBuilder(new HostApplicationBuilderSettings
+            {
+                ContentRootPath = AppContext.BaseDirectory
+            });
+            Configuration = builder.Configuration;
+            AuthService = new WindowsFormsAuthService(Configuration);
 
             try
             {

@@ -1,5 +1,6 @@
 ﻿using DTOs;
 using API.Clients;
+using Microsoft.Extensions.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -7,13 +8,24 @@ namespace API.Auth.WindowsForms
 {
     public class WindowsFormsAuthService : IAuthService
     {
-        private static string? _currentToken;
-        private static DateTime _tokenExpiration;
-        private static string? _currentUsername;
-        private static string? _currentRol;
-        private static int? _currentPersonaId;
+        private readonly IConfiguration _configuration;
+        private string? _currentToken;
+        private DateTime _tokenExpiration;
+        private string? _currentUsername;
+        private string? _currentRol;
+        private int? _currentPersonaId;
+
+        public WindowsFormsAuthService(IConfiguration configuration)
+        {
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+        }
 
         public event Action<bool>? AuthenticationStateChanged;
+
+        public Task InitializeSessionAsync()
+        {
+            return Task.CompletedTask;
+        }
 
         public async Task<int?> GetPersonaIdAsync()
         {
@@ -50,7 +62,7 @@ namespace API.Auth.WindowsForms
                 Contrasenia = password
             };
 
-            var authClient = new AuthApiClient(this);
+            var authClient = new AuthApiClient(this, _configuration);
             var response = await authClient.LoginAsync(request);
 
             if (response != null)

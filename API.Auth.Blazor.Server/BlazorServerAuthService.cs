@@ -1,26 +1,30 @@
-﻿using DTOs;
-using API.Clients;
-using System.IdentityModel.Tokens.Jwt;
+﻿using API.Clients;
+using DTOs;
 using Microsoft.AspNetCore.Components.Authorization;
-using System.Security.Claims;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.Extensions.DependencyInjection;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace API.Auth.Blazor.Server
 {
     public class BlazorServerAuthService : AuthenticationStateProvider, IAuthService
     {
-        private static SessionData? _currentSession;
+        private SessionData? _currentSession;
 
         public new event Action<bool>? AuthenticationStateChanged;
 
         private readonly IServiceProvider _serviceProvider;
 
-        public BlazorServerAuthService(IServiceProvider serviceProvider)
+        private readonly ProtectedSessionStorage _sessionStorage;
+
+        public BlazorServerAuthService(IServiceProvider serviceProvider, ProtectedSessionStorage sessionStorage)
         {
             _serviceProvider = serviceProvider;
+            _sessionStorage = sessionStorage;
         }
 
-        private class SessionData
+        public class SessionData
         {
             public string? Token { get; set; }
             public string? Username { get; set; }
@@ -41,15 +45,29 @@ namespace API.Auth.Blazor.Server
             }
         }
 
-        public override Task<AuthenticationState> GetAuthenticationStateAsync()
+        public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             var identity = new ClaimsIdentity();
+
+            try
+            {
+                if (_currentSession == null)
+                {
+                    var result = await _sessionStorage.GetAsync<SessionData>("UserSession");
+                    if (result.Success && result.Value != null)
+                    {
+                        _currentSession = result.Value;
+                    }
+                }
+            }
+            catch
+            {
+            }
 
             if (_currentSession != null && !string.IsNullOrEmpty(_currentSession.Token) && _currentSession.Expiration > DateTime.UtcNow)
             {
                 var handler = new JwtSecurityTokenHandler();
                 var jwtToken = handler.ReadJwtToken(_currentSession.Token);
-
                 var claims = jwtToken.Claims.ToList();
 
                 if (!string.IsNullOrEmpty(_currentSession.Rol))
@@ -58,9 +76,31 @@ namespace API.Auth.Blazor.Server
                 }
                 identity = new ClaimsIdentity(claims, "jwtAuth");
             }
+            else
+            {
+                _currentSession = null;
+            }
 
-            var user = new ClaimsPrincipal(identity);
-            return Task.FromResult(new AuthenticationState(user));
+            return new AuthenticationState(new ClaimsPrincipal(identity));
+        }
+
+        public async Task InitializeSessionAsync()
+        {
+            try
+            {
+                var result = await _sessionStorage.GetAsync<SessionData>("UserSession");
+                if (result.Success && result.Value != null)
+                {
+                    _currentSession = result.Value;
+
+                    NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+
+                    AuthenticationStateChanged?.Invoke(true);
+                }
+            }
+            catch
+            {
+            }
         }
 
         public void NotificarLoginExitoso()
@@ -119,31 +159,35 @@ namespace API.Auth.Blazor.Server
             var authClient = _serviceProvider.GetRequiredService<AuthApiClient>();
             var response = await authClient.LoginAsync(request);
 
-            if (response != null && !string.IsNullOrEmpty(response.Token))
+            if (response == null || string.IsNullOrEmpty(response.Token))
             {
-                _currentSession = new SessionData
-                {
-                    Token = response.Token,
-                    Username = response.Username,
-                    Expiration = response.ExpiresAt,
-                    Rol = response.Rol,
-                    PersonaId = response.IdPersona
-                };
-
-                AuthenticationStateChanged?.Invoke(true);
-                NotificarLoginExitoso();
-                return true;
+                return false;
             }
 
-            return false;
+            var session = new SessionData
+            {
+                Token = response.Token,
+                Username = response.Username,
+                Expiration = response.ExpiresAt,
+                Rol = response.Rol,
+                PersonaId = response.IdPersona
+            };
+
+            _currentSession = session;
+            await _sessionStorage.SetAsync("UserSession", session);
+
+            AuthenticationStateChanged?.Invoke(true);
+            NotificarLoginExitoso();
+
+            return true;
         }
 
-        public Task LogoutAsync()
+        public async Task LogoutAsync()
         {
             _currentSession = null;
+            await _sessionStorage.DeleteAsync("UserSession");
             AuthenticationStateChanged?.Invoke(false);
             NotificarLogout();
-            return Task.CompletedTask;
         }
 
         public async Task CheckTokenExpirationAsync()

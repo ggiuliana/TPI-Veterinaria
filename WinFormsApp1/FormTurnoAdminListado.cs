@@ -25,8 +25,8 @@ namespace WinFormsApp1
             InitializeComponent();
             this.Load += FormTurnoAdminListado_Load;
             AuthService = Program.AuthService;
-            _turnoClient = new TurnoClient(AuthService);
-            _veterinarioClient = new VeterinarioClient(AuthService);
+            _turnoClient = new TurnoClient(AuthService, Program.Configuration);
+            _veterinarioClient = new VeterinarioClient(AuthService, Program.Configuration);
         }
 
         private async void FormTurnoAdminListado_Load(object sender, EventArgs e)
@@ -184,7 +184,7 @@ namespace WinFormsApp1
         private async void Create_Click(object sender, EventArgs e)
         {
             FormTurnoDetalle formDetalle = new(0);
-            if (formDetalle.ShowDialog() == DialogResult.OK)
+            if (formDetalle.ShowDialog(this) == DialogResult.OK)
             {
                 await CargarTurnosFiltradosAsync();
             }
@@ -197,7 +197,7 @@ namespace WinFormsApp1
                 int idTurno = Convert.ToInt32(dataGridView1.CurrentRow.Cells["colIdTurno"].Value);
 
                 FormTurnoDetalle formDetalle = new(idTurno);
-                if (formDetalle.ShowDialog() == DialogResult.OK)
+                if (formDetalle.ShowDialog(this) == DialogResult.OK)
                 {
                     await CargarTurnosFiltradosAsync();
                 }
@@ -221,7 +221,7 @@ namespace WinFormsApp1
                 }
 
                 FormConsultaDetalle formConsulta = new(turnoSeleccionado.IdTurno);
-                if (formConsulta.ShowDialog() == DialogResult.OK)
+                if (formConsulta.ShowDialog(this) == DialogResult.OK)
                 {
                     MessageBox.Show("Consulta guardada con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     await CargarTurnosFiltradosAsync();

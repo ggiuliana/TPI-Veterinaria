@@ -22,7 +22,7 @@ namespace WinFormsApp1
             this.Load += FormMascotaLista_Load;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             IAuthService authService = Program.AuthService;
-            MascotaClient = new MascotaClient(authService);
+            MascotaClient = new MascotaClient(authService, Program.Configuration);
         }
 
         private async void FormMascotaLista_Load(object? sender, EventArgs e)
@@ -90,7 +90,7 @@ namespace WinFormsApp1
         {
             FormMascotaDetalle formDetalle = new FormMascotaDetalle(0);
 
-            if (formDetalle.ShowDialog() == DialogResult.OK)
+            if (formDetalle.ShowDialog(this) == DialogResult.OK)
             {
                 await CargarMascotasSeguroAsync();
             }
@@ -108,7 +108,7 @@ namespace WinFormsApp1
 
             FormMascotaDetalle formDetalle = new FormMascotaDetalle(idSeleccionado);
 
-            if (formDetalle.ShowDialog() == DialogResult.OK)
+            if (formDetalle.ShowDialog(this) == DialogResult.OK)
             {
                 await CargarMascotasSeguroAsync();
             }

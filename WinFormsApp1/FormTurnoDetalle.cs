@@ -23,9 +23,9 @@ namespace WinFormsApp1
             this.Load += FormTurnoDetalle_Load;
 
             IAuthService authService = Program.AuthService;
-            TurnoClient = new TurnoClient(authService);
-            VeterinarioClient = new VeterinarioClient(authService);
-            MascotaClient = new MascotaClient(authService);
+            TurnoClient = new TurnoClient(authService, Program.Configuration);
+            VeterinarioClient = new VeterinarioClient(authService, Program.Configuration);
+            MascotaClient = new MascotaClient(authService, Program.Configuration);
         }
 
         private async void FormTurnoDetalle_Load(object? sender, EventArgs e)

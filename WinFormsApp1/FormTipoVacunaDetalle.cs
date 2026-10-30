@@ -16,7 +16,7 @@ namespace WinFormsApp1
             _idTipoVacunaActual = idTipoVacuna;
             this.Load += FormTipoVacunaDetalle_Load;
             IAuthService authService = Program.AuthService;
-            TipoVacunaClient = new TipoVacunaClient(authService);
+            TipoVacunaClient = new TipoVacunaClient(authService, Program.Configuration);
         }
 
         private async void FormTipoVacunaDetalle_Load(object? sender, EventArgs e)

@@ -12,7 +12,7 @@ namespace WinFormsApp1
             InitializeComponent();
             this.Load += FormMedicamentoLista_Load;
             IAuthService authService = Program.AuthService;
-            MedicamentoClient = new MedicamentoClient(authService);
+            MedicamentoClient = new MedicamentoClient(authService, Program.Configuration);
         }
 
         private async void FormMedicamentoLista_Load(object? sender, EventArgs e)
@@ -66,7 +66,7 @@ namespace WinFormsApp1
         private async void Create_Click(object sender, EventArgs e)
         {
             FormMedicamentoDetalle formDetalle = new FormMedicamentoDetalle(0);
-            if (formDetalle.ShowDialog() == DialogResult.OK)
+            if (formDetalle.ShowDialog(this) == DialogResult.OK)
             {
                 await CargarMedicamentosSeguroAsync();
             }
@@ -83,7 +83,7 @@ namespace WinFormsApp1
             int idSeleccionado = Convert.ToInt32(dataGridView1.CurrentRow.Cells["IdMedicamento"].Value);
             FormMedicamentoDetalle formDetalle = new FormMedicamentoDetalle(idSeleccionado);
 
-            if (formDetalle.ShowDialog() == DialogResult.OK)
+            if (formDetalle.ShowDialog(this) == DialogResult.OK)
             {
                 await CargarMedicamentosSeguroAsync();
             }

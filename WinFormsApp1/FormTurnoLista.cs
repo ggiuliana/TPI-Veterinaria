@@ -15,7 +15,7 @@ namespace WinFormsApp1
             InitializeComponent();
             this.Load += FormTurnoLista_Load;
             AuthService = Program.AuthService;
-            TurnoClient = new TurnoClient(AuthService);
+            TurnoClient = new TurnoClient(AuthService, Program.Configuration);
         }
 
         private async void FormTurnoLista_Load(object? sender, EventArgs e)
@@ -93,7 +93,7 @@ namespace WinFormsApp1
         private void Create_Click(object sender, EventArgs e)
         {
             FormTurnoDetalle formDetalle = new(0);
-            if (formDetalle.ShowDialog() == DialogResult.OK)
+            if (formDetalle.ShowDialog(this) == DialogResult.OK)
             {
                 CargarGrilla();
             }
@@ -106,7 +106,7 @@ namespace WinFormsApp1
                 int idTurno = Convert.ToInt32(dataGridView1.CurrentRow.Cells["colIdTurno"].Value);
 
                 FormTurnoDetalle formDetalle = new(idTurno);
-                if (formDetalle.ShowDialog() == DialogResult.OK)
+                if (formDetalle.ShowDialog(this) == DialogResult.OK)
                 {
                     CargarGrilla();
                 }
@@ -164,7 +164,7 @@ namespace WinFormsApp1
                 }
 
                 FormConsultaDetalle formConsulta = new(turnoSeleccionado.IdTurno);
-                if (formConsulta.ShowDialog() == DialogResult.OK)
+                if (formConsulta.ShowDialog(this) == DialogResult.OK)
                 {
                     MessageBox.Show("Consulta guardada con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     CargarGrilla();

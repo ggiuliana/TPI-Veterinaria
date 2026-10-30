@@ -10,6 +10,7 @@ namespace API.Clients
     {
         event Action<bool>? AuthenticationStateChanged;
 
+        Task InitializeSessionAsync();
         Task<bool> IsAuthenticatedAsync();
         Task<string?> GetTokenAsync();
         Task<string?> GetUsernameAsync();

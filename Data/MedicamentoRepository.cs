@@ -42,7 +42,7 @@ namespace Data
             var stockSuficiente = new List<Medicamento>();
 
             string connectionString = context.Database.GetConnectionString()
-                ?? "Server=(localdb)\\mssqllocaldb;Database=VeterinariaDB;Trusted_Connection=True;MultipleActiveResultSets=true";
+                ?? throw new ArgumentException("No hay cadena de conexión.");
 
             await using var connection = new SqlConnection(connectionString);
             await connection.OpenAsync();

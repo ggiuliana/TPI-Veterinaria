@@ -8,8 +8,16 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using API.Clients;
 using API.Auth.Blazor.Server;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Routing;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Configure<RouteHandlerOptions>(options =>
+{
+    options.ThrowOnBadRequest = true;
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => {
@@ -78,6 +86,18 @@ var secretKey = jwtSettings["SecretKey"];
 var issuer = jwtSettings["Issuer"];
 var audience = jwtSettings["Audience"];
 
+if (string.IsNullOrWhiteSpace(secretKey))
+{
+    throw new InvalidOperationException(
+        "Falta configurar JwtSettings:SecretKey mediante User Secrets (Development) o una variable de entorno (JwtSettings__SecretKey).");
+}
+
+var signingKeyBytes = Encoding.UTF8.GetBytes(secretKey);
+if (signingKeyBytes.Length < 32)
+{
+    throw new InvalidOperationException("JwtSettings:SecretKey debe tener al menos 32 bytes.");
+}
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -89,7 +109,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAudience = audience,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!)),
+            IssuerSigningKey = new SymmetricSecurityKey(signingKeyBytes),
             ClockSkew = TimeSpan.Zero
         };
 
@@ -197,6 +217,41 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
 }
+
+app.UseExceptionHandler(errorApp => errorApp.Run(async context =>
+{
+    var exception = context.Features
+        .Get<IExceptionHandlerFeature>()?
+        .Error;
+
+    if (exception is BadHttpRequestException badRequest)
+    {
+        context.Response.StatusCode = badRequest.StatusCode;
+        await context.Response.WriteAsJsonAsync(new
+        {
+            mensaje = "La solicitud está vacía o tiene un formato inválido."
+        });
+
+        return;
+    }
+
+    if (exception is UnauthorizedAccessException)
+    {
+        context.Response.StatusCode = StatusCodes.Status403Forbidden;
+        await context.Response.WriteAsJsonAsync(new
+        {
+            mensaje = "No tiene permisos para realizar esta operación."
+        });
+
+        return;
+    }
+
+    context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+    await context.Response.WriteAsJsonAsync(new
+    {
+        mensaje = "Se produjo un error interno."
+    });
+}));
 
 // Map endpoints
 app.UseAuthentication();

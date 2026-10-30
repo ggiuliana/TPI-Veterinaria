@@ -23,9 +23,9 @@ namespace WinFormsApp1
             _idTurnoActual = idTurno;
             this.Load += FormConsultaDetalle_Load;
             IAuthService authService = Program.AuthService;
-            ConsultaClient = new ConsultaClient(authService);
-            MedicamentoClient = new MedicamentoClient(authService);
-            EstudioClient = new EstudioClient(authService); 
+            ConsultaClient = new ConsultaClient(authService, Program.Configuration);
+            MedicamentoClient = new MedicamentoClient(authService, Program.Configuration);
+            EstudioClient = new EstudioClient(authService, Program.Configuration);
         }
 
         private async void FormConsultaDetalle_Load(object? sender, EventArgs e)
